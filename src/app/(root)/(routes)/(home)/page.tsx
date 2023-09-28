@@ -1,12 +1,14 @@
-import { FunctionComponent } from "react";
+import { FunctionComponent } from 'react'
 interface PageProps {}
 
 const Page: FunctionComponent<PageProps> = ({}) => {
   return (
-    <>
-      <main>Page</main>
-    </>
-  );
-};
+    <main>
+      <section className="container">
+        <p className="text-xl">page</p>
+      </section>
+    </main>
+  )
+}
 
-export default Page;
+export default Page
