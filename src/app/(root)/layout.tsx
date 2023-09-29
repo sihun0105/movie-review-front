@@ -13,11 +13,12 @@ import 'react-circular-progressbar/dist/styles.css'
  *  @see https://www.npmjs.com/package/react-responsive-carousel
  */
 import '@/styles/globals.css'
+import Navbar from '@/components/app/navbar'
 
 export const metadata: Metadata = {
-  title: '썩은사과',
-  description: '썩은사과',
-  keywords: '썩은사과',
+  title: '썩은양배추',
+  description: '썩은양배추',
+  keywords: '썩은양배추',
 }
 interface AppLayoutProps extends PropsWithChildren {}
 
@@ -25,11 +26,15 @@ const AppLayout: FunctionComponent<AppLayoutProps> = ({ children }) => {
   return (
     <html lang="en">
       <body>
-        <header className="header-h w-full"></header>
+        <div className="sticky top-0 z-10 w-full">
+          <header className="header-h w-full ">
+            <Navbar />
+          </header>
+        </div>
         <div className="header-h" />
         {children}
-        <section className="h-[164px] w-full bg-app-gray-002">
-          <div className="flex h-full flex-col justify-center">
+        <section className="sticky bottom-0 h-[164px] w-full bg-app-gray-002">
+          <div className="flex h-full flex-col justify-end">
             <Footer />
           </div>
         </section>
