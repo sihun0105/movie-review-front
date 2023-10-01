@@ -14,6 +14,7 @@ import 'react-circular-progressbar/dist/styles.css'
  */
 import '@/styles/globals.css'
 import Navbar from '@/components/app/navbar'
+import { LoginFormClient } from '@/components/app/login-form-client'
 
 export const metadata: Metadata = {
   title: '썩은양배추',
@@ -32,7 +33,12 @@ const AppLayout: FunctionComponent<AppLayoutProps> = ({ children }) => {
           </header>
         </div>
         <div className="header-h" />
-        {children}
+        <section className="flex flex-row">
+          <section>
+            <LoginFormClient /> {/* 수정된 부분 */}
+          </section>
+          {children}
+        </section>
         <section className="sticky bottom-0 h-[164px] w-full bg-app-gray-002">
           <div className="flex h-full flex-col justify-end">
             <Footer />

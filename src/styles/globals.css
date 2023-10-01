@@ -19,7 +19,7 @@
     --border: 214.3 31.8% 91.4%;
     --input: var(--gray-004);
 
-    --primary: var(--purple-002);
+    --primary: var(--green-002);
     --primary-foreground: 210 40% 98%;
 
     --secondary: 210 40% 96.1%;
@@ -35,9 +35,8 @@
 
     --radius: 0.5rem;
 
-    /* Figma App Design Colors */
-    --purple-001: #efe1fa;
-    --purple-002: #9426ea;
+    --green-001: #abb389;
+    --green-002: #748431;
 
     --gray-001: #ffffff;
     --gray-002: #f5f5f5;
