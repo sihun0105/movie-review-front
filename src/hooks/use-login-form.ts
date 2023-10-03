@@ -5,12 +5,23 @@ import { useForm } from 'react-hook-form'
 import * as z from 'zod'
 
 const formSchema = z.object({
-  username: z.string().min(2, {
-    message: 'Username must be at least 2 characters.',
+  email: z.string().email({
+    message: 'Invalid email format.',
   }),
-  password: z.string().min(4, {
-    message: 'Password must be at least 4 characters.',
-  }),
+  password: z
+    .string()
+    .min(6, {
+      message: 'Password must be at least 6 characters.',
+    })
+    .max(12, {
+      message: 'Password must be at most 12 characters.',
+    })
+    .refine((value) => /[A-Z]/.test(value), {
+      message: 'Password must include at least one uppercase letter.',
+    })
+    .refine((value) => /[!@#$%^&*(),.?":{}|<>]/.test(value), {
+      message: 'Password must include at least one special character.',
+    }),
 })
 
 const useLoginForm = () => {
@@ -18,7 +29,7 @@ const useLoginForm = () => {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      username: '',
+      email: '',
     },
   })
 
