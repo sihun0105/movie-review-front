@@ -1,6 +1,6 @@
 const AppPath = {
   home: () => '/',
-  mypage: () => '/my',
+  login: () => '/login',
 }
 
 export { AppPath }

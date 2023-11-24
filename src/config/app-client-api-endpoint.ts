@@ -1,0 +1,3 @@
+const AppClientApiEndpoint = {}
+
+export { AppClientApiEndpoint }

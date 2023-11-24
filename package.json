@@ -1,5 +1,5 @@
 {
-  "name": "movie-front",
+  "name": "movie-review-front",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -9,8 +9,7 @@
     "lint": "next lint",
     "format": "prettier --write .",
     "prepare": "husky install",
-    "test": "vitest",
-    "withplanit": "bash deploy.sh"
+    "test": "vitest"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.1.1",
@@ -78,7 +77,6 @@
     "prettier": "^3.0.0",
     "prettier-plugin-tailwindcss": "^0.4.1",
     "sharp": "^0.32.4",
-    "usehooks": "link:@types/uidotdev/usehooks",
     "vite-tsconfig-paths": "^4.2.0",
     "vitest": "^0.34.3"
   },
