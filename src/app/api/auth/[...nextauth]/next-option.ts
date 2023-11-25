@@ -39,17 +39,19 @@ export const authOptions: AuthOptions = {
 
     async jwt({ token, account, user, trigger, session }) {
       if (user) {
-        token.accessToken = user.accessToken
+        token.accessToken = user?.accessToken
         token.refreshToken = user.refreshToken
         token.expireTime = user.expireTime
         return token
       }
-      if (Date.now() < token.expireTime) {
+
+      if (new Date() < new Date(token.expireTime * 1000)) {
         return token
       } else {
         const newToken = await refreshAccessToken(token.refreshToken)
         token.accessToken = newToken.accessToken
         token.refreshToken = newToken.refreshToken
+        token.expireTime = newToken.expireTime
         return token
       }
     },
@@ -57,6 +59,7 @@ export const authOptions: AuthOptions = {
     async session({ session, token }) {
       if (token) {
         session.accessToken = token.accessToken
+        session.refreshToken = token.refreshToken
       }
       return session
     },
@@ -66,10 +69,12 @@ export const authOptions: AuthOptions = {
 async function refreshAccessToken(refreshToken: string) {
   try {
     const res = await fetch(AppBackEndApiEndpoint.refresh(), {
-      method: 'GET',
+      method: 'POST',
       headers: {
+        'Content-Type': 'application/json',
         Authorization: `Bearer ${refreshToken}`,
       },
+      body: JSON.stringify({ refresh_token: refreshToken }),
     })
 
     if (!res.ok) {

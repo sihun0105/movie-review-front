@@ -29,8 +29,6 @@ const useLoginForm = () => {
     onSuccess: () => void,
     onError: () => void,
   ) => {
-    console.log(values)
-
     await new Promise((resolve) =>
       setTimeout(() => {
         return resolve(onSuccess())
