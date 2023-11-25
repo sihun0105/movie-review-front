@@ -1,12 +1,14 @@
-'use client'
-import { useSession } from 'next-auth/react'
-
+import { getToken } from '@/lib/utils/getToken'
 import { FunctionComponent } from 'react'
 interface PageProps {}
 
-const Page: FunctionComponent<PageProps> = ({}) => {
-  const { data, status } = useSession()
-  console.log(data)
+const getCounselList = async (): Promise<any> => {
+  const token = getToken()
+  const result = {}
+  return result
+}
+const Page: FunctionComponent<PageProps> = async ({}) => {
+  const result = await getCounselList()
   return (
     <main>
       <section className="container">
