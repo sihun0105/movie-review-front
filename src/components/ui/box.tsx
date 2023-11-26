@@ -17,7 +17,6 @@ const boxVariants = cva('relative', {
       white: 'bg-white',
       gray: 'bg-app-gray-002',
       primary: 'bg-primary',
-      secondary: 'bg-app-purple-001',
     },
     shadow: {
       none: 'shadow-none',
