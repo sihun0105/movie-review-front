@@ -5,6 +5,9 @@ const AppBackEndApiEndpoint = {
   refresh: () => {
     return `${process.env.SERVER_API}/auth/refresh`
   },
+  getMovie: () => {
+    return `${process.env.SERVER_API}/`
+  },
 }
 
 export { AppBackEndApiEndpoint }
