@@ -1,1 +1,1 @@
-docker build -t agile_dr -f docker/Dockerfile .
+docker build -t movie-review-front -f docker/Dockerfile .
