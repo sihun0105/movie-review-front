@@ -1,7 +1,7 @@
 # Build stage
 FROM node:18-alpine AS builder
 
-WORKDIR /AGILE_DR
+WORKDIR /movie-review-front
 
 COPY package.json pnpm-lock.yaml ./
 
@@ -17,7 +17,7 @@ RUN pnpm run build
 # Production stage
 FROM node:18-alpine
 
-WORKDIR /AGILE_DR
+WORKDIR /movie-review-front
 
 COPY package.json pnpm-lock.yaml ./
 
