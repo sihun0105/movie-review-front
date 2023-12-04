@@ -1,3 +1,4 @@
+import queryString from 'query-string'
 const AppBackEndApiEndpoint = {
   login: () => {
     return `${process.env.SERVER_API}/auth/login`
@@ -7,6 +8,20 @@ const AppBackEndApiEndpoint = {
   },
   getMovie: () => {
     return `${process.env.SERVER_API}/`
+  },
+  getCommentList: (id: number) => {
+    return queryString.stringifyUrl(
+      {
+        url: `${process.env.SERVER_API}/review`,
+        query: {
+          movieId: id,
+        },
+      },
+      {
+        skipEmptyString: true,
+        skipNull: true,
+      },
+    )
   },
 }
 
