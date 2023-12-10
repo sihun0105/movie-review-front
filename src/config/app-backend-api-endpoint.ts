@@ -23,6 +23,9 @@ const AppBackEndApiEndpoint = {
       },
     )
   },
+  createNewComment: () => {
+    return `${process.env.SERVER_API}/review`
+  },
 }
 
 export { AppBackEndApiEndpoint }

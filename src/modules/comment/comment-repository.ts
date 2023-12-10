@@ -17,6 +17,10 @@ export class CommentRepository {
     })
   }
 
+  async createComment(id: string, comment: string): Promise<Comment> {
+    const data = await this.datasource.createComment(id, comment)
+    return data
+  }
   private convertUnkownToComment(unknown: any): Comment {
     const result = {
       id: unknown.id,
