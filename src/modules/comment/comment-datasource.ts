@@ -14,8 +14,26 @@ export class CommentDatasource {
       },
       cache: 'no-cache',
     })
-    if (res.status !== 200) {
+    if (!res.ok) {
       throw new Error('댓글 리스트를 받아 올 수 없습니다.')
+    }
+    return res.json()
+  }
+  async createComment(id: string, comment: string) {
+    const res = await fetch(AppBackEndApiEndpoint.createNewComment(), {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${this.token}`,
+      },
+      cache: 'no-cache',
+      body: JSON.stringify({
+        comment,
+        movieId: +id,
+      }),
+    })
+    if (!res.ok) {
+      throw new Error('댓글을 작성할 수 없습니다.')
     }
     return res.json()
   }
