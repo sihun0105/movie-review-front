@@ -1,4 +1,4 @@
-import { getToken } from '@/lib/utils/getToken'
+import { getTokenFromCookie } from '@/lib/utils/getToken'
 import { CommentRepository } from '@/modules/comment/comment-repository'
 import { NextRequest } from 'next/server'
 
@@ -7,7 +7,7 @@ export const POST = async (req: NextRequest) => {
   const movieId = form.get('movieId') as string
   const comment = form.get('comment') as string
   try {
-    const token = await getToken()
+    const token = await getTokenFromCookie()
     if (!token) {
       return new Response(null, { status: 401 })
     }
