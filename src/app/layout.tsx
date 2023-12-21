@@ -3,6 +3,7 @@ import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import { SessionProvider } from '@/providers/session-provider'
 import Footer from '@/components/app/footer'
+import Header from '@/components/app/header'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -20,7 +21,10 @@ export default function RootLayout({
   return (
     <html lang="ko">
       <body className={`${inter.className}`}>
-        <SessionProvider>{children}</SessionProvider>
+        <SessionProvider>
+          <Header />
+          {children}
+        </SessionProvider>
         <section className="h-[100px] w-full bg-app-gray-003">
           <div className="flex h-full flex-col justify-center">
             <Footer />

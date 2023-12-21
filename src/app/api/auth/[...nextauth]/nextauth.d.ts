@@ -1,26 +1,29 @@
-import { UserEntity } from '@/modules/users/user-entity'
-import NextAuth, { DefaultSession } from 'next-auth'
+/* eslint-disable no-unused-vars */
 
+import NextAuth, { DefaultSession } from 'next-auth'
+export interface UserEntity {
+  id?: string
+  provider: string
+  name?: string
+  email?: string
+  nickname?: string
+  phone?: string
+}
 declare module 'next-auth' {
-  interface User {
-    id?: string
-    accessToken: string
-    refreshToken: string
-    expireTime: number
-  }
   interface Session {
-    accessToken: string
-    refreshToken: string
+    user: UserEntity
+  }
+  interface User {
+    phone: string
+    nickname: string
   }
 }
 
 declare module 'next-auth/jwt' {
   interface JWT {
-    accessToken: string
-    refreshToken: string
-    expireTime: number
-    id?: string
-    name?: string
-    email?: string
+    provider?: string
+    userId?: string
+    image?: string
+    nickname?: string
   }
 }

@@ -1,7 +1,8 @@
-import { authOptions } from '@/app/api/auth/[...nextauth]/next-option'
-import { getServerSession } from 'next-auth'
+import { AppEnv } from '@/config/app-env'
+import { cookies } from 'next/dist/client/components/headers'
 
-export const getToken = async () => {
-  const session = await getServerSession(authOptions)
-  return session?.accessToken
+export const getTokenFromCookie = () => {
+  const cookieStore = cookies()
+  const token = cookieStore.get(AppEnv.cookieTokenKey)?.value
+  return token
 }

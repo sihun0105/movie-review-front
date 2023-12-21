@@ -1,5 +1,5 @@
 import { UsersDatasource } from './users-datasource'
-import { UserEntity } from './users.entity'
+import { UserEntity, assertUserEntity } from './users.entity'
 
 export class UsersRepository {
   private datasource: UsersDatasource
@@ -15,28 +15,23 @@ export class UsersRepository {
         userId: userId,
         password: password,
       })
-      return this.signInDataConverter(result)
+      return this.convertToUserEntity(result)
     } catch (err) {
       throw new Error('UsersRepository-signIn 에러')
     }
   }
 
-  signInDataConverter = (data: any): UserEntity => {
-    let expireTimeInSeconds: number
-    if (typeof data.expireTime === 'string' && data.expireTime.endsWith('d')) {
-      const days = Number(data.expireTime.slice(0, -1))
-      expireTimeInSeconds = days * 24 * 60 * 60
-    } else {
-      expireTimeInSeconds = Number(data.expireTime)
+  convertToUserEntity(arg: any) {
+    const result = {
+      id: arg.id,
+      provider: arg.provider ?? 'credentials',
+      phone: arg.phone ?? '',
+      nickname: arg.nickname ?? '',
+      name: arg.name ?? '',
+      email: arg.email ?? '',
+      profile: arg.profile ?? '',
     }
-
-    const expireTimeInUnixTimestamp =
-      Math.floor(Date.now() / 1000) + expireTimeInSeconds
-
-    return {
-      accessToken: data.accessToken,
-      refreshToken: data.refreshToken,
-      expireTime: expireTimeInUnixTimestamp,
-    }
+    assertUserEntity(result)
+    return result
   }
 }

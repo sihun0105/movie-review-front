@@ -1,16 +1,16 @@
-import { getToken } from '@/lib/utils/getToken'
 import { Comment } from '@/modules/comment/comment-entity'
 import { CommentRepository } from '@/modules/comment/comment-repository'
 import { FunctionComponent } from 'react'
 import ReviewCard from './components/review-card'
 import ActiveSection from './sections/active-section'
+import { getTokenFromCookie } from '@/lib/utils/getToken'
 interface PageProps {
   params: {
     id: string
   }
 }
 const getMovieList = async (id: string): Promise<Comment[]> => {
-  const token = await getToken()
+  const token = await getTokenFromCookie()
   const repo = new CommentRepository(token)
   const result = await repo.getCommentList(id)
   return result
