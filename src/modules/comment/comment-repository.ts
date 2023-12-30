@@ -21,6 +21,11 @@ export class CommentRepository {
     const data = await this.datasource.createComment(id, comment)
     return data
   }
+
+  async deleteComment(id: string) {
+    const data = await this.datasource.deleteComment(id)
+    return data
+  }
   private convertUnkownToComment(unknown: any): Comment {
     const result = {
       id: unknown.id,

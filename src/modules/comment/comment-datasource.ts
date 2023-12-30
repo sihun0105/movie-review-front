@@ -37,4 +37,19 @@ export class CommentDatasource {
     }
     return res.json()
   }
+
+  async deleteComment(id: string) {
+    const res = await fetch(AppBackEndApiEndpoint.deleteComment(id), {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${this.token}`,
+      },
+      cache: 'no-cache',
+    })
+    if (!res.ok) {
+      throw new Error('댓글을 삭제할 수 없습니다.')
+    }
+    return res.json()
+  }
 }

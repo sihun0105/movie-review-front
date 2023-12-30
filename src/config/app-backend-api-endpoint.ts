@@ -26,6 +26,9 @@ const AppBackEndApiEndpoint = {
   createNewComment: () => {
     return `${process.env.SERVER_API}/review`
   },
+  deleteComment: (id: string) => {
+    return `${process.env.SERVER_API}/review/${id}`
+  },
 }
 
 export { AppBackEndApiEndpoint }
