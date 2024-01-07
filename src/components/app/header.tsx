@@ -5,6 +5,7 @@ import { FunctionComponent } from 'react'
 import { Button } from '../ui/button'
 import HeaderActiveButton from '../layout/header-active-button'
 import { Clapperboard } from 'lucide-react'
+import Link from 'next/link'
 
 interface HeaderProps {
   className?: string
@@ -20,7 +21,9 @@ const Header: FunctionComponent<HeaderProps> = ({ className }) => {
         className,
       )}
     >
-      <Clapperboard />
+      <Link href={'/'}>
+        <Clapperboard />
+      </Link>
       {isLogin && (
         <>
           <HeaderActiveButton />
