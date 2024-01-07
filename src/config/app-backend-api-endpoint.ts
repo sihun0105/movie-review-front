@@ -3,6 +3,9 @@ const AppBackEndApiEndpoint = {
   login: () => {
     return `${process.env.SERVER_API}/auth/login`
   },
+  signUp: () => {
+    return `${process.env.SERVER_API}/auth/join`
+  },
   refresh: () => {
     return `${process.env.SERVER_API}/auth/refresh`
   },

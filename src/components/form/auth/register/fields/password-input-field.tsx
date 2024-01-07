@@ -8,14 +8,14 @@ import {
 import { FunctionComponent, HTMLAttributes } from 'react'
 import { cn } from '@/lib/utils'
 import { Input } from '@/components/ui/input'
-import { useLoginFormContext } from '../hook/login-form-context'
+import { useRegisterFormContext } from '../hook/register-form-context'
 interface PasswordInputFieldProps extends HTMLAttributes<HTMLDivElement> {}
 
 const PasswordInputField: FunctionComponent<PasswordInputFieldProps> = ({
   className,
   ...props
 }) => {
-  const { form } = useLoginFormContext()
+  const { form } = useRegisterFormContext()
   return (
     <FormField
       control={form.control}

@@ -20,6 +20,26 @@ export class UsersRepository {
       throw new Error('UsersRepository-signIn 에러')
     }
   }
+  async signUp({
+    userId,
+    password,
+    nickname,
+  }: {
+    userId: string
+    password: string
+    nickname: string
+  }) {
+    try {
+      const result = await this.datasource.signUp({
+        userId: userId,
+        password: password,
+        nickname: nickname,
+      })
+      return result
+    } catch (err) {
+      throw new Error('UsersRepository-signUp 에러')
+    }
+  }
 
   convertToUserEntity(arg: any) {
     const result = {

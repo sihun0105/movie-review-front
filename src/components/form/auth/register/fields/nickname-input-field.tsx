@@ -8,28 +8,23 @@ import {
 import { FunctionComponent, HTMLAttributes } from 'react'
 import { cn } from '@/lib/utils'
 import { Input } from '@/components/ui/input'
-import { useLoginFormContext } from '../hook/login-form-context'
-interface PasswordInputFieldProps extends HTMLAttributes<HTMLDivElement> {}
+import { useRegisterFormContext } from '../hook/register-form-context'
+interface NicknameInputFieldProps extends HTMLAttributes<HTMLDivElement> {}
 
-const PasswordInputField: FunctionComponent<PasswordInputFieldProps> = ({
+const NicknameInputField: FunctionComponent<NicknameInputFieldProps> = ({
   className,
   ...props
 }) => {
-  const { form } = useLoginFormContext()
+  const { form } = useRegisterFormContext()
   return (
     <FormField
       control={form.control}
-      name="password"
+      name="nicknmae"
       render={({ field }) => (
         <FormItem>
-          <FormLabel className={cn('text-black')}>비밀번호</FormLabel>
+          <FormLabel className={cn('text-black')}>닉네임</FormLabel>
           <FormControl>
-            <Input
-              {...field}
-              className={cn('w-full')}
-              placeholder="비밀번호"
-              type="password"
-            />
+            <Input {...field} className={cn('w-full')} placeholder="비밀번호" />
           </FormControl>
           <div className="h-10">
             <FormMessage />
@@ -40,4 +35,4 @@ const PasswordInputField: FunctionComponent<PasswordInputFieldProps> = ({
   )
 }
 
-export { PasswordInputField }
+export { NicknameInputField }

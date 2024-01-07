@@ -5,6 +5,9 @@ const AppClientApiEndpoint = {
   deleteCommnet: (id: number) => {
     return `/api/comment/${id}`
   },
+  reigster: () => {
+    return `/api/register`
+  },
 }
 
 export { AppClientApiEndpoint }
