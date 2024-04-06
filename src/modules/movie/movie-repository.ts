@@ -12,7 +12,7 @@ export class MovieRepository {
 
   async getMovie(): Promise<Movie[]> {
     const data = await this.datasource.getMovie()
-    return data.map((item: any) => {
+    return data.MovieData.map((item: any) => {
       return this.convertUnkownToMovie(item)
     })
   }

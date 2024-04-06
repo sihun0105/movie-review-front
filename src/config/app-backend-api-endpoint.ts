@@ -10,7 +10,7 @@ const AppBackEndApiEndpoint = {
     return `${process.env.SERVER_API}/auth/refresh`
   },
   getMovie: () => {
-    return `${process.env.SERVER_API}/`
+    return `${process.env.SERVER_API}/movie`
   },
   getCommentList: (id: number) => {
     return queryString.stringifyUrl(
