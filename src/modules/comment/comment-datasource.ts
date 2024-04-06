@@ -40,7 +40,7 @@ export class CommentDatasource {
 
   async deleteComment(id: string) {
     const res = await fetch(AppBackEndApiEndpoint.deleteComment(id), {
-      method: 'DELETE',
+      method: 'POST',
       headers: {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${this.token}`,

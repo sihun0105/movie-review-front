@@ -27,10 +27,10 @@ const AppBackEndApiEndpoint = {
     )
   },
   createNewComment: () => {
-    return `${process.env.SERVER_API}/review`
+    return `${process.env.SERVER_API}/reply`
   },
   deleteComment: (id: string) => {
-    return `${process.env.SERVER_API}/review/${id}`
+    return `${process.env.SERVER_API}/reply/${id}`
   },
 }
 
