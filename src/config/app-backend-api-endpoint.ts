@@ -15,7 +15,7 @@ const AppBackEndApiEndpoint = {
   getCommentList: (id: number) => {
     return queryString.stringifyUrl(
       {
-        url: `${process.env.SERVER_API}/review`,
+        url: `${process.env.SERVER_API}/reply`,
         query: {
           movieId: id,
         },

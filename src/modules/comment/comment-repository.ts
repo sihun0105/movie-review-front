@@ -1,3 +1,4 @@
+import console from 'console'
 import { CommentDatasource } from './comment-datasource'
 import { Comment, assertComment } from './comment-entity'
 
@@ -12,7 +13,11 @@ export class CommentRepository {
 
   async getCommentList(id: string): Promise<Comment[]> {
     const data = await this.datasource.getCommentList(id)
-    return data.map((item: any) => {
+    if (data.replys === undefined) {
+      console.log('data.replys is undefined')
+      return []
+    }
+    return data.replys.map((item: any) => {
       return this.convertUnkownToComment(item)
     })
   }
@@ -28,9 +33,9 @@ export class CommentRepository {
   }
   private convertUnkownToComment(unknown: any): Comment {
     const result = {
-      id: unknown.id,
-      userId: unknown.user.id,
-      userName: unknown.user.nickname,
+      id: unknown.replyId,
+      userId: unknown.userId,
+      userName: unknown.nickname,
       comment: unknown.comment,
       createdAt: new Date(unknown.createdAt),
       updatedAt: new Date(unknown.updatedAt),
