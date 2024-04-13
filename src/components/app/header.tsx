@@ -17,7 +17,7 @@ const Header: FunctionComponent<HeaderProps> = ({ className }) => {
   return (
     <nav
       className={cn(
-        'flex h-full w-full items-center justify-between bg-lime-300 px-9 py-2',
+        'bg-whtie flex h-full w-full items-center justify-between border-b-2 border-primary px-9 py-2',
         className,
       )}
     >
