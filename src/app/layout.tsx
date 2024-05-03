@@ -1,11 +1,17 @@
 import '@/styles/globals.css'
 import type { Metadata } from 'next'
-import { Inter } from 'next/font/google'
+import { Roboto } from 'next/font/google'
 import { SessionProvider } from '@/providers/session-provider'
 import Footer from '@/components/app/footer'
 import Header from '@/components/app/header'
+import { cn } from '@/lib/utils'
 
-const inter = Inter({ subsets: ['latin'] })
+const roboto = Roboto({
+  weight: ['400', '700'],
+  style: ['normal', 'italic'],
+  subsets: ['latin'],
+  display: 'swap',
+})
 
 export const metadata: Metadata = {
   title: '썩은양배추',
@@ -20,7 +26,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="ko">
-      <body className={`${inter.className}`}>
+      <body className={cn('', roboto.className)}>
         <SessionProvider>
           <Header />
           {children}
