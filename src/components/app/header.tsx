@@ -1,6 +1,6 @@
 'use client'
 import { cn } from '@/lib/utils'
-import { signIn, useSession } from 'next-auth/react'
+import { signIn } from 'next-auth/react'
 import { FunctionComponent } from 'react'
 import { Button } from '../ui/button'
 import HeaderActiveButton from '../layout/header-active-button'
@@ -12,8 +12,8 @@ interface HeaderProps {
 }
 
 const Header: FunctionComponent<HeaderProps> = ({ className }) => {
-  const { status } = useSession()
-  const isLogin = status === 'authenticated'
+  // const { status } = useSession()
+  // const isLogin = status === 'authenticated'
   return (
     <nav
       className={cn(
@@ -24,7 +24,7 @@ const Header: FunctionComponent<HeaderProps> = ({ className }) => {
       <Link href={'/'}>
         <Clapperboard />
       </Link>
-      {isLogin && (
+      {/* {isLogin && (
         <>
           <HeaderActiveButton />
         </>
@@ -40,7 +40,7 @@ const Header: FunctionComponent<HeaderProps> = ({ className }) => {
         >
           로그인
         </Button>
-      )}
+      )} */}
     </nav>
   )
 }
