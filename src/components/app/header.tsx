@@ -15,12 +15,7 @@ const Header: FunctionComponent<HeaderProps> = ({ className }) => {
   // const { status } = useSession()
   // const isLogin = status === 'authenticated'
   return (
-    <nav
-      className={cn(
-        'bg-whtie flex h-full w-full items-center justify-between border-b-2 border-primary px-9 py-2',
-        className,
-      )}
-    >
+    <nav className={cn('border-b-2 border-gray-50 px-6 py-2', className)}>
       <Link href={'/'}>
         <Clapperboard />
       </Link>
