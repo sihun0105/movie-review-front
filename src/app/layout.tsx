@@ -26,16 +26,14 @@ export default function RootLayout({
 }) {
   return (
     <html lang="ko">
-      <body className={cn('', roboto.className)}>
-        <SessionProvider>
-          <Header />
-          {children}
-        </SessionProvider>
-        <section className="h-[100px] w-full bg-app-gray-003">
-          <div className="flex h-full flex-col justify-center">
+      <body className={cn('flex justify-center', roboto.className)}>
+        <div className="relative h-full w-full min-w-[320px] max-w-[460px]">
+          <SessionProvider>
+            <Header />
+            {children}
             <Footer />
-          </div>
-        </section>
+          </SessionProvider>
+        </div>
       </body>
     </html>
   )
