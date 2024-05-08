@@ -1,7 +1,7 @@
 import { getTokenFromCookie } from '@/lib/utils/getToken'
 import { Comment } from '@/modules/comment/comment-entity'
 import { CommentRepository } from '@/modules/comment/comment-repository'
-import { FunctionComponent } from 'react'
+import { FunctionComponent, use } from 'react'
 import ReviewCard from './components/review-card'
 import ActiveSection from './sections/active-section'
 interface PageProps {
