@@ -8,7 +8,7 @@ interface MovieCardProps {
 const MovieCard: FunctionComponent<MovieCardProps> = ({ data: movie }) => {
   return (
     <Link href={`movie/${movie.id}`}>
-      <div className="stats w-full overflow-hidden shadow-md">
+      <div className="stats w-full overflow-hidden shadow-md transition-transform duration-300 hover:scale-105">
         <div className="stat">
           <div className="stat-title whitespace-normal">{movie.title}</div>
           <div className="stat-value">{movie.audience.toLocaleString()}</div>
