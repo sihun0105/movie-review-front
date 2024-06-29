@@ -4,6 +4,7 @@ export interface Movie {
   title: string
   createdAt: Date
   updatedAt: Date
+  poster: string
 }
 
 export function isMovie(arg: any): arg is Movie {
@@ -13,6 +14,7 @@ export function isMovie(arg: any): arg is Movie {
     typeof arg.id === 'number' &&
     typeof arg.audience === 'number' &&
     typeof arg.title === 'string' &&
+    typeof arg.poster === 'string' &&
     arg.createdAt instanceof Date &&
     arg.updatedAt instanceof Date
   )
