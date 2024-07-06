@@ -13,6 +13,14 @@ const AppEnv = {
     process.env.NEXTAUTH_SECRET,
     'NEXTAUTH_SECRET is not defined',
   ),
+  googleClientId: assertValue(
+    process.env.GOOGLE_CLIENT_ID,
+    'GOOGLE_CLIENT_ID is not defined',
+  ),
+  googleClientSecret: assertValue(
+    process.env.GOOGLE_CLIENT_SECRET,
+    'GOOGLE_CLIENT_SECRET is not defined',
+  ),
 }
 
 export { AppEnv }

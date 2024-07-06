@@ -41,6 +41,29 @@ export class UsersRepository {
     }
   }
 
+  async signInWithProvider(params: { id: string }) {
+    try {
+      const result = await this.datasource.signInWithProvider({
+        id: params.id,
+      })
+      return this.convertToUserEntity(result.data)
+    } catch (error) {
+      throw new Error('UsersRepository-signInWithProvider 에러')
+    }
+  }
+  async signUpWithProvider(params: {
+    email: string
+    platform: string
+    nickname: string
+  }) {
+    try {
+      const result = await this.datasource.signUpWithProvider(params)
+      return result
+    } catch (error) {
+      throw new Error('UsersRepository-signUpWithProvider 에러')
+    }
+  }
+
   convertToUserEntity(arg: any) {
     const result = {
       id: arg.id,

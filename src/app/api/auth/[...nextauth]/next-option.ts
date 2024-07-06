@@ -4,9 +4,15 @@ import CredentialsProvider from 'next-auth/providers/credentials'
 import { AppPath } from '@/config/app-path'
 import * as jose from 'jose'
 import { AppEnv } from '@/config/app-env'
+import GoogleProvider from 'next-auth/providers/google'
+import { assertProviderType } from '@/lib/utils/auth'
 
 export const authOptions: AuthOptions = {
   providers: [
+    GoogleProvider({
+      clientId: AppEnv.googleClientId,
+      clientSecret: AppEnv.googleClientSecret,
+    }),
     CredentialsProvider({
       name: 'Credentials',
       credentials: {
@@ -66,25 +72,41 @@ export const authOptions: AuthOptions = {
     secret: AppEnv.nextAuthSecret,
   },
   callbacks: {
-    async signIn({}) {
+    async signIn({ user, account }) {
+      const repo = new UsersRepository()
+      try {
+        if (account && account?.provider !== 'credentials') {
+          const result = await repo.signInWithProvider({ id: user.id })
+          user.id = result.id ?? user.id
+          user.nickname = result.nickname ?? user.nickname
+          return true
+        }
+      } catch (error) {
+        if (account && account?.provider !== 'credentials') {
+          assertProviderType(account.provider)
+          try {
+            await repo.signUpWithProvider({
+              email: user.id,
+              platform: account?.provider,
+              nickname: '',
+            })
+            const result = await repo.signInWithProvider({ id: user.id })
+            user.id = result.id ?? user.id
+            user.nickname = result.nickname ?? user.nickname
+            return true
+          } catch (error) {
+            console.log(`['callbacks.signIn'] error:`, error)
+            return false
+          }
+        }
+        console.log(`['callbacks.signIn'] error:`, error)
+        return false
+      }
+
       return true
     },
 
     async jwt({ token, account, user, trigger, session }) {
-      if (trigger === 'update' && session?.image) {
-        token.image = session.image ?? token.image
-        return token
-      }
-
-      if (trigger === 'update' && session?.name) {
-        token.name = session.name ?? token.name
-        return token
-      }
-
-      if (trigger === 'update' && session?.phone) {
-        token.phone = session.phone ?? token.phone
-        return token
-      }
       if (trigger === 'update' && session?.nickname) {
         token.nickname = session.nickname ?? token.nickname
         return token
@@ -94,19 +116,15 @@ export const authOptions: AuthOptions = {
         token.provider = account.provider
         token.userId = user.id
         token.nickname = user.nickname
-        token.name = user.name
-        token.image = user.image ?? undefined
-        token.phone = user.phone
       }
       return token
     },
 
     async session({ session, token }) {
       if (token) {
-        session.user.name = token.name ?? ''
-        session.user.provider = token.provider ?? ''
         session.user.id = token.userId ?? ''
         session.user.nickname = token.nickname ?? ''
+        session.user.provider = token.provider ?? ''
       }
       return session
     },
