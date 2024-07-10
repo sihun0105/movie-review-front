@@ -12,6 +12,9 @@ const AppBackEndApiEndpoint = {
   getMovie: () => {
     return `${process.env.SERVER_API}/movie`
   },
+  oAuth: () => {
+    return `${process.env.SERVER_API}/auth/oauth`
+  },
   getCommentList: (id: number) => {
     return queryString.stringifyUrl(
       {

@@ -1,5 +1,5 @@
 import { UsersDatasource } from './users-datasource'
-import { UserEntity, assertUserEntity } from './users.entity'
+import { assertUserEntity } from './users.entity'
 
 export class UsersRepository {
   private datasource: UsersDatasource

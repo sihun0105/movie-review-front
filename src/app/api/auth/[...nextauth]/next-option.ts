@@ -79,28 +79,11 @@ export const authOptions: AuthOptions = {
           const result = await repo.signInWithProvider({ id: user.id })
           user.id = result.id ?? user.id
           user.nickname = result.nickname ?? user.nickname
+          console.log(result)
           return true
         }
       } catch (error) {
-        if (account && account?.provider !== 'credentials') {
-          assertProviderType(account.provider)
-          try {
-            await repo.signUpWithProvider({
-              email: user.id,
-              platform: account?.provider,
-              nickname: '',
-            })
-            const result = await repo.signInWithProvider({ id: user.id })
-            user.id = result.id ?? user.id
-            user.nickname = result.nickname ?? user.nickname
-            return true
-          } catch (error) {
-            console.log(`['callbacks.signIn'] error:`, error)
-            return false
-          }
-        }
-        console.log(`['callbacks.signIn'] error:`, error)
-        return false
+        console.log(error)
       }
 
       return true

@@ -60,9 +60,15 @@ export class UsersDatasource {
 
   async signInWithProvider(params: { id: string }) {
     try {
-      const res = await fetch(AppBackEndApiEndpoint.login(), {
+      const res = await fetch(AppBackEndApiEndpoint.oAuth(), {
         method: 'POST',
-        body: JSON.stringify(params),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          provider: 'google',
+          accessToken: params.id,
+        }),
       })
       if (!res.ok) {
         throw new Error(`[${res.status}] ${res.statusText}`)
