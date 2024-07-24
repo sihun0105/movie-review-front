@@ -13,6 +13,7 @@ export function isUserEntity(arg: any): arg is UserEntity {
 }
 
 export function assertUserEntity(arg: any): asserts arg is UserEntity {
+  console.log(arg)
   if (!isUserEntity(arg)) {
     throw new Error('Invalid user')
   }

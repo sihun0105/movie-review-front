@@ -1,4 +1,3 @@
-import console from 'console'
 import { CommentDatasource } from './comment-datasource'
 import { Comment, assertComment } from './comment-entity'
 
@@ -11,8 +10,9 @@ export class CommentRepository {
     this.datasource = datasource ?? new CommentDatasource(token)
   }
 
-  async getCommentList(id: string): Promise<Comment[]> {
-    const data = await this.datasource.getCommentList(id)
+  async getCommentList(id: string, page?: number): Promise<Comment[]> {
+    console.log(page)
+    const data = await this.datasource.getCommentList(id, page ?? 0)
     if (data.replys === undefined) {
       console.log('data.replys is undefined')
       return []

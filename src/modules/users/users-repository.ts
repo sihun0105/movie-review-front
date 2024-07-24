@@ -46,8 +46,9 @@ export class UsersRepository {
       const result = await this.datasource.signInWithProvider({
         id: params.id,
       })
-      return this.convertToUserEntity(result.data)
+      return this.convertToUserEntity(result)
     } catch (error) {
+      console.log(error)
       throw new Error('UsersRepository-signInWithProvider 에러')
     }
   }
