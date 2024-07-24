@@ -79,7 +79,6 @@ export const authOptions: AuthOptions = {
           const result = await repo.signInWithProvider({ id: user.id })
           user.id = result.id ?? user.id
           user.nickname = result.nickname ?? user.nickname
-          console.log(result)
           return true
         }
       } catch (error) {

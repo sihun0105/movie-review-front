@@ -5,8 +5,8 @@ export class CommentDatasource {
   constructor(token?: string) {
     this.token = token
   }
-  async getCommentList(id: string) {
-    const res = await fetch(AppBackEndApiEndpoint.getCommentList(+id), {
+  async getCommentList(id: string, page: number) {
+    const res = await fetch(AppBackEndApiEndpoint.getCommentList(+id, page), {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',

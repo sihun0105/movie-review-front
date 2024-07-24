@@ -15,12 +15,13 @@ const AppBackEndApiEndpoint = {
   oAuth: () => {
     return `${process.env.SERVER_API}/auth/oauth`
   },
-  getCommentList: (id: number) => {
+  getCommentList: (id: number, page: number) => {
     return queryString.stringifyUrl(
       {
         url: `${process.env.SERVER_API}/reply`,
         query: {
           movieId: id,
+          page: page,
         },
       },
       {

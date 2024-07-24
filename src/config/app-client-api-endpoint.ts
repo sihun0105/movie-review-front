@@ -1,3 +1,5 @@
+import queryString from 'query-string'
+
 const AppClientApiEndpoint = {
   createNewComment: (id: string) => {
     return `/api/comment/${id}`
@@ -7,6 +9,21 @@ const AppClientApiEndpoint = {
   },
   reigster: () => {
     return `/api/register`
+  },
+  getComments: (movieId: number, page: number) => {
+    return queryString.stringifyUrl(
+      {
+        url: `/api/comment/${movieId}`,
+        query: {
+          page,
+          movieId
+        },
+      },
+      {
+        skipEmptyString: true,
+        skipNull: true,
+      },
+    )
   },
 }
 
