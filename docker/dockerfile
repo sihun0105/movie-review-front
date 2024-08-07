@@ -1,0 +1,31 @@
+# Build stage
+FROM node:18-alpine AS builder
+
+WORKDIR /movie-review-front
+
+COPY package.json pnpm-lock.yaml ./
+
+RUN npm install -g pnpm && pnpm install
+
+COPY . .
+
+# Uncomment if you use environment variables
+# COPY .env.development .env.production
+
+RUN pnpm run build
+
+# Production stage
+FROM node:18-alpine
+
+WORKDIR /movie-review-front
+
+COPY package.json pnpm-lock.yaml ./
+
+RUN npm install -g pnpm && pnpm install
+
+COPY --from=builder /AGILE_DR/.next ./.next
+COPY --from=builder /AGILE_DR/public ./public
+
+EXPOSE 3000
+
+CMD ["pnpm", "run", "start"]
