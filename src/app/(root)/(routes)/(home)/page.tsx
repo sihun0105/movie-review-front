@@ -2,6 +2,7 @@ import { Movie } from '@/modules/movie/movie-entity'
 import { MovieRepository } from '@/modules/movie/movie-repository'
 import { FunctionComponent } from 'react'
 import MovieCard from '@/components/app/movie-state-card'
+import { AppSkeleton } from '@/components/app/app-skeleton'
 interface PageProps {}
 
 const getMovieList = async (): Promise<Movie[]> => {
@@ -11,7 +12,7 @@ const getMovieList = async (): Promise<Movie[]> => {
 }
 const Page: FunctionComponent<PageProps> = async ({}) => {
   const data = await getMovieList()
-  if (!data) return <div>loading...</div>
+  if (!data) return <AppSkeleton className="container min-h-[364px] p-6" />
   return (
     <main>
       <section className="container flex flex-col gap-4 p-6">
