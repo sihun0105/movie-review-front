@@ -6,6 +6,7 @@ import { Button } from '../ui/button'
 import HeaderActiveButton from '../layout/header-active-button'
 import { Clapperboard } from 'lucide-react'
 import Link from 'next/link'
+import { AppSkeleton } from './app-skeleton'
 
 interface HeaderProps {
   className?: string
@@ -14,6 +15,8 @@ interface HeaderProps {
 const Header: FunctionComponent<HeaderProps> = ({ className }) => {
   const { status } = useSession()
   const isLogin = status === 'authenticated'
+  const isLoading = status === 'loading'
+  const isNotLogin = status === 'unauthenticated'
   return (
     <nav
       className={cn(
@@ -24,12 +27,13 @@ const Header: FunctionComponent<HeaderProps> = ({ className }) => {
       <Link href={'/'}>
         <Clapperboard />
       </Link>
+      {isLoading && <AppSkeleton className="h-8 w-20" />}
       {isLogin && (
         <>
           <HeaderActiveButton />
         </>
       )}
-      {!isLogin && (
+      {isNotLogin && (
         <Button
           onClick={() => {
             signIn()
