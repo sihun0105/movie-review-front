@@ -5,6 +5,7 @@ export interface Movie {
   createdAt: Date
   updatedAt: Date
   poster: string
+  rank: number
 }
 
 export function isMovie(arg: any): arg is Movie {

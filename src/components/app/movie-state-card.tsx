@@ -2,6 +2,8 @@ import { Movie } from '@/modules/movie/movie-entity'
 import Image from 'next/image'
 import Link from 'next/link'
 import { FunctionComponent } from 'react'
+import { FaCrown } from 'react-icons/fa'
+
 interface MovieCardProps {
   data: Movie
 }
@@ -9,7 +11,10 @@ interface MovieCardProps {
 const MovieCard: FunctionComponent<MovieCardProps> = ({ data: movie }) => {
   return (
     <Link href={`movie/${movie.id}`}>
-      <div className="stats w-full overflow-hidden shadow-md transition-transform duration-300 hover:scale-105">
+      <div className="stats relative w-full overflow-visible shadow-md transition-transform duration-300 hover:scale-105">
+        {movie.rank === 1 && (
+          <FaCrown className="absolute left-[-10px] top-[-10px] z-10 text-2xl text-yellow-500 transition-transform duration-300" />
+        )}
         <div className="stat">
           <section className="relative aspect-square w-full overflow-clip">
             {movie.poster === '' && (
