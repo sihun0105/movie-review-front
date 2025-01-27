@@ -25,7 +25,6 @@ const MovieCard: FunctionComponent<MovieCardProps> = ({ data: movie }) => {
             <Image
               src={movie.poster}
               alt={movie.title}
-              className="h-full w-full object-cover"
               blurDataURL="iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg=="
               placeholder="blur"
               fill
@@ -33,6 +32,8 @@ const MovieCard: FunctionComponent<MovieCardProps> = ({ data: movie }) => {
           </section>
           <div className="stat-title whitespace-normal">{movie.title}</div>
           <div className="stat-value">{movie.audience.toLocaleString()}</div>
+          <div className="stat-desc">장르: {movie.genre}</div>
+          <div className="stat-desc">감독: {movie.director}</div>
           <div className="stat-desc">
             업데이트 날짜: {new Date(movie.updatedAt).toLocaleDateString()}
           </div>

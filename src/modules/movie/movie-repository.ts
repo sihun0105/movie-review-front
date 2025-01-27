@@ -25,6 +25,13 @@ export class MovieRepository {
       createdAt: new Date(unknown.createdAt),
       updatedAt: new Date(unknown.updatedAt),
       poster: unknown.poster,
+      rankInten: unknown.rankInten,
+      plot: unknown.plot,
+      rankOldAndNew: unknown.rankOldAndNew,
+      openedAt: new Date(unknown.openedAt),
+      genre: unknown.genre,
+      director: unknown.director,
+      ratting: unknown.ratting,
     } as Movie
     assertMovie(result)
     return result
