@@ -7,6 +7,7 @@ import HeaderActiveButton from '../layout/header-active-button'
 import { Clapperboard } from 'lucide-react'
 import Link from 'next/link'
 import { AppSkeleton } from './app-skeleton'
+import { DarkModeToggle } from './dark-mode-toggle'
 
 interface HeaderProps {
   className?: string
@@ -27,6 +28,7 @@ const Header: FunctionComponent<HeaderProps> = ({ className }) => {
       <Link href={'/'}>
         <Clapperboard />
       </Link>
+      <DarkModeToggle />
       {isLoading && <AppSkeleton className="h-8 w-20" />}
       {isLogin && (
         <>
