@@ -30,20 +30,24 @@ const MovieCard: FunctionComponent<MovieCardProps> = ({ data: movie }) => {
               fill
               className="object-cover"
             />
-            <div className="absolute bottom-2 left-2 text-lg font-bold text-gray-700 dark:text-gray-300">
-              #{movie.rank}
+            <div className="absolute bottom-2 left-2 text-5xl font-bold text-gray-300 dark:text-gray-300">
+              {movie.rank}
             </div>
           </section>
           <section className="mt-4 text-black dark:text-white">
-            <div className="stat-title whitespace-normal text-lg font-semibold">
+            <div className="stat-title whitespace-normal text-lg font-semibold dark:text-white">
               {movie.title}
             </div>
-            <div className="stat-value text-xl font-bold">
+            <div className="stat-value text-xl font-bold dark:text-white">
               {movie.audience.toLocaleString()}
             </div>
-            <div className="stat-desc mt-2">장르: {movie.genre}</div>
-            <div className="stat-desc">감독: {movie.director}</div>
-            <div className="stat-desc">
+            <div className="stat-desc mt-2 dark:text-white">
+              장르: {movie.genre}
+            </div>
+            <div className="stat-desc dark:text-white">
+              감독: {movie.director}
+            </div>
+            <div className="stat-desc dark:text-white">
               업데이트 날짜: {new Date(movie.updatedAt).toLocaleDateString()}
             </div>
           </section>

@@ -8,6 +8,7 @@ import { Clapperboard } from 'lucide-react'
 import Link from 'next/link'
 import { AppSkeleton } from './app-skeleton'
 import { DarkModeToggle } from './dark-mode-toggle'
+import { useTheme } from 'next-themes'
 
 interface HeaderProps {
   className?: string
@@ -15,38 +16,45 @@ interface HeaderProps {
 
 const Header: FunctionComponent<HeaderProps> = ({ className }) => {
   const { status } = useSession()
+  const { theme } = useTheme()
   const isLogin = status === 'authenticated'
   const isLoading = status === 'loading'
   const isNotLogin = status === 'unauthenticated'
   return (
     <nav
       className={cn(
-        'flex justify-between border-b-2 border-gray-50 px-6 py-2',
+        'flex items-center justify-between border-b-2 border-gray-50 px-6 py-2',
         className,
       )}
     >
       <Link href={'/'}>
-        <Clapperboard />
+        {theme === 'dark' ? (
+          <Clapperboard className="text-white" />
+        ) : (
+          <Clapperboard />
+        )}
       </Link>
-      <DarkModeToggle />
-      {isLoading && <AppSkeleton className="h-8 w-20" />}
-      {isLogin && (
-        <>
-          <HeaderActiveButton />
-        </>
-      )}
-      {isNotLogin && (
-        <Button
-          onClick={() => {
-            signIn()
-          }}
-          variant={'outline'}
-          size={'sm'}
-          className=""
-        >
-          로그인
-        </Button>
-      )}
+      <div className="flex items-center gap-2">
+        <DarkModeToggle />
+        {isLoading && <AppSkeleton className="h-8 w-20" />}
+        {isLogin && (
+          <>
+            <HeaderActiveButton />
+          </>
+        )}
+        {isNotLogin && (
+          <Button
+            onClick={() => {
+              signIn()
+            }}
+            variant={'outline'}
+            size={'sm'}
+            className=""
+          >
+            로그인
+          </Button>
+        )}
+      </div>
     </nav>
   )
 }
