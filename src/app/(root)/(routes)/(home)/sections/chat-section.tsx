@@ -1,7 +1,6 @@
 'use client'
 import { FunctionComponent, useState, useEffect } from 'react'
 import useIsSocket from '../hooks/use-is-socket'
-import useHealthCheck from '../hooks/use-health-check'
 import { useSession } from 'next-auth/react'
 
 interface ChatSectionProps {}
@@ -11,7 +10,7 @@ const ChatSection: FunctionComponent<ChatSectionProps> = ({}) => {
   const [message, setMessage] = useState('')
   const [chat, setChat] = useState<string[]>([])
   const socket = useIsSocket()
-  const isConnected = useHealthCheck(socket)
+  //   const isConnected = useHealthCheck(socket)
 
   const sendMessage = () => {
     if (socket) {
@@ -23,6 +22,7 @@ const ChatSection: FunctionComponent<ChatSectionProps> = ({}) => {
   useEffect(() => {
     if (socket) {
       socket.on('message', (msg: string) => {
+        console.log(msg)
         setChat((prevChat) => [...prevChat, msg])
       })
 
@@ -34,7 +34,6 @@ const ChatSection: FunctionComponent<ChatSectionProps> = ({}) => {
 
   return (
     <main>
-      <div>{isConnected ? 'Connected' : 'Disconnected'}</div>
       <div>
         {chat.map((msg, index) => (
           <div key={index}>{msg}</div>

@@ -3,7 +3,6 @@ import MovieCard from '@/components/app/movie-state-card'
 import { Movie } from '@/modules/movie/movie-entity'
 import { MovieRepository } from '@/modules/movie/movie-repository'
 import { FunctionComponent } from 'react'
-import ChatSection from './sections/chat-section'
 
 interface PageProps {}
 
@@ -19,7 +18,6 @@ const Page: FunctionComponent<PageProps> = async ({}) => {
 
   return (
     <main>
-      <ChatSection />
       <section className="container flex flex-col gap-4 p-6">
         {data.map((movie, index) => (
           <div key={movie.id} className="relative">

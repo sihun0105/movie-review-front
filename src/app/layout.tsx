@@ -6,6 +6,7 @@ import Footer from '@/components/app/footer'
 import Header from '@/components/app/header'
 import { cn } from '@/lib/utils'
 import { ThemeProvider } from 'next-themes'
+import ChatSupport from '@/components/app/chat-support'
 
 const roboto = Roboto({
   weight: ['400', '700'],
@@ -38,6 +39,7 @@ export default function RootLayout({
             >
               <Header />
               {children}
+              <ChatSupport />
               <Footer />
             </ThemeProvider>
           </SessionProvider>
