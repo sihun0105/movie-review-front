@@ -1,46 +1,46 @@
 'use client'
 
+import useIsLogin from '@/app/(root)/(routes)/(home)/hooks/use-is-login'
+import useIsSocket from '@/app/(root)/(routes)/(home)/hooks/use-is-socket'
 import {
   ChatBubble,
   ChatBubbleAvatar,
   ChatBubbleMessage,
 } from '@/components/ui/chat/chat-bubble'
 import { ChatInput } from '@/components/ui/chat/chat-input'
+import { ChatMessageList } from '@/components/ui/chat/chat-message-list'
 import {
   ExpandableChat,
-  ExpandableChatHeader,
   ExpandableChatBody,
   ExpandableChatFooter,
+  ExpandableChatHeader,
 } from '@/components/ui/chat/expandable-chat'
-import { ChatMessageList } from '@/components/ui/chat/chat-message-list'
 import { Send } from 'lucide-react'
+import { useSession } from 'next-auth/react'
 import { useEffect, useRef, useState } from 'react'
 import Markdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
 import { Button } from '../ui/button'
 import CodeDisplayBlock from './code-display-block'
-import useIsSocket from '@/app/(root)/(routes)/(home)/hooks/use-is-socket'
-import { useSession } from 'next-auth/react'
-import useIsLogin from '@/app/(root)/(routes)/(home)/hooks/use-is-login'
-import { generateRandomNumber } from '@/lib/utils'
+import { useGetChatHistory } from '@/hooks/use-is-chathistroy'
 
 export default function ChatSupport() {
-  const { data } = useSession()
+  const { data: userData } = useSession()
   const [input, setInput] = useState('')
+  const { data } = useGetChatHistory(new Date().toISOString())
   const [messages, setMessages] = useState<
     { nickName: string; message: string }[]
   >([])
   const socket = useIsSocket()
 
-  useIsLogin(socket, Number(data?.user.id) ?? 0, [1])
+  useIsLogin(socket, Number(userData?.user.id) ?? 0, [1])
 
   const sendMessage = (msg: string) => {
-    console.log(data?.user.nickname)
-    const nickName = data?.user.nickname || 'Anonymous'
+    const nickName = userData?.user.nickname || 'Anonymous'
     if (socket) {
       socket.emit('message', {
         channel: 1,
-        userId: data?.user.id,
+        userId: userData?.user.id,
         message: msg,
       })
       setMessages((prevChat) => [
@@ -107,17 +107,19 @@ export default function ChatSupport() {
               <ChatBubble
                 key={index}
                 variant={
-                  message.nickName == data?.user.nickname ? 'sent' : 'received'
+                  message.nickName == userData?.user.nickname
+                    ? 'sent'
+                    : 'received'
                 }
               >
                 <ChatBubbleAvatar
                   src=""
                   fallback={
-                    message.nickName == data?.user.nickname ? '👨🏽' : '🤖'
+                    message.nickName == userData?.user.nickname ? '👨🏽' : '🤖'
                   }
                 />
                 <ChatBubbleMessage
-                  variant={data?.user.nickname ? 'sent' : 'received'}
+                  variant={userData?.user.nickname ? 'sent' : 'received'}
                 >
                   {message.message
                     .split('```')

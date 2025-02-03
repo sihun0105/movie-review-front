@@ -16,7 +16,21 @@ const AppClientApiEndpoint = {
         url: `/api/comment/${movieId}`,
         query: {
           page,
-          movieId
+          movieId,
+        },
+      },
+      {
+        skipEmptyString: true,
+        skipNull: true,
+      },
+    )
+  },
+  getChatHistory: (nowDate: string) => {
+    return queryString.stringifyUrl(
+      {
+        url: `/api/chat/${nowDate}`,
+        query: {
+          nowDate,
         },
       },
       {
