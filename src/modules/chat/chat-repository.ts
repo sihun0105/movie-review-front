@@ -14,7 +14,8 @@ export class ChatRepository {
       const result = await this.datasource.getChatHistory({
         nowDate,
       })
-      return this.convertToChatEntity(result)
+      console.log(result)
+      return result.map((chat: any) => this.convertToChatEntity(chat))
     } catch (err) {
       throw new Error('Failed to get chat history')
     }

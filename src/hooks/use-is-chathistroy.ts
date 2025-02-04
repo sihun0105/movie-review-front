@@ -1,55 +1,28 @@
 import { AppClientApiEndpoint } from '@/config/app-client-api-endpoint'
-import useSWRMutate from 'swr/mutation'
+import useSWR from 'swr'
 
-const fetcher = async (
-  url: string,
-  {
-    arg,
-  }: {
-    arg: {
-      nowDate: string
-    }
-  },
-) => {
-  const res = await fetch(url, {
+const fetcher = async (url: string) => {
+  const response = await fetch(url, {
     method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+    },
   })
-  const result = await res.json()
-  if (!res.ok) {
+  const { data: result } = await response.json()
+  if (!response.ok) {
     throw new Error(result.message)
   }
-
   return result
 }
 
+const getKey = (nowDate: string) => {
+  return AppClientApiEndpoint.getChatHistory(nowDate)
+}
+
 export const useGetChatHistory = (nowDate: string) => {
-  const { data, trigger, isMutating, error } = useSWRMutate<any>(
-    AppClientApiEndpoint.getChatHistory(nowDate),
-    fetcher,
-  )
-
-  const getChatHistory = (
-    arg: {
-      nowDate: string
-    },
-    {
-      onSuccess,
-      onError,
-    }: {
-      onSuccess: () => void
-      onError: () => void
-    },
-  ) => {
-    trigger(null, {
-      onSuccess,
-      onError,
-    })
-  }
-
+  const { data: chatData, ...res } = useSWR<any[]>(getKey(nowDate), fetcher, {})
   return {
-    data,
-    getChatHistory,
-    isGettingChat: isMutating,
-    getChatHistoryError: error,
+    data: chatData,
+    ...res,
   }
 }

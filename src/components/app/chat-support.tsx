@@ -27,7 +27,7 @@ import { useGetChatHistory } from '@/hooks/use-is-chathistroy'
 export default function ChatSupport() {
   const { data: userData } = useSession()
   const [input, setInput] = useState('')
-  const { data } = useGetChatHistory(new Date().toISOString())
+  const { data = [] } = useGetChatHistory('2025-01-01')
   const [messages, setMessages] = useState<
     { nickName: string; message: string }[]
   >([])
@@ -96,10 +96,53 @@ export default function ChatSupport() {
       <ExpandableChatBody>
         <ChatMessageList className="bg-muted/25" ref={messagesRef}>
           {/* Initial message */}
-          <ChatBubble variant="received">
+          {/* <ChatBubble variant="received">
             <ChatBubbleAvatar src="" fallback="🤖" />
             <ChatBubbleMessage>Hello!</ChatBubbleMessage>
-          </ChatBubble>
+          </ChatBubble> */}
+          {data &&
+            data.map((message, index) => (
+              <ChatBubble
+                key={index}
+                variant={
+                  message.nickname == userData?.user.nickname
+                    ? 'sent'
+                    : 'received'
+                }
+              >
+                <ChatBubbleAvatar
+                  src=""
+                  fallback={
+                    message.nickname == userData?.user.nickname ? '👨🏽' : '🤖'
+                  }
+                />
+                <ChatBubbleMessage
+                  variant={
+                    message.nickName == userData?.user.nickname
+                      ? 'sent'
+                      : 'received'
+                  }
+                >
+                  {message.content
+                    .split('```')
+                    .map((part: string, index: number) => {
+                      if (index % 2 === 0) {
+                        return (
+                          <Markdown key={index} remarkPlugins={[remarkGfm]}>
+                            {part}
+                          </Markdown>
+                        )
+                      } else {
+                        return (
+                          <pre className=" pt-2" key={index}>
+                            <CodeDisplayBlock code={part} lang="" />
+                          </pre>
+                        )
+                      }
+                    })}
+                </ChatBubbleMessage>
+              </ChatBubble>
+            ))}
 
           {/* Messages */}
           {messages &&
@@ -119,7 +162,11 @@ export default function ChatSupport() {
                   }
                 />
                 <ChatBubbleMessage
-                  variant={userData?.user.nickname ? 'sent' : 'received'}
+                  variant={
+                    message.nickName == userData?.user.nickname
+                      ? 'sent'
+                      : 'received'
+                  }
                 >
                   {message.message
                     .split('```')

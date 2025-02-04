@@ -13,6 +13,7 @@ export class ChatDatasource {
         headers: {
           'Content-Type': 'application/json',
         },
+        cache: 'default',
       })
       if (!res.ok) {
         throw new Error('ChatDatasource-getChatHistory 통신에러 발생')

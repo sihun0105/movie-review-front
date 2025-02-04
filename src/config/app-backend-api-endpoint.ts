@@ -39,7 +39,7 @@ const AppBackEndApiEndpoint = {
   getChatHistory(nowDate: string) {
     return queryString.stringifyUrl(
       {
-        url: `${process.env.SERVER_API}/chat`,
+        url: `${process.env.CHAT_SERVER_API}/chat`,
         query: {
           nowDate,
         },
