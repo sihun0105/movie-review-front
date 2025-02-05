@@ -36,7 +36,11 @@ export const metadata: Metadata = {
     siteName: '영화뭐함',
     title: '영화뭐함',
   },
-  viewport: 'width=device-width, initial-scale=1.0',
+  viewport: {
+    width: 'device-width',
+    initialScale: 1,
+    maximumScale: 1,
+  },
 }
 
 export default function RootLayout({
