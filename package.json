@@ -73,6 +73,7 @@
     "typescript": "5.1.6",
     "usehooks-ts": "^2.16.0",
     "utf-8-validate": "^6.0.5",
+    "uuid": "^11.0.5",
     "zod": "^3.23.8"
   },
   "devDependencies": {

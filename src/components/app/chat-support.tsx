@@ -23,24 +23,33 @@ import remarkGfm from 'remark-gfm'
 import { Button } from '../ui/button'
 import CodeDisplayBlock from './code-display-block'
 import { useGetChatHistory } from '@/hooks/use-is-chathistroy'
+import { v4 as uuidv4 } from 'uuid'
 
 export default function ChatSupport() {
-  const { data: userData } = useSession()
+  const { data: session } = useSession()
   const [input, setInput] = useState('')
   const { data = [] } = useGetChatHistory('2025-01-01')
+  const userData = session?.user ?? {
+    id: uuidv4(),
+    nickname: 'Guest',
+    provider: '',
+    email: '',
+    name: '',
+    phone: '',
+  }
   const [messages, setMessages] = useState<
     { nickName: string; message: string }[]
   >([])
   const socket = useIsSocket()
 
-  useIsLogin(socket, Number(userData?.user.id) ?? 0, [1])
+  useIsLogin(socket, Number(userData.id) ?? 0, [1])
 
   const sendMessage = (msg: string) => {
-    const nickName = userData?.user.nickname || 'Anonymous'
+    const nickName = userData.nickname || 'Anonymous'
     if (socket) {
       socket.emit('message', {
         channel: 1,
-        userId: userData?.user.id,
+        userId: userData.id,
         message: msg,
       })
       setMessages((prevChat) => [
@@ -95,32 +104,23 @@ export default function ChatSupport() {
       </ExpandableChatHeader>
       <ExpandableChatBody>
         <ChatMessageList className="bg-muted/25" ref={messagesRef}>
-          {/* Initial message */}
-          {/* <ChatBubble variant="received">
-            <ChatBubbleAvatar src="" fallback="🤖" />
-            <ChatBubbleMessage>Hello!</ChatBubbleMessage>
-          </ChatBubble> */}
+          {123}
+          {userData.nickname}
           {data &&
             data.map((message, index) => (
               <ChatBubble
                 key={index}
                 variant={
-                  message.nickname == userData?.user.nickname
-                    ? 'sent'
-                    : 'received'
+                  message.nickname == userData.nickname ? 'sent' : 'received'
                 }
               >
                 <ChatBubbleAvatar
                   src=""
-                  fallback={
-                    message.nickname == userData?.user.nickname ? '👨🏽' : '🤖'
-                  }
+                  fallback={message.nickname == userData.nickname ? '👨🏽' : '🤖'}
                 />
                 <ChatBubbleMessage
                   variant={
-                    message.nickName == userData?.user.nickname
-                      ? 'sent'
-                      : 'received'
+                    message.nickName == userData.nickname ? 'sent' : 'received'
                   }
                 >
                   {message.content
@@ -150,22 +150,16 @@ export default function ChatSupport() {
               <ChatBubble
                 key={index}
                 variant={
-                  message.nickName == userData?.user.nickname
-                    ? 'sent'
-                    : 'received'
+                  message.nickName == userData.nickname ? 'sent' : 'received'
                 }
               >
                 <ChatBubbleAvatar
                   src=""
-                  fallback={
-                    message.nickName == userData?.user.nickname ? '👨🏽' : '🤖'
-                  }
+                  fallback={message.nickName == userData.nickname ? '👨🏽' : '🤖'}
                 />
                 <ChatBubbleMessage
                   variant={
-                    message.nickName == userData?.user.nickname
-                      ? 'sent'
-                      : 'received'
+                    message.nickName == userData.nickname ? 'sent' : 'received'
                   }
                 >
                   {message.message
