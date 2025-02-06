@@ -104,8 +104,6 @@ export default function ChatSupport() {
       </ExpandableChatHeader>
       <ExpandableChatBody>
         <ChatMessageList className="bg-muted/25" ref={messagesRef}>
-          {123}
-          {userData.nickname}
           {data &&
             data.map((message, index) => (
               <ChatBubble
