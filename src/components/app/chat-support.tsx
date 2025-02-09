@@ -41,6 +41,7 @@ export default function ChatSupport() {
     { nickName: string; message: string }[]
   >([])
   const socket = useIsSocket()
+  const [isComposing, setIsComposing] = useState(false)
 
   useIsLogin(socket, Number(userData.id) ?? 0, [1])
 
@@ -88,10 +89,20 @@ export default function ChatSupport() {
   }
 
   const onKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
-    if (e.key === 'Enter' && !e.shiftKey) {
+    if (e.key === 'Enter' && !e.shiftKey && !isComposing) {
       e.preventDefault()
       if (!input) return
       onSubmit(e as unknown as React.FormEvent<HTMLFormElement>)
+    }
+  }
+
+  const handleComposition = (
+    e: React.CompositionEvent<HTMLTextAreaElement>,
+  ) => {
+    if (e.type === 'compositionstart') {
+      setIsComposing(true)
+    } else if (e.type === 'compositionend') {
+      setIsComposing(false)
     }
   }
 
@@ -188,6 +199,8 @@ export default function ChatSupport() {
             value={input}
             onChange={handleInputChange}
             onKeyDown={onKeyDown}
+            onCompositionStart={handleComposition}
+            onCompositionEnd={handleComposition}
             className="min-h-12 bg-background shadow-none "
           />
           <Button
