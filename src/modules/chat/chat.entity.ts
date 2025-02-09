@@ -3,11 +3,11 @@ export interface ChatEntity {
   nickname: string
   createdAt: Date
   updatedAt: Date
-  content: string
+  message: string
 }
 
 export function isChatEntity(arg: any): arg is ChatEntity {
-  return arg && arg.id && arg.createdAt && arg.updatedAt && arg.content
+  return arg && arg.id && arg.createdAt && arg.updatedAt && arg.message
 }
 
 export function assertChatEntity(arg: any): asserts arg is ChatEntity {

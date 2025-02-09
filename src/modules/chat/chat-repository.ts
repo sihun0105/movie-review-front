@@ -26,7 +26,7 @@ export class ChatRepository {
       nickname: arg.nickname,
       createdAt: arg.createdAt,
       updatedAt: arg.updatedAt,
-      content: arg.content,
+      message: arg.message,
     }
     assertChatEntity(result)
     return result

@@ -132,7 +132,7 @@ export default function ChatSupport() {
                     message.nickName == userData.nickname ? 'sent' : 'received'
                   }
                 >
-                  {message.content
+                  {message.message
                     .split('```')
                     .map((part: string, index: number) => {
                       if (index % 2 === 0) {
