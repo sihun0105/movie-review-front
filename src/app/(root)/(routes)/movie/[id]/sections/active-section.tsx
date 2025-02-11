@@ -7,11 +7,9 @@ interface ActiveSectionProps {
 
 const ActiveSection: FunctionComponent<ActiveSectionProps> = ({ id }) => {
   return (
-    <main>
-      <CommentFormProvider>
-        <CommentForm id={id} />
-      </CommentFormProvider>
-    </main>
+    <CommentFormProvider>
+      <CommentForm id={id} />
+    </CommentFormProvider>
   )
 }
 

@@ -6,8 +6,8 @@ const useIsSocket = (): Socket => {
   const socketRef = useRef<Socket | null>(null)
 
   useEffect(() => {
-    socketRef.current = io('http://localhost:3031/ws-home', {
-      transports: ['websocket'],
+    socketRef.current = io('https://drunkenmovie.shop/ws-home', {
+      transports: ['websocket', 'polling'],
     })
 
     return () => {

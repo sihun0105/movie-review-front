@@ -9,9 +9,11 @@ interface PageProps {
 
 const Page: FunctionComponent<PageProps> = async ({ params: { id } }) => {
   return (
-    <main className=" w-full">
+    <main className="container flex flex-col">
       <CommentSection />
-      <ActiveSection id={id} />
+      <div className="container fixed bottom-4 left-0 right-0 mx-auto w-full max-w-[460px]">
+        <ActiveSection id={id} />
+      </div>
     </main>
   )
 }

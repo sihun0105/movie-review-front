@@ -114,7 +114,7 @@ export default function ChatSupport() {
         <div className="flex items-center gap-2 pt-2"></div>
       </ExpandableChatHeader>
       <ExpandableChatBody>
-        <ChatMessageList className="bg-muted/25" ref={messagesRef}>
+        <ChatMessageList className="z-100 bg-muted/25" ref={messagesRef}>
           {data &&
             data.map((message, index) => (
               <ChatBubble
@@ -125,7 +125,7 @@ export default function ChatSupport() {
               >
                 <ChatBubbleAvatar
                   src=""
-                  fallback={message.nickname == userData.nickname ? '👨🏽' : '🤖'}
+                  fallback={message.nickname == userData.nickname ? '🧑‍💻' : '🧑🏿‍💻'}
                 />
                 <ChatBubbleMessage
                   variant={
@@ -164,7 +164,7 @@ export default function ChatSupport() {
               >
                 <ChatBubbleAvatar
                   src=""
-                  fallback={message.nickName == userData.nickname ? '👨🏽' : '🤖'}
+                  fallback={message.nickName == userData.nickname ? '🧑‍💻' : '🧑🏿‍💻'}
                 />
                 <ChatBubbleMessage
                   variant={
