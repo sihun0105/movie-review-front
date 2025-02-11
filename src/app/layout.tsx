@@ -28,6 +28,8 @@ export const metadata: Metadata = {
     '영화 뭐함',
     '영화 뭐봄',
     '영화뭐봄',
+    '영화 평점',
+    '영화 추천',
   ],
   openGraph: {
     type: 'website',
@@ -87,8 +89,10 @@ export default function RootLayout({
         sizes="256x256"
         href="/favicon/favicon-256x256.png"
       />
-      <body className={cn('flex justify-center', roboto.className)}>
-        <div className="relative h-full w-full min-w-[320px] max-w-[460px] bg-white dark:bg-black">
+      <body
+        className={cn('flex min-h-screen justify-center', roboto.className)}
+      >
+        <div className="relative flex h-full min-h-screen w-full min-w-[320px] max-w-[460px] flex-col bg-white dark:bg-black">
           <SessionProvider>
             <ThemeProvider
               attribute="class"
