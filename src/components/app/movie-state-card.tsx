@@ -43,7 +43,7 @@ const MovieCard: FunctionComponent<MovieCardProps> = ({ data: movie }) => {
             <div className="stat-desc mt-2 ">장르: {movie.genre}</div>
             <div className="stat-desc ">감독: {movie.director}</div>
             <div className="stat-desc ">
-              업데이트 날짜: {new Date(movie.updatedAt).toLocaleDateString()}
+              영화개봉 날짜: {new Date(movie.openedAt).toLocaleDateString()}
             </div>
           </section>
         </div>

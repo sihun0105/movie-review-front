@@ -7,6 +7,8 @@ import Header from '@/components/app/header'
 import { cn } from '@/lib/utils'
 import { ThemeProvider } from 'next-themes'
 import ChatSupport from '@/components/app/chat-support'
+import Script from 'next/script'
+import GoogleAd from '@/components/app/googleAd'
 
 const roboto = Roboto({
   weight: ['400', '700'],
@@ -89,25 +91,36 @@ export default function RootLayout({
         sizes="256x256"
         href="/favicon/favicon-256x256.png"
       />
-      <body
-        className={cn('flex min-h-screen justify-center', roboto.className)}
-      >
-        <div className="relative flex h-full min-h-screen w-full min-w-[320px] max-w-[460px] flex-col bg-white dark:bg-black">
-          <SessionProvider>
-            <ThemeProvider
-              attribute="class"
-              defaultTheme="system"
-              enableSystem
-              disableTransitionOnChange
-            >
-              <Header />
+      <SessionProvider>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          <body
+            className={cn(
+              'flex min-h-screen flex-col items-center',
+              roboto.className,
+            )}
+          >
+            {/* Header를 감싸는 컨테이너 */}
+            <div className="w-full max-w-[460px]">
+              <header className="w-full">
+                <Header />
+              </header>
+            </div>
+
+            {/* 메인 컨텐츠 */}
+            <div className="relative flex h-full min-h-screen w-full min-w-[320px] max-w-[460px] flex-col bg-white dark:bg-black">
               {children}
               <ChatSupport />
+              <GoogleAd />
               <Footer />
-            </ThemeProvider>
-          </SessionProvider>
-        </div>
-      </body>
+            </div>
+          </body>
+        </ThemeProvider>
+      </SessionProvider>
     </html>
   )
 }

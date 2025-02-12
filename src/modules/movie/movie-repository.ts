@@ -12,6 +12,7 @@ export class MovieRepository {
 
   async getMovie(): Promise<Movie[]> {
     const data = await this.datasource.getMovie()
+    console.log(data)
     return data.MovieData?.map((item: any) => {
       return this.convertUnkownToMovie(item)
     })
@@ -28,7 +29,7 @@ export class MovieRepository {
       rankInten: unknown.rankInten,
       plot: unknown.plot,
       rankOldAndNew: unknown.rankOldAndNew,
-      openedAt: new Date(unknown.openedAt),
+      openedAt: new Date(unknown.openDt),
       genre: unknown.genre,
       director: unknown.director,
       ratting: unknown.ratting,
