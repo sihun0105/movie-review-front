@@ -36,7 +36,7 @@ export const metadata: Metadata = {
   openGraph: {
     type: 'website',
     locale: 'ko_KR',
-    url: 'https://movie-watch.vercel.app',
+    url: 'https://drunkenmovie.shop',
     siteName: '영화뭐함',
     title: '영화뭐함',
   },
