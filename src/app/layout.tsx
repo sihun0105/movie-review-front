@@ -7,7 +7,6 @@ import Header from '@/components/app/header'
 import { cn } from '@/lib/utils'
 import { ThemeProvider } from 'next-themes'
 import ChatSupport from '@/components/app/chat-support'
-import Script from 'next/script'
 import GoogleAd from '@/components/app/googleAd'
 
 const roboto = Roboto({
@@ -115,7 +114,6 @@ export default function RootLayout({
             <div className="relative flex h-full min-h-screen w-full min-w-[320px] max-w-[460px] flex-col bg-white dark:bg-black">
               {children}
               <ChatSupport />
-              <GoogleAd />
               <Footer />
             </div>
           </body>

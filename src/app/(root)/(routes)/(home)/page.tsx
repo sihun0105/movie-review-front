@@ -1,8 +1,8 @@
 import { AppSkeleton } from '@/components/app/app-skeleton'
+import GoogleAd from '@/components/app/googleAd'
 import MovieCard from '@/components/app/movie-state-card'
 import { Movie } from '@/modules/movie/movie-entity'
 import { MovieRepository } from '@/modules/movie/movie-repository'
-import Script from 'next/script'
 import { FunctionComponent } from 'react'
 
 interface PageProps {}
@@ -26,6 +26,7 @@ const Page: FunctionComponent<PageProps> = async ({}) => {
           </div>
         ))}
       </section>
+      <GoogleAd />
     </main>
   )
 }
