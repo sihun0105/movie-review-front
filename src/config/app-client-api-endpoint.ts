@@ -39,6 +39,20 @@ const AppClientApiEndpoint = {
       },
     )
   },
+  getMovieDetail: (movieCd: string) => {
+    return queryString.stringifyUrl(
+      {
+        url: `/api/movie/${movieCd}`,
+        query: {
+          movieCd,
+        },
+      },
+      {
+        skipEmptyString: true,
+        skipNull: true,
+      },
+    )
+  },
 }
 
 export { AppClientApiEndpoint }

@@ -103,14 +103,12 @@ export default function RootLayout({
               roboto.className,
             )}
           >
-            {/* Header를 감싸는 컨테이너 */}
             <div className="w-full max-w-[460px]">
               <header className="w-full">
                 <Header />
               </header>
             </div>
 
-            {/* 메인 컨텐츠 */}
             <div className="relative flex h-full min-h-screen w-full min-w-[320px] max-w-[460px] flex-col bg-white dark:bg-black">
               {children}
               <ChatSupport />

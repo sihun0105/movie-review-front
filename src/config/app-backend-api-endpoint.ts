@@ -50,6 +50,9 @@ const AppBackEndApiEndpoint = {
       },
     )
   },
+  getMovieDetail: (movieCd: string) => {
+    return `${process.env.SERVER_API}/movie/${movieCd}`
+  },
 }
 
 export { AppBackEndApiEndpoint }

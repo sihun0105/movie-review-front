@@ -17,6 +17,10 @@ export class MovieRepository {
       return this.convertUnkownToMovie(item)
     })
   }
+  async getMovieDetail(movieCd: string): Promise<Movie> {
+    const data = await this.datasource.getMovieDetail(movieCd)
+    return this.convertUnkownToMovie(data)
+  }
 
   private convertUnkownToMovie(unknown: any): Movie {
     const result = {

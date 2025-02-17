@@ -10,9 +10,7 @@ const useIsLogin = (
     if (socket) {
       socket.emit('login', { id, channels })
 
-      socket.on('onlineList', (onlineList) => {
-        console.log('Online List:', onlineList)
-      })
+      socket.on('onlineList', (onlineList) => {})
       return () => {
         socket.off('onlineList')
       }
