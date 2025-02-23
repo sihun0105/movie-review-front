@@ -1,7 +1,7 @@
 import { FunctionComponent } from 'react'
 import ActiveSection from './sections/active-section'
 import CommentSection from './sections/comment-section'
-import DescriptionSection from './sections/description-section'
+// import DescriptionSection from './sections/description-section'
 
 interface PageProps {
   params: {
