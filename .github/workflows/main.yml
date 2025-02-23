@@ -35,4 +35,5 @@ jobs:
             git pull origin release
             pnpm install  
             pnpm build
-            pnpm start
+            ./shutdown.sh
+            ./start.sh
