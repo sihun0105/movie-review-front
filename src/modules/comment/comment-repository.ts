@@ -11,7 +11,6 @@ export class CommentRepository {
   }
 
   async getCommentList(id: string, page?: number): Promise<Comment[]> {
-    console.log(page)
     const data = await this.datasource.getCommentList(id, page ?? 0)
     if (data.replys === undefined) {
       console.log('data.replys is undefined')

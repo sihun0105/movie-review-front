@@ -13,13 +13,13 @@ const Footer: FunctionComponent<FooterProps> = ({}) => {
           <a href="mailto:tlgns14@nate.com" className="flex flex-row space-x-2">
             <Mail />
           </a>
-          <a
+          {/* <a
             href="https://github.com/sihun0105"
             target="_blank"
             className="flex flex-row space-x-2"
           >
             <Github />
-          </a>
+          </a> */}
         </div>
       </nav>
     </footer>

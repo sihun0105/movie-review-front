@@ -16,6 +16,10 @@ export class MovieRepository {
       return this.convertUnkownToMovie(item)
     })
   }
+  async getMovieDetail(movieCd: string): Promise<Movie> {
+    const data = await this.datasource.getMovieDetail(movieCd)
+    return this.convertUnkownToMovie(data)
+  }
 
   private convertUnkownToMovie(unknown: any): Movie {
     const result = {
@@ -25,6 +29,13 @@ export class MovieRepository {
       createdAt: new Date(unknown.createdAt),
       updatedAt: new Date(unknown.updatedAt),
       poster: unknown.poster,
+      rankInten: unknown.rankInten,
+      plot: unknown.plot,
+      rankOldAndNew: unknown.rankOldAndNew,
+      openedAt: new Date(unknown.openDt),
+      genre: unknown.genre,
+      director: unknown.director,
+      ratting: unknown.ratting,
     } as Movie
     assertMovie(result)
     return result

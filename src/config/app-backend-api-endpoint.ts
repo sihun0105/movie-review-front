@@ -36,6 +36,23 @@ const AppBackEndApiEndpoint = {
   deleteComment: (id: string) => {
     return `${process.env.SERVER_API}/reply/${id}`
   },
+  getChatHistory(nowDate: string) {
+    return queryString.stringifyUrl(
+      {
+        url: `${process.env.CHAT_SERVER_API}/chat`,
+        query: {
+          nowDate,
+        },
+      },
+      {
+        skipEmptyString: true,
+        skipNull: true,
+      },
+    )
+  },
+  getMovieDetail: (movieCd: string) => {
+    return `${process.env.SERVER_API}/movie/${movieCd}`
+  },
 }
 
 export { AppBackEndApiEndpoint }

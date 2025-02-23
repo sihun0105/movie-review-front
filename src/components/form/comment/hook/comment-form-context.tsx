@@ -28,7 +28,7 @@ const useCommentForm = () => {
     await new Promise((resolve) =>
       setTimeout(() => {
         return resolve(onSuccess())
-      }, 2500),
+      }, 200),
     )
   }
 

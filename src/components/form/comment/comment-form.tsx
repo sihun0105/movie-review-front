@@ -36,7 +36,7 @@ const CommentForm: FunctionComponent<CommentFormProps> = ({ id }) => {
     )
   })
   return (
-    <div className="w-full">
+    <div className="w-3/4">
       <Form {...form}>
         <form onSubmit={handleSubmit}>
           <div className="flex w-full flex-row items-center justify-center gap-2">

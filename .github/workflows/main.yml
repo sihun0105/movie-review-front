@@ -1,0 +1,39 @@
+name: Deploy_Movie_Front
+on:
+  push:
+    branches:
+      - release
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    env:
+      NEXTAUTH_SECRET: ${{ secrets.NEXTAUTH_SECRET }}
+      GOOGLE_CLIENT_SECRET: ${{ secrets.GOOGLE_CLIENT_SECRET }}
+      GOOGLE_CLIENT_ID: ${{ secrets.GOOGLE_CLIENT_ID }}
+      NEXTAUTH_URL: ${{ secrets.NEXTAUTH_URL }}
+      COOKIE_TOKEN_KEY: ${{ secrets.COOKIE_TOKEN_KEY }}
+      SERVER_API: ${{ secrets.SERVER_API }}
+      CHAT_SERVER_API: ${{ secrets.CHAT_SERVER_API }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Install Dependencies and Build
+        run: |
+          npm install -g pnpm
+          pnpm install
+          pnpm run build
+      - name: Execute deploy script on server over ssh
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: ${{ secrets.SSH_PORT }}
+          script_timeout: 10m
+          script: |
+            cd /app/movie/movie-review-front/
+            git pull origin release
+            pnpm install  
+            pnpm build
+            ./shutdown.sh
+            ./start.sh
