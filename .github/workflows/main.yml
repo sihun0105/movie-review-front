@@ -36,4 +36,4 @@ jobs:
             pnpm install  
             pnpm build
             ./shutdown.sh
-            ./start.sh
+            ./startup.sh
