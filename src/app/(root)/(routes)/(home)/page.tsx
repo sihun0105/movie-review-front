@@ -1,5 +1,5 @@
 import { AppSkeleton } from '@/components/app/app-skeleton'
-import GoogleAd from '@/components/app/googleAd'
+// import GoogleAd from '@/components/app/googleAd'
 import MovieCard from '@/components/app/movie-state-card'
 import { Movie } from '@/modules/movie/movie-entity'
 import { MovieRepository } from '@/modules/movie/movie-repository'
@@ -26,7 +26,7 @@ const Page: FunctionComponent<PageProps> = async ({}) => {
           </div>
         ))}
       </section>
-      <GoogleAd />
+      {/* <GoogleAd /> */}
     </main>
   )
 }
