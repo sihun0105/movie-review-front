@@ -96,4 +96,21 @@ export class UsersDatasource {
     }
     return res.json()
   }
+
+  async updateProfile({ nickname, file }: { nickname: string; file: File }) {
+    const formData = new FormData()
+    formData.append('nickname', nickname)
+    formData.append('file', file)
+    const res = await fetch(AppBackEndApiEndpoint.updateProfile(), {
+      method: 'PATCH',
+      body: formData,
+      headers: {
+        Authorization: `Bearer ${this.token}`,
+      },
+    })
+    if (!res.ok) {
+      throw new Error(`[${res.status}] ${res.statusText}`)
+    }
+    return res.json()
+  }
 }

@@ -1,6 +1,9 @@
 import queryString from 'query-string'
 
 const AppClientApiEndpoint = {
+  updateProfile: () => {
+    return `/api/profile`
+  },
   createNewComment: (id: string) => {
     return `/api/comment/${id}`
   },
