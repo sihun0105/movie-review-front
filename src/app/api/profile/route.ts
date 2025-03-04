@@ -1,3 +1,4 @@
+import { getTokenFromCookie } from '@/lib/utils/getToken'
 import { UsersRepository } from '@/modules/users/users-repository'
 import { NextRequest } from 'next/server'
 
@@ -5,8 +6,9 @@ export const POST = async (req: NextRequest) => {
   const form = await req.formData()
   const nickname = form.get('nickname') as string
   const file = form.get('file') as File
+  const token = await getTokenFromCookie()
   try {
-    const repo = new UsersRepository()
+    const repo = new UsersRepository(token)
     const data = await repo.updateProfile({ nickname, file })
     return new Response(
       JSON.stringify({

@@ -8,6 +8,7 @@ import { cn } from '@/lib/utils'
 import { ThemeProvider } from 'next-themes'
 import ChatSupport from '@/components/app/chat-support'
 import GoogleAd from '@/components/app/googleAd'
+import { Toaster } from '@/components/ui/toaster'
 
 const roboto = Roboto({
   weight: ['400', '700'],
@@ -113,6 +114,7 @@ export default function RootLayout({
               {children}
               <ChatSupport />
               <Footer />
+              <Toaster />
             </div>
           </body>
         </ThemeProvider>

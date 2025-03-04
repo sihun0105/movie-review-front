@@ -53,7 +53,7 @@ const Toast = React.forwardRef<
       ref={ref}
       className={cn(
         toastVariants({ variant }),
-        ' bg-app-purple-002 text-center text-white',
+        'bg-primary text-center text-white',
         'flex items-center justify-center',
         className,
       )}
