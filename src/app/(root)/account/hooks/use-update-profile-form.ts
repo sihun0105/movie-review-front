@@ -38,18 +38,17 @@ const useUpdateProfileForm = () => {
     file: File
   }) => {
     try {
+      const formData = new FormData()
+      formData.append('nickname', data.nickname)
+      formData.append('file', data.file)
       const res = await fetch(AppClientApiEndpoint.updateProfile(), {
         method: 'POST',
-        body: JSON.stringify(data),
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        body: formData,
       })
       if (!res.ok) {
-        throw new Error('닉네임 변경에 실패했습니다.')
       }
 
-      return res.json()
+      return res
     } catch (error) {
       showToast('요청이 실패했습니다. 잠시 후 다시 시도해주세요.')
     }
@@ -71,8 +70,8 @@ const useUpdateProfileForm = () => {
       nickname: data.nickname,
       file: data.file,
     })
-    const isNameChangeSuccess = result.data.data.result === 'success'
-    if (isNameChangeSuccess) {
+    const isUpdatedProfileSuccess = result?.ok
+    if (isUpdatedProfileSuccess) {
       await update({
         nickname: data.nickname,
       })

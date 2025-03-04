@@ -97,10 +97,16 @@ export class UsersDatasource {
     return res.json()
   }
 
-  async updateProfile({ nickname, file }: { nickname: string; file: File }) {
+  async updateProfile({
+    nickname,
+    file,
+  }: {
+    nickname: string
+    file: File | null
+  }) {
     const formData = new FormData()
     formData.append('nickname', nickname)
-    formData.append('file', file)
+    formData.append('file', file ? file : '')
     const res = await fetch(AppBackEndApiEndpoint.updateProfile(), {
       method: 'PATCH',
       body: formData,
