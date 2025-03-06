@@ -18,8 +18,8 @@ const roboto = Roboto({
 })
 
 export const metadata: Metadata = {
-  title: '영화뭐함',
-  description: '영화뭐함',
+  title: 'Drunken Movie',
+  description: 'Drunken Movie',
   keywords: [
     '영화',
     '뭐함',
@@ -32,6 +32,10 @@ export const metadata: Metadata = {
     '영화뭐봄',
     '영화 평점',
     '영화 추천',
+    '미키17',
+    '요즘영화',
+    '드렁큰무비',
+    '영화는술이다',
   ],
   openGraph: {
     type: 'website',
