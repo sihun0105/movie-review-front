@@ -43,6 +43,7 @@ const CommentForm: FunctionComponent<CommentFormProps> = ({ id }) => {
             <CommentInputField className="flex-grow" />
             <div className="w-[100px]">
               <Button
+                variant={'default'}
                 type="submit"
                 className="w-full"
                 disabled={isCreatingComment}

@@ -19,7 +19,8 @@
     --border: 0 0% 89.8%;
     --input: 0 0% 89.8%;
 
-    --primary: 0 0% 9%;
+    /* --primary: 0 0% 9%; */
+    --primary: var(--blue-001);
     --primary-foreground: 0 0% 98%;
 
     --secondary: 0 0% 96.1%;
@@ -37,7 +38,7 @@
 
     --green-001: #abb389;
     --orange-001: #d1a130;
-
+    --blue-001: #dee9fc;
     --gray-001: #ffffff;
     --gray-002: #f5f5f5;
     --gray-003: #e8e8e8;
@@ -56,8 +57,6 @@
     --pink-001: #f8d3c6;
     --pink-002: #fadfdf;
     --pink-003: #ffcccc;
-
-    --blue-001: #d7e2fd;
 
     /* custom size */
     --header-h: 50px;
@@ -92,7 +91,7 @@
     --border: 214.3 31.8% 8.6%;
     --input: var(--gray-006);
 
-    --primary: var(--orange-001);
+    --primary: var(--blue-001);
     --primary-foreground: 210 40% 4.9%;
 
     --secondary: 210 40% 4.9%;
