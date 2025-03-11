@@ -1,8 +1,8 @@
 'use client'
 import AppFormDialogue from '@/components/app/app-form-dialogue'
 import { FunctionComponent } from 'react'
-import { ChangeNameForm } from './update-profile-form'
 import { useUpdateProfileModalContext } from '../hooks/use-update-profile-modal-context'
+import { UpdateProfileForm } from './update-profile-form'
 interface ChangeNameModalProps {}
 
 const UpdateProfileModal: FunctionComponent<ChangeNameModalProps> = () => {
@@ -19,7 +19,7 @@ const UpdateProfileModal: FunctionComponent<ChangeNameModalProps> = () => {
       setOpen={(boolean) => {
         setOpen(boolean)
       }}
-      render={<ChangeNameForm />}
+      render={<UpdateProfileForm />}
     />
   )
 }

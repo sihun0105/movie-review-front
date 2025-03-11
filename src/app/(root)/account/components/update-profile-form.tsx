@@ -1,71 +1,32 @@
+'use client'
+import { Button } from '@/components/ui/button'
+import { Form } from '@/components/ui/form'
 import { FunctionComponent } from 'react'
 import { useUpdateProfileForm } from '../hooks/use-update-profile-form'
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormMessage,
-} from '@/components/ui/form'
-import { Input } from '@/components/ui/input'
-import { Button } from '@/components/ui/button'
 import { useUpdateProfileModalContext } from '../hooks/use-update-profile-modal-context'
-import { useSession } from 'next-auth/react'
-interface ChangeNameModalFormProps {}
+import UpdateNicknameField from './update-nickname-field'
+import ProfileImageUpdateField from './update-image-field'
+interface UpdateProfileModalFormProps {}
 
-const ChangeNameForm: FunctionComponent<ChangeNameModalFormProps> = () => {
-  const { form, hasEnabledSubmit, nicknameLength, handleSubmit } =
-    useUpdateProfileForm()
-  const userData = useSession()
-
-  const isError = !!form.formState.errors.nickname
+const UpdateProfileForm: FunctionComponent<
+  UpdateProfileModalFormProps
+> = () => {
+  const { form, hasEnabledSubmit, handleSubmit } = useUpdateProfileForm()
   const { setOpen } = useUpdateProfileModalContext()
-  const MAX_LENGTH = 15
   return (
     <section className="mt-0">
       <Form {...form}>
         <form onSubmit={handleSubmit}>
           <section className="mb-3 flex flex-col gap-4 ">
-            <FormField
-              control={form.control}
-              name="nickname"
-              render={({ field }) => {
-                return (
-                  <FormItem>
-                    <FormControl>
-                      <section className="relative">
-                        <Input
-                          placeholder={
-                            userData.data?.user.nickname ??
-                            '닉네임을 입력해주세요.'
-                          }
-                          {...field}
-                        />
-                        <Button
-                          disabled={isError}
-                          onClick={() => {}}
-                          className="absolute right-2 top-0 h-full px-4 hover:bg-transparent"
-                          type={'button'}
-                          variant={'ghost'}
-                        ></Button>
-                      </section>
-                    </FormControl>
-                    <FormMessage />
-                    <section className="flex w-full justify-end text-xs font-normal text-app-gray-005">
-                      <p>
-                        {nicknameLength}/{MAX_LENGTH}
-                      </p>
-                    </section>
-                  </FormItem>
-                )
-              }}
-            />
+            <ProfileImageUpdateField form={form} />
+            <UpdateNicknameField form={form} />
           </section>
           <section className="flex w-full items-center justify-center gap-[12px]">
             <Button
               type="button"
               onClick={() => {
                 form.resetField('nickname')
+                form.resetField('file')
                 setOpen(false)
               }}
               size={'form'}
@@ -89,4 +50,4 @@ const ChangeNameForm: FunctionComponent<ChangeNameModalFormProps> = () => {
   )
 }
 
-export { ChangeNameForm }
+export { UpdateProfileForm }
