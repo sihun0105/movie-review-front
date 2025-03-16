@@ -18,6 +18,7 @@ const roboto = Roboto({
 })
 
 export const metadata: Metadata = {
+  metadataBase: new URL('https://drunkenmovie.shop'),
   title: 'Drunken Movie',
   description: 'Drunken Movie',
   keywords: [
