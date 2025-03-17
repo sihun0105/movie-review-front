@@ -1,32 +1,27 @@
 'use client'
-import { Button } from '@/components/ui/button'
 import { Form } from '@/components/ui/form'
 import { FunctionComponent } from 'react'
-import { useUpdateProfileForm } from '../hooks/use-update-profile-form'
-import { useUpdateProfileModalContext } from '../hooks/use-update-profile-modal-context'
-import UpdateNicknameField from './update-nickname-field'
-import ProfileImageUpdateField from './update-image-field'
-interface UpdateProfileModalFormProps {}
+import { useUpdateNicknameFormContext } from './update-nickname-form-context'
+import UpdateNicknameField from './update-nickname-form-field'
+import { useUpdateNicknameForm } from '../../hooks/use-update-nickname-form'
+import { Button } from '@/components/ui/button'
+import { useUpdateProfileModalContext } from '../../hooks/use-update-profile-modal-context'
+interface UpdateNicknameFormProps {}
 
-const UpdateProfileForm: FunctionComponent<
-  UpdateProfileModalFormProps
-> = () => {
-  const { form, hasEnabledSubmit, handleSubmit } = useUpdateProfileForm()
+const UpdateNicknameForm: FunctionComponent<UpdateNicknameFormProps> = ({}) => {
+  const { form } = useUpdateNicknameFormContext()
+  const { handleSubmit, hasEnabledSubmit } = useUpdateNicknameForm()
   const { setOpen } = useUpdateProfileModalContext()
   return (
-    <section className="mt-0">
+    <div className="w-full">
       <Form {...form}>
-        <form onSubmit={handleSubmit}>
-          <section className="mb-3 flex flex-col gap-4 ">
-            <ProfileImageUpdateField form={form} />
-            <UpdateNicknameField form={form} />
-          </section>
+        <form onSubmit={handleSubmit} className="space-y-8">
+          <UpdateNicknameField />
           <section className="flex w-full items-center justify-center gap-[12px]">
             <Button
               type="button"
               onClick={() => {
                 form.resetField('nickname')
-                form.resetField('file')
                 setOpen(false)
               }}
               size={'form'}
@@ -46,8 +41,8 @@ const UpdateProfileForm: FunctionComponent<
           </section>
         </form>
       </Form>
-    </section>
+    </div>
   )
 }
 
-export { UpdateProfileForm }
+export default UpdateNicknameForm

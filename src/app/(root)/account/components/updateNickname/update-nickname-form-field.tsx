@@ -8,15 +8,15 @@ import {
 import { Input } from '@/components/ui/input'
 import { useSession } from 'next-auth/react'
 import { FunctionComponent } from 'react'
-import { useUpdateProfileForm } from '../hooks/use-update-profile-form'
-interface UpdateNicknameFieldProps {
-  form: any
-}
+import { useUpdateNicknameFormContext } from './update-nickname-form-context'
+import { useUpdateNicknameForm } from '../../hooks/use-update-nickname-form'
+interface UpdateNicknameFieldProps {}
 
-const UpdateNicknameField: FunctionComponent<UpdateNicknameFieldProps> = ({
-  form,
-}) => {
-  const { nicknameLength } = useUpdateProfileForm()
+const UpdateNicknameField: FunctionComponent<
+  UpdateNicknameFieldProps
+> = ({}) => {
+  const { form } = useUpdateNicknameFormContext()
+  const { nicknameLength } = useUpdateNicknameForm()
   const userData = useSession()
   const MAX_LENGTH = 15
   return (
