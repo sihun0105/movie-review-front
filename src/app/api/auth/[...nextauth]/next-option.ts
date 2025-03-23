@@ -79,6 +79,7 @@ export const authOptions: AuthOptions = {
           const result = await repo.signInWithProvider({ id: user.id })
           user.id = result.id ?? user.id
           user.nickname = result.nickname ?? user.nickname
+          user.image = result.image ?? user.image
           return true
         }
       } catch (error) {
@@ -93,11 +94,16 @@ export const authOptions: AuthOptions = {
         token.nickname = session.nickname ?? token.nickname
         return token
       }
+      if (trigger === 'update' && session?.image) {
+        token.image = session.image ?? token.image
+        return token
+      }
 
       if (account) {
         token.provider = account.provider
         token.userId = user.id
         token.nickname = user.nickname
+        token.image = user.image ?? undefined
       }
       return token
     },
@@ -107,6 +113,7 @@ export const authOptions: AuthOptions = {
         session.user.id = token.userId ?? ''
         session.user.nickname = token.nickname ?? ''
         session.user.provider = token.provider ?? ''
+        session.user.image = token.image ?? ''
       }
       return session
     },

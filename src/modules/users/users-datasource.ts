@@ -119,4 +119,19 @@ export class UsersDatasource {
     }
     return res.json()
   }
+  async updateImage({ file }: { file: File | null }) {
+    const formData = new FormData()
+    formData.append('file', file ? file : '')
+    const res = await fetch(AppBackEndApiEndpoint.updateProfile(), {
+      method: 'POST',
+      body: formData,
+      headers: {
+        Authorization: `Bearer ${this.token}`,
+      },
+    })
+    if (!res.ok) {
+      throw new Error(`[${res.status}] ${res.statusText}`)
+    }
+    return res.json()
+  }
 }
