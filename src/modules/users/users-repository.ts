@@ -73,7 +73,7 @@ export class UsersRepository {
       nickname: arg.nickname ?? '',
       name: arg.name ?? '',
       email: arg.email ?? '',
-      profile: arg.profile ?? '',
+      image: arg.image ?? '',
     }
     assertUserEntity(result)
     return result
@@ -82,6 +82,16 @@ export class UsersRepository {
     try {
       const result = await this.datasource.updateProfile({
         nickname: nickname,
+        file: file,
+      })
+      return result
+    } catch (error) {
+      throw new Error('UsersRepository-updateProfile 에러')
+    }
+  }
+  async updateImage({ file }: { file: File }) {
+    try {
+      const result = await this.datasource.updateImage({
         file: file,
       })
       return result
