@@ -1,18 +1,28 @@
 'use client'
 import { Form } from '@/components/ui/form'
-import { FunctionComponent } from 'react'
+import { useSession } from 'next-auth/react'
+import { FunctionComponent, useRef } from 'react'
+import { useUpdateImageForm } from '../../hooks/use-update-image-form'
 import { useUpdateImageFormContext } from './update-image-form-context'
 import UpdateImageFormField from './update-image-form-field'
 interface UpdateImageFormProps {}
 
 const UpdateImageForm: FunctionComponent<UpdateImageFormProps> = ({}) => {
   const { form } = useUpdateImageFormContext()
-  const handleSubmit = form.handleSubmit(async (data) => {})
+  const fileInputRef = useRef<HTMLInputElement>(null)
+  const { handleSubmit, setFile, imageUrl, loading } = useUpdateImageForm()
+  const currentImage = useSession().data?.user.image ?? ''
   return (
     <div className="w-full">
       <Form {...form}>
         <form onSubmit={handleSubmit} className="space-y-8">
-          <UpdateImageFormField />
+          <UpdateImageFormField
+            setFile={setFile}
+            fileInputRef={fileInputRef}
+            loading={loading}
+            imageUrl={imageUrl}
+            currentImage={currentImage}
+          />
         </form>
       </Form>
     </div>
