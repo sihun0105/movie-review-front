@@ -4,6 +4,9 @@ const AppClientApiEndpoint = {
   updateProfile: () => {
     return `/api/profile`
   },
+  updateImage: () => {
+    return `/api/profile/image`
+  },
   createNewComment: (id: string) => {
     return `/api/comment/${id}`
   },
