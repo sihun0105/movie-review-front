@@ -66,19 +66,19 @@ const useUpdateImageForm = () => {
     }
   }
   const fetchupdateProfileImage = async (data: { file?: File }) => {
-    if (!data.file) return // 파일이 없으면 함수 종료
+    if (!data.file) return null
 
     try {
       const formData = new FormData()
       formData.append('file', data.file)
 
-      const res = await fetch(AppClientApiEndpoint.updateProfile(), {
+      const res = await fetch(AppClientApiEndpoint.updateImage(), {
         method: 'POST',
         body: formData,
       })
 
       if (!res.ok) {
-        // 오류 처리 (필요하면 추가)
+        console.log(res)
       }
 
       return res
@@ -88,10 +88,11 @@ const useUpdateImageForm = () => {
   }
 
   const handleSubmit = async (data: { file: File }) => {
+    console.log(data.file)
     if (!data.file) {
       return
     }
-
+    console.log(data.file)
     try {
       const result = await fetchupdateProfileImage({ file: data.file })
       if (result?.ok) {
