@@ -97,18 +97,11 @@ export class UsersDatasource {
     return res.json()
   }
 
-  async updateProfile({
-    nickname,
-    file,
-  }: {
-    nickname: string
-    file: File | null
-  }) {
+  async updateProfile({ nickname }: { nickname: string }) {
     const formData = new FormData()
     formData.append('nickname', nickname)
-    formData.append('file', file ? file : '')
     const res = await fetch(AppBackEndApiEndpoint.updateProfile(), {
-      method: 'PATCH',
+      method: 'POST',
       body: formData,
       headers: {
         Authorization: `Bearer ${this.token}`,
@@ -123,7 +116,7 @@ export class UsersDatasource {
     const formData = new FormData()
     formData.append('file', file ? file : '')
     const res = await fetch(AppBackEndApiEndpoint.updateProfile(), {
-      method: 'POST',
+      method: 'PATCH',
       body: formData,
       headers: {
         Authorization: `Bearer ${this.token}`,

@@ -78,11 +78,10 @@ export class UsersRepository {
     assertUserEntity(result)
     return result
   }
-  async updateProfile({ nickname, file }: { nickname: string; file: File }) {
+  async updateProfile({ nickname }: { nickname: string }) {
     try {
       const result = await this.datasource.updateProfile({
         nickname: nickname,
-        file: file,
       })
       return result
     } catch (error) {
