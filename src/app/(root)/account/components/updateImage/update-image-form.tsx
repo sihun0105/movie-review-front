@@ -11,7 +11,7 @@ const UpdateImageForm: FunctionComponent<UpdateImageFormProps> = ({}) => {
   const { form } = useUpdateImageFormContext()
   const fileInputRef = useRef<HTMLInputElement>(null)
   const { handleSubmit, setFile, imageUrl, loading } = useUpdateImageForm()
-  const currentImage = useSession().data?.user.image ?? ''
+  const currentImage = useSession().data?.user?.image ?? ''
   return (
     <div className="w-full">
       <Form {...form}>

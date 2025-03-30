@@ -25,7 +25,6 @@ const useUpdateImageForm = () => {
       form.setValue('file', file)
       return () => {
         URL.revokeObjectURL(url)
-        setImageUrl(null)
       }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -36,10 +35,12 @@ const useUpdateImageForm = () => {
 
     if (!checkImageSize(file)) {
       setFile(null)
+      showToast('이미지 크기가 너무 큽니다.')
       return
     }
 
     const update = async () => {
+      if (!file) return
       try {
         await updateProfileImage(file)
         router.refresh()
@@ -49,7 +50,6 @@ const useUpdateImageForm = () => {
     }
 
     update()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [file])
 
   const updateProfileImage = async (file: File) => {
@@ -80,7 +80,6 @@ const useUpdateImageForm = () => {
       if (!res.ok) {
         console.log(res)
       }
-
       return res
     } catch (error) {
       showToast('요청이 실패했습니다.')
@@ -88,15 +87,14 @@ const useUpdateImageForm = () => {
   }
 
   const handleSubmit = async (data: { file: File }) => {
-    console.log(data.file)
     if (!data.file) {
       return
     }
-    console.log(data.file)
     try {
       const result = await fetchupdateProfileImage({ file: data.file })
       if (result?.ok) {
-        await update({ image: data.file })
+        const responseData = await result.json()
+        await update({ image: responseData.image })
         showToast('프로필 이미지 업데이트에 성공했습니다.')
         router.refresh()
       } else {

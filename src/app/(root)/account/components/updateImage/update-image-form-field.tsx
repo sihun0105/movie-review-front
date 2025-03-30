@@ -58,14 +58,20 @@ const UpdateImageFormField: FunctionComponent<UpdateIMageFormFieldProps> = ({
                       <div className="h-20 w-20">
                         <Image
                           src={imageUrl}
+                          width={80}
+                          height={80}
                           alt="image"
-                          fill
                           className="object-contain"
                         />
                       </div>
                     ) : (
                       <div className="h-20 w-20">
-                        <Image src={currentImage} alt="Image" />
+                        <Image
+                          src={currentImage}
+                          alt="Image"
+                          width={80}
+                          height={80}
+                        />
                       </div>
                     )}
                   </div>

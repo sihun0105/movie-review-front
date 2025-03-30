@@ -16,7 +16,12 @@ const ProfileSection: FunctionComponent<ProfileSectionProps> = ({}) => {
       <div className="flex flex-row justify-between gap-2 rounded-md ">
         <div className="flex flex-row items-center justify-center gap-2">
           <Avatar className="h-[32px] w-[32px]">
-            <AvatarImage src="https://github.com/shadcn.png" />
+            <AvatarImage
+              src={userData.data?.user?.image}
+              width={32}
+              height={32}
+              alt="User_Avatar"
+            />
             <AvatarFallback></AvatarFallback>
           </Avatar>
 
