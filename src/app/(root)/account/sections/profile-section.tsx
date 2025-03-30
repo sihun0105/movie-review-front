@@ -17,7 +17,7 @@ const ProfileSection: FunctionComponent<ProfileSectionProps> = ({}) => {
         <div className="flex flex-row items-center justify-center gap-2">
           <Avatar className="h-[32px] w-[32px]">
             <AvatarImage
-              src={userData.data?.user.image}
+              src={userData.data?.user?.image}
               width={32}
               height={32}
               alt="User_Avatar"
