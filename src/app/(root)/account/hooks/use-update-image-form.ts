@@ -6,6 +6,7 @@ import { useEffect, useState } from 'react'
 import { useUpdateImageFormContext } from '../components/updateImage/update-image-form-context'
 import { useCheckImageSize } from './use-check-image-size'
 import { useUpdateProfileModalContext } from './use-update-profile-modal-context'
+import { useTranslateHeicToJpg } from './use-translate-heictojpg'
 
 const useUpdateImageForm = () => {
   const { form } = useUpdateImageFormContext()
@@ -16,6 +17,8 @@ const useUpdateImageForm = () => {
   const [imageUrl, setImageUrl] = useState<string | null>(null)
   const { setOpen } = useUpdateProfileModalContext()
   const { showToast } = useAppToast()
+  const { translate } = useTranslateHeicToJpg()
+
   const router = useRouter()
 
   useEffect(() => {
@@ -75,8 +78,9 @@ const useUpdateImageForm = () => {
     if (!data.file) return
 
     try {
-      const result = await fetchupdateProfileImage({ file: data.file })
-
+      const convertedFile = await translate(data.file)
+      const fileToUpload = convertedFile || data.file
+      const result = await fetchupdateProfileImage({ file: fileToUpload })
       if (result?.ok) {
         const responseData = await result.json()
         await update({ image: responseData.image })
