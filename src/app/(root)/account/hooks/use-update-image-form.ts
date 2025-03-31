@@ -40,31 +40,16 @@ const useUpdateImageForm = () => {
     }
 
     const update = async () => {
-      if (!file) return
       try {
-        await updateProfileImage(file)
-        router.refresh()
+        await handleSubmit({ file })
       } catch (error) {
         showToast('프로필 이미지 변경에 실패했습니다.')
       }
     }
 
     update()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [file])
-
-  const updateProfileImage = async (file: File) => {
-    setLoading(true)
-    try {
-      await new Promise((resolve) => setTimeout(resolve, 1000))
-      const formData = new FormData()
-      formData.append('file', file)
-      return formData
-    } catch (error) {
-      throw error
-    } finally {
-      setLoading(false)
-    }
-  }
   const fetchupdateProfileImage = async (data: { file?: File }) => {
     if (!data.file) return null
 
