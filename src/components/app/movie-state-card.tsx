@@ -27,8 +27,8 @@ const MovieCard: FunctionComponent<MovieCardProps> = ({ data: movie }) => {
               alt={movie.title}
               blurDataURL="iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg=="
               placeholder="blur"
-              objectFit="contain"
               fill
+              style={{ objectFit: 'contain' }} // ✅ objectFit을 style로 변경
             />
             <div className="absolute bottom-2 left-2 text-5xl font-bold text-gray-300">
               {movie.rank}
