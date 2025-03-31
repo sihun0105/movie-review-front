@@ -7,6 +7,7 @@ import {
 import { ChangeEvent, FunctionComponent } from 'react'
 import { useUpdateImageFormContext } from './update-image-form-context'
 import Image from 'next/image'
+import { AppConstants } from '@/config/app-constants'
 interface UpdateIMageFormFieldProps {
   setFile: (file: File) => void
   fileInputRef: React.RefObject<HTMLInputElement>
@@ -46,7 +47,8 @@ const UpdateImageFormField: FunctionComponent<UpdateIMageFormFieldProps> = ({
                 ref={fileInputRef}
                 onChange={handleProfileImageChange}
                 type="file"
-                accept="image/*,image/heic"
+                accept={[...AppConstants.imageFormat].join(',')}
+                size={20}
                 className="hidden"
               />
               <button
