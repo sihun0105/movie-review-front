@@ -105,6 +105,7 @@ export class UsersDatasource {
       body: formData,
       headers: {
         Authorization: `Bearer ${this.token}`,
+        'Content-Type': 'application/json',
       },
     })
     if (!res.ok) {
@@ -120,6 +121,7 @@ export class UsersDatasource {
       body: formData,
       headers: {
         Authorization: `Bearer ${this.token}`,
+        'Content-Type': 'application/json',
       },
     })
     if (!res.ok) {
