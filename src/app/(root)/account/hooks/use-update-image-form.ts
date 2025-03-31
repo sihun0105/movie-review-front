@@ -6,10 +6,11 @@ import { useEffect, useState } from 'react'
 import { useUpdateImageFormContext } from '../components/updateImage/update-image-form-context'
 import { useCheckImageSize } from './use-check-image-size'
 import { useUpdateProfileModalContext } from './use-update-profile-modal-context'
+import { update } from 'lodash'
 
 const useUpdateImageForm = () => {
   const { form } = useUpdateImageFormContext()
-  const { update } = useSession()
+  const { update: updateSession } = useSession()
   const { checkImageSize } = useCheckImageSize()
   const [file, setFile] = useState<File | null>(null)
   const [loading, setLoading] = useState(false)
@@ -82,7 +83,7 @@ const useUpdateImageForm = () => {
       const result = await fetchupdateProfileImage({ file: data.file })
       if (result?.ok) {
         const responseData = await result.json()
-        await update({ image: responseData.image })
+        await updateSession({ image: responseData.image })
         setImageUrl(responseData.image)
         showToast('프로필 이미지 업데이트에 성공했습니다.')
       } else {
