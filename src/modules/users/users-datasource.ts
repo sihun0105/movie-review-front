@@ -106,7 +106,6 @@ export class UsersDatasource {
       method: 'PATCH',
       body: JSON.stringify({ nickname }),
       headers: {
-        'Content-Type': 'application/json; charset=utf-8',
         Authorization: `Bearer ${this.token}`,
       },
     })
