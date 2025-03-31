@@ -13,6 +13,7 @@ export class UsersDatasource {
         headers: {
           'Content-Type': 'application/json',
         },
+        cache: 'no-cache',
         body: JSON.stringify({
           email: userId,
           password: password,
@@ -47,6 +48,7 @@ export class UsersDatasource {
           password: password,
           nickname: nickname,
         }),
+        cache: 'no-cache',
       })
       if (!res.ok) {
         throw new Error('UsersDatasource-signUp 에러')
@@ -69,6 +71,7 @@ export class UsersDatasource {
           provider: 'google',
           accessToken: params.id,
         }),
+        cache: 'no-cache',
       })
       if (!res.ok) {
         throw new Error(`[${res.status}] ${res.statusText}`)
@@ -107,7 +110,9 @@ export class UsersDatasource {
         Authorization: `Bearer ${this.token}`,
         'Content-Type': 'application/json',
       },
+      cache: 'no-cache',
     })
+
     if (!res.ok) {
       throw new Error(`[${res.status}] ${res.statusText}`)
     }
@@ -123,6 +128,7 @@ export class UsersDatasource {
         Authorization: `Bearer ${this.token}`,
         'Content-Type': 'application/json',
       },
+      cache: 'no-cache',
     })
     if (!res.ok) {
       throw new Error(`[${res.status}] ${res.statusText}`)
