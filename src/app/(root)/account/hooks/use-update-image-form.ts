@@ -72,14 +72,17 @@ const useUpdateImageForm = () => {
   }
 
   const handleSubmit = async (data: { file: File }) => {
-    if (!data.file) {
-      return
-    }
+    if (!data.file) return
+
     try {
       const result = await fetchupdateProfileImage({ file: data.file })
+
       if (result?.ok) {
         const responseData = await result.json()
         await update({ image: responseData.image })
+
+        setImageUrl(responseData.image)
+
         showToast('프로필 이미지 업데이트에 성공했습니다.')
         router.refresh()
       } else {
