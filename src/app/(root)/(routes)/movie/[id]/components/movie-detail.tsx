@@ -1,0 +1,87 @@
+'use client'
+
+import Image from 'next/image'
+import { FunctionComponent, useState, useCallback, useRef } from 'react'
+import { FaBeer } from 'react-icons/fa'
+
+interface MovieProps {
+  movie: {
+    id: number
+    audience: number
+    title: string
+    poster: string
+    plot: string
+    openedAt: string
+    genre: string
+    director: string
+    ratting: string
+  }
+}
+
+const MovieDetail: FunctionComponent<MovieProps> = ({ movie }) => {
+  const [rating, setRating] = useState(0)
+  const lastCalled = useRef<number | null>(null)
+
+  const throttledUpdateRating = useCallback((newRating: number) => {
+    const now = Date.now()
+    if (!lastCalled.current || now - lastCalled.current > 500) {
+      setRating(newRating)
+      lastCalled.current = now
+    }
+  }, [])
+
+  return (
+    <div className="relative min-h-screen w-full bg-black text-white">
+      {/* 배경 포스터 */}
+      <div className="absolute inset-0 h-full w-full overflow-hidden opacity-30">
+        <Image
+          src={movie.poster}
+          alt={movie.title}
+          layout="fill"
+          objectFit="cover"
+          className="blur-lg"
+        />
+      </div>
+
+      {/* 콘텐츠 */}
+      <div className="relative z-10 mx-auto flex max-w-6xl flex-col items-center gap-10 p-10 md:flex-row">
+        {/* 포스터 */}
+        <div className="relative h-96 w-64 overflow-hidden rounded-lg shadow-lg">
+          <Image
+            src={movie.poster}
+            alt={movie.title}
+            layout="fill"
+            objectFit="cover"
+          />
+        </div>
+
+        {/* 영화 정보 */}
+        <div className="flex max-w-2xl flex-col gap-4">
+          <h1 className="text-4xl font-bold">{movie.title}</h1>
+          <p className="text-gray-300">
+            {movie.genre} · {movie.ratting} ·{' '}
+            {new Date(movie.openedAt).getFullYear()}
+          </p>
+          <p className="text-lg leading-relaxed text-gray-200">{movie.plot}</p>
+          <div className="flex items-center gap-4 text-gray-400">
+            <span>감독: {movie.director}</span>
+            <span>관객수: {movie.audience.toLocaleString()}명</span>
+          </div>
+
+          {/* 별점 시스템 */}
+          <div className="mt-4 flex items-center gap-2 text-yellow-400">
+            {[1, 2, 3, 4, 5].map((index) => (
+              <FaBeer
+                key={index}
+                className={`cursor-pointer text-3xl transition ${index <= rating ? 'text-yellow-500' : 'text-gray-600'}`}
+                onClick={() => throttledUpdateRating(index)}
+              />
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+export default MovieDetail

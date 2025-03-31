@@ -1,7 +1,7 @@
 import { FunctionComponent } from 'react'
 import ActiveSection from './sections/active-section'
 import CommentSection from './sections/comment-section'
-// import DescriptionSection from './sections/description-section'
+import DescriptionSection from './sections/description-section'
 
 interface PageProps {
   params: {
@@ -12,7 +12,7 @@ interface PageProps {
 const Page: FunctionComponent<PageProps> = async ({ params: { id } }) => {
   return (
     <main className="container flex min-h-screen flex-col">
-      {/* <DescriptionSection id={id} /> */}
+      <DescriptionSection id={id} />
       <CommentSection />
       <div className="sticky bottom-4 left-0 right-0 mx-auto w-full max-w-[460px]">
         <ActiveSection id={id} />
