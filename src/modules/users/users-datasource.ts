@@ -108,11 +108,10 @@ export class UsersDatasource {
       body: formData,
       headers: {
         Authorization: `Bearer ${this.token}`,
-        'Content-Type': 'application/json',
       },
       cache: 'no-cache',
     })
-
+    console.log(res)
     if (!res.ok) {
       throw new Error(`[${res.status}] ${res.statusText}`)
     }
@@ -126,7 +125,6 @@ export class UsersDatasource {
       body: formData,
       headers: {
         Authorization: `Bearer ${this.token}`,
-        'Content-Type': 'application/json',
       },
       cache: 'no-cache',
     })
