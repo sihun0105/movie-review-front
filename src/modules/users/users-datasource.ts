@@ -101,17 +101,15 @@ export class UsersDatasource {
   }
 
   async updateProfile({ nickname }: { nickname: string }) {
-    const formData = new FormData()
-    formData.append('nickname', nickname)
     const res = await fetch(AppBackEndApiEndpoint.updateProfileNickname(), {
+      cache: 'no-cache',
       method: 'PATCH',
-      body: formData,
+      body: JSON.stringify({ nickname }),
       headers: {
+        'Content-Type': 'application/json; charset=utf-8',
         Authorization: `Bearer ${this.token}`,
       },
-      cache: 'no-cache',
     })
-    console.log(res)
     if (!res.ok) {
       throw new Error(`[${res.status}] ${res.statusText}`)
     }
