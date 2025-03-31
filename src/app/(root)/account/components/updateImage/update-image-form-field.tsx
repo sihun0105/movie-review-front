@@ -46,7 +46,7 @@ const UpdateImageFormField: FunctionComponent<UpdateIMageFormFieldProps> = ({
                 ref={fileInputRef}
                 onChange={handleProfileImageChange}
                 type="file"
-                accept="image/*"
+                accept="image/*,image/heic"
                 className="hidden"
               />
               <button
