@@ -101,7 +101,7 @@ export class UsersDatasource {
     const formData = new FormData()
     formData.append('nickname', nickname)
     const res = await fetch(AppBackEndApiEndpoint.updateProfile(), {
-      method: 'POST',
+      method: 'PATCH',
       body: formData,
       headers: {
         Authorization: `Bearer ${this.token}`,
