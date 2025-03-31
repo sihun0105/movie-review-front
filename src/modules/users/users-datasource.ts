@@ -100,7 +100,7 @@ export class UsersDatasource {
   async updateProfile({ nickname }: { nickname: string }) {
     const formData = new FormData()
     formData.append('nickname', nickname)
-    const res = await fetch(AppBackEndApiEndpoint.updateProfile(), {
+    const res = await fetch(AppBackEndApiEndpoint.updateProfileNickname(), {
       method: 'PATCH',
       body: formData,
       headers: {

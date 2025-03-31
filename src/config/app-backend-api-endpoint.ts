@@ -53,8 +53,8 @@ const AppBackEndApiEndpoint = {
   getMovieDetail: (movieCd: string) => {
     return `${process.env.SERVER_API}/movie/${movieCd}`
   },
-  updateProfile: () => {
-    return `${process.env.SERVER_API}/user`
+  updateProfileNickname: () => {
+    return `${process.env.SERVER_API}/user/nickname`
   },
   updateProfileImage: () => {
     return `${process.env.SERVER_API}/user/image`
