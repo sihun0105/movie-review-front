@@ -84,6 +84,7 @@ const useUpdateImageForm = () => {
         const responseData = await result.json()
 
         await updateSession({ image: responseData.image })
+        setOpen(false)
         setImageUrl(responseData.image)
         showToast('프로필 이미지 업데이트에 성공했습니다.')
       } else {
