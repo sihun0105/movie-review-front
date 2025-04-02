@@ -103,7 +103,7 @@ export const authOptions: AuthOptions = {
         token.provider = account.provider
         token.userId = user.id
         token.nickname = user.nickname
-        token.image = user.image ?? undefined
+        token.image = user.image
       }
       return token
     },

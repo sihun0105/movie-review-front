@@ -17,6 +17,7 @@ declare module 'next-auth' {
   interface User {
     phone: string
     nickname: string
+    image: string
   }
 }
 
