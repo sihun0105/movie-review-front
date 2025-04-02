@@ -17,7 +17,6 @@ const useUpdateImageForm = () => {
   const [imageUrl, setImageUrl] = useState<string | null>(null)
   const { setOpen } = useUpdateProfileModalContext()
   const { showToast } = useAppToast()
-  // const { translate } = useTranslateHeicToJpg()
 
   const router = useRouter()
 
@@ -31,7 +30,6 @@ const useUpdateImageForm = () => {
         setImageUrl(null)
       }
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [file])
 
   useEffect(() => {
@@ -56,6 +54,7 @@ const useUpdateImageForm = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [file])
   const fetchupdateProfileImage = async (data: { file?: File }) => {
+    console.log('fetchupdateProfileImage', data)
     if (!data.file) return null
 
     try {
@@ -83,6 +82,7 @@ const useUpdateImageForm = () => {
       const result = await fetchupdateProfileImage({ file: data.file })
       if (result?.ok) {
         const responseData = await result.json()
+
         await updateSession({ image: responseData.image })
         setImageUrl(responseData.image)
         showToast('프로필 이미지 업데이트에 성공했습니다.')
