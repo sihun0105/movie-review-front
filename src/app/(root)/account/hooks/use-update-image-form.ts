@@ -87,7 +87,7 @@ const useUpdateImageForm = () => {
         setOpen(false)
         setImageUrl(responseData.image)
         showToast('프로필 이미지 업데이트에 성공했습니다.')
-        router.refresh() // 세션 업데이트 후 새로고침
+        router.refresh()
       } else {
         showToast('프로필 이미지 업데이트에 실패했습니다.')
       }
