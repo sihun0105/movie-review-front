@@ -1,8 +1,9 @@
+'use client'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { useSession } from 'next-auth/react'
 import { FunctionComponent } from 'react'
-import { UpdateProfileModal } from '../components/update-profile-modal'
 import { useUpdateProfileModalContext } from '../hooks/use-update-profile-modal-context'
+import { UpdateProfileModal } from '../components/update-profile-modal'
 interface ProfileSectionProps {}
 
 const ProfileSection: FunctionComponent<ProfileSectionProps> = ({}) => {
@@ -16,7 +17,7 @@ const ProfileSection: FunctionComponent<ProfileSectionProps> = ({}) => {
         <div className="flex flex-row items-center justify-center gap-2">
           <Avatar className="h-[32px] w-[32px]">
             <AvatarImage
-              src={userData.data?.user?.nickname}
+              src={userData.data?.user?.image}
               width={32}
               height={32}
               alt="User_Avatar"
