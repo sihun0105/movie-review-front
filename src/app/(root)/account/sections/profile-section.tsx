@@ -15,7 +15,7 @@ const ProfileSection: FunctionComponent<ProfileSectionProps> = ({}) => {
       <p className="font-bold">프로필</p>
       <div className="flex flex-row justify-between gap-2 rounded-md ">
         <div className="flex flex-row items-center justify-center gap-2">
-          <Avatar className="h-[32px] w-[32px]">
+          {/* <Avatar className="h-[32px] w-[32px]">
             <AvatarImage
               key={userData.data?.user?.image}
               src={userData.data?.user?.image}
@@ -24,8 +24,9 @@ const ProfileSection: FunctionComponent<ProfileSectionProps> = ({}) => {
               alt="User_Avatar"
             />
             <AvatarFallback></AvatarFallback>
-          </Avatar>
+          </Avatar> */}
 
+          <p>{userData.data?.user?.image}</p>
           <p>{userData.data?.user?.nickname}</p>
         </div>
         <div className="flex items-center">
