@@ -1,12 +1,11 @@
 import { AppClientApiEndpoint } from '@/config/app-client-api-endpoint'
 import { useAppToast } from '@/hooks/use-app-toast'
-import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import { useUpdateImageFormContext } from '../components/updateImage/update-image-form-context'
 import { useCheckImageSize } from './use-check-image-size'
 import { useUpdateProfileModalContext } from './use-update-profile-modal-context'
-import { update } from 'lodash'
+import { useSession } from 'next-auth/react'
 
 const useUpdateImageForm = () => {
   const { form } = useUpdateImageFormContext()
@@ -49,7 +48,6 @@ const useUpdateImageForm = () => {
         showToast('프로필 이미지 변경에 실패했습니다.')
       }
     }
-
     update()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [file])
@@ -65,7 +63,6 @@ const useUpdateImageForm = () => {
         method: 'POST',
         body: formData,
       })
-
       if (!res.ok) {
         console.log(res)
       }
@@ -82,10 +79,9 @@ const useUpdateImageForm = () => {
       const result = await fetchupdateProfileImage({ file: data.file })
       if (result?.ok) {
         const responseData = await result.json()
-
-        await updateSession({ image: responseData.image })
+        await updateSession({ image: responseData.data.image })
         setOpen(false)
-        setImageUrl(responseData.image)
+        setImageUrl(responseData.data.image)
         showToast('프로필 이미지 업데이트에 성공했습니다.')
         router.refresh()
       } else {
@@ -100,7 +96,7 @@ const useUpdateImageForm = () => {
     showToast,
     setOpen,
     router,
-    update,
+    update: updateSession,
     handleSubmit: form.handleSubmit(handleSubmit),
     imageUrl,
     setFile,
