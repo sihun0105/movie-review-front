@@ -59,6 +59,12 @@ const AppBackEndApiEndpoint = {
   updateProfileImage: () => {
     return `${process.env.SERVER_API}/user/image`
   },
+  updateScore: (id: string) => {
+    return `${process.env.SERVER_API}/movie/${id}`
+  },
+  getScore: (id: string) => {
+    return `${process.env.SERVER_API}/movie/${id}`
+  },
 }
 
 export { AppBackEndApiEndpoint }
