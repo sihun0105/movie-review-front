@@ -36,3 +36,25 @@ export function assertMovie(arg: any): asserts arg is Movie {
     throw new Error('Invalid Movie')
   }
 }
+
+export interface Score {
+  id: string
+  score: number
+  userId: number
+  movieCd: string
+}
+export function isScore(arg: any): arg is Score {
+  return (
+    arg !== null &&
+    typeof arg === 'object' &&
+    typeof arg.id === 'string' &&
+    typeof arg.score === 'number' &&
+    typeof arg.userId === 'number' &&
+    typeof arg.movieCd === 'string'
+  )
+}
+export function assertScore(arg: any): asserts arg is Score {
+  if (!isScore(arg)) {
+    throw new Error('Invalid Score')
+  }
+}
