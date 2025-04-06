@@ -15,19 +15,25 @@ const MovieScore: FunctionComponent<MovieScoreProps> = ({ movieCd }) => {
   const handleUpdateScore = (score: number) => {
     update(score)
   }
-  if (!movieCd || !data) return null
-
   return (
     <>
       {/* 별점 시스템 */}
       <div className="mt-4 flex items-center gap-2 text-yellow-400">
-        {[1, 2, 3, 4, 5].map((index) => (
-          <FaBeer
-            key={index}
-            className={`cursor-pointer text-3xl transition ${index <= data.score ? 'text-yellow-500' : 'text-gray-600'}`}
-            onClick={() => handleUpdateScore(index)}
-          />
-        ))}
+        {[1, 2, 3, 4, 5].map((index) =>
+          data ? (
+            <FaBeer
+              key={index}
+              className={`cursor-pointer text-3xl transition ${index <= data.score ? 'text-yellow-500' : 'text-gray-600'}`}
+              onClick={() => handleUpdateScore(index)}
+            />
+          ) : (
+            <FaBeer
+              key={index}
+              className={`cursor-pointer text-3xl transition ${index <= 0 ? 'text-yellow-500' : 'text-gray-600'}`}
+              onClick={() => handleUpdateScore(index)}
+            />
+          ),
+        )}
       </div>
     </>
   )
