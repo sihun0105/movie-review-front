@@ -59,11 +59,11 @@ const AppBackEndApiEndpoint = {
   updateProfileImage: () => {
     return `${process.env.SERVER_API}/user/image`
   },
-  updateScore: (id: string) => {
-    return `${process.env.SERVER_API}/movie/${id}`
+  updateScore: (id: number) => {
+    return `${process.env.SERVER_API}/movie/score/${id}`
   },
   getScore: (id: string) => {
-    return `${process.env.SERVER_API}/movie/${id}`
+    return `${process.env.SERVER_API}/movie/score/${id}`
   },
 }
 

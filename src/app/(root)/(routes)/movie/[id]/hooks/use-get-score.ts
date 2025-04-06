@@ -6,7 +6,7 @@ interface UpdateScoreResult {
   score: number
 }
 
-const getKey = (id: string) => {
+const getKey = (id: number) => {
   if (!id) return null
   return AppClientApiEndpoint.getScore(id)
 }
@@ -14,9 +14,6 @@ const getKey = (id: string) => {
 const fetcher = async (url: string): Promise<UpdateScoreResult> => {
   const res = await fetch(url, {
     method: 'GET',
-    headers: {
-      'Content-Type': 'application/json',
-    },
   })
   if (!res.ok) {
     console.log(
@@ -31,7 +28,7 @@ const fetcher = async (url: string): Promise<UpdateScoreResult> => {
   return result.data
 }
 
-const useGetScore = (id: string) => {
+const useGetScore = (id: number) => {
   const { data, error, isLoading, mutate } = useSWR<UpdateScoreResult>(
     getKey(id),
     fetcher,

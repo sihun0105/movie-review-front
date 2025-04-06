@@ -1,8 +1,6 @@
-'use client'
-
 import Image from 'next/image'
-import { FunctionComponent, useState, useCallback, useRef } from 'react'
-import { FaBeer } from 'react-icons/fa'
+import { FunctionComponent } from 'react'
+import MovieScore from './movie-score'
 
 interface MovieProps {
   movie: {
@@ -19,17 +17,6 @@ interface MovieProps {
 }
 
 const MovieDetail: FunctionComponent<MovieProps> = ({ movie }) => {
-  const [rating, setRating] = useState(0)
-  const lastCalled = useRef<number | null>(null)
-
-  const throttledUpdateRating = useCallback((newRating: number) => {
-    const now = Date.now()
-    if (!lastCalled.current || now - lastCalled.current > 500) {
-      setRating(newRating)
-      lastCalled.current = now
-    }
-  }, [])
-
   return (
     <div className="relative min-h-screen w-full bg-black text-white">
       {/* 배경 포스터 */}
@@ -68,16 +55,7 @@ const MovieDetail: FunctionComponent<MovieProps> = ({ movie }) => {
             <span>관객수: {movie.audience.toLocaleString()}명</span>
           </div>
 
-          {/* 별점 시스템 */}
-          <div className="mt-4 flex items-center gap-2 text-yellow-400">
-            {[1, 2, 3, 4, 5].map((index) => (
-              <FaBeer
-                key={index}
-                className={`cursor-pointer text-3xl transition ${index <= rating ? 'text-yellow-500' : 'text-gray-600'}`}
-                onClick={() => throttledUpdateRating(index)}
-              />
-            ))}
-          </div>
+          <MovieScore movieCd={movie.id} />
         </div>
       </div>
     </div>

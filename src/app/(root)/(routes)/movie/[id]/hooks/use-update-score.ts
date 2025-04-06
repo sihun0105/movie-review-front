@@ -5,11 +5,13 @@ import useSWR from 'swr'
 import { useAuthenticationCheck } from '@/hooks/use-authentication-check'
 
 interface UpdateScoreResult {
-  id: string
+  id: number
   score: number
 }
-
-const updateScore = throttle(async (id: string, score: number) => {
+const getKey = (id: number) => {
+  return AppClientApiEndpoint.getScore(id)
+}
+const updateScore = throttle(async (id: number, score: number) => {
   const url = AppClientApiEndpoint.updateScore(id)
   const res = await fetch(url, {
     body: JSON.stringify({ score }),
@@ -29,16 +31,15 @@ const updateScore = throttle(async (id: string, score: number) => {
 const useUpdateScore = () => {
   const { showToast } = useAppToast()
   const { requireAuthentication } = useAuthenticationCheck()
-
   const { data, mutate, error, isValidating } =
-    useSWR<UpdateScoreResult[]>('/scores')
+    useSWR<UpdateScoreResult[]>(getKey)
 
   const handleUpdateScore = requireAuthentication(
-    (id: string, score: number) => {
+    (id: number, score: number) => {
+      console.log(data)
       const optimisticData = data?.map((item) =>
         item.id === id ? { ...item, score } : item,
       )
-
       mutate(
         async () => {
           await updateScore(id, score)
@@ -47,6 +48,7 @@ const useUpdateScore = () => {
         },
         {
           optimisticData,
+          revalidate: false,
           rollbackOnError: () => {
             showToast('점수 업데이트에 실패했습니다.')
             return true
@@ -58,7 +60,7 @@ const useUpdateScore = () => {
 
   return {
     data,
-    handleUpdateScore,
+    update: handleUpdateScore,
     error,
     isValidating,
   }

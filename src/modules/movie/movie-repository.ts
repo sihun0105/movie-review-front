@@ -44,11 +44,13 @@ export class MovieRepository {
     const result = {
       id: unknown.id,
       score: unknown.score,
+      userId: unknown.userId,
+      movieCd: unknown.movieCd,
     } as Score
     assertScore(result)
     return result
   }
-  async updateScore(id: string, score: number): Promise<Score> {
+  async updateScore(id: number, score: number): Promise<Score> {
     const data = await this.datasource.updateScore(id, score)
     return this.convertToScoreEntity(data)
   }
