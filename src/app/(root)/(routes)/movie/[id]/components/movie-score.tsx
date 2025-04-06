@@ -11,9 +11,9 @@ interface MovieScoreProps {
 
 const MovieScore: FunctionComponent<MovieScoreProps> = ({ movieCd }) => {
   const { data } = useGetScore(movieCd)
-  const { update } = useUpdateScore()
-  const handleUpdateScore = (movieCd: number, score: number) => {
-    update(movieCd, score)
+  const { update } = useUpdateScore(movieCd)
+  const handleUpdateScore = (score: number) => {
+    update(score)
   }
   if (!movieCd || !data) return null
 
@@ -25,7 +25,7 @@ const MovieScore: FunctionComponent<MovieScoreProps> = ({ movieCd }) => {
           <FaBeer
             key={index}
             className={`cursor-pointer text-3xl transition ${index <= data.score ? 'text-yellow-500' : 'text-gray-600'}`}
-            onClick={() => handleUpdateScore(movieCd, index)}
+            onClick={() => handleUpdateScore(index)}
           />
         ))}
       </div>
