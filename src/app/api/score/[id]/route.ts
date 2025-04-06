@@ -4,7 +4,7 @@ import { NextRequest } from 'next/server'
 
 export const POST = async (
   req: NextRequest,
-  { params }: { params: { id: string } },
+  { params }: { params: { id: number } },
 ) => {
   const { id } = params
   const token = await getTokenFromCookie()
@@ -50,6 +50,7 @@ export const GET = async (
 ) => {
   const { id } = params
   const token = await getTokenFromCookie()
+
   const repository = new MovieRepository(token)
   try {
     const data = await repository.getScore(id)

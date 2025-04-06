@@ -1,4 +1,5 @@
 import { AppBackEndApiEndpoint } from '@/config/app-backend-api-endpoint'
+import console from 'console'
 
 export class MovieDatasource {
   private token?: string
@@ -34,19 +35,19 @@ export class MovieDatasource {
     }
     return res.json()
   }
-  async updateScore(id: string, score: number) {
+  async updateScore(id: number, score: number) {
     const res = await fetch(AppBackEndApiEndpoint.updateScore(id), {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `${this.token}`,
+        Authorization: `Bearer ${this.token}`,
       },
       body: JSON.stringify({
         score,
       }),
       cache: 'no-cache',
     })
-    if (res.status !== 200) {
+    if (!res.ok) {
       throw new Error('Movie를 받아 올 수 없습니다.')
     }
     return res.json()
@@ -57,11 +58,11 @@ export class MovieDatasource {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `${this.token}`,
+        Authorization: `Bearer ${this.token}`,
       },
       cache: 'no-cache',
     })
-    if (res.status !== 200) {
+    if (!res.ok) {
       throw new Error('Score를 받아 올 수 없습니다.')
     }
     return res.json()

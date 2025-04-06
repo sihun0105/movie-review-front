@@ -38,19 +38,19 @@ export function assertMovie(arg: any): asserts arg is Movie {
 }
 
 export interface Score {
-  id: string
+  id: number
   score: number
   userId: number
-  movieCd: string
+  movieCd: number
 }
 export function isScore(arg: any): arg is Score {
   return (
     arg !== null &&
     typeof arg === 'object' &&
-    typeof arg.id === 'string' &&
+    typeof arg.id === 'number' &&
     typeof arg.score === 'number' &&
     typeof arg.userId === 'number' &&
-    typeof arg.movieCd === 'string'
+    typeof arg.movieCd === 'number'
   )
 }
 export function assertScore(arg: any): asserts arg is Score {

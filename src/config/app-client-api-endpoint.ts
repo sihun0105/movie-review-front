@@ -1,11 +1,11 @@
 import queryString from 'query-string'
 
 const AppClientApiEndpoint = {
-  getScore: (id: string) => {
-    return `/api/scores/${id}`
+  getScore: (id: number) => {
+    return `/api/score/${id}`
   },
-  updateScore: (id: string) => {
-    return `/api/scores/${id}`
+  updateScore: (id: number) => {
+    return `/api/score/${id}`
   },
   updateProfile: () => {
     return `/api/profile`
