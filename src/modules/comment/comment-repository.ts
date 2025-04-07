@@ -7,7 +7,7 @@ export class CommentRepository {
     private token?: string,
     datasource?: CommentDatasource,
   ) {
-    this.datasource = datasource ?? new CommentDatasource(token)
+    this.datasource = datasource ?? new CommentDatasource(token ?? undefined)
   }
 
   async getCommentList(id: string, page?: number): Promise<Comment[]> {
