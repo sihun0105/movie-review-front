@@ -11,5 +11,5 @@ export default withAuth({
 })
 
 export const config = {
-  matcher: ['/movie/:path*', '/account/:path*'],
+  matcher: ['/account/:path*'],
 }

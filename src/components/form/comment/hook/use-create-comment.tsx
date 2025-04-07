@@ -1,5 +1,6 @@
 import { AppClientApiEndpoint } from '@/config/app-client-api-endpoint'
 import useSWRMutate from 'swr/mutation'
+import { useAuthenticationCheck } from '@/hooks/use-authentication-check'
 
 const fetcher = async (
   url: string,
@@ -28,29 +29,32 @@ const fetcher = async (
 }
 
 export const useCreateComment = (id: string) => {
+  const { requireAuthentication } = useAuthenticationCheck()
   const { trigger, isMutating, error } = useSWRMutate(
     AppClientApiEndpoint.createNewComment(id),
     fetcher,
   )
 
-  const createComment = (
-    arg: {
-      movieId: string
-      comment: string
+  const createComment = requireAuthentication(
+    (
+      arg: {
+        movieId: string
+        comment: string
+      },
+      {
+        onSuccess,
+        onError,
+      }: {
+        onSuccess: () => void
+        onError: () => void
+      },
+    ) => {
+      trigger(arg, {
+        onSuccess,
+        onError,
+      })
     },
-    {
-      onSuccess,
-      onError,
-    }: {
-      onSuccess: () => void
-      onError: () => void
-    },
-  ) => {
-    trigger(arg, {
-      onSuccess,
-      onError,
-    })
-  }
+  )
 
   return {
     createComment,
