@@ -16,7 +16,7 @@ const useAuthenticationCheck = (): UseAuthenticationCheck => {
     <T extends (...args: any[]) => any>(callback: T) => {
       return (...args: Parameters<T>) => {
         if (!session) {
-          router.push('/auth/login')
+          router.push('/login')
           return
         }
         callback(...args)

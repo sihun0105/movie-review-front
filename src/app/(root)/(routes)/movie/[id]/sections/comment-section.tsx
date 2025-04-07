@@ -3,6 +3,7 @@ import { FunctionComponent } from 'react'
 import { useGetComments } from '../hooks/use-get-comment'
 import InfiniteScroll from 'react-infinite-scroll-component'
 import ReviewCard from '../components/review-card'
+
 interface CommentSectionProps {}
 
 const CommentSection: FunctionComponent<CommentSectionProps> = ({}) => {
@@ -10,19 +11,24 @@ const CommentSection: FunctionComponent<CommentSectionProps> = ({}) => {
   if (isLoading)
     return (
       <div className="flex h-[40vh] items-center justify-center">
-        <div>loading...</div>
+        <div>로딩 중...</div>
       </div>
     )
+
   if (!data) return null
+
   return (
-    <main className="max-h-[40vh] min-h-[40vh] overflow-y-auto">
+    <main className="max-h-[40vh] min-h-[40vh] overflow-y-auto border-t border-gray-300 bg-gray-50 p-4">
+      <h2 className="mb-4 text-lg font-bold text-gray-700">댓글</h2>
       <InfiniteScroll
         dataLength={data.length}
         next={next}
         hasMore={hasMore}
-        loader={<div className=" w-full items-center justify-center"></div>}
+        loader={
+          <div className="flex items-center justify-center">로딩 중...</div>
+        }
       >
-        <section className="mt-3 grid gap-1">
+        <section className="grid gap-4">
           {data.map((pageData: any) =>
             pageData.map((comment: any, idx: any) => (
               <ReviewCard comment={comment} key={idx} />
@@ -30,7 +36,11 @@ const CommentSection: FunctionComponent<CommentSectionProps> = ({}) => {
           )}
         </section>
       </InfiniteScroll>
-      {error && <div className="m-2">데이터를 불러오는데 실패했습니다.</div>}
+      {error && (
+        <div className="mt-4 text-center text-red-500">
+          데이터를 불러오는데 실패했습니다.
+        </div>
+      )}
     </main>
   )
 }
