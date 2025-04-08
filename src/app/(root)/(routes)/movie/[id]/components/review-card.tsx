@@ -11,11 +11,10 @@ interface ReviewCardProps {
 
 const ReviewCard: FunctionComponent<ReviewCardProps> = ({ comment }) => {
   const session = useSession()
-  const { deleteComment, deleteCommentError, isCreatingComment } =
-    useDeleteComment(comment.id)
-  if (!session.data?.user.id) {
-    return null
-  }
+  const { deleteComment } = useDeleteComment(comment.id)
+
+  if (!comment) return null
+
   const handleSubmit = async () => {
     await deleteComment(
       {
@@ -32,6 +31,9 @@ const ReviewCard: FunctionComponent<ReviewCardProps> = ({ comment }) => {
       },
     )
   }
+
+  const userId = session.data?.user?.id
+
   return (
     <div className="my-2 rounded border p-3 shadow-sm">
       <div className="flex justify-between">
@@ -40,7 +42,7 @@ const ReviewCard: FunctionComponent<ReviewCardProps> = ({ comment }) => {
           <span className="text-sm text-gray-500">
             {new Date(comment.updatedAt).toLocaleString()}
           </span>
-          {+session.data.user.id === comment.userId && (
+          {userId && +userId === comment.userId && (
             <X className="cursor-pointer" onClick={handleSubmit} />
           )}
         </div>
