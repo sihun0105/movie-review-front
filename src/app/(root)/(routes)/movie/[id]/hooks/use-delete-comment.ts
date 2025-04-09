@@ -1,5 +1,7 @@
 import { AppClientApiEndpoint } from '@/config/app-client-api-endpoint'
-import useSWRMutate from 'swr/mutation'
+import useSWRMutation from 'swr/mutation'
+import { useAppToast } from '@/hooks/use-app-toast'
+import { mutate } from 'swr'
 
 const fetcher = async (
   url: string,
@@ -19,19 +21,21 @@ const fetcher = async (
   })
   const result = await res.json()
   if (!res.ok) {
-    throw new Error(result.message)
+    throw new Error(result.message || '댓글 삭제에 실패했습니다.')
   }
 
   return result
 }
 
-export const useDeleteComment = (id: number) => {
-  const { trigger, isMutating, error } = useSWRMutate(
-    AppClientApiEndpoint.deleteCommnet(id),
+export const useDeleteComment = (movieId: number) => {
+  const { showToast } = useAppToast()
+
+  const { trigger, isMutating, error } = useSWRMutation(
+    AppClientApiEndpoint.deleteCommnet(movieId),
     fetcher,
   )
 
-  const deleteComment = (
+  const deleteComment = async (
     arg: {
       commentId: number
     },
@@ -39,19 +43,34 @@ export const useDeleteComment = (id: number) => {
       onSuccess,
       onError,
     }: {
-      onSuccess: () => void
-      onError: () => void
-    },
+      onSuccess?: () => void
+      onError?: () => void
+    } = {},
   ) => {
-    trigger(arg, {
-      onSuccess,
-      onError,
-    })
+    try {
+      await trigger(arg)
+      showToast('댓글이 성공적으로 삭제되었습니다.')
+
+      // ✅ SWR Infinite 전용 invalidate
+      const keyPrefix = AppClientApiEndpoint.getComments(movieId, 0).split(
+        '?',
+      )[0]
+      await mutate(
+        (key) => typeof key === 'string' && key.startsWith(keyPrefix),
+        undefined,
+        { revalidate: true },
+      )
+
+      onSuccess?.()
+    } catch (e) {
+      showToast('댓글 삭제에 실패했습니다.')
+      onError?.()
+    }
   }
 
   return {
     deleteComment,
-    isCreatingComment: isMutating,
+    isDeletingComment: isMutating,
     deleteCommentError: error,
   }
 }

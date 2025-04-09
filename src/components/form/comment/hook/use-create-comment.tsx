@@ -1,28 +1,32 @@
-import { AppClientApiEndpoint } from '@/config/app-client-api-endpoint'
-import useSWRMutate from 'swr/mutation'
-import { useAuthenticationCheck } from '@/hooks/use-authentication-check'
+'use client'
 
-const fetcher = async (
-  url: string,
-  {
-    arg,
-  }: {
-    arg: {
-      movieId: string
-      comment: string
-    }
-  },
-) => {
+import { AppClientApiEndpoint } from '@/config/app-client-api-endpoint'
+import useSWRMutation from 'swr/mutation'
+import { useAuthenticationCheck } from '@/hooks/use-authentication-check'
+import { useAppToast } from '@/hooks/use-app-toast'
+import { useRouter } from 'next/navigation'
+
+interface CreateCommentArgs {
+  movieId: string
+  comment: string
+}
+
+const fetcher = async (url: string, { arg }: { arg: CreateCommentArgs }) => {
   const formData = new FormData()
   formData.append('movieId', arg.movieId)
   formData.append('comment', arg.comment)
+
   const res = await fetch(url, {
     method: 'POST',
     body: formData,
+    cache: 'no-cache',
   })
+
   const result = await res.json()
+
   if (!res.ok) {
-    throw new Error(result.message)
+    console.error(`[useCreateComment] ${url}, error: ${res.status}`)
+    throw new Error(result.message || '댓글 등록에 실패했습니다.')
   }
 
   return result
@@ -30,35 +34,41 @@ const fetcher = async (
 
 export const useCreateComment = (id: string) => {
   const { requireAuthentication } = useAuthenticationCheck()
-  const { trigger, isMutating, error } = useSWRMutate(
-    AppClientApiEndpoint.createNewComment(id),
-    fetcher,
-  )
+  const { showToast } = useAppToast()
+  const router = useRouter()
+
+  const {
+    trigger,
+    isMutating: isCreatingComment,
+    error: createCommentError,
+  } = useSWRMutation(AppClientApiEndpoint.createNewComment(id), fetcher)
 
   const createComment = requireAuthentication(
-    (
-      arg: {
-        movieId: string
-        comment: string
-      },
+    async (
+      arg: CreateCommentArgs,
       {
         onSuccess,
         onError,
       }: {
-        onSuccess: () => void
-        onError: () => void
-      },
+        onSuccess?: () => void
+        onError?: () => void
+      } = {},
     ) => {
-      trigger(arg, {
-        onSuccess,
-        onError,
-      })
+      try {
+        await trigger(arg)
+        showToast('댓글이 성공적으로 등록되었습니다.')
+        router.refresh()
+        onSuccess?.()
+      } catch (e) {
+        showToast('댓글 등록에 실패했습니다.')
+        onError?.()
+      }
     },
   )
 
   return {
     createComment,
-    isCreatingComment: isMutating,
-    createCommentError: error,
+    isCreatingComment,
+    createCommentError,
   }
 }

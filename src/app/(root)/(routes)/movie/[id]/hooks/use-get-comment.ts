@@ -1,6 +1,7 @@
 import { AppClientApiEndpoint } from '@/config/app-client-api-endpoint'
 import { useParams } from 'next/navigation'
 import useSWRInfinite from 'swr/infinite'
+import { mutate } from 'swr'
 
 const getKey =
   (movieId: number) => (pageIndex: number, previousPageData: any) => {
@@ -11,7 +12,10 @@ const getKey =
   }
 
 const fetcher = async (url: string): Promise<any> => {
-  const res = await fetch(url)
+  const res = await fetch(url, {
+    cache: 'no-cache',
+    method: 'GET',
+  })
   if (!res.ok) {
     throw Error('Error fetching data')
   }
@@ -47,6 +51,7 @@ const useGetComments = () => {
     isLoading,
     isValidating,
     hasMore,
+    mutate: () => mutate(getKey(+movieId)(0, null)), // SWR 데이터 갱신 함수 반환
   }
 }
 
