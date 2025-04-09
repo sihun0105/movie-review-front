@@ -1,36 +1,23 @@
 'use client'
-import { FunctionComponent } from 'react'
 import { Comment } from '@/modules/comment/comment-entity'
 import { X } from 'lucide-react'
 import { useSession } from 'next-auth/react'
+import { FunctionComponent } from 'react'
 import { useDeleteComment } from '../hooks/use-delete-comment'
 
 interface ReviewCardProps {
   comment: Comment
+  movieId: number
 }
 
-const ReviewCard: FunctionComponent<ReviewCardProps> = ({ comment }) => {
+const ReviewCard: FunctionComponent<ReviewCardProps> = ({
+  comment,
+  movieId,
+}) => {
   const session = useSession()
-  const { deleteComment } = useDeleteComment(comment.id)
+  const { deleteComment } = useDeleteComment(movieId)
 
   if (!comment) return null
-
-  const handleSubmit = async () => {
-    await deleteComment(
-      {
-        commentId: comment.id,
-      },
-      {
-        onSuccess: async () => {
-          alert('성공적으로 삭제되었습니다.')
-          window.location.reload()
-        },
-        onError: () => {
-          alert('삭제에 실패하였습니다.')
-        },
-      },
-    )
-  }
 
   const userId = session.data?.user?.id
 
@@ -43,7 +30,10 @@ const ReviewCard: FunctionComponent<ReviewCardProps> = ({ comment }) => {
             {new Date(comment.updatedAt).toLocaleString()}
           </span>
           {userId && +userId === comment.userId && (
-            <X className="cursor-pointer" onClick={handleSubmit} />
+            <X
+              className="cursor-pointer"
+              onClick={() => deleteComment({ commentId: comment.id })}
+            />
           )}
         </div>
       </div>

@@ -16,25 +16,21 @@ const CommentForm: FunctionComponent<CommentFormProps> = ({ id }) => {
   const { form } = useCommentFormContext()
   const { createComment, isCreatingComment } = useCreateComment(id)
   const router = useRouter()
-
-  const handleSubmit = form.handleSubmit(async (data) => {
-    await createComment(
+  const handleSubmit = form.handleSubmit((data) => {
+    createComment(
       {
         comment: data.comment,
         movieId: id,
       },
       {
-        onSuccess: async () => {
-          alert('성공적으로 등록되었습니다.')
+        onSuccess: () => {
           form.reset()
           router.refresh()
-        },
-        onError: () => {
-          alert('등록에 실패하였습니다.')
         },
       },
     )
   })
+
   return (
     <div className="w-3/4">
       <Form {...form}>
@@ -43,7 +39,7 @@ const CommentForm: FunctionComponent<CommentFormProps> = ({ id }) => {
             <CommentInputField className="flex-grow" />
             <div className="w-[100px]">
               <Button
-                variant={'default'}
+                variant="default"
                 type="submit"
                 className="w-full"
                 disabled={isCreatingComment}

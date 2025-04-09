@@ -1,13 +1,17 @@
 'use client'
 import { FunctionComponent } from 'react'
-import { useGetComments } from '../hooks/use-get-comment'
 import InfiniteScroll from 'react-infinite-scroll-component'
 import ReviewCard from '../components/review-card'
+import { useGetComments } from '../hooks/use-get-comment'
 
-interface CommentSectionProps {}
+interface CommentSectionProps {
+  id: string
+}
 
-const CommentSection: FunctionComponent<CommentSectionProps> = ({}) => {
+const CommentSection: FunctionComponent<CommentSectionProps> = ({ id }) => {
   const { data, next, hasMore, isLoading, error } = useGetComments()
+  const movieId = id
+
   if (isLoading)
     return (
       <div className="flex h-[40vh] items-center justify-center">
@@ -31,7 +35,7 @@ const CommentSection: FunctionComponent<CommentSectionProps> = ({}) => {
         <section className="grid gap-4">
           {data.map((pageData: any) =>
             pageData.map((comment: any, idx: any) => (
-              <ReviewCard comment={comment} key={idx} />
+              <ReviewCard comment={comment} movieId={+movieId} key={idx} />
             )),
           )}
         </section>
