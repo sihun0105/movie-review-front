@@ -1,8 +1,10 @@
 'use client'
+
 import { FunctionComponent } from 'react'
 import InfiniteScroll from 'react-infinite-scroll-component'
 import ReviewCard from '../components/review-card'
 import { useGetComments } from '../hooks/use-get-comment'
+import { Reply } from '@/lib/type'
 
 interface CommentSectionProps {
   id: string
@@ -10,7 +12,7 @@ interface CommentSectionProps {
 
 const CommentSection: FunctionComponent<CommentSectionProps> = ({ id }) => {
   const { data, next, hasMore, isLoading, error } = useGetComments()
-  const movieId = id
+  const movieId = +id
 
   if (isLoading)
     return (
@@ -33,9 +35,21 @@ const CommentSection: FunctionComponent<CommentSectionProps> = ({ id }) => {
         }
       >
         <section className="grid gap-4">
-          {data.map((pageData: any) =>
-            pageData.map((comment: any, idx: any) => (
-              <ReviewCard comment={comment} movieId={+movieId} key={idx} />
+          {data.map((page) =>
+            page?.comments?.map((comment: Reply) => (
+              <ReviewCard
+                reply={{
+                  replyId: comment.replyId,
+                  comment: comment.comment,
+                  userId: comment.userId,
+                  nickname: comment.nickname,
+                  email: comment.email,
+                  updatedAt: new Date(comment.updatedAt),
+                  createdAt: new Date(comment.createdAt),
+                }}
+                movieId={movieId}
+                key={comment.replyId}
+              />
             )),
           )}
         </section>

@@ -5,6 +5,7 @@ import useSWRMutation from 'swr/mutation'
 import { useAuthenticationCheck } from '@/hooks/use-authentication-check'
 import { useAppToast } from '@/hooks/use-app-toast'
 import { useRouter } from 'next/navigation'
+import { mutate } from 'swr'
 
 interface CreateCommentArgs {
   movieId: string
@@ -57,6 +58,16 @@ export const useCreateComment = (id: string) => {
       try {
         await trigger(arg)
         showToast('댓글이 성공적으로 등록되었습니다.')
+
+        const keyPrefix = AppClientApiEndpoint.getComments(Number(id), 0).split(
+          '?',
+        )[0]
+        await mutate(
+          (key) => typeof key === 'string' && key.startsWith(keyPrefix),
+          undefined,
+          { revalidate: true },
+        )
+
         router.refresh()
         onSuccess?.()
       } catch (e) {
