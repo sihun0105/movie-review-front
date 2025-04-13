@@ -32,10 +32,12 @@ const useGetComments = () => {
 
   const { data, setSize, error, isLoading, isValidating } =
     useSWRInfinite<RepliesResponse>(getKey(+movieId), fetcher)
-
   const next = () => setSize((size) => size + 1)
 
-  const hasMore = data?.[data.length - 1]?.hasNext ?? false
+  const hasMore =
+    Array.isArray(data) && data.length > 0
+      ? data[data.length - 1].hasNext
+      : false
 
   return {
     data,
