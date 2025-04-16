@@ -59,55 +59,57 @@ export default function RootLayout({
 }) {
   return (
     <html lang="ko">
-      <link rel="icon" href="/favicon/favicon.ico" />
-      <link
-        rel="icon"
-        type="image/png"
-        sizes="32x32"
-        href="/favicon/favicon-32x32.png"
-      />
-      <link
-        rel="icon"
-        type="image/png"
-        sizes="16x16"
-        href="/favicon/favicon-16x16.png"
-      />
-      <link
-        rel="icon"
-        type="image/png"
-        sizes="48x48"
-        href="/favicon/favicon-48x48.png"
-      />
-      <link
-        rel="icon"
-        type="image/png"
-        sizes="64x64"
-        href="/favicon/favicon-64x64.png"
-      />
-      <link
-        rel="icon"
-        type="image/png"
-        sizes="128x128"
-        href="/favicon/favicon-128x128.png"
-      />
-      <link
-        rel="icon"
-        type="image/png"
-        sizes="256x256"
-        href="/favicon/favicon-256x256.png"
-      />
-      <SessionProvider>
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="system"
-          enableSystem
-          disableTransitionOnChange
-        >
-          <body
-            className={cn(
-              'flex min-h-screen flex-col items-center',
-              roboto.className,
-            )}
+      <head>
+        <link rel="icon" href="/favicon/favicon.ico" />
+        <link
+          rel="icon"
+          type="image/png"
+          sizes="32x32"
+          href="/favicon/favicon-32x32.png"
+        />
+        <link
+          rel="icon"
+          type="image/png"
+          sizes="16x16"
+          href="/favicon/favicon-16x16.png"
+        />
+        <link
+          rel="icon"
+          type="image/png"
+          sizes="48x48"
+          href="/favicon/favicon-48x48.png"
+        />
+        <link
+          rel="icon"
+          type="image/png"
+          sizes="64x64"
+          href="/favicon/favicon-64x64.png"
+        />
+        <link
+          rel="icon"
+          type="image/png"
+          sizes="128x128"
+          href="/favicon/favicon-128x128.png"
+        />
+        <link
+          rel="icon"
+          type="image/png"
+          sizes="256x256"
+          href="/favicon/favicon-256x256.png"
+        />
+      </head>
+      <body
+        className={cn(
+          'flex min-h-screen flex-col items-center',
+          roboto.className,
+        )}
+      >
+        <SessionProvider>
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="system"
+            enableSystem
+            disableTransitionOnChange
           >
             <div className="w-full max-w-[460px]">
               <header className="w-full">
@@ -121,9 +123,9 @@ export default function RootLayout({
               <Footer />
               <Toaster />
             </div>
-          </body>
-        </ThemeProvider>
-      </SessionProvider>
+          </ThemeProvider>
+        </SessionProvider>
+      </body>
     </html>
   )
 }
