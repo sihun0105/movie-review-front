@@ -20,13 +20,13 @@ const MovieDetail: FunctionComponent<MovieProps> = ({ movie }) => {
   return (
     <div className="relative min-h-screen w-full bg-black text-white">
       {/* 배경 포스터 */}
-      <div className="absolute inset-0 h-full w-full overflow-hidden opacity-30">
+      <div className="absolute inset-0 h-full w-full overflow-hidden opacity-50">
         <Image
           src={movie.poster}
           alt={movie.title}
-          layout="fill"
-          objectFit="cover"
-          className="blur-lg"
+          fill
+          className="object-cover blur-lg"
+          priority
         />
       </div>
 
@@ -37,8 +37,8 @@ const MovieDetail: FunctionComponent<MovieProps> = ({ movie }) => {
           <Image
             src={movie.poster}
             alt={movie.title}
-            layout="fill"
-            objectFit="cover"
+            fill
+            className="object-cover"
           />
         </div>
 
