@@ -31,7 +31,7 @@ const MovieDetail: FunctionComponent<MovieProps> = ({ movie }) => {
       </div>
 
       {/* 콘텐츠 */}
-      <div className="relative z-10 mx-auto flex max-w-6xl flex-col items-center gap-10 p-10 md:flex-row">
+      <div className="relative mx-auto flex flex-col items-center gap-10 p-10">
         {/* 포스터 */}
         <div className="relative h-96 w-64 overflow-hidden rounded-lg shadow-lg">
           <Image
