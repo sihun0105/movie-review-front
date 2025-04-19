@@ -3,16 +3,11 @@
 import { FunctionComponent } from 'react'
 import InfiniteScroll from 'react-infinite-scroll-component'
 import ReviewCard from '../components/review-card'
-import { useGetComments } from '../hooks/use-get-comment'
+import { useComments } from '../hooks/use-comments'
 import { Reply } from '@/lib/type'
 
-interface CommentSectionProps {
-  id: string
-}
-
-const CommentSection: FunctionComponent<CommentSectionProps> = ({ id }) => {
-  const { data, next, hasMore, isLoading, error } = useGetComments()
-  const movieId = +id
+const CommentSection: FunctionComponent = () => {
+  const { data, next, hasMore, isLoading, error } = useComments()
 
   if (isLoading)
     return (
@@ -47,7 +42,6 @@ const CommentSection: FunctionComponent<CommentSectionProps> = ({ id }) => {
                   updatedAt: new Date(comment.updatedAt),
                   createdAt: new Date(comment.createdAt),
                 }}
-                movieId={movieId}
                 key={comment.replyId}
               />
             )),

@@ -1,6 +1,6 @@
-import { CommentForm } from '@/components/form/comment/comment-form'
-import { CommentFormProvider } from '@/components/form/comment/hook/comment-form-context'
 import { FunctionComponent } from 'react'
+import { CommentForm } from '../components/comment-form'
+import { CommentFormProvider } from '../hooks/comment-form-context'
 
 interface ActiveSectionProps {
   id: string

@@ -1,22 +1,21 @@
 'use client'
+
 import { X } from 'lucide-react'
 import { useSession } from 'next-auth/react'
 import { FunctionComponent } from 'react'
-import { useDeleteComment } from '../hooks/use-delete-comment'
 import { Reply } from '@/lib/type'
+import { useComments } from '../hooks/use-comments' // ✅ 통합 훅 사용
 
 interface ReviewCardProps {
   reply: Reply
-  movieId: number
 }
 
-const ReviewCard: FunctionComponent<ReviewCardProps> = ({ reply, movieId }) => {
+const ReviewCard: FunctionComponent<ReviewCardProps> = ({ reply }) => {
   const session = useSession()
-  const { deleteComment } = useDeleteComment(movieId)
+  const { deleteComment } = useComments() // ✅ 통합 훅
+  const userId = session.data?.user?.id
 
   if (!reply) return null
-
-  const userId = session.data?.user?.id
 
   return (
     <div className="my-2 rounded border p-3 shadow-sm">
