@@ -19,6 +19,21 @@ const DescriptionSection: FunctionComponent<DescriptionSectionProps> = ({
       <p className="text-center text-red-500">데이터를 불러오지 못했습니다.</p>
     )
 
+  if (data) {
+    return (
+      <>
+        <head>
+          <title>{data.title} - Drunken Movie</title>
+          <meta name="description" content={data.plot} />
+          <meta property="og:title" content={`${data.title} - Drunken Movie`} />
+          <meta property="og:description" content={data.plot} />
+          <meta property="og:image" content={data.poster} />
+        </head>
+        <MovieDetail movie={data} />
+      </>
+    )
+  }
+
   return <MovieDetail movie={data} />
 }
 
