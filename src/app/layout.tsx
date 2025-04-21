@@ -97,6 +97,35 @@ export default function RootLayout({
           sizes="256x256"
           href="/favicon/favicon-256x256.png"
         />
+        <meta name="robots" content="index, follow" />
+        <meta name="author" content="Drunken Movie" />
+        <meta property="og:title" content="영화뭐함 - Drunken Movie" />
+        <meta
+          property="og:description"
+          content="최신 영화 리뷰와 평점을 확인하세요!"
+        />
+        <meta property="og:image" content="/images/og-image.png" />
+        <meta property="og:url" content="https://drunkenmovie.shop" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="영화뭐함 - Drunken Movie" />
+        <meta
+          name="twitter:description"
+          content="최신 영화 리뷰와 평점을 확인하세요!"
+        />
+        <meta name="twitter:image" content="/images/og-image.png" />
+        <script type="application/ld+json">
+          {JSON.stringify({
+            '@context': 'https://schema.org',
+            '@type': 'WebSite',
+            name: 'Drunken Movie',
+            url: 'https://drunkenmovie.shop',
+            description: '최신 영화 리뷰와 평점을 확인하세요!',
+            publisher: {
+              '@type': 'Organization',
+              name: 'Drunken Movie',
+            },
+          })}
+        </script>
       </head>
       <body
         className={cn(

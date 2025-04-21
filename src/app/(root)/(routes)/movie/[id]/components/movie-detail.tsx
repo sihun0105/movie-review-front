@@ -23,7 +23,7 @@ const MovieDetail: FunctionComponent<MovieProps> = ({ movie }) => {
       <div className="absolute inset-0 h-full w-full overflow-hidden opacity-50">
         <Image
           src={movie.poster}
-          alt={movie.title}
+          alt={`${movie.title} 포스터`}
           fill
           className="object-cover blur-lg"
           priority
@@ -36,7 +36,7 @@ const MovieDetail: FunctionComponent<MovieProps> = ({ movie }) => {
         <div className="relative h-96 w-64 overflow-hidden rounded-lg shadow-lg">
           <Image
             src={movie.poster}
-            alt={movie.title}
+            alt={`${movie.title} 포스터`}
             fill
             className="object-cover"
           />
@@ -45,10 +45,10 @@ const MovieDetail: FunctionComponent<MovieProps> = ({ movie }) => {
         {/* 영화 정보 */}
         <div className="flex max-w-2xl flex-col gap-4">
           <h1 className="text-4xl font-bold">{movie.title}</h1>
-          <p className="text-gray-300">
+          <h2 className="text-lg font-semibold text-gray-300">
             {movie.genre} · {movie.ratting} ·{' '}
             {new Date(movie.openedAt).getFullYear()}
-          </p>
+          </h2>
           <p className="text-lg leading-relaxed text-gray-200">{movie.plot}</p>
           <div className="flex items-center gap-4 text-gray-400">
             <span>감독: {movie.director}</span>
