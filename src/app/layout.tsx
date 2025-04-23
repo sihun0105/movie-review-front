@@ -1,14 +1,13 @@
+import AppThemeProvider from '@/components/app/app-theme-provider'
+import ChatSupport from '@/components/app/chat-support'
+import Footer from '@/components/app/footer'
+import Header from '@/components/app/header'
+import { Toaster } from '@/components/ui/toaster'
+import { cn } from '@/lib/utils'
+import { SessionProvider } from '@/providers/session-provider'
 import '@/styles/globals.css'
 import type { Metadata } from 'next'
 import { Roboto } from 'next/font/google'
-import { SessionProvider } from '@/providers/session-provider'
-import Footer from '@/components/app/footer'
-import Header from '@/components/app/header'
-import { cn } from '@/lib/utils'
-import { ThemeProvider } from 'next-themes'
-import ChatSupport from '@/components/app/chat-support'
-import GoogleAd from '@/components/app/googleAd'
-import { Toaster } from '@/components/ui/toaster'
 
 const roboto = Roboto({
   weight: ['400', '700'],
@@ -113,19 +112,22 @@ export default function RootLayout({
           content="최신 영화 리뷰와 평점을 확인하세요!"
         />
         <meta name="twitter:image" content="/images/og-image.png" />
-        <script type="application/ld+json">
-          {JSON.stringify({
-            '@context': 'https://schema.org',
-            '@type': 'WebSite',
-            name: 'Drunken Movie',
-            url: 'https://drunkenmovie.shop',
-            description: '최신 영화 리뷰와 평점을 확인하세요!',
-            publisher: {
-              '@type': 'Organization',
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              '@context': 'https://schema.org',
+              '@type': 'WebSite',
               name: 'Drunken Movie',
-            },
-          })}
-        </script>
+              url: 'https://drunkenmovie.shop',
+              description: '최신 영화 리뷰와 평점을 확인하세요!',
+              publisher: {
+                '@type': 'Organization',
+                name: 'Drunken Movie',
+              },
+            }),
+          }}
+        />
       </head>
       <body
         className={cn(
@@ -134,12 +136,7 @@ export default function RootLayout({
         )}
       >
         <SessionProvider>
-          <ThemeProvider
-            attribute="class"
-            defaultTheme="system"
-            enableSystem
-            disableTransitionOnChange
-          >
+          <AppThemeProvider>
             <div className="w-full max-w-[460px]">
               <header className="w-full">
                 <Header />
@@ -152,7 +149,7 @@ export default function RootLayout({
               <Footer />
               <Toaster />
             </div>
-          </ThemeProvider>
+          </AppThemeProvider>
         </SessionProvider>
       </body>
     </html>

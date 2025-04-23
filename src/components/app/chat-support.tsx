@@ -204,6 +204,7 @@ export default function ChatSupport() {
             className="min-h-12 bg-background shadow-none "
           />
           <Button
+            aria-label="메시지 보내기"
             className="absolute right-2 top-1/2 -translate-y-1/2  transform"
             type="submit"
             size="icon"
