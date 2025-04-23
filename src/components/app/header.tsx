@@ -1,7 +1,7 @@
 'use client'
 import { cn } from '@/lib/utils'
 import { signIn, useSession } from 'next-auth/react'
-import { FunctionComponent } from 'react'
+import { FunctionComponent, useEffect, useState } from 'react'
 import { Button } from '../ui/button'
 import HeaderActiveButton from '../layout/header-active-button'
 import { Clapperboard } from 'lucide-react'
@@ -17,7 +17,15 @@ interface HeaderProps {
 
 const Header: FunctionComponent<HeaderProps> = ({ className }) => {
   const { status } = useSession()
-  const { theme } = useTheme()
+  const { theme, systemTheme } = useTheme()
+  const [currentTheme, setCurrentTheme] = useState<string | null>(null)
+
+  useEffect(() => {
+    setCurrentTheme(
+      theme === 'system' ? (systemTheme ?? null) : (theme ?? null),
+    )
+  }, [theme, systemTheme])
+
   const isLogin = status === 'authenticated'
   const isLoading = status === 'loading'
   const isNotLogin = status === 'unauthenticated'
@@ -29,13 +37,14 @@ const Header: FunctionComponent<HeaderProps> = ({ className }) => {
         crossOrigin="anonymous"
       />
       <nav
+        data-theme={currentTheme}
         className={cn(
           'flex items-center justify-between border-b-2 border-gray-50 px-6 py-2',
           className,
         )}
       >
         <Link href={'/'}>
-          {theme === 'dark' ? (
+          {currentTheme === 'dark' ? (
             <Clapperboard className="text-white" />
           ) : (
             <Clapperboard />
