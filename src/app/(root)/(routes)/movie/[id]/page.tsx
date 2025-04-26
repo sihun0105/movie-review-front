@@ -13,13 +13,11 @@ const Page: FunctionComponent<PageProps> = async ({ params: { id } }) => {
   return (
     <main
       id="movie-detail-page"
-      className="container flex min-h-screen flex-col"
+      className="container flex min-h-screen flex-col gap-2"
     >
       <DescriptionSection id={id} />
       <CommentSection />
-      <div className="sticky bottom-4 left-0 right-0 mx-auto w-full max-w-[460px]">
-        <ActiveSection id={id} />
-      </div>
+      <ActiveSection id={id} />
     </main>
   )
 }
