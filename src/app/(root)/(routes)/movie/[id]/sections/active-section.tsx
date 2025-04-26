@@ -8,7 +8,7 @@ interface ActiveSectionProps {
 
 const ActiveSection: FunctionComponent<ActiveSectionProps> = ({ id }) => {
   return (
-    <div className="sticky bottom-0 z-10 w-full bg-white py-2 ">
+    <div className="bottom-0 z-10 w-full bg-white py-2 ">
       <CommentFormProvider>
         <CommentForm id={id} />
       </CommentFormProvider>
