@@ -33,18 +33,18 @@ const CommentForm: FunctionComponent<CommentFormProps> = ({ id }) => {
   })
 
   return (
-    <div className="w-3/4">
+    <div className="">
       <Form {...form}>
         <form onSubmit={handleSubmit}>
           <div className="flex w-full flex-row items-center justify-center gap-2">
-            <CommentInputField className="flex-grow" />
+            <CommentInputField className="" />
             <Button
               variant="default"
               type="submit"
-              className="w-full"
+              className=""
               disabled={isCreatingComment}
             >
-              완료
+              댓글작성
             </Button>
           </div>
         </form>
