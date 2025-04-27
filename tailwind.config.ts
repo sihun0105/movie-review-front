@@ -55,6 +55,9 @@ module.exports = {
         'app-blue': {
           '001': 'var(--blue-001)',
         },
+ 'app-orange': {
+          '001': 'var(--orange-001)',
+        },
         border: 'hsl(var(--border))',
         input: 'hsl(var(--input))',
         ring: 'hsl(var(--ring))',
