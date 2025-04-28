@@ -20,7 +20,7 @@ const CommentSection: FunctionComponent = () => {
 
   return (
     <main className="max-h-[40vh] min-h-[40vh] overflow-y-auto  border-gray-300 bg-gray-50 ">
-      <h2 className="mb-4 text-lg font-bold text-gray-700">댓글</h2>
+      <h2 className="text-lg font-bold text-gray-700">댓글</h2>
       <InfiniteScroll
         dataLength={data.length}
         next={next}
@@ -29,7 +29,7 @@ const CommentSection: FunctionComponent = () => {
           <div className="flex items-center justify-center">로딩 중...</div>
         }
       >
-        <section className="grid gap-4">
+        <section className="flex flex-col gap-2 p-4">
           {data.map((page) =>
             page?.comments?.map((comment: Reply) => (
               <ReviewCard
@@ -49,7 +49,7 @@ const CommentSection: FunctionComponent = () => {
         </section>
       </InfiniteScroll>
       {error && (
-        <div className="mt-4 text-center text-red-500">
+        <div className="text-center text-red-500">
           데이터를 불러오는데 실패했습니다.
         </div>
       )}

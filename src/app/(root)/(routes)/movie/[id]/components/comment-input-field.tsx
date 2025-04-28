@@ -1,8 +1,9 @@
 import { FormControl, FormField, FormItem } from '@/components/ui/form'
 import { FunctionComponent, HTMLAttributes } from 'react'
 import { cn } from '@/lib/utils'
-import { Input } from '@/components/ui/input'
+import { Textarea } from '@/components/ui/textarea'
 import { useCommentFormContext } from '../hooks/comment-form-context'
+
 interface CommentInputFieldProps extends HTMLAttributes<HTMLDivElement> {}
 
 const CommentInputField: FunctionComponent<CommentInputFieldProps> = ({
@@ -17,10 +18,11 @@ const CommentInputField: FunctionComponent<CommentInputFieldProps> = ({
       render={({ field }) => (
         <FormItem className="w-full">
           <FormControl className="w-full">
-            <Input
+            <Textarea
               {...field}
-              className={cn('w-full')}
+              className={cn('w-full', 'resize-none')}
               placeholder="댓글을 입력해주세요."
+              rows={1}
             />
           </FormControl>
         </FormItem>
