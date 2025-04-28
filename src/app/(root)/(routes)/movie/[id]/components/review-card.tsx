@@ -4,7 +4,7 @@ import { X } from 'lucide-react'
 import { useSession } from 'next-auth/react'
 import { FunctionComponent } from 'react'
 import { Reply } from '@/lib/type'
-import { useComments } from '../hooks/use-comments' // ✅ 통합 훅 사용
+import { useComments } from '../hooks/use-comments'
 
 interface ReviewCardProps {
   reply: Reply
@@ -12,7 +12,7 @@ interface ReviewCardProps {
 
 const ReviewCard: FunctionComponent<ReviewCardProps> = ({ reply }) => {
   const session = useSession()
-  const { deleteComment } = useComments() // ✅ 통합 훅
+  const { deleteComment } = useComments()
   const userId = session.data?.user?.id
 
   if (!reply) return null
