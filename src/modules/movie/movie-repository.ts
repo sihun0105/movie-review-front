@@ -36,6 +36,7 @@ export class MovieRepository {
       genre: unknown.genre,
       director: unknown.director,
       ratting: unknown.ratting,
+      vods: unknown.vods,
     } as Movie
     assertMovie(result)
     return result

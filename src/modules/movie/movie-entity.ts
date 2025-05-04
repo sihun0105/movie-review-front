@@ -13,8 +13,14 @@ export interface Movie {
   genre: string
   director: string
   ratting: string
+  vods: MovieVod[]
 }
-
+export type MovieVod = {
+  id: number
+  title: string
+  vodUrl: string
+  movieCd: number
+}
 export function isMovie(arg: any): arg is Movie {
   return (
     arg !== null &&

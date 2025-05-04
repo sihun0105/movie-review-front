@@ -3,6 +3,8 @@
 import { FunctionComponent } from 'react'
 import MovieDetail from '../components/movie-detail'
 import { useGetMovieDetail } from '../hooks/use-get-movie-detail'
+import MovieCarousel from '../components/movie-carousel'
+import MovieVodModal from '../components/movie-vod-modal'
 
 interface DescriptionSectionProps {
   id: string
@@ -29,7 +31,9 @@ const DescriptionSection: FunctionComponent<DescriptionSectionProps> = ({
           <meta property="og:description" content={data.plot} />
           <meta property="og:image" content={data.poster} />
         </head>
+        <MovieVodModal />
         <MovieDetail movie={data} />
+        {data.vods && <MovieCarousel data={data.vods} title={data.title} />}
       </>
     )
   }

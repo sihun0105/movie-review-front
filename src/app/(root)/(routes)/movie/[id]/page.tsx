@@ -1,4 +1,5 @@
 import { FunctionComponent } from 'react'
+import { VodModalContextProvider } from './hooks/use-vod-modal-context'
 import ActiveSection from './sections/active-section'
 import CommentSection from './sections/comment-section'
 import DescriptionSection from './sections/description-section'
@@ -15,9 +16,11 @@ const Page: FunctionComponent<PageProps> = async ({ params: { id } }) => {
       id="movie-detail-page"
       className="container flex min-h-screen flex-col gap-2"
     >
-      <DescriptionSection id={id} />
-      <CommentSection />
-      <ActiveSection id={id} />
+      <VodModalContextProvider>
+        <DescriptionSection id={id} />
+        <CommentSection />
+        <ActiveSection id={id} />
+      </VodModalContextProvider>
     </main>
   )
 }
