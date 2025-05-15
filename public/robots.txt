@@ -1,9 +1,9 @@
-# *
 User-agent: *
+Disallow: /login
+Disallow: /api/*
+Disallow: /_next/*
+
+
 Allow: /
 
-# Host
-Host: https://drunkenmovie.shop
-
-# Sitemaps
 Sitemap: https://drunkenmovie.shop/sitemap.xml
