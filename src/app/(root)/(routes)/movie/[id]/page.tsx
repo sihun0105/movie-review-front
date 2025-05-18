@@ -57,8 +57,22 @@ const Page: FunctionComponent<PageProps> = async ({ params: { id } }) => {
   }
   return (
     <>
+      <title>{movieData.title} - DrunkenMovie</title>
+      <meta name="description" content={movieData.plot} />
+      <meta name="keywords" content={movieData.genre} />
+      <meta property="og:title" content={movieData.title} />
+      <meta property="og:description" content={movieData.plot} />
+      <meta property="og:image" content={movieData.poster} />
+      <meta
+        property="og:url"
+        content={`https://drunkenmovie.shop/movie/${id}`}
+      />
+      <meta property="og:type" content="movie" />
+      <meta property="og:site_name" content="DrunkenMovie" />
+      <meta property="og:locale" content="ko_KR" />
       <script
         type="application/ld+json"
+        data-rh="true"
         dangerouslySetInnerHTML={{
           __html: JSON.stringify(jsonLd),
         }}
