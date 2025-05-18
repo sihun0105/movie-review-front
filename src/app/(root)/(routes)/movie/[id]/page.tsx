@@ -57,10 +57,11 @@ const Page: FunctionComponent<PageProps> = async ({ params: { id } }) => {
   }
   return (
     <>
-      <meta name="description" content={`${movieData.title} 영화 상세`} />
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(jsonLd),
+        }}
       />
       <main
         id="movie-detail-page"
