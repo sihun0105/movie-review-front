@@ -14,9 +14,8 @@ export class CommentRepository {
   async getCommentList(
     id: string,
     page?: number,
-  ): Promise<{ comments: Comment[]; hasNext: boolean }> {
+  ): Promise<{ comments: Reply[]; hasNext: boolean }> {
     const data = await this.datasource.getCommentList(id, page ?? 0)
-    console.log(data)
 
     if (!data.replies) {
       console.log('data.replies is undefined')
@@ -30,7 +29,7 @@ export class CommentRepository {
     return { comments, hasNext }
   }
 
-  async createComment(id: string, comment: string): Promise<Comment> {
+  async createComment(id: string, comment: string): Promise<Reply> {
     const data = await this.datasource.createComment(id, comment)
     return data
   }

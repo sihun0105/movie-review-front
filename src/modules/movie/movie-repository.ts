@@ -1,5 +1,12 @@
 import { MovieDatasource } from './movie-datasource'
-import { Movie, Score, assertMovie, assertScore } from './movie-entity'
+import {
+  AverageMovieScore,
+  Movie,
+  Score,
+  assertAverageMovieScore,
+  assertMovie,
+  assertScore,
+} from './movie-entity'
 
 export class MovieRepository {
   private datasource: MovieDatasource
@@ -59,5 +66,18 @@ export class MovieRepository {
   async getScore(id: string): Promise<Score> {
     const data = await this.datasource.getScore(id)
     return this.convertToScoreEntity(data)
+  }
+  async getAverageScore(id: string): Promise<AverageMovieScore> {
+    const data = await this.datasource.getAverageScore(id)
+    return this.convertToAverageMovieScoreEntity(data)
+  }
+  private convertToAverageMovieScoreEntity(unknown: any): AverageMovieScore {
+    const result = {
+      averageScore: unknown.averageScore,
+      movieCd: unknown.movieCd,
+      scoreCount: unknown.scoreCount,
+    } as AverageMovieScore
+    assertAverageMovieScore(result)
+    return result
   }
 }
