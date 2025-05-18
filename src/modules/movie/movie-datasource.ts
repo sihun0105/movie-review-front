@@ -67,4 +67,18 @@ export class MovieDatasource {
     }
     return res.json()
   }
+  async getAverageScore(id: string) {
+    const res = await fetch(AppBackEndApiEndpoint.getAverageScore(id), {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${this.token}`,
+      },
+      cache: 'no-cache',
+    })
+    if (!res.ok) {
+      throw new Error('Score를 받아 올 수 없습니다.')
+    }
+    return res.json()
+  }
 }

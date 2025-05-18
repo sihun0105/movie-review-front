@@ -21,6 +21,11 @@ export type MovieVod = {
   vodUrl: string
   movieCd: number
 }
+export type AverageMovieScore = {
+  movieCd: number
+  averageScore: number
+  scoreCount: number
+}
 export function isMovie(arg: any): arg is Movie {
   return (
     arg !== null &&
@@ -62,5 +67,21 @@ export function isScore(arg: any): arg is Score {
 export function assertScore(arg: any): asserts arg is Score {
   if (!isScore(arg)) {
     throw new Error('Invalid Score')
+  }
+}
+export function isAverageMovieScore(arg: any): arg is AverageMovieScore {
+  return (
+    arg !== null &&
+    typeof arg === 'object' &&
+    typeof arg.movieCd === 'number' &&
+    typeof arg.averageScore === 'number' &&
+    typeof arg.scoreCount === 'number'
+  )
+}
+export function assertAverageMovieScore(
+  arg: any,
+): asserts arg is AverageMovieScore {
+  if (!isAverageMovieScore(arg)) {
+    throw new Error('Invalid AverageMovieScore')
   }
 }

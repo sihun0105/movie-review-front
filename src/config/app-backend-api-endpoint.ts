@@ -65,6 +65,9 @@ const AppBackEndApiEndpoint = {
   getScore: (id: string) => {
     return `${process.env.SERVER_API}/movie/score/${id}`
   },
+  getAverageScore: (id: string) => {
+    return `${process.env.SERVER_API}/movie/score/average/${id}`
+  },
 }
 
 export { AppBackEndApiEndpoint }
