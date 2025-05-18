@@ -5,5 +5,4 @@ Disallow: /_next/*
 
 
 Allow: /
-
-Sitemap: https://drunkenmovie.shop/sitemap.xml
+Sitemap: https://drunkenmovie.shop/server-sitemap.xml
