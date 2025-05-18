@@ -1,14 +1,12 @@
+import { Reply } from '@/lib/type'
+import { CommentRepository } from '@/modules/comment/comment-repository'
+import { AverageMovieScore, Movie } from '@/modules/movie/movie-entity'
+import { MovieRepository } from '@/modules/movie/movie-repository'
 import { FunctionComponent } from 'react'
 import { VodModalContextProvider } from './hooks/use-vod-modal-context'
 import ActiveSection from './sections/active-section'
 import CommentSection from './sections/comment-section'
 import DescriptionSection from './sections/description-section'
-import { AverageMovieScore, Movie, Score } from '@/modules/movie/movie-entity'
-import { MovieRepository } from '@/modules/movie/movie-repository'
-import Head from 'next/head'
-import { CommentRepository } from '@/modules/comment/comment-repository'
-import { Reply } from '@/lib/type'
-import Script from 'next/script'
 interface PageProps {
   params: {
     id: string
@@ -40,31 +38,29 @@ const Page: FunctionComponent<PageProps> = async ({ params: { id } }) => {
       id="movie-detail-page"
       className="container flex min-h-screen flex-col gap-2"
     >
-      <Head>
-        <Script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify({
-              '@context': 'https://schema.org',
-              '@type': 'Movie',
-              name: movieData.title,
-              aggregateRating: {
-                '@type': 'AggregateRating',
-                ratingValue: score.averageScore.toFixed(1), // 소수점 1자리 권장
-                ratingCount: score.scoreCount, // 평점을 준 총 인원수
-                reviewCount: reviews.length, // 댓글 개수
-                bestRating: '5',
-                worstRating: '1',
-              },
-              review: reviews.map((r) => ({
-                '@type': 'Review',
-                author: { '@type': 'Person', name: r.nickname },
-                reviewBody: r.comment,
-              })),
-            }),
-          }}
-        />
-      </Head>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            '@context': 'https://schema.org',
+            '@type': 'Movie',
+            name: movieData.title,
+            aggregateRating: {
+              '@type': 'AggregateRating',
+              ratingValue: score.averageScore.toFixed(1), // 소수점 1자리 권장
+              ratingCount: score.scoreCount, // 평점을 준 총 인원수
+              reviewCount: reviews.length, // 댓글 개수
+              bestRating: '5',
+              worstRating: '1',
+            },
+            review: reviews.map((r) => ({
+              '@type': 'Review',
+              author: { '@type': 'Person', name: r.nickname },
+              reviewBody: r.comment,
+            })),
+          }),
+        }}
+      />
       <VodModalContextProvider>
         <DescriptionSection id={id} />
         <CommentSection />
