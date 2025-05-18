@@ -8,6 +8,7 @@ import { MovieRepository } from '@/modules/movie/movie-repository'
 import Head from 'next/head'
 import { CommentRepository } from '@/modules/comment/comment-repository'
 import { Reply } from '@/lib/type'
+import Script from 'next/script'
 interface PageProps {
   params: {
     id: string
@@ -40,7 +41,7 @@ const Page: FunctionComponent<PageProps> = async ({ params: { id } }) => {
       className="container flex min-h-screen flex-col gap-2"
     >
       <Head>
-        <script
+        <Script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
             __html: JSON.stringify({
