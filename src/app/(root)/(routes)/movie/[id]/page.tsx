@@ -35,7 +35,6 @@ const Page: FunctionComponent<PageProps> = async ({ params: { id } }) => {
   const jsonLd = {
     '@context': 'https://schema.org',
     '@type': 'Movie',
-    title: movieData.title,
     name: movieData.title,
     genre: movieData.genre,
     description: movieData.plot,
