@@ -34,10 +34,7 @@ const Page: FunctionComponent<PageProps> = async ({ params: { id } }) => {
   const score = await getScore(id)
 
   return (
-    <main
-      id="movie-detail-page"
-      className="container flex min-h-screen flex-col gap-2"
-    >
+    <>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
@@ -61,12 +58,17 @@ const Page: FunctionComponent<PageProps> = async ({ params: { id } }) => {
           }),
         }}
       />
-      <VodModalContextProvider>
-        <DescriptionSection id={id} />
-        <CommentSection />
-        <ActiveSection id={id} />
-      </VodModalContextProvider>
-    </main>
+      <main
+        id="movie-detail-page"
+        className="container flex min-h-screen flex-col gap-2"
+      >
+        <VodModalContextProvider>
+          <DescriptionSection id={id} />
+          <CommentSection />
+          <ActiveSection id={id} />
+        </VodModalContextProvider>
+      </main>
+    </>
   )
 }
 
