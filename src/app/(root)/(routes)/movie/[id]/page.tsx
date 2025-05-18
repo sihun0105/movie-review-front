@@ -32,30 +32,35 @@ const Page: FunctionComponent<PageProps> = async ({ params: { id } }) => {
   const movieData = await getMovieList(id)
   const reviews = await getReviews(id)
   const score = await getScore(id)
-
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'Movie',
+    title: movieData.title,
+    name: movieData.title,
+    genre: movieData.genre,
+    description: movieData.plot,
+    image: movieData.poster,
+    url: `https://drunkenmovie.shop/movie/${id}`,
+    aggregateRating: {
+      '@type': 'AggregateRating',
+      ratingValue: score.averageScore.toFixed(1),
+      ratingCount: score.scoreCount,
+      reviewCount: reviews.length,
+      bestRating: '5',
+      worstRating: '1',
+    },
+    review: reviews.map((r) => ({
+      '@type': 'Review',
+      author: { '@type': 'Person', name: r.nickname },
+      reviewBody: r.comment,
+    })),
+  }
   return (
     <>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
-            '@context': 'https://schema.org',
-            '@type': 'Movie',
-            name: movieData.title,
-            aggregateRating: {
-              '@type': 'AggregateRating',
-              ratingValue: score.averageScore.toFixed(1), // 소수점 1자리 권장
-              ratingCount: score.scoreCount, // 평점을 준 총 인원수
-              reviewCount: reviews.length, // 댓글 개수
-              bestRating: '5',
-              worstRating: '1',
-            },
-            review: reviews.map((r) => ({
-              '@type': 'Review',
-              author: { '@type': 'Person', name: r.nickname },
-              reviewBody: r.comment,
-            })),
-          }),
+          __html: JSON.stringify(jsonLd),
         }}
       />
       <main
