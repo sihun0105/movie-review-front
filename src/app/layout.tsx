@@ -82,6 +82,10 @@ export default function RootLayout({
   return (
     <html lang="ko">
       <head>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        />
         <link rel="icon" href="/favicon/favicon.ico" />
         <link
           rel="icon"
@@ -135,15 +139,7 @@ export default function RootLayout({
         <SessionProvider>
           <AppThemeProvider>
             <div className="w-full max-w-[460px]">
-              <header className="w-full">
-                <script>
-                  <script
-                    type="application/ld+json"
-                    dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-                  />
-                </script>
-                <Header />
-              </header>
+              <Header />
             </div>
 
             <div className="relative flex h-full min-h-screen w-full min-w-[320px] max-w-[460px] flex-col bg-white dark:bg-black">
