@@ -73,6 +73,12 @@ export default function RootLayout({
 }: {
   children: React.ReactNode
 }) {
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'Organization',
+    name: 'DrunkenMovie',
+    url: `https://drunkenmovie.shop`,
+  }
   return (
     <html lang="ko">
       <head>
@@ -130,6 +136,12 @@ export default function RootLayout({
           <AppThemeProvider>
             <div className="w-full max-w-[460px]">
               <header className="w-full">
+                <script>
+                  <script
+                    type="application/ld+json"
+                    dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+                  />
+                </script>
                 <Header />
               </header>
             </div>
