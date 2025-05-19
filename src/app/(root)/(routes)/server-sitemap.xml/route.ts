@@ -12,6 +12,12 @@ export async function GET(): Promise<ReturnType<typeof getServerSideSitemap>> {
     changefreq: 'weekly',
     priority: 0.8,
   }))
+  fields.push({
+    loc: 'https://drunkenmovie.shop',
+    lastmod: new Date().toISOString(),
+    changefreq: 'weekly',
+    priority: 1.0,
+  })
 
   return getServerSideSitemap(fields)
 }
