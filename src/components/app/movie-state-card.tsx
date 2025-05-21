@@ -24,20 +24,20 @@ const MovieCard: FunctionComponent<MovieCardProps> = ({ data: movie }) => {
             )}
             <Image
               src={movie.poster}
-              alt={movie.title}
+              alt={`${movie.title} 포스터`}
               blurDataURL="iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg=="
               placeholder="blur"
               fill
-              style={{ objectFit: 'contain' }} // ✅ objectFit을 style로 변경
+              style={{ objectFit: 'contain' }}
             />
             <div className="absolute bottom-2 left-2 text-5xl font-bold text-gray-300">
               {movie.rank}
             </div>
           </section>
           <section className="mt-4 text-black ">
-            <div className="stat-title whitespace-normal text-lg font-semibold ">
+            <h1 className="stat-title whitespace-normal text-lg font-semibold ">
               {movie.title}
-            </div>
+            </h1>
             <div className="stat-value text-xl font-bold ">
               {movie.audience.toLocaleString()}
             </div>
