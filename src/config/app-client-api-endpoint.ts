@@ -19,6 +19,9 @@ const AppClientApiEndpoint = {
   deleteCommnet: (id: number) => {
     return `/api/comment/${id}`
   },
+  modifyComment: (id: number) => {
+    return `/api/comment/${id}`
+  },
   reigster: () => {
     return `/api/register`
   },
@@ -37,6 +40,7 @@ const AppClientApiEndpoint = {
       },
     )
   },
+
   getChatHistory: (nowDate: string) => {
     return queryString.stringifyUrl(
       {

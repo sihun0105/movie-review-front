@@ -38,6 +38,10 @@ export class CommentRepository {
     const data = await this.datasource.deleteComment(id)
     return data
   }
+  async modifyComment(id: string, comment: string): Promise<Reply> {
+    const data = await this.datasource.modifyComment(id, comment)
+    return data
+  }
   private convertUnkownToComment(unknown: any): Reply {
     const result = {
       replyId: unknown.replyId,

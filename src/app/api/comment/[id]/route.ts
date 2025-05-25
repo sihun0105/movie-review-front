@@ -63,6 +63,39 @@ export const GET = async (req: NextRequest) => {
     })
   }
 }
+export const PUT = async (req: NextRequest) => {
+  console.log('PUT request received')
+  const form = await req.formData()
+  const commentId = form.get('commentId') as string
+  const comment = form.get('comment') as string
+  try {
+    const token = await getTokenFromCookie()
+    if (!token) {
+      return new Response(null, { status: 401 })
+    }
+    const repo = new CommentRepository(token)
+    const data = await repo.modifyComment(commentId, comment)
+
+    return new Response(
+      JSON.stringify({
+        data,
+      }),
+      {
+        status: 200,
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      },
+    )
+  } catch (error) {
+    return new Response(JSON.stringify({ message: 'An error occurred' }), {
+      status: 500,
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+  }
+}
 
 export const DELETE = async (req: NextRequest) => {
   const form = await req.formData()
