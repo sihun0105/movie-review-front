@@ -31,11 +31,11 @@ const Header: FunctionComponent<HeaderProps> = ({ className }) => {
   const isNotLogin = status === 'unauthenticated'
   return (
     <>
-      <Script
+      {/* <Script
         src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7192194847972682"
         strategy="afterInteractive"
         crossOrigin="anonymous"
-      />
+      /> */}
       <nav
         data-theme={currentTheme}
         className={cn(

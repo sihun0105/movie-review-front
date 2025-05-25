@@ -33,7 +33,7 @@ const CommentSection: FunctionComponent = () => {
         <section className="flex flex-col gap-2 p-4">
           {data.map((page) =>
             page?.comments?.map((comment: Reply) => (
-              <ModifyCommentModalContextProvider>
+              <ModifyCommentModalContextProvider key={comment.replyId}>
                 <ModifyCommentFormProvider>
                   <ReviewCard
                     reply={{
@@ -45,7 +45,6 @@ const CommentSection: FunctionComponent = () => {
                       updatedAt: new Date(comment.updatedAt),
                       createdAt: new Date(comment.createdAt),
                     }}
-                    key={comment.replyId}
                   />
                 </ModifyCommentFormProvider>
               </ModifyCommentModalContextProvider>
