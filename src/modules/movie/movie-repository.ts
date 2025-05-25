@@ -50,7 +50,7 @@ export class MovieRepository {
   }
   private convertToScoreEntity(unknown: any): Score {
     const result = {
-      id: unknown.id,
+      id: unknown.id ?? 0,
       score: unknown.score,
       userId: unknown.userId,
       movieCd: unknown.movieCd,
