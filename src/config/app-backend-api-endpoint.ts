@@ -36,6 +36,9 @@ const AppBackEndApiEndpoint = {
   deleteComment: (id: string) => {
     return `${process.env.SERVER_API}/reply/${id}`
   },
+  modifyComment: () => {
+    return `${process.env.SERVER_API}/reply`
+  },
   getChatHistory(nowDate: string) {
     return queryString.stringifyUrl(
       {

@@ -1,14 +1,13 @@
+import { Reply } from '@/lib/type'
+import { CommentRepository } from '@/modules/comment/comment-repository'
+import { AverageMovieScore, Movie } from '@/modules/movie/movie-entity'
+import { MovieRepository } from '@/modules/movie/movie-repository'
 import { Metadata } from 'next'
-import Head from 'next/head'
 import { FunctionComponent } from 'react'
 import { VodModalContextProvider } from './hooks/use-vod-modal-context'
 import ActiveSection from './sections/active-section'
 import CommentSection from './sections/comment-section'
 import DescriptionSection from './sections/description-section'
-import { Reply } from '@/lib/type'
-import { MovieRepository } from '@/modules/movie/movie-repository'
-import { CommentRepository } from '@/modules/comment/comment-repository'
-import { Movie, AverageMovieScore } from '@/modules/movie/movie-entity'
 
 interface PageProps {
   params: {

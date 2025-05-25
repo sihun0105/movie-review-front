@@ -1,14 +1,15 @@
 'use client'
 
+import { Reply } from '@/lib/type'
 import { FunctionComponent } from 'react'
 import InfiniteScroll from 'react-infinite-scroll-component'
 import ReviewCard from '../components/review-card'
 import { useComments } from '../hooks/use-comments'
-import { Reply } from '@/lib/type'
+import { ModifyCommentModalContextProvider } from '../hooks/use-modify-comment-context'
+import { ModifyCommentFormProvider } from '../hooks/modify-comment-context'
 
 const CommentSection: FunctionComponent = () => {
   const { data, next, hasMore, isLoading, error } = useComments()
-
   if (isLoading)
     return (
       <div className="flex h-[40vh] items-center justify-center">
@@ -32,18 +33,22 @@ const CommentSection: FunctionComponent = () => {
         <section className="flex flex-col gap-2 p-4">
           {data.map((page) =>
             page?.comments?.map((comment: Reply) => (
-              <ReviewCard
-                reply={{
-                  replyId: comment.replyId,
-                  comment: comment.comment,
-                  userId: comment.userId,
-                  nickname: comment.nickname,
-                  email: comment.email,
-                  updatedAt: new Date(comment.updatedAt),
-                  createdAt: new Date(comment.createdAt),
-                }}
-                key={comment.replyId}
-              />
+              <ModifyCommentModalContextProvider>
+                <ModifyCommentFormProvider>
+                  <ReviewCard
+                    reply={{
+                      replyId: comment.replyId,
+                      comment: comment.comment,
+                      userId: comment.userId,
+                      nickname: comment.nickname,
+                      email: comment.email,
+                      updatedAt: new Date(comment.updatedAt),
+                      createdAt: new Date(comment.createdAt),
+                    }}
+                    key={comment.replyId}
+                  />
+                </ModifyCommentFormProvider>
+              </ModifyCommentModalContextProvider>
             )),
           )}
         </section>
