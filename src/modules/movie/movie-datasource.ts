@@ -1,5 +1,4 @@
 import { AppBackEndApiEndpoint } from '@/config/app-backend-api-endpoint'
-import console from 'console'
 
 export class MovieDatasource {
   private token?: string
