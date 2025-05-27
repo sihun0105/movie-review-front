@@ -121,14 +121,11 @@ export default function RootLayout({
       >
         <SessionProvider>
           <AppThemeProvider>
-            <div className="w-full max-w-[460px]">
+            <div className="mx-auto flex min-h-screen w-full max-w-[460px] flex-col">
               <Header />
-            </div>
-
-            <div className="relative flex h-full min-h-screen w-full min-w-[320px] max-w-[460px] flex-col bg-white dark:bg-black">
-              {children}
-              <ChatSupport />
+              <main className="flex-grow">{children}</main>
               <Footer />
+              <ChatSupport />
               <Toaster />
             </div>
           </AppThemeProvider>
