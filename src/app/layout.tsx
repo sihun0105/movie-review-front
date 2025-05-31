@@ -1,8 +1,10 @@
 import AppThemeProvider from '@/components/app/app-theme-provider'
+import BottomNav from '@/components/app/bottom-nav'
 import ChatSupport from '@/components/app/chat-support'
 import Footer from '@/components/app/footer'
 import Header from '@/components/app/header'
 import { Toaster } from '@/components/ui/toaster'
+import { MessageModalContextProvider } from '@/hooks/use-message-modal-context'
 import { cn } from '@/lib/utils'
 import { SessionProvider } from '@/providers/session-provider'
 import '@/styles/globals.css'
@@ -121,13 +123,16 @@ export default function RootLayout({
       >
         <SessionProvider>
           <AppThemeProvider>
-            <div className="mx-auto flex min-h-screen w-full max-w-[460px] flex-col">
-              <Header />
-              <main className="flex-grow">{children}</main>
-              <Footer />
-              <ChatSupport />
-              <Toaster />
-            </div>
+            <MessageModalContextProvider>
+              <div className="mx-auto flex min-h-screen w-full max-w-[460px] flex-col">
+                <Header />
+                <main className="flex-grow">{children}</main>
+                <Footer className="mb-12" />
+                <BottomNav />
+                <ChatSupport />
+                <Toaster />
+              </div>
+            </MessageModalContextProvider>
           </AppThemeProvider>
         </SessionProvider>
       </body>
