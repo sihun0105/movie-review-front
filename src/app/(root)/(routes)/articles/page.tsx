@@ -1,9 +1,9 @@
-// src/app/articles/page.tsx
 'use client'
 
 import { FunctionComponent, useState } from 'react'
 import Link from 'next/link'
 import { ThumbsUp, ThumbsDown, MessageCircle } from 'lucide-react'
+import NewArticleToggle from './components/new-article-toggle'
 
 interface Article {
   id: string
@@ -68,12 +68,18 @@ const Page: FunctionComponent = () => {
   const [articles] = useState<Article[]>(mockArticles)
 
   return (
-    <main className="container space-y-4 p-4">
-      <h1 className="mb-4 text-2xl font-bold">영화 커뮤니티 게시판</h1>
-      {articles.map((article) => (
-        <ArticleCard key={article.id} article={article} />
-      ))}
-    </main>
+    <>
+      <main className="container relative max-w-[460px] space-y-4 p-4 ">
+        <h1 className="mb-4 text-2xl font-bold">영화 커뮤니티 게시판</h1>
+        {articles.map((article) => (
+          <ArticleCard key={article.id} article={article} />
+        ))}
+
+        <NewArticleToggle className="absolute bottom-0 right-6">
+          글쓰기
+        </NewArticleToggle>
+      </main>
+    </>
   )
 }
 

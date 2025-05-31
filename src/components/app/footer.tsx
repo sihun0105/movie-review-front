@@ -1,10 +1,18 @@
 import { FunctionComponent } from 'react'
 import { Mail, Github } from 'lucide-react'
-interface FooterProps {}
+import { cn } from '@/lib/utils'
+interface FooterProps {
+  className?: string
+}
 
-const Footer: FunctionComponent<FooterProps> = ({}) => {
+const Footer: FunctionComponent<FooterProps> = ({ className }) => {
   return (
-    <footer className="footer bottom-0 flex justify-between p-10 text-app-gray-007">
+    <footer
+      className={cn(
+        'footer bottom-0 flex justify-between p-10 text-app-gray-007',
+        className,
+      )}
+    >
       <aside>
         <p>© 2024 Sihun.</p>
       </aside>
