@@ -71,6 +71,50 @@ const AppBackEndApiEndpoint = {
   getAverageScore: (id: string) => {
     return `${process.env.SERVER_API}/movie/score/average/${id}`
   },
+  // ✅ Article 관련
+  createArticle: () => {
+    return `${process.env.SERVER_API}/article`
+  },
+  getArticle: (id: number) => {
+    return `${process.env.SERVER_API}/article/${id}`
+  },
+  listArticles: (page: number, pageSize: number = 10) => {
+    return queryString.stringifyUrl(
+      {
+        url: `${process.env.SERVER_API}/article`,
+        query: { page, pageSize },
+      },
+      { skipEmptyString: true, skipNull: true },
+    )
+  },
+  updateArticle: (id: number) => {
+    return `${process.env.SERVER_API}/article/${id}`
+  },
+  deleteArticle: (id: number) => {
+    return `${process.env.SERVER_API}/article/${id}`
+  },
+
+  // ✅ 댓글 관련
+  createComment: (articleId: number) => {
+    return `${process.env.SERVER_API}/article/${articleId}/comments`
+  },
+  listComments: (articleId: number, page: number, pageSize: number = 10) => {
+    return queryString.stringifyUrl(
+      {
+        url: `${process.env.SERVER_API}/article/${articleId}/comments`,
+        query: { page, pageSize },
+      },
+      { skipEmptyString: true, skipNull: true },
+    )
+  },
+
+  // ✅ 좋아요 관련
+  likeArticle: (articleId: number) => {
+    return `${process.env.SERVER_API}/article/${articleId}/like`
+  },
+  getLikeStats: (articleId: number) => {
+    return `${process.env.SERVER_API}/article/${articleId}/likes`
+  },
 }
 
 export { AppBackEndApiEndpoint }
