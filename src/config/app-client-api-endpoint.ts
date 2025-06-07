@@ -40,7 +40,6 @@ const AppClientApiEndpoint = {
       },
     )
   },
-
   getChatHistory: (nowDate: string) => {
     return queryString.stringifyUrl(
       {
@@ -68,6 +67,32 @@ const AppClientApiEndpoint = {
         skipNull: true,
       },
     )
+  },
+
+  // ✅ 게시글 관련 API
+  listArticles: (page: number) => {
+    return queryString.stringifyUrl(
+      {
+        url: `/api/article`,
+        query: { page },
+      },
+      {
+        skipEmptyString: true,
+        skipNull: true,
+      },
+    )
+  },
+  createArticle: () => {
+    return `/api/article`
+  },
+  updateArticle: (id: number) => {
+    return `/api/article/${id}`
+  },
+  deleteArticle: (id: number) => {
+    return `/api/article/${id}`
+  },
+  getArticle: (id: number) => {
+    return `/api/article/${id}`
   },
 }
 
