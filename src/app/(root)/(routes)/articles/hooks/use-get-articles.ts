@@ -16,7 +16,6 @@ const fetcher = async (url: string) => {
 export const useGetArticles = () => {
   const { data, setSize, mutate, error, isLoading, isValidating } =
     useSWRInfinite(getKey(), fetcher)
-
   const hasMore =
     Array.isArray(data) && data.length > 0
       ? data[data.length - 1].hasNext

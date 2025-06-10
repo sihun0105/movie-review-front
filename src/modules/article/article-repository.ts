@@ -1,6 +1,7 @@
 import { Article } from '@/lib/type'
 import { ArticleDatasource } from './article-datasource'
 import { assertArticle } from './article-entity'
+import console from 'console'
 
 export class ArticleRepository {
   private datasource: ArticleDatasource
@@ -17,7 +18,6 @@ export class ArticleRepository {
     pageSize = 10,
   ): Promise<{ articles: Article[]; hasNext: boolean }> {
     const data = await this.datasource.listArticles(page, pageSize)
-    console.log('listArticles data', data)
     if (!data.articles) {
       console.log('data.articles is undefined')
       return { articles: [], hasNext: false }
@@ -43,7 +43,7 @@ export class ArticleRepository {
     >,
   ): Promise<Article> {
     const data = await this.datasource.createArticle(article)
-    return this.convertUnknownToArticle(data)
+    return this.convertUnknownToArticle(data.article)
   }
 
   async updateArticle(id: string, article: Partial<Article>): Promise<Article> {
