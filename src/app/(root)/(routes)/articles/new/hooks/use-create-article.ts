@@ -6,7 +6,7 @@ interface CreateArticleArgs {
   content: string
 }
 
-export const useCreateArticle = (onSuccessMutate?: () => void) => {
+export const useCreateArticle = () => {
   const getKey = AppClientApiEndpoint.createArticle()
 
   const fetcher = async (_: string, { arg }: { arg: CreateArticleArgs }) => {
