@@ -9,31 +9,32 @@ import { useGetArticles } from '../hooks/use-get-articles'
 const ArticleSection: FunctionComponent = () => {
   const { data, next, hasMore, isLoading, error } = useGetArticles()
 
-  if (isLoading)
+  if (isLoading && data.length === 0)
+    // 초기 로딩 상태 확인
     return (
       <div className="flex h-[40vh] items-center justify-center">
         <div>로딩 중...</div>
       </div>
     )
 
-  if (!data) return null
+  if (!data || data.length === 0) return null // 데이터가 없을 경우 처리
 
   return (
-    <main className="max-h-[40vh] min-h-[40vh] overflow-y-auto">
+    <main className="max-h-[40vh] min-h-[40vh]">
       <InfiniteScroll
-        dataLength={data.length}
-        next={next}
+        dataLength={data.length} // 평탄화된 데이터 길이 사용
+        next={() => {
+          next()
+        }}
         hasMore={hasMore}
         loader={
           <div className="flex items-center justify-center">로딩 중...</div>
         }
       >
         <section className="flex flex-col gap-2">
-          {data.map((page) =>
-            page?.articles?.map((article: Article) => (
-              <ArticleCard key={article.id} article={article} />
-            )),
-          )}
+          {data.map((article: Article) => (
+            <ArticleCard key={article.id} article={article} />
+          ))}
         </section>
       </InfiniteScroll>
       {error && (

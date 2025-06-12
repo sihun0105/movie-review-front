@@ -20,7 +20,7 @@ const CommentSection: FunctionComponent = () => {
   if (!data) return null
 
   return (
-    <main className="max-h-[40vh] min-h-[40vh] overflow-y-auto  border-gray-300 bg-gray-50 ">
+    <main className="max-h-[40vh] min-h-[40vh]  border-gray-300 bg-gray-50 ">
       <h2 className="text-lg font-bold text-gray-700">댓글</h2>
       <InfiniteScroll
         dataLength={data.length}
