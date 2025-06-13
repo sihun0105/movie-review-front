@@ -95,14 +95,14 @@ const Page: FunctionComponent<PageProps> = async ({ params: { id } }) => {
       </head>
       <main
         id="movie-detail-page"
-        className="container flex min-h-screen flex-col gap-2"
+        className="container relative flex min-h-screen flex-col gap-2" // ActiveSection 공간 확보를 위해 padding 추가
       >
         <VodModalContextProvider>
           <DescriptionSection id={id} />
           <CommentSection />
-          <ActiveSection id={id} />
         </VodModalContextProvider>
       </main>
+      <ActiveSection id={id} className="container fixed bottom-14" />
     </>
   )
 }
