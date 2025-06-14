@@ -1,5 +1,5 @@
 import { AppBackEndApiEndpoint } from '@/config/app-backend-api-endpoint'
-import { Article } from '@/lib/type'
+import { Article, LikeState } from '@/lib/type'
 
 export class ArticleDatasource {
   private token?: string
@@ -72,5 +72,28 @@ export class ArticleDatasource {
     })
 
     if (!res.ok) throw new Error('게시글을 삭제할 수 없습니다.')
+  }
+
+  async getArticleLikes(id: string) {
+    const res = await fetch(AppBackEndApiEndpoint.getLikeArticle(+id), {
+      method: 'GET',
+      headers: this.getAuthHeaders(),
+      cache: 'no-cache',
+    })
+
+    if (!res.ok) throw new Error('게시글 좋아요를 가져올 수 없습니다.')
+    return res.json()
+  }
+  async updateArticleLike(id: string, state: LikeState) {
+    const backendState = state === 'like' ? 'LIKE' : 'DISLIKE'
+    const res = await fetch(AppBackEndApiEndpoint.updateLikeArticle(+id), {
+      method: 'POST',
+      headers: this.getAuthHeaders(),
+      body: JSON.stringify({ backendState }),
+      cache: 'no-cache',
+    })
+
+    if (!res.ok) throw new Error('게시글 좋아요를 업데이트할 수 없습니다.')
+    return res.json()
   }
 }

@@ -1,5 +1,4 @@
 import { Article } from '@/lib/type'
-
 export function isArticle(arg: any): arg is Article {
   return (
     arg !== null &&
@@ -15,6 +14,7 @@ export function isArticle(arg: any): arg is Article {
 }
 
 export function assertArticle(arg: any): asserts arg is Article {
+  console.log('assertArticle', arg)
   if (!isArticle(arg)) {
     throw new Error('Invalid Article')
   }

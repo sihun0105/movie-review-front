@@ -127,7 +127,7 @@ export default function RootLayout({
               <div className="mx-auto flex min-h-screen w-full max-w-[460px] flex-col">
                 <Header />
                 <main className="flex-grow">{children}</main>
-                <Footer className="mb-12" />
+                {/* <Footer className="" /> */}
                 <BottomNav />
                 <ChatSupport />
                 <Toaster />

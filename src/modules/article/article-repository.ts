@@ -1,4 +1,4 @@
-import { Article } from '@/lib/type'
+import { Article, LikeState } from '@/lib/type'
 import { ArticleDatasource } from './article-datasource'
 import { assertArticle } from './article-entity'
 import console from 'console'
@@ -33,7 +33,7 @@ export class ArticleRepository {
 
   async getArticle(id: string): Promise<Article> {
     const data = await this.datasource.getArticle(id)
-    return this.convertUnknownToArticle(data)
+    return this.convertUnknownToArticle(data.article)
   }
 
   async createArticle(
@@ -64,8 +64,35 @@ export class ArticleRepository {
       likeCount: unknown.likeCount,
       dislikeCount: unknown.dislikeCount,
       commentCount: unknown.commentCount,
+      createdAt: unknown.createdAt,
+      updatedAt: unknown.updatedAt,
+      deletedAt: unknown.deletedAt,
     }
     assertArticle(result)
     return result
+  }
+
+  async getArticleLikes(id: string): Promise<{
+    likes: number
+    dislikes: number
+  }> {
+    const data = await this.datasource.getArticle(id)
+    return {
+      likes: data.article.likeCount,
+      dislikes: data.article.dislikeCount,
+    }
+  }
+  async updateArticleLike(
+    id: string,
+    state: LikeState,
+  ): Promise<{
+    likes: number
+    dislikes: number
+  }> {
+    const data = await this.datasource.updateArticleLike(id, state)
+    return {
+      likes: data.likes,
+      dislikes: data.dislikes,
+    }
   }
 }
