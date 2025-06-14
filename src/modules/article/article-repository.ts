@@ -39,7 +39,14 @@ export class ArticleRepository {
   async createArticle(
     article: Omit<
       Article,
-      'id' | 'likeCount' | 'dislikeCount' | 'commentCount' | 'author'
+      | 'id'
+      | 'likeCount'
+      | 'dislikeCount'
+      | 'commentCount'
+      | 'author'
+      | 'createdAt'
+      | 'updatedAt'
+      | 'deletedAt'
     >,
   ): Promise<Article> {
     const data = await this.datasource.createArticle(article)
