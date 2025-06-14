@@ -41,7 +41,14 @@ export class ArticleDatasource {
   async createArticle(
     article: Omit<
       Article,
-      'id' | 'likeCount' | 'dislikeCount' | 'commentCount' | 'author'
+      | 'id'
+      | 'likeCount'
+      | 'dislikeCount'
+      | 'commentCount'
+      | 'author'
+      | 'createdAt'
+      | 'updatedAt'
+      | 'deletedAt'
     >,
   ) {
     const res = await fetch(AppBackEndApiEndpoint.createArticle(), {
