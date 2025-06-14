@@ -109,11 +109,11 @@ const AppBackEndApiEndpoint = {
   },
 
   // ✅ 좋아요 관련
-  likeArticle: (articleId: number) => {
-    return `${process.env.SERVER_API}/article/${articleId}/like`
-  },
-  getLikeStats: (articleId: number) => {
+  getLikeArticle: (articleId: number) => {
     return `${process.env.SERVER_API}/article/${articleId}/likes`
+  },
+  updateLikeArticle: (articleId: number) => {
+    return `${process.env.SERVER_API}/article/${articleId}/like`
   },
 }
 

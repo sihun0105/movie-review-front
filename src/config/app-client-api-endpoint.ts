@@ -94,6 +94,30 @@ const AppClientApiEndpoint = {
   getArticle: (id: number) => {
     return `/api/article/${id}`
   },
+  getArticleLikes: (id: number) => {
+    return queryString.stringifyUrl(
+      {
+        url: `/api/article/${id}/likes`,
+        query: { id },
+      },
+      {
+        skipEmptyString: true,
+        skipNull: true,
+      },
+    )
+  },
+  updateArticleLike: (id: number, state: 'like' | 'dislike') => {
+    return queryString.stringifyUrl(
+      {
+        url: `/api/article/${id}/like`,
+        query: { id, state },
+      },
+      {
+        skipEmptyString: true,
+        skipNull: true,
+      },
+    )
+  },
 }
 
 export { AppClientApiEndpoint }

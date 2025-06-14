@@ -6,9 +6,13 @@ export interface Article {
   likeCount: number
   dislikeCount: number
   commentCount: number
+  createdAt: string
+  updatedAt?: string
+  deletedAt?: string
 }
 
 export interface ArticleResponse {
   articles: Article[]
   hasNext: boolean
 }
+export type LikeState = 'like' | 'dislike'
