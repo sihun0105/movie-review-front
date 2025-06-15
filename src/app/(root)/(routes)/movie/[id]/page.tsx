@@ -102,7 +102,7 @@ const Page: FunctionComponent<PageProps> = async ({ params: { id } }) => {
           <CommentSection />
         </VodModalContextProvider>
       </main>
-      <ActiveSection id={id} className="container fixed bottom-14" />
+      <ActiveSection id={id} className="container sticky bottom-14" />
     </>
   )
 }

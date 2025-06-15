@@ -65,6 +65,7 @@
     --page-padding-x: 23px;
     --footer-h: 164px;
     --footer-top-margin: 50px;
+    --footer-height: 80px;
     /* --page-h: calc(100vh-var(--header-h)-var(--footer-top-margin)-var(--header-h)); */
     --page-h: calc(100vh - var(--header-h) - var(--footer-h));
 
