@@ -126,8 +126,10 @@ export default function RootLayout({
             <MessageModalContextProvider>
               <div className="mx-auto flex min-h-screen w-full max-w-[460px] flex-col">
                 <Header />
-                <main className="flex-grow">{children}</main>
-                {/* <Footer className="" /> */}
+                <main className="min-h-page">
+                  {children}
+                  <Footer className="pb-[var(--footer-height)]" />
+                </main>
                 <BottomNav />
                 <ChatSupport />
                 <Toaster />
