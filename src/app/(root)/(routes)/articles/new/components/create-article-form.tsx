@@ -48,7 +48,7 @@ const CreateArticleForm: FunctionComponent<CreateArticleFormProps> = ({}) => {
           className=""
           disabled={isCreating}
         >
-          댓글작성
+          ✍️ 게시글 작성
         </Button>
       </form>
     </Form>

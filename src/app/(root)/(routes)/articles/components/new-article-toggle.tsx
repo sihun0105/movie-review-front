@@ -16,7 +16,8 @@ const NewArticleToggle: FunctionComponent<NewArticleToggleProps> = ({
     <Link
       href="/articles/new"
       className={cn(
-        'fixed bottom-6 right-6 z-50 flex h-14 w-14 items-center justify-center rounded-full bg-primary text-black shadow-md transition-all duration-300 hover:shadow-lg hover:shadow-black/30',
+        'flex h-14 w-14 items-center justify-center rounded-full bg-primary text-black shadow-md transition-all duration-300 hover:shadow-lg hover:shadow-black/30',
+
         className,
       )}
     >
