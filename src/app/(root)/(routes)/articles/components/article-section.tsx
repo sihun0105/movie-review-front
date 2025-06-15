@@ -20,7 +20,7 @@ const ArticleSection: FunctionComponent = () => {
   if (!data || data.length === 0) return null // 데이터가 없을 경우 처리
 
   return (
-    <main className="max-h-[40vh] min-h-[40vh]">
+    <main className="">
       <InfiniteScroll
         dataLength={data.length} // 평탄화된 데이터 길이 사용
         next={() => {
