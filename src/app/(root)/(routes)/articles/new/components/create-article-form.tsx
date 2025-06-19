@@ -46,6 +46,7 @@ const CreateArticleForm: FunctionComponent<CreateArticleFormProps> = ({}) => {
           variant="default"
           type="submit"
           className=""
+          aria-label="게시글 작성 버튼"
           disabled={isCreating}
         >
           ✍️ 게시글 작성

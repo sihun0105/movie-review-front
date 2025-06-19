@@ -1,9 +1,8 @@
-import { FunctionComponent } from 'react'
-import ArticleDataSection from './sections/article-data-section'
-import LikeSection from './sections/like-section'
-import CommentSection from './sections/comment-section'
 import { Article } from '@/lib/type'
 import { ArticleRepository } from '@/modules/article/article-repository'
+import { FunctionComponent } from 'react'
+import ArticleDataSection from './sections/article-data-section'
+import CommentSection from './sections/comment-section'
 interface PageProps {
   params: {
     id: string
@@ -19,8 +18,8 @@ const Page: FunctionComponent<PageProps> = async ({ params: { id } }) => {
   return (
     <main>
       <ArticleDataSection data={data} />
-      <LikeSection id={id} />
-      {/* <CommentSection /> */}
+      {/* <LikeSection id={id} /> */}
+      <CommentSection />
     </main>
   )
 }

@@ -1,7 +1,6 @@
-import { Article, LikeState } from '@/lib/type'
+import { Article, LikeState, ArticleReply, Reply } from '@/lib/type'
 import { ArticleDatasource } from './article-datasource'
-import { assertArticle } from './article-entity'
-import console from 'console'
+import { assertArticle, assertArticleComment } from './article-entity'
 
 export class ArticleRepository {
   private datasource: ArticleDatasource
@@ -17,7 +16,10 @@ export class ArticleRepository {
     page = 1,
     pageSize = 10,
   ): Promise<{ articles: Article[]; hasNext: boolean }> {
+    console.log('listArticles called with page:', page, 'pageSize:', pageSize)
+
     const data = await this.datasource.listArticles(page, pageSize)
+    console.log('listArticles data', data)
     if (!data.articles) {
       console.log('data.articles is undefined')
       return { articles: [], hasNext: false }
@@ -101,5 +103,39 @@ export class ArticleRepository {
       likes: data.likes,
       dislikes: data.dislikes,
     }
+  }
+  async createComment(
+    articleId: string,
+    comment: string,
+  ): Promise<ArticleReply> {
+    const data = await this.datasource.createComment(articleId, comment)
+    return this.convertUnknownToComment(data)
+  }
+  private convertUnknownToComment(unknown: any): ArticleReply {
+    const result: ArticleReply = {
+      id: unknown.id,
+      articleId: unknown.articleId,
+      userno: unknown.userno,
+      content: unknown.content,
+      nickname: unknown.nickname,
+      avatar: unknown.avatar,
+      createdAt: new Date(unknown.createdAt),
+      updatedAt: new Date(unknown.updatedAt),
+    }
+    assertArticleComment(result)
+    return result
+  }
+
+  async getCommentList(
+    articleId: string,
+    page?: number,
+  ): Promise<{ comments: Reply[]; hasNext: boolean }> {
+    const data = await this.datasource.getCommentList(articleId, page ?? 0)
+    const comments = data.comments.map((item: any) =>
+      this.convertUnknownToComment(item),
+    )
+    const hasNext = data.hasNext ?? false
+
+    return { comments, hasNext }
   }
 }

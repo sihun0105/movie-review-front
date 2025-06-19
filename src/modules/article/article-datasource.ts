@@ -103,4 +103,40 @@ export class ArticleDatasource {
     if (!res.ok) throw new Error('게시글 좋아요를 업데이트할 수 없습니다.')
     return res.json()
   }
+
+  // Comment 관련 API
+  async getCommentList(id: string, page: number) {
+    const res = await fetch(
+      AppBackEndApiEndpoint.listArticleComments(+id, page),
+      {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${this.token}`,
+        },
+        cache: 'no-cache',
+      },
+    )
+    if (!res.ok) {
+      throw new Error('댓글 리스트를 받아 올 수 없습니다.')
+    }
+    return res.json()
+  }
+  async createComment(id: string, comment: string) {
+    const res = await fetch(AppBackEndApiEndpoint.createArticleComment(+id), {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${this.token}`,
+      },
+      cache: 'no-cache',
+      body: JSON.stringify({
+        comment,
+      }),
+    })
+    if (!res.ok) {
+      throw new Error('댓글을 작성할 수 없습니다.')
+    }
+    return res.json()
+  }
 }

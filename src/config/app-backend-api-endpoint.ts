@@ -95,10 +95,14 @@ const AppBackEndApiEndpoint = {
   },
 
   // ✅ 댓글 관련
-  createComment: (articleId: number) => {
+  createArticleComment: (articleId: number) => {
     return `${process.env.SERVER_API}/article/${articleId}/comments`
   },
-  listComments: (articleId: number, page: number, pageSize: number = 10) => {
+  listArticleComments: (
+    articleId: number,
+    page: number,
+    pageSize: number = 10,
+  ) => {
     return queryString.stringifyUrl(
       {
         url: `${process.env.SERVER_API}/article/${articleId}/comments`,
