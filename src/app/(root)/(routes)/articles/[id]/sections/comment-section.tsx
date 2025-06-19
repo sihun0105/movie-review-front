@@ -1,50 +1,66 @@
 'use client'
+
+import { ArticleReply } from '@/lib/type'
 import { FunctionComponent } from 'react'
-interface CommentSectionProps {}
+import InfiniteScroll from 'react-infinite-scroll-component'
+import { ModifyCommentModalContextProvider } from '../hooks/use-modify-comment-context'
+import { ModifyCommentFormProvider } from '../hooks/modify-comment-context'
+import ReviewCard from '../components/review-card'
+import { useArticleComments } from '../hooks/use-comments'
 
-const CommentSection: FunctionComponent<CommentSectionProps> = ({}) => {
-  const newComment = ''
-  const setNewComment = (value: string) => {}
-  const handleAddComment = () => {}
-  const comments = [
-    {
-      id: 'c1',
-      nickname: '무비러버',
-      text: '진짜 감명 깊었어요. 후반부 연출이 대박!',
-      createdAt: '2025-05-27',
-    },
-  ]
-  return (
-    <section className="border-t pt-6">
-      <h2 className="mb-2 text-lg font-semibold">💬 댓글</h2>
-
-      <div className="mb-4 flex gap-2">
-        <input
-          type="text"
-          placeholder="댓글을 입력하세요"
-          value={newComment}
-          onChange={(e) => setNewComment(e.target.value)}
-          className="flex-grow rounded border px-3 py-2"
-        />
-        <button
-          onClick={handleAddComment}
-          className="rounded bg-blue-600 px-4 text-white hover:bg-blue-700"
-        >
-          등록
-        </button>
+const CommentSection: FunctionComponent = () => {
+  const { data, next, hasMore, isLoading, error } = useArticleComments()
+  if (isLoading)
+    return (
+      <div className="flex h-[40vh] items-center justify-center">
+        <div>로딩 중...</div>
       </div>
+    )
 
-      <ul className="space-y-3">
-        {comments.map((c) => (
-          <li key={c.id} className="rounded border p-3">
-            <div className="mb-1 text-sm text-gray-600">
-              {c.nickname} • {c.createdAt}
-            </div>
-            <div>{c.text}</div>
-          </li>
-        ))}
-      </ul>
-    </section>
+  if (!data) return null
+
+  return (
+    <main className="border-gray-300  ">
+      <h2 className="text-lg font-bold text-gray-700">댓글</h2>
+      <InfiniteScroll
+        dataLength={data.length}
+        next={next}
+        hasMore={hasMore}
+        loader={
+          <div className="flex items-center justify-center">로딩 중...</div>
+        }
+      >
+        <ul className="space-y-3 p-4">
+          {data.map((page) =>
+            page?.comments?.map((comment: ArticleReply) => (
+              <li key={comment.id}>
+                <ModifyCommentModalContextProvider>
+                  <ModifyCommentFormProvider>
+                    <ReviewCard
+                      reply={{
+                        id: comment.id,
+                        content: comment.content,
+                        userno: comment.userno,
+                        nickname: comment.nickname,
+                        avatar: comment.avatar,
+                        articleId: comment.articleId,
+                        updatedAt: new Date(comment.updatedAt),
+                        createdAt: new Date(comment.createdAt),
+                      }}
+                    />
+                  </ModifyCommentFormProvider>
+                </ModifyCommentModalContextProvider>
+              </li>
+            )),
+          )}
+        </ul>
+      </InfiniteScroll>
+      {error && (
+        <div className="text-center text-red-500">
+          데이터를 불러오는데 실패했습니다.
+        </div>
+      )}
+    </main>
   )
 }
 

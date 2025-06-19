@@ -118,6 +118,46 @@ const AppClientApiEndpoint = {
       },
     )
   },
+  // 게시글 댓글 관련 API
+  getArticleComments: (articleId: number, page: number) => {
+    return queryString.stringifyUrl(
+      {
+        url: `/api/article/comment/${articleId}`,
+        query: { articleId, page },
+      },
+      {
+        skipEmptyString: true,
+        skipNull: true,
+      },
+    )
+  },
+  createArticleComment: () => {
+    return `/api/article/comment`
+  },
+  deleteArticleComment: (commentId: number) => {
+    return queryString.stringifyUrl(
+      {
+        url: `/api/article/comment/${commentId}`,
+        query: { commentId },
+      },
+      {
+        skipEmptyString: true,
+        skipNull: true,
+      },
+    )
+  },
+  modifyArticleComment: (commentId: number) => {
+    return queryString.stringifyUrl(
+      {
+        url: `/api/article/comment/${commentId}`,
+        query: { commentId },
+      },
+      {
+        skipEmptyString: true,
+        skipNull: true,
+      },
+    )
+  },
 }
 
 export { AppClientApiEndpoint }
