@@ -131,7 +131,7 @@ export const useArticleComments = () => {
     isMutating: isCreatingComment,
     error: createCommentError,
   } = useSWRMutation(
-    AppClientApiEndpoint.createArticleComment(),
+    AppClientApiEndpoint.createArticleComment(+articleId),
     createCommentFetcher,
   )
 
