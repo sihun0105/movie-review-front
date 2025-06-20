@@ -17,11 +17,11 @@ const getArticleData = async (id: string): Promise<Article> => {
 const Page: FunctionComponent<PageProps> = async ({ params: { id } }) => {
   const data = await getArticleData(id)
   return (
-    <main>
+    <main className="container flex flex-col">
       <ArticleDataSection data={data} />
       {/* <LikeSection id={id} /> */}
       <CommentSection />
-      <ActiveSection id={id} className="container sticky bottom-14" />
+      <ActiveSection id={id} className="sticky bottom-14" />
     </main>
   )
 }

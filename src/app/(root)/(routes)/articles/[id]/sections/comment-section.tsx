@@ -30,7 +30,7 @@ const CommentSection: FunctionComponent = () => {
           <div className="flex items-center justify-center">로딩 중...</div>
         }
       >
-        <ul className="space-y-3 p-4">
+        <ul className="space-y-3 ">
           {data.map((page) =>
             page?.comments?.map((comment: ArticleReply) => (
               <li key={comment.id}>
