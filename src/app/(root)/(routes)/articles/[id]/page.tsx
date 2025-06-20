@@ -3,6 +3,7 @@ import { ArticleRepository } from '@/modules/article/article-repository'
 import { FunctionComponent } from 'react'
 import ArticleDataSection from './sections/article-data-section'
 import CommentSection from './sections/comment-section'
+import ActiveSection from './sections/active-section'
 interface PageProps {
   params: {
     id: string
@@ -20,6 +21,7 @@ const Page: FunctionComponent<PageProps> = async ({ params: { id } }) => {
       <ArticleDataSection data={data} />
       {/* <LikeSection id={id} /> */}
       <CommentSection />
+      <ActiveSection id={id} className="container sticky bottom-14" />
     </main>
   )
 }

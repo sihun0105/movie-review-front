@@ -131,8 +131,8 @@ const AppClientApiEndpoint = {
       },
     )
   },
-  createArticleComment: () => {
-    return `/api/article/comment`
+  createArticleComment: (articleId: number) => {
+    return `/api/article/comment/${articleId}`
   },
   deleteArticleComment: (commentId: number) => {
     return queryString.stringifyUrl(

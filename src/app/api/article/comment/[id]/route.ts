@@ -6,6 +6,7 @@ export const POST = async (req: NextRequest) => {
   const form = await req.formData()
   const ArticleId = form.get('articleId') as string
   const comment = form.get('comment') as string
+
   try {
     const token = await getTokenFromCookie()
     if (!token) {

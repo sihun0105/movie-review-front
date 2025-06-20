@@ -131,7 +131,7 @@ export class ArticleDatasource {
       },
       cache: 'no-cache',
       body: JSON.stringify({
-        comment,
+        content: comment,
       }),
     })
     if (!res.ok) {
