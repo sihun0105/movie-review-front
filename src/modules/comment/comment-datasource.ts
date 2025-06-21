@@ -39,8 +39,8 @@ export class CommentDatasource {
   }
 
   async deleteComment(id: string) {
-    const res = await fetch(AppBackEndApiEndpoint.deleteComment(id), {
-      method: 'POST',
+    const res = await fetch(AppBackEndApiEndpoint.deleteArticleComment(+id), {
+      method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${this.token}`,
@@ -54,7 +54,7 @@ export class CommentDatasource {
   }
 
   async modifyComment(id: string, comment: string) {
-    const res = await fetch(AppBackEndApiEndpoint.modifyComment(), {
+    const res = await fetch(AppBackEndApiEndpoint.updateArticleComment(+id), {
       method: 'PATCH',
       headers: {
         'Content-Type': 'application/json',
@@ -63,7 +63,7 @@ export class CommentDatasource {
       cache: 'no-cache',
       body: JSON.stringify({
         commentId: +id,
-        comment,
+        content: comment,
       }),
     })
     if (!res.ok) {
