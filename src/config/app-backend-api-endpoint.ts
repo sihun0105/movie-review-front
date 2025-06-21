@@ -98,6 +98,12 @@ const AppBackEndApiEndpoint = {
   createArticleComment: (articleId: number) => {
     return `${process.env.SERVER_API}/article/${articleId}/comments`
   },
+  updateArticleComment: (commentId: number) => {
+    return `${process.env.SERVER_API}/article/comments/${commentId}`
+  },
+  deleteArticleComment: (commentId: number) => {
+    return `${process.env.SERVER_API}/article/comments/${commentId}`
+  },
   listArticleComments: (
     articleId: number,
     page: number,
