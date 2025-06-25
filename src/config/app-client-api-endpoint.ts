@@ -97,7 +97,7 @@ const AppClientApiEndpoint = {
   getArticleLikes: (id: number) => {
     return queryString.stringifyUrl(
       {
-        url: `/api/article/${id}/likes`,
+        url: `/api/article/${id}/like`,
         query: { id },
       },
       {

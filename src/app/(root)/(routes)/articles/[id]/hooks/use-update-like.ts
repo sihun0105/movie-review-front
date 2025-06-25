@@ -52,6 +52,7 @@ const useUpdateLike = (id: number) => {
   )
 
   const handleUpdateLike = requireAuthentication((state: LikeState) => {
+    // state가 'like' 또는 'dislike'로 전달됨
     const optimisticData = {
       ...(data || { id, likes: 0, dislikes: 0 }),
       likes: state === 'like' ? (data?.likes || 0) + 1 : data?.likes || 0,
