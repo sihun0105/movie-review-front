@@ -18,7 +18,7 @@ const ContentInputField: FunctionComponent<ContentInputFieldProps> = ({}) => {
             <Textarea
               {...field}
               className={cn('min-h-[200px] w-full rounded border px-3 py-2')}
-              placeholder="댓글을 입력해주세요."
+              placeholder="내용을 입력해주세요."
               rows={1}
             />
           </FormControl>

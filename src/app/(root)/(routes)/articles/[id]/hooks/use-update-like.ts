@@ -52,22 +52,24 @@ const useUpdateLike = (id: number) => {
   )
 
   const handleUpdateLike = requireAuthentication((state: LikeState) => {
-    const optimisticData = {
-      ...(data || { id, likes: 0, dislikes: 0 }),
-      likes: state === 'like' ? (data?.likes || 0) + 1 : data?.likes || 0,
-      dislikes:
-        state === 'dislike' ? (data?.dislikes || 0) + 1 : data?.dislikes || 0,
-    }
+    // state가 'like' 또는 'dislike'로 전달됨
+    // const optimisticData = {
+    //   ...(data || { id, likes: 0, dislikes: 0 }),
+    //   likes: state === 'like' ? (data?.likes || 0) + 1 : data?.likes || 0,
+    //   dislikes:
+    //     state === 'dislike' ? (data?.dislikes || 0) + 1 : data?.dislikes || 0,
+    // }
 
     mutate(
       async () => {
         await throttledUpdateLike(id, state)
         showToast('좋아요/싫어요가 성공적으로 업데이트되었습니다.')
-        return optimisticData
+        // return optimisticData
+        return data // 서버에서 받아온 값만 사용
       },
       {
-        optimisticData,
-        revalidate: false,
+        // optimisticData,
+        revalidate: true, // 서버 값으로 갱신
         rollbackOnError: () => {
           showToast('좋아요/싫어요 업데이트에 실패했습니다.')
           return true

@@ -1,6 +1,7 @@
 import { Article, LikeState, ArticleReply, Reply } from '@/lib/type'
 import { ArticleDatasource } from './article-datasource'
 import { assertArticle, assertArticleComment } from './article-entity'
+import console from 'console'
 
 export class ArticleRepository {
   private datasource: ArticleDatasource
@@ -99,6 +100,7 @@ export class ArticleRepository {
     dislikes: number
   }> {
     const data = await this.datasource.updateArticleLike(id, state)
+    console.log('updateArticleLike data:', data)
     return {
       likes: data.likes,
       dislikes: data.dislikes,

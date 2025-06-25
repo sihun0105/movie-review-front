@@ -96,7 +96,7 @@ export class ArticleDatasource {
     const res = await fetch(AppBackEndApiEndpoint.updateLikeArticle(+id), {
       method: 'POST',
       headers: this.getAuthHeaders(),
-      body: JSON.stringify({ backendState }),
+      body: JSON.stringify({ type: backendState }),
       cache: 'no-cache',
     })
 

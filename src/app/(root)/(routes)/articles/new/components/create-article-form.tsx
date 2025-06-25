@@ -49,7 +49,7 @@ const CreateArticleForm: FunctionComponent<CreateArticleFormProps> = ({}) => {
           aria-label="게시글 작성 버튼"
           disabled={isCreating}
         >
-          ✍️ 게시글 작성
+          게시글 작성
         </Button>
       </form>
     </Form>

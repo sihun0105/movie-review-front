@@ -25,13 +25,19 @@ export const GET = async (
 }
 
 // 좋아요 업데이트
-export const PATCH = async (
+export const POST = async (
   req: NextRequest,
   context: { params: { id: string } },
 ) => {
   const { id } = context.params
-  const form = await req.formData()
-  const state = form.get('state') as LikeState
+  const state = req.nextUrl.searchParams.get('state') as LikeState
+
+  if (!state) {
+    return new Response(JSON.stringify({ message: 'state is required' }), {
+      status: 400,
+      headers: { 'Content-Type': 'application/json' },
+    })
+  }
 
   try {
     const token = await getTokenFromCookie()
