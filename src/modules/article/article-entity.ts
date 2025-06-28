@@ -7,6 +7,7 @@ export function isArticle(arg: any): arg is Article {
     typeof arg.title === 'string' &&
     typeof arg.content === 'string' &&
     typeof arg.author === 'string' &&
+    typeof arg.userno === 'number' &&
     typeof arg.likeCount === 'number' &&
     typeof arg.dislikeCount === 'number' &&
     typeof arg.commentCount === 'number'
@@ -14,7 +15,6 @@ export function isArticle(arg: any): arg is Article {
 }
 
 export function assertArticle(arg: any): asserts arg is Article {
-  console.log('assertArticle', arg)
   if (!isArticle(arg)) {
     throw new Error('Invalid Article')
   }
