@@ -71,6 +71,7 @@ export class ArticleRepository {
       title: unknown.title,
       content: unknown.content,
       author: unknown.author,
+      userno: unknown.userno,
       likeCount: unknown.likeCount,
       dislikeCount: unknown.dislikeCount,
       commentCount: unknown.commentCount,

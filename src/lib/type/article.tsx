@@ -1,6 +1,7 @@
 export interface Article {
   id: string
   title: string
+  userno: number
   content: string
   author: string
   likeCount: number
