@@ -47,6 +47,7 @@ export class ArticleRepository {
       | 'dislikeCount'
       | 'commentCount'
       | 'author'
+      | 'userno'
       | 'createdAt'
       | 'updatedAt'
       | 'deletedAt'

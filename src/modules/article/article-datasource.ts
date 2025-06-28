@@ -46,6 +46,7 @@ export class ArticleDatasource {
       | 'dislikeCount'
       | 'commentCount'
       | 'author'
+      | 'userno'
       | 'createdAt'
       | 'updatedAt'
       | 'deletedAt'
