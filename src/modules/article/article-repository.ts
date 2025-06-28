@@ -58,7 +58,7 @@ export class ArticleRepository {
 
   async updateArticle(id: string, article: Partial<Article>): Promise<Article> {
     const data = await this.datasource.updateArticle(id, article)
-    return this.convertUnknownToArticle(data)
+    return this.convertUnknownToArticle(data.article)
   }
 
   async deleteArticle(id: string): Promise<void> {

@@ -15,7 +15,7 @@ export const useModifyArticle = (articleId: number) => {
     formData.append('content', arg.content)
 
     const res = await fetch(getKey, {
-      method: 'PUT',
+      method: 'PATCH',
       body: formData,
     })
 

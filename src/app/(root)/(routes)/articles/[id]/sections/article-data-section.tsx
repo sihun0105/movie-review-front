@@ -5,6 +5,8 @@ import { User2, Calendar, Pencil, Trash2 } from 'lucide-react'
 import { useSession } from 'next-auth/react'
 import { useDeleteArticle } from '../../new/hooks/use-delete-article'
 import { useAppToast } from '@/hooks/use-app-toast'
+import { ModifyArticleModal } from '../components/modify-article-modal'
+import { useModifyArticleModalContext } from '../hooks/use-modify-article-context'
 
 interface ArticleDataSectionProps {
   data: Article
@@ -19,6 +21,7 @@ const ArticleDataSection: FunctionComponent<ArticleDataSectionProps> = ({
   const { deleteArticle, deleteError, isDeleting } = useDeleteArticle(
     Number(data.id),
   )
+  const { setOpen, setArticle, open } = useModifyArticleModalContext()
   const handleDelete = () => {
     if (window.confirm('정말로 이 게시글을 삭제하시겠습니까?')) {
       deleteArticle(
@@ -44,7 +47,13 @@ const ArticleDataSection: FunctionComponent<ArticleDataSectionProps> = ({
       {/* 우측 상단 버튼 영역 */}
       {userId === data.userno && (
         <div className="absolute right-4 top-4 z-10 flex gap-2">
-          <button className="rounded border bg-white p-2 transition hover:bg-gray-100">
+          <button
+            className="rounded border bg-white p-2 transition hover:bg-gray-100"
+            onClick={() => {
+              setArticle(data)
+              setOpen(true)
+            }}
+          >
             <Pencil className="h-4 w-4 text-gray-600" />
           </button>
           <button
@@ -75,6 +84,7 @@ const ArticleDataSection: FunctionComponent<ArticleDataSectionProps> = ({
           {data.content}
         </div>
       </div>
+      <ModifyArticleModal />
     </section>
   )
 }
