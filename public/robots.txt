@@ -1,7 +1,2 @@
 User-agent: *
-Disallow: /login
-Disallow: /api/*
-Allow: /_next/*
-
-Allow: /
 Sitemap: https://drunkenmovie.shop/sitemap.xml
