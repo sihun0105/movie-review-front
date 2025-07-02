@@ -81,7 +81,7 @@ const Page: FunctionComponent<PageProps> = async ({ params: { id } }) => {
     review: reviews.map((r) => ({
       '@type': 'Review',
       author: { '@type': 'Person', name: r.nickname },
-      reviewBody: r.comment,
+      reviewBody: r.content,
     })),
   }
 

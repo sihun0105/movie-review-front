@@ -1,16 +1,8 @@
 'use client'
 
+import { Reply } from '@/lib/type'
 import { Calendar, Pencil, User2, X } from 'lucide-react'
 import { FunctionComponent, ReactNode } from 'react'
-
-export type Reply = {
-  id: number
-  userno: number
-  nickname: string
-  content: string
-  updatedAt: string
-  avatar?: string
-}
 
 interface ReviewCardProps {
   reply: Reply

@@ -140,4 +140,37 @@ export class ArticleDatasource {
     }
     return res.json()
   }
+  async deleteComment(id: string) {
+    const res = await fetch(AppBackEndApiEndpoint.deleteArticleComment(+id), {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${this.token}`,
+      },
+      cache: 'no-cache',
+    })
+    if (!res.ok) {
+      throw new Error('댓글을 삭제할 수 없습니다.')
+    }
+    return res.json()
+  }
+
+  async modifyComment(id: string, comment: string) {
+    const res = await fetch(AppBackEndApiEndpoint.updateArticleComment(+id), {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${this.token}`,
+      },
+      cache: 'no-cache',
+      body: JSON.stringify({
+        commentId: +id,
+        content: comment,
+      }),
+    })
+    if (!res.ok) {
+      throw new Error('댓글을 수정할 수 없습니다.')
+    }
+    return res.json()
+  }
 }

@@ -1,6 +1,6 @@
 'use client'
 
-import { ArticleReply } from '@/lib/type'
+import { Reply } from '@/lib/type'
 import { Calendar, Pencil, User2, X } from 'lucide-react'
 import { useSession } from 'next-auth/react'
 import { FunctionComponent } from 'react'
@@ -9,7 +9,7 @@ import { useModifyCommentModalContext } from '../hooks/use-modify-comment-contex
 import { ModifyCommentModal } from './modify-comment-modal'
 
 interface ReviewCardProps {
-  reply: ArticleReply
+  reply: Reply
 }
 
 const ReviewCard: FunctionComponent<ReviewCardProps> = ({ reply }) => {

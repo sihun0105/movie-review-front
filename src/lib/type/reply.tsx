@@ -1,25 +1,14 @@
-export interface Reply {
-  replyId: number
-  userId: number
-  nickname: string
-  email: string
-  comment: string
-  createdAt: Date
-  updatedAt: Date
-}
-
-export interface ArticleReply {
+export type Reply = {
   id: number
-  articleId: number
   userno: number
-  content: string
   nickname: string
-  avatar?: string
-  createdAt: Date
+  content: string
   updatedAt: Date
+  createdAt: Date
+  avatar?: string
 }
 export interface ArticleRepliesResponse {
-  comments: ArticleReply[]
+  comments: Reply[]
   hasNext: boolean
 }
 export interface RepliesResponse {

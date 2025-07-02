@@ -1,6 +1,6 @@
 'use client'
 
-import { ArticleReply } from '@/lib/type'
+import { Reply } from '@/lib/type'
 import { FunctionComponent } from 'react'
 import InfiniteScroll from 'react-infinite-scroll-component'
 import { ModifyCommentModalContextProvider } from '../hooks/use-modify-comment-context'
@@ -32,7 +32,7 @@ const CommentSection: FunctionComponent = () => {
       >
         <ul className="space-y-3 ">
           {data.map((page) =>
-            page?.comments?.map((comment: ArticleReply) => (
+            page?.comments?.map((comment: Reply) => (
               <li key={comment.id}>
                 <ModifyCommentModalContextProvider>
                   <ModifyCommentFormProvider>
@@ -43,7 +43,6 @@ const CommentSection: FunctionComponent = () => {
                         userno: comment.userno,
                         nickname: comment.nickname,
                         avatar: comment.avatar,
-                        articleId: comment.articleId,
                         updatedAt: new Date(comment.updatedAt),
                         createdAt: new Date(comment.createdAt),
                       }}

@@ -19,8 +19,8 @@ const ReviewCard: FunctionComponent<ReviewCardProps> = ({ reply }) => {
   const userId = session.data?.user?.id
 
   const handleModifyComment = () => {
-    setReplyId(reply.replyId)
-    setComment(reply.comment)
+    setReplyId(reply.id)
+    setComment(reply.content)
     setOpen(true)
   }
   if (!reply) return null
@@ -35,7 +35,7 @@ const ReviewCard: FunctionComponent<ReviewCardProps> = ({ reply }) => {
           <span className="text-sm text-gray-500">
             {new Date(reply.updatedAt).toLocaleString()}
           </span>
-          {userId && +userId === reply.userId && (
+          {userId && +userId === reply.userno && (
             <>
               <Pencil
                 className="cursor-pointer"
@@ -43,13 +43,13 @@ const ReviewCard: FunctionComponent<ReviewCardProps> = ({ reply }) => {
               />
               <X
                 className="cursor-pointer"
-                onClick={() => deleteComment({ commentId: reply.replyId })}
+                onClick={() => deleteComment({ commentId: reply.id })}
               />
             </>
           )}
         </div>
       </div>
-      <p className="mt-2">{reply.comment}</p>
+      <p className="mt-2">{reply.content}</p>
     </div>
   )
 }
