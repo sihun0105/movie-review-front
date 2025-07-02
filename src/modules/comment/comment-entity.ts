@@ -4,17 +4,17 @@ export function isComment(arg: any): arg is Reply {
   return (
     arg !== null &&
     typeof arg === 'object' &&
-    typeof arg.replyId === 'number' &&
-    typeof arg.userId === 'number' &&
-    typeof arg.email === 'string' &&
+    typeof arg.id === 'number' &&
+    typeof arg.userno === 'number' &&
     typeof arg.nickname === 'string' &&
-    typeof arg.comment === 'string' &&
+    typeof arg.content === 'string' &&
     arg.createdAt instanceof Date &&
     arg.updatedAt instanceof Date
   )
 }
 
 export function assertComment(arg: any): asserts arg is Reply {
+  console.log('assertComment arg:', arg)
   if (!isComment(arg)) {
     throw new Error('Invalid Comment')
   }

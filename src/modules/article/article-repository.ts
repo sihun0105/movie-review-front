@@ -1,4 +1,4 @@
-import { Article, LikeState, ArticleReply, Reply } from '@/lib/type'
+import { Article, LikeState, Reply } from '@/lib/type'
 import { ArticleDatasource } from './article-datasource'
 import { assertArticle, assertArticleComment } from './article-entity'
 import console from 'console'
@@ -108,17 +108,13 @@ export class ArticleRepository {
       dislikes: data.dislikes,
     }
   }
-  async createComment(
-    articleId: string,
-    comment: string,
-  ): Promise<ArticleReply> {
+  async createComment(articleId: string, comment: string): Promise<Reply> {
     const data = await this.datasource.createComment(articleId, comment)
     return this.convertUnknownToComment(data)
   }
-  private convertUnknownToComment(unknown: any): ArticleReply {
-    const result: ArticleReply = {
+  private convertUnknownToComment(unknown: any): Reply {
+    const result: Reply = {
       id: unknown.id,
-      articleId: unknown.articleId,
       userno: unknown.userno,
       content: unknown.content,
       nickname: unknown.nickname,
@@ -135,11 +131,24 @@ export class ArticleRepository {
     page?: number,
   ): Promise<{ comments: Reply[]; hasNext: boolean }> {
     const data = await this.datasource.getCommentList(articleId, page ?? 0)
+    console.log('getCommentList data:', data)
     const comments = data.comments.map((item: any) =>
       this.convertUnknownToComment(item),
     )
     const hasNext = data.hasNext ?? false
 
     return { comments, hasNext }
+  }
+
+  async deleteComment(id: string) {
+    const data = await this.datasource.deleteComment(id)
+    return data
+  }
+  async modifyComment(id: string, comment: string): Promise<Reply> {
+    console.log('modifyComment called with id:', id, 'comment:', comment)
+    console.log('modifyComment id:', id, 'comment:', comment)
+    const data = await this.datasource.modifyComment(id, comment)
+    console.log('modifyComment data:', data)
+    return data
   }
 }

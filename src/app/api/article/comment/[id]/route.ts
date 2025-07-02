@@ -74,7 +74,7 @@ export const PUT = async (req: NextRequest) => {
     if (!token) {
       return new Response(null, { status: 401 })
     }
-    const repo = new CommentRepository(token)
+    const repo = new ArticleRepository(token)
     const data = await repo.modifyComment(commentId, comment)
 
     return new Response(
@@ -106,7 +106,7 @@ export const DELETE = async (req: NextRequest) => {
     if (!token) {
       return new Response(null, { status: 401 })
     }
-    const repo = new CommentRepository(token)
+    const repo = new ArticleRepository(token)
     const data = await repo.deleteComment(commentId)
     return new Response(
       JSON.stringify({

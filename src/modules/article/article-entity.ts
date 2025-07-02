@@ -1,4 +1,4 @@
-import { Article, ArticleReply } from '@/lib/type'
+import { Article, Reply } from '@/lib/type'
 export function isArticle(arg: any): arg is Article {
   return (
     arg !== null &&
@@ -20,12 +20,11 @@ export function assertArticle(arg: any): asserts arg is Article {
   }
 }
 
-export function isArticleComment(arg: any): arg is ArticleReply {
+export function isArticleComment(arg: any): arg is Reply {
   return (
     arg !== null &&
     typeof arg === 'object' &&
     typeof arg.id === 'number' &&
-    typeof arg.articleId === 'number' &&
     typeof arg.userno === 'number' &&
     typeof arg.content === 'string' &&
     typeof arg.nickname === 'string' &&
@@ -35,7 +34,7 @@ export function isArticleComment(arg: any): arg is ArticleReply {
   )
 }
 
-export function assertArticleComment(arg: any): asserts arg is ArticleReply {
+export function assertArticleComment(arg: any): asserts arg is Reply {
   if (!isArticleComment(arg)) {
     throw new Error('Invalid Article Comment')
   }

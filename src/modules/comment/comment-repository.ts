@@ -44,11 +44,10 @@ export class CommentRepository {
   }
   private convertUnkownToComment(unknown: any): Reply {
     const result = {
-      replyId: unknown.replyId,
-      userId: unknown.userId,
+      id: unknown.replyId,
+      userno: unknown.userId,
       nickname: unknown.nickname,
-      email: unknown.email,
-      comment: unknown.comment,
+      content: unknown.comment,
       createdAt: new Date(unknown.createdAt),
       updatedAt: new Date(unknown.updatedAt),
     } as Reply
