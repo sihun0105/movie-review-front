@@ -4,6 +4,7 @@ import { AverageMovieScore, Movie } from '@/modules/movie/movie-entity'
 import { MovieRepository } from '@/modules/movie/movie-repository'
 import { Metadata } from 'next'
 import { FunctionComponent } from 'react'
+import { ModifyCommentModalContextProvider } from './hooks/use-modify-comment-context'
 import { VodModalContextProvider } from './hooks/use-vod-modal-context'
 import ActiveSection from './sections/active-section'
 import CommentSection from './sections/comment-section'
@@ -97,10 +98,12 @@ const Page: FunctionComponent<PageProps> = async ({ params: { id } }) => {
         id="movie-detail-page"
         className="container relative flex min-h-screen flex-col gap-2"
       >
-        <VodModalContextProvider>
-          <DescriptionSection id={id} />
-          <CommentSection />
-        </VodModalContextProvider>
+        <ModifyCommentModalContextProvider>
+          <VodModalContextProvider>
+            <DescriptionSection id={id} />
+            <CommentSection />
+          </VodModalContextProvider>
+        </ModifyCommentModalContextProvider>
       </main>
       <ActiveSection id={id} className="container sticky bottom-14" />
     </>
