@@ -1,15 +1,27 @@
 'use client'
 
+import ReviewCard from '@/components/app/app-review-card'
 import { Reply } from '@/lib/type'
+import { useSession } from 'next-auth/react'
 import { FunctionComponent } from 'react'
 import InfiniteScroll from 'react-infinite-scroll-component'
-import { ModifyCommentModalContextProvider } from '../hooks/use-modify-comment-context'
+import { ModifyCommentModal } from '../components/modify-comment-modal'
 import { ModifyCommentFormProvider } from '../hooks/modify-comment-context'
-import ReviewCard from '../components/review-card'
 import { useArticleComments } from '../hooks/use-comments'
+import { useModifyCommentModalContext } from '../hooks/use-modify-comment-context'
 
 const CommentSection: FunctionComponent = () => {
   const { data, next, hasMore, isLoading, error } = useArticleComments()
+  const session = useSession()
+  const { deleteComment } = useArticleComments()
+  const { setOpen, setComment, setReplyId } = useModifyCommentModalContext()
+  const userId = session.data?.user?.id
+
+  const handleModifyComment = (reply: Reply) => {
+    setReplyId(reply.id)
+    setComment(reply.content)
+    setOpen(true)
+  }
   if (isLoading)
     return (
       <div className="flex h-[40vh] items-center justify-center">
@@ -34,26 +46,28 @@ const CommentSection: FunctionComponent = () => {
           {data.map((page) =>
             page?.comments?.map((comment: Reply) => (
               <li key={comment.id}>
-                <ModifyCommentModalContextProvider>
-                  <ModifyCommentFormProvider>
-                    <ReviewCard
-                      reply={{
-                        id: comment.id,
-                        content: comment.content,
-                        userno: comment.userno,
-                        nickname: comment.nickname,
-                        avatar: comment.avatar,
-                        updatedAt: new Date(comment.updatedAt),
-                        createdAt: new Date(comment.createdAt),
-                      }}
-                    />
-                  </ModifyCommentFormProvider>
-                </ModifyCommentModalContextProvider>
+                <ReviewCard
+                  reply={{
+                    id: comment.id,
+                    content: comment.content,
+                    userno: comment.userno,
+                    nickname: comment.nickname,
+                    avatar: comment.avatar,
+                    updatedAt: new Date(comment.updatedAt),
+                    createdAt: new Date(comment.createdAt),
+                  }}
+                  onDelete={() => deleteComment({ commentId: comment.id })}
+                  onModify={handleModifyComment}
+                  userId={userId}
+                />
               </li>
             )),
           )}
         </ul>
       </InfiniteScroll>
+      <ModifyCommentFormProvider>
+        <ModifyCommentModal />
+      </ModifyCommentFormProvider>
       {error && (
         <div className="text-center text-red-500">
           데이터를 불러오는데 실패했습니다.
