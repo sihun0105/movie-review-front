@@ -7,13 +7,14 @@ import { FunctionComponent } from 'react'
 import InfiniteScroll from 'react-infinite-scroll-component'
 import { ModifyCommentModal } from '../components/modify-comment-modal'
 import { ModifyCommentFormProvider } from '../hooks/modify-comment-context'
-import { useArticleComments } from '../hooks/use-comments'
+import { useArticleComments } from '../hooks/use-article-comments'
+import { useDeleteArticleComment } from '../hooks/use-delete-article-comment'
 import { useModifyCommentModalContext } from '../hooks/use-modify-comment-context'
 
 const CommentSection: FunctionComponent = () => {
-  const { data, next, hasMore, isLoading, error } = useArticleComments()
+  const { data, next, hasMore, isLoading, error, mutate } = useArticleComments()
   const session = useSession()
-  const { deleteComment } = useArticleComments()
+  const { deleteComment } = useDeleteArticleComment(mutate)
   const { setOpen, setComment, setReplyId } = useModifyCommentModalContext()
   const userId = session.data?.user?.id
 
