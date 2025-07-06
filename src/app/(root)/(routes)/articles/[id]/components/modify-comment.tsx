@@ -4,13 +4,15 @@ import ModifyCommentFormField from './modify-comment-comment-field'
 import { Button } from '@/components/ui/button'
 import { useModifyCommentModalContext } from '../hooks/use-modify-comment-context'
 import { useModifyCommentFormContext } from '../hooks/modify-comment-context'
-import { useArticleComments } from '../hooks/use-comments'
+import { useArticleComments } from '../hooks/use-article-comments'
+import { useModifyArticleComment } from '../hooks/use-modify-article-comment'
 interface ModifyCommentFormProps {}
 
 const ModifyCommentForm: FunctionComponent<ModifyCommentFormProps> = ({}) => {
   const { replyId, setOpen } = useModifyCommentModalContext()
   const { form } = useModifyCommentFormContext()
-  const { modifyComment, isModifyingComment } = useArticleComments()
+  const { mutate } = useArticleComments()
+  const { modifyComment, isModifyingComment } = useModifyArticleComment(mutate)
   const handleSubmit = form.handleSubmit((data) => {
     modifyComment(
       {

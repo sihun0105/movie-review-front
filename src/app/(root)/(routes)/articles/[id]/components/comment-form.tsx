@@ -6,7 +6,8 @@ import { useRouter } from 'next/navigation'
 import { FunctionComponent } from 'react'
 import { useCommentFormContext } from '../hooks/comment-form-context'
 import { CommentInputField } from './comment-input-field'
-import { useArticleComments } from '../hooks/use-comments'
+import { useArticleComments } from '../hooks/use-article-comments'
+import { useCreateArticleComment } from '../hooks/use-create-article-comment'
 
 interface CommentFormProps {
   id: string
@@ -14,7 +15,8 @@ interface CommentFormProps {
 
 const CommentForm: FunctionComponent<CommentFormProps> = ({ id }) => {
   const { form } = useCommentFormContext()
-  const { createComment, isCreatingComment } = useArticleComments()
+  const { mutate } = useArticleComments()
+  const { createComment, isCreatingComment } = useCreateArticleComment(mutate)
   const router = useRouter()
 
   const handleSubmit = form.handleSubmit((data) => {
