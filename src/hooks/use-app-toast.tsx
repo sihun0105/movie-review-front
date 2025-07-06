@@ -1,13 +1,10 @@
-import { useToast } from '@/hooks/use-toast'
+import { toast } from 'sonner'
 
 const useAppToast = () => {
-  const { toast } = useToast()
   const showToast = (message: string, duration = 1000) => {
-    const { dismiss } = toast({
-      title: message,
-    })
+    const toastId = toast(message)
     setTimeout(() => {
-      dismiss()
+      toast.dismiss(toastId)
     }, duration)
   }
 
