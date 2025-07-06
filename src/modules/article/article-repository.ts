@@ -135,7 +135,6 @@ export class ArticleRepository {
       this.convertUnknownToComment(item),
     )
     const hasNext = data.hasNext ?? false
-    console.log('getCommentList comments:', comments, 'hasNext:', hasNext)
     return { comments, hasNext }
   }
 
