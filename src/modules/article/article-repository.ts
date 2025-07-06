@@ -131,12 +131,11 @@ export class ArticleRepository {
     page?: number,
   ): Promise<{ comments: Reply[]; hasNext: boolean }> {
     const data = await this.datasource.getCommentList(articleId, page ?? 0)
-    console.log('getCommentList data:', data)
-    const comments = data.comments.map((item: any) =>
+    const comments = data?.comments?.map((item: any) =>
       this.convertUnknownToComment(item),
     )
     const hasNext = data.hasNext ?? false
-
+    console.log('getCommentList comments:', comments, 'hasNext:', hasNext)
     return { comments, hasNext }
   }
 
