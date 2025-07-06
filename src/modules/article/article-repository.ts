@@ -20,7 +20,6 @@ export class ArticleRepository {
     console.log('listArticles called with page:', page, 'pageSize:', pageSize)
 
     const data = await this.datasource.listArticles(page, pageSize)
-    console.log('listArticles data', data)
     if (!data.articles) {
       console.log('data.articles is undefined')
       return { articles: [], hasNext: false }
@@ -35,8 +34,15 @@ export class ArticleRepository {
   }
 
   async getArticle(id: string): Promise<Article> {
-    const data = await this.datasource.getArticle(id)
-    return this.convertUnknownToArticle(data.article)
+    try {
+      const data = await this.datasource.getArticle(id)
+      if (!data || !data.article) {
+        throw new Error('존재하지 않는 게시글입니다.')
+      }
+      return this.convertUnknownToArticle(data.article)
+    } catch (error: any) {
+      throw new Error('존재하지 않는 게시글입니다.')
+    }
   }
 
   async createArticle(
