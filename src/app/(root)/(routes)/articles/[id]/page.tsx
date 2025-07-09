@@ -1,6 +1,7 @@
 import { Article } from '@/lib/type'
 import { ArticleRepository } from '@/modules/article/article-repository'
 import { FunctionComponent } from 'react'
+import { notFound } from 'next/navigation'
 import { ModifyArticleModalContextProvider } from './hooks/use-modify-article-context'
 import ActiveSection from './sections/active-section'
 import ArticleDataSection from './sections/article-data-section'
@@ -15,7 +16,11 @@ interface PageProps {
 
 const getArticleData = async (id: string): Promise<Article> => {
   const repo = new ArticleRepository()
-  return repo.getArticle(id)
+  try {
+    return await repo.getArticle(id)
+  } catch (error: any) {
+    notFound()
+  }
 }
 const Page: FunctionComponent<PageProps> = async ({ params: { id } }) => {
   const data = await getArticleData(id)
