@@ -14,7 +14,7 @@ import { useModifyCommentModalContext } from '../hooks/use-modify-comment-contex
 const CommentSection: FunctionComponent = () => {
   const { data, next, hasMore, isLoading, error, mutate } = useArticleComments()
   const session = useSession()
-  const { deleteComment } = useDeleteArticleComment(mutate)
+  const { deleteComment, isDeletingComment } = useDeleteArticleComment(mutate)
   const { setOpen, setComment, setReplyId } = useModifyCommentModalContext()
   const userId = session.data?.user?.id
 
@@ -57,7 +57,11 @@ const CommentSection: FunctionComponent = () => {
                     updatedAt: new Date(comment.updatedAt),
                     createdAt: new Date(comment.createdAt),
                   }}
-                  onDelete={() => deleteComment({ commentId: comment.id })}
+                  onDelete={
+                    isDeletingComment
+                      ? undefined
+                      : () => deleteComment({ commentId: comment.id })
+                  }
                   onModify={handleModifyComment}
                   userId={userId}
                 />
