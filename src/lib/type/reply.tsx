@@ -9,6 +9,7 @@ export type Reply = {
 }
 export interface ArticleRepliesResponse {
   comments: Reply[]
+  totalCount: number
   hasNext: boolean
 }
 export interface RepliesResponse {

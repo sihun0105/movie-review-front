@@ -135,13 +135,13 @@ export class ArticleRepository {
   async getCommentList(
     articleId: string,
     page?: number,
-  ): Promise<{ comments: Reply[]; hasNext: boolean }> {
+  ): Promise<{ comments: Reply[]; hasNext: boolean; totalCount: number }> {
     const data = await this.datasource.getCommentList(articleId, page ?? 0)
     const comments = data?.comments?.map((item: any) =>
       this.convertUnknownToComment(item),
     )
     const hasNext = data.hasNext ?? false
-    return { comments, hasNext }
+    return { comments, hasNext, totalCount: data.totalCount ?? 0 }
   }
 
   async deleteComment(id: string) {
