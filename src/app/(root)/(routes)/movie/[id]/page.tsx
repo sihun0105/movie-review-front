@@ -73,9 +73,9 @@ const Page: FunctionComponent<PageProps> = async ({ params: { id } }) => {
     url: `https://drunkenmovie.shop/movie/${id}`,
     aggregateRating: {
       '@type': 'AggregateRating',
-      ratingValue: score.averageScore.toFixed(1),
-      ratingCount: score.scoreCount,
-      reviewCount: reviews.length,
+      ratingValue: score.averageScore.toFixed(1) || '0',
+      ratingCount: score.scoreCount || 0,
+      reviewCount: reviews.length || 0,
       bestRating: '5',
       worstRating: '1',
     },
