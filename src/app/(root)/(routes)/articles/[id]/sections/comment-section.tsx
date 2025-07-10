@@ -34,7 +34,27 @@ const CommentSection: FunctionComponent = () => {
 
   return (
     <main className="border-gray-300  ">
-      <h2 className="text-lg font-bold text-gray-700">댓글</h2>
+      <h2 className="mb-4 flex items-center gap-2 text-xl font-bold text-gray-800">
+        <span className="flex items-center gap-1">
+          <svg
+            className="h-6 w-6 flex-shrink-0 text-blue-500"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            viewBox="0 0 24 24"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M8 10h.01M12 10h.01M16 10h.01M21 12c0 4.418-4.03 8-9 8a9.77 9.77 0 01-4-.8L3 20l1.8-3.6A7.96 7.96 0 013 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"
+            />
+          </svg>
+          댓글
+        </span>
+        <span className="ml-1 rounded bg-blue-50 px-2 py-0.5 text-base font-semibold text-blue-600">
+          {data[0].totalCount}개
+        </span>
+      </h2>
       <InfiniteScroll
         dataLength={data.length}
         next={next}
