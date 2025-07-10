@@ -38,9 +38,22 @@ export async function generateMetadata({
   params: { id: string }
 }): Promise<Metadata> {
   const movie = await getMovieList(id)
+  // 동적 키워드 생성
+  const keywords = [
+    movie.title,
+    ...(Array.isArray(movie.genre) ? movie.genre : [movie.genre]),
+    '영화',
+    '리뷰',
+    '평론',
+    'DrunkenMovie',
+    '영화뭐함',
+  ]
+    .filter(Boolean)
+    .join(', ')
   return {
     title: `${movie.title} - DrunkenMovie`,
     description: movie.plot,
+    keywords, // 추가
     openGraph: {
       title: `${movie.title} - DrunkenMovie`,
       description: movie.plot,
@@ -73,9 +86,9 @@ const Page: FunctionComponent<PageProps> = async ({ params: { id } }) => {
     url: `https://drunkenmovie.shop/movie/${id}`,
     aggregateRating: {
       '@type': 'AggregateRating',
-      ratingValue: score.averageScore.toFixed(1),
-      ratingCount: score.scoreCount,
-      reviewCount: reviews.length,
+      ratingValue: score.averageScore.toFixed(1) || '0',
+      ratingCount: score.scoreCount || 0,
+      reviewCount: reviews.length || 0,
       bestRating: '5',
       worstRating: '1',
     },
