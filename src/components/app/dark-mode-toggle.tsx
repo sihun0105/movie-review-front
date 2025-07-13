@@ -18,7 +18,16 @@ export function DarkModeToggle() {
 
   React.useEffect(() => {
     setMounted(true)
-  }, [])
+    // 밤 시간(19~7시) 자동 다크모드 적용
+    if (theme === 'system') {
+      const hour = new Date().getHours()
+      if (hour >= 19 || hour < 7) {
+        setTheme('dark')
+      } else {
+        setTheme('light')
+      }
+    }
+  }, [theme, setTheme])
 
   if (!mounted) {
     return null

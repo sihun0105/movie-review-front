@@ -14,7 +14,11 @@ const AppThemeProvider = ({ children }: { children: React.ReactNode }) => {
     return null
   }
 
-  return <ThemeProvider attribute="class">{children}</ThemeProvider>
+  return (
+    <ThemeProvider attribute="class" defaultTheme="system">
+      {children}
+    </ThemeProvider>
+  )
 }
 
 export default AppThemeProvider
