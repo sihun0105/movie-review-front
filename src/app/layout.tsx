@@ -33,6 +33,7 @@ export const metadata: Metadata = {
     '영화 순위',
     '영화 정보',
     '영화 커뮤니티',
+    '영화뭐함',
   ],
   authors: [{ name: 'DrunkenMovie' }],
   openGraph: {
