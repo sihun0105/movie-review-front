@@ -71,6 +71,55 @@ export class MovieRepository {
     const data = await this.datasource.getAverageScore(id)
     return this.convertToAverageMovieScoreEntity(data)
   }
+  // 영화관 목록 호출
+  async getMovieTheaterList(): Promise<any[]> {
+    const data = await this.datasource.getMovieTheaterList()
+    return (
+      data.MovieTheaterData?.map((item: any) => {
+        return {
+          id: item.id,
+          name: item.name,
+          address: item.address,
+          phone: item.phone,
+        }
+      }) ?? []
+    )
+  }
+
+  // 영화관 상세 정보 호출
+  async getMovieTheaterDetail(id: number): Promise<any> {
+    const data = await this.datasource.getMovieTheaterDetail(id)
+    return {
+      id: data.id,
+      name: data.name,
+      address: data.address,
+      phone: data.phone,
+      movies:
+        data.movies?.map((movie: any) => ({
+          movieCd: movie.movieCd,
+          title: movie.title,
+          poster: movie.poster,
+          openedAt: new Date(movie.openedAt),
+        })) ?? [],
+    }
+  }
+
+  // 영화관에서 상영 중인 영화 목록 호출
+  async getMoviesByTheaterId(theaterId: number): Promise<Movie[]> {
+    const data = await this.datasource.getMoviesByTheaterId(theaterId)
+    return (
+      data.MovieData?.map((item: any) => {
+        return this.convertUnkownToMovie(item)
+      }) ?? []
+    )
+  }
+
+  // 영화관에서 상영 중인 영화 상세 정보 호출
+  async getMovieDetailByTheater(movieCd: string): Promise<Movie> {
+    const data = await this.datasource.getMovieDetailByTheater(movieCd)
+    return this.convertUnkownToMovie(data)
+  }
+
   private convertToAverageMovieScoreEntity(unknown: any): AverageMovieScore {
     const result = {
       averageScore: unknown.averageScore,
