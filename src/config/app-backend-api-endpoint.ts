@@ -125,6 +125,20 @@ const AppBackEndApiEndpoint = {
   updateLikeArticle: (articleId: number) => {
     return `${process.env.SERVER_API}/article/${articleId}/like`
   },
+
+  // 영화관 관련
+  getMovieTheaterList: () => {
+    return `${process.env.SERVER_API}/movie-theater`
+  },
+  getMovieTheaterDetail: (id: number) => {
+    return `${process.env.SERVER_API}/movie-theater/${id}`
+  },
+  getMoviesByTheaterId: (theaterId: number) => {
+    return `${process.env.SERVER_API}/movie-theater/${theaterId}/movies`
+  },
+  getMovieDetailByTheater: (movieCd: string) => {
+    return `${process.env.SERVER_API}/movie-theater/movie/${movieCd}`
+  },
 }
 
 export { AppBackEndApiEndpoint }
