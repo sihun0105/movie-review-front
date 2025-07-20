@@ -38,6 +38,11 @@ const ArticleDataSection: FunctionComponent<ArticleDataSectionProps> = ({
       )
     }
   }
+
+  const localUpdatedAt = data.updatedAt
+    ? new Date(data.updatedAt).toLocaleString()
+    : ''
+
   return (
     <section className="relative mb-8 overflow-hidden rounded-xl border bg-white p-0 shadow-md">
       {/* 썸네일 영역 (이미지가 있다면 표시) */}
@@ -76,7 +81,7 @@ const ArticleDataSection: FunctionComponent<ArticleDataSectionProps> = ({
           </span>
           <span className="inline-flex items-center gap-1">
             <Calendar className="h-4 w-4 text-gray-400" />
-            {data.updatedAt}
+            {localUpdatedAt}
           </span>
         </div>
         <hr className="mb-5 border-gray-200" />
