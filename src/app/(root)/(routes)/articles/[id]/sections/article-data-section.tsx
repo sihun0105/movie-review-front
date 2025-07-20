@@ -40,7 +40,7 @@ const ArticleDataSection: FunctionComponent<ArticleDataSectionProps> = ({
   }
 
   const localUpdatedAt = data.updatedAt
-    ? new Date(data.updatedAt).toLocaleString()
+    ? new Date(data.createdAt).toLocaleString()
     : ''
 
   return (
