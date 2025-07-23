@@ -45,14 +45,26 @@ export async function GET(): Promise<ReturnType<typeof getServerSideSitemap>> {
     {
       loc: 'https://drunkenmovie.shop/',
       lastmod: new Date().toISOString(),
-      changefreq: 'weekly' as const,
+      changefreq: 'daily' as const,
       priority: 1.0,
     },
     {
       loc: 'https://drunkenmovie.shop/articles',
       lastmod: new Date().toISOString(),
-      changefreq: 'weekly' as const,
-      priority: 0.7,
+      changefreq: 'daily' as const,
+      priority: 0.9,
+    },
+    {
+      loc: 'https://drunkenmovie.shop/account',
+      lastmod: new Date().toISOString(),
+      changefreq: 'monthly' as const,
+      priority: 0.5,
+    },
+    {
+      loc: 'https://drunkenmovie.shop/recruit',
+      lastmod: new Date().toISOString(),
+      changefreq: 'monthly' as const,
+      priority: 0.3,
     },
   )
 
