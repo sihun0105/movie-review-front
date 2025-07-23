@@ -128,7 +128,7 @@ const AppBackEndApiEndpoint = {
 
   // 영화관 관련
   getMovieTheaterList: () => {
-    return `${process.env.SERVER_API}/movie-theater`
+    return `${process.env.SERVER_API}/movie/cgv/theaters`
   },
   getMovieTheaterDetail: (id: number) => {
     return `${process.env.SERVER_API}/movie-theater/${id}`

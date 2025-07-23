@@ -1,3 +1,4 @@
+import { CGVTheaterList } from '@/app/recruit/page'
 import { MovieDatasource } from './movie-datasource'
 import {
   AverageMovieScore,
@@ -72,18 +73,25 @@ export class MovieRepository {
     return this.convertToAverageMovieScoreEntity(data)
   }
   // 영화관 목록 호출
-  async getMovieTheaterList(): Promise<any[]> {
+  async getMovieTheaterList(): Promise<CGVTheaterList> {
     const data = await this.datasource.getMovieTheaterList()
-    return (
-      data.MovieTheaterData?.map((item: any) => {
-        return {
-          id: item.id,
-          name: item.name,
-          address: item.address,
-          phone: item.phone,
-        }
-      }) ?? []
-    )
+    return {
+      theaters:
+        data.theaters?.map((item: any) => {
+          return {
+            id: item.id,
+            name: item.name,
+            region: item.region,
+            address: item.address,
+            phone: item.phone,
+            website: item.website,
+            latitude: item.latitude,
+            longitude: item.longitude,
+            createdAt: item.createdAt, // 이미 string이면 그대로 반환
+            updatedAt: item.updatedAt,
+          }
+        }) ?? [],
+    }
   }
 
   // 영화관 상세 정보 호출
