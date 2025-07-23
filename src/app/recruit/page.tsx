@@ -1,24 +1,29 @@
-'use client'
-
-import { useGeolocation } from '@/hooks/use-geolocation'
-
-export default function RecruitPage() {
-  const { latitude, longitude, loading, error } = useGeolocation()
-
-  return (
-    <div className="mx-auto max-w-md p-6">
-      {loading && <p>위치 정보를 불러오는 중...</p>}
-      {error && <p className="text-red-500">오류: {error}</p>}
-      {!loading && !error && (
-        <div>
-          <p>현재 위치:</p>
-          <ul className="mb-4">
-            <li>위도: {latitude}</li>
-            <li>경도: {longitude}</li>
-          </ul>
-          {/* TODO: 위치 기반 영화관 리스트 및 동행 모집 UI 추가 */}
-        </div>
-      )}
-    </div>
-  )
+import { MovieRepository } from '@/modules/movie/movie-repository'
+import { FunctionComponent } from 'react'
+interface PageProps {}
+const getMovieTheaterList = async (): Promise<CGVTheaterList> => {
+  const repo = new MovieRepository()
+  return repo.getMovieTheaterList()
 }
+export interface CGVTheaterList {
+  theaters: CGVTheater[]
+}
+export interface CGVTheater {
+  id: number
+  name: string
+  region: string
+  address: string
+  phone: string
+  website: string
+  latitude: number
+  longitude: number
+  createdAt: string
+  updatedAt: string
+}
+const Page: FunctionComponent<PageProps> = async ({}) => {
+  const data = await getMovieTheaterList()
+  console.log('Movie Theater List:', data)
+  return <main>Page</main>
+}
+
+export default Page
