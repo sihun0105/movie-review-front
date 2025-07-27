@@ -8,7 +8,6 @@ import {
 
 export class AuthDataSource {
   async validateEmail(email: string): Promise<ValidationResponse> {
-    console.log('Validating email:', email)
     try {
       const response = await fetch(AppBackEndApiEndpoint.validateEmail(), {
         method: 'POST',
