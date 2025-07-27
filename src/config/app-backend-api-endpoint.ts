@@ -15,6 +15,12 @@ const AppBackEndApiEndpoint = {
   oAuth: () => {
     return `${process.env.SERVER_API}/auth/oauth`
   },
+  validateEmail: () => {
+    return `${process.env.SERVER_API}/auth/validate/email`
+  },
+  validateNickname: () => {
+    return `${process.env.SERVER_API}/auth/validate/nickname`
+  },
   getCommentList: (id: number, page: number) => {
     return queryString.stringifyUrl(
       {

@@ -11,6 +11,7 @@ import { useRegister } from './hook/use-register'
 import { useRouter } from 'next/navigation'
 import { ChevronLeft, Check } from 'lucide-react'
 import { motion, AnimatePresence } from 'framer-motion'
+import { useAppToast } from '@/hooks/use-app-toast'
 
 interface MultiStepRegisterFormProps extends HTMLAttributes<HTMLDivElement> {}
 
@@ -18,7 +19,8 @@ const MultiStepRegisterForm: FunctionComponent<MultiStepRegisterFormProps> = ({
   className: _className,
   ...props
 }) => {
-  const { form } = useRegisterFormContext()
+  const { showToast } = useAppToast()
+  const { form, onSubmit } = useRegisterFormContext()
   const { register, isRegisting } = useRegister()
   const router = useRouter()
   const [currentStep, setCurrentStep] = useState(1)
@@ -51,21 +53,20 @@ const MultiStepRegisterForm: FunctionComponent<MultiStepRegisterFormProps> = ({
   }
 
   const handleSubmit = form.handleSubmit(async (data) => {
-    await register(
-      {
-        nickname: data.nicknmae,
-        password: data.password,
-        userEmail: data.userId,
-      },
-      {
-        onSuccess: async () => {
-          alert('회원가입에 성공하였습니다.')
-          form.reset()
+    await onSubmit(
+      data,
+      () => {
+        showToast(
+          '회원가입이 완료되었습니다! 로그인 페이지로 이동합니다.',
+          3000,
+        )
+        form.reset()
+        setTimeout(() => {
           router.push('/login')
-        },
-        onError: () => {
-          alert('회원가입에 실패하였습니다.')
-        },
+        }, 1500)
+      },
+      (error: string) => {
+        showToast(error, 3000)
       },
     )
   })
