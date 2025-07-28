@@ -23,7 +23,7 @@ const RegisterForm: FunctionComponent<RegisterFormProps> = ({
   const handleSubmit = form.handleSubmit(async (data) => {
     await register(
       {
-        nickname: data.nicknmae,
+        nickname: data.nickname,
         password: data.password,
         email: data.userId,
       },
