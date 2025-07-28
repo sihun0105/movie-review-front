@@ -2,7 +2,7 @@
 
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
-import { createContext, useContext } from 'react'
+import { createContext, useContext, useState } from 'react'
 import * as z from 'zod'
 import { auth } from '@/modules/auth'
 
@@ -23,7 +23,7 @@ const formSchema = z.object({
     .regex(/^(?=.*[a-zA-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]/, {
       message: '비밀번호는 영문, 숫자, 특수문자를 포함해야 합니다.',
     }),
-  nicknmae: z
+  nickname: z
     .string()
     .min(2, {
       message: '닉네임은 최소 2자 이상이어야 합니다.',
@@ -34,13 +34,22 @@ const formSchema = z.object({
 })
 
 const useRegisterForm = () => {
+  const [emailValidationState, setEmailValidationState] = useState({
+    isValidating: false,
+    isValid: false,
+  })
+  const [nicknameValidationState, setNicknameValidationState] = useState({
+    isValidating: false,
+    isValid: false,
+  })
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     mode: 'onTouched',
     defaultValues: {
       userId: '',
       password: '',
-      nicknmae: '',
+      nickname: '',
     },
   })
 
@@ -54,7 +63,7 @@ const useRegisterForm = () => {
       const result = await auth.register({
         userId: values.userId,
         password: values.password,
-        nickname: values.nicknmae,
+        nickname: values.nickname,
       })
 
       if (result.success) {
@@ -71,6 +80,10 @@ const useRegisterForm = () => {
   return {
     form,
     onSubmit,
+    emailValidationState,
+    setEmailValidationState,
+    nicknameValidationState,
+    setNicknameValidationState,
   }
 }
 
@@ -91,12 +104,23 @@ export const RegisterFormProvider = ({
 }: {
   children: React.ReactNode
 }) => {
-  const { form, onSubmit } = useRegisterForm()
+  const {
+    form,
+    onSubmit,
+    emailValidationState,
+    setEmailValidationState,
+    nicknameValidationState,
+    setNicknameValidationState,
+  } = useRegisterForm()
   return (
     <RegisterFormContext.Provider
       value={{
         form,
         onSubmit,
+        emailValidationState,
+        setEmailValidationState,
+        nicknameValidationState,
+        setNicknameValidationState,
       }}
     >
       {children}

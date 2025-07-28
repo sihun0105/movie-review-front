@@ -17,50 +17,62 @@ const NicknameInputField: FunctionComponent<NicknameInputFieldProps> = ({
   className,
   ...props
 }) => {
-  const { form } = useRegisterFormContext()
+  const { form, setNicknameValidationState } = useRegisterFormContext()
   const [isValidating, setIsValidating] = useState(false)
   const [validationMessage, setValidationMessage] = useState('')
 
-  const nicknameValue = form.watch('nicknmae')
+  const nicknameValue = form.watch('nickname')
   const debouncedNickname = useDebounce(nicknameValue, 500)
 
   useEffect(() => {
     const validateNicknameAsync = async () => {
+      setNicknameValidationState({ isValidating: false, isValid: false })
+
       if (!debouncedNickname || debouncedNickname.length < 2) {
         setValidationMessage('')
         setIsValidating(false)
+        form.clearErrors('nickname')
         return
       }
 
       setIsValidating(true)
+      setNicknameValidationState({ isValidating: true, isValid: false })
+
       try {
         const result = await validateNickname(debouncedNickname)
 
         if (!result.isAvailable) {
-          form.setError('nicknmae', {
+          form.setError('nickname', {
             type: 'manual',
             message: result.message || '이미 사용 중인 닉네임입니다.',
           })
           setValidationMessage('이미 사용 중인 닉네임입니다.')
+          setNicknameValidationState({ isValidating: false, isValid: false })
         } else {
-          form.clearErrors('nicknmae')
+          form.clearErrors('nickname')
           setValidationMessage('사용 가능한 닉네임입니다.')
+          setNicknameValidationState({ isValidating: false, isValid: true })
         }
       } catch (error) {
         console.error('Nickname validation error:', error)
+        form.setError('nickname', {
+          type: 'manual',
+          message: '닉네임 검증 중 오류가 발생했습니다.',
+        })
         setValidationMessage('닉네임 검증 중 오류가 발생했습니다.')
+        setNicknameValidationState({ isValidating: false, isValid: false })
       } finally {
         setIsValidating(false)
       }
     }
 
     validateNicknameAsync()
-  }, [debouncedNickname, form])
+  }, [debouncedNickname, form, setNicknameValidationState])
 
   return (
     <FormField
       control={form.control}
-      name="nicknmae"
+      name="nickname"
       render={({ field }) => (
         <FormItem>
           <FormLabel className={cn('text-black')}>닉네임</FormLabel>
@@ -76,7 +88,7 @@ const NicknameInputField: FunctionComponent<NicknameInputFieldProps> = ({
           </FormControl>
           <div className="h-10">
             <FormMessage />
-            {validationMessage && !form.formState.errors.nicknmae && (
+            {validationMessage && !form.formState.errors.nickname && (
               <p className="mt-1 text-sm text-green-600">{validationMessage}</p>
             )}
           </div>
