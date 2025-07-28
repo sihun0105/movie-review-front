@@ -14,6 +14,7 @@ jobs:
       COOKIE_TOKEN_KEY: ${{ secrets.COOKIE_TOKEN_KEY }}
       SERVER_API: ${{ secrets.SERVER_API }}
       CHAT_SERVER_API: ${{ secrets.CHAT_SERVER_API }}
+      NEXT_PUBLIC_SERVER_API: ${{ secrets.NEXT_PUBLIC_SERVER_API }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
