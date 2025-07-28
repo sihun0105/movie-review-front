@@ -9,6 +9,10 @@ const AppEnv = {
     process.env.NEXTAUTH_URL,
     'NEXTAUTH_URL is not defined',
   ),
+  nextPublicServerApi: assertValue(
+    process.env.NEXT_PUBLIC_SERVER_API,
+    'NEXT_PUBLIC_SERVER_API is not defined',
+  ),
   nextAuthSecret: assertValue(
     process.env.NEXTAUTH_SECRET,
     'NEXTAUTH_SECRET is not defined',
