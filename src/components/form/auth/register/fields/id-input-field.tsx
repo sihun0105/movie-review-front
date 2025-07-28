@@ -18,22 +18,30 @@ const IdInputField: FunctionComponent<IdInputFieldProps> = ({
   className,
   ...props
 }) => {
-  const { form } = useRegisterFormContext()
+  const { form, setEmailValidationState } = useRegisterFormContext()
   const [isValidating, setIsValidating] = useState(false)
   const [validationMessage, setValidationMessage] = useState('')
+  const [isEmailValid, setIsEmailValid] = useState(false)
 
   const emailValue = form.watch('userId')
   const debouncedEmail = useDebounce(emailValue, 500)
 
   useEffect(() => {
     const validateEmailAsync = async () => {
+      // 이메일이 변경되면 기존 검증 상태 초기화
+      setIsEmailValid(false)
+      setEmailValidationState({ isValidating: false, isValid: false })
+
       if (!debouncedEmail || !debouncedEmail.includes('@')) {
         setValidationMessage('')
         setIsValidating(false)
+        form.clearErrors('userId')
         return
       }
 
       setIsValidating(true)
+      setEmailValidationState({ isValidating: true, isValid: false })
+
       try {
         const result = await validateEmail(debouncedEmail)
 
@@ -43,20 +51,30 @@ const IdInputField: FunctionComponent<IdInputFieldProps> = ({
             message: result.message || '이미 사용 중인 이메일입니다.',
           })
           setValidationMessage('이미 사용 중인 이메일입니다.')
+          setIsEmailValid(false)
+          setEmailValidationState({ isValidating: false, isValid: false })
         } else {
           form.clearErrors('userId')
           setValidationMessage('사용 가능한 이메일입니다.')
+          setIsEmailValid(true)
+          setEmailValidationState({ isValidating: false, isValid: true })
         }
       } catch (error) {
         console.error('Email validation error:', error)
+        form.setError('userId', {
+          type: 'manual',
+          message: '이메일 검증 중 오류가 발생했습니다.',
+        })
         setValidationMessage('이메일 검증 중 오류가 발생했습니다.')
+        setIsEmailValid(false)
+        setEmailValidationState({ isValidating: false, isValid: false })
       } finally {
         setIsValidating(false)
       }
     }
 
     validateEmailAsync()
-  }, [debouncedEmail, form])
+  }, [debouncedEmail, form, setEmailValidationState])
 
   return (
     <FormField

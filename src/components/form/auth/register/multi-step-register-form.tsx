@@ -17,31 +17,67 @@ interface MultiStepRegisterFormProps extends HTMLAttributes<HTMLDivElement> {}
 
 const MultiStepRegisterForm: FunctionComponent<MultiStepRegisterFormProps> = ({
   className: _className,
-  ...props
+  ..._props
 }) => {
   const { showToast } = useAppToast()
-  const { form, onSubmit } = useRegisterFormContext()
-  const { register, isRegisting } = useRegister()
+  const { form, onSubmit, emailValidationState, nicknameValidationState } =
+    useRegisterFormContext()
+  const { register: _register, isRegisting } = useRegister()
   const router = useRouter()
   const [currentStep, setCurrentStep] = useState(1)
   const totalSteps = 3
 
   const handleNext = async () => {
     let isValid = false
+    let hasValidationError = false
 
     switch (currentStep) {
-      case 1:
+      case 1: {
         isValid = await form.trigger('userId')
+        // 이메일 검증 중이거나 검증 실패한 경우 진행 차단
+        const emailErrors = form.formState.errors.userId
+        const isEmailValidating = emailValidationState.isValidating
+        const isEmailValid = emailValidationState.isValid
+
+        if (
+          emailErrors ||
+          !form.getValues('userId') ||
+          isEmailValidating ||
+          !isEmailValid
+        ) {
+          hasValidationError = true
+        }
         break
-      case 2:
+      }
+      case 2: {
         isValid = await form.trigger('password')
+        // 비밀번호 검증 실패한 경우 진행 차단
+        const passwordErrors = form.formState.errors.password
+        if (passwordErrors || !form.getValues('password')) {
+          hasValidationError = true
+        }
         break
-      case 3:
-        isValid = await form.trigger('nicknmae')
+      }
+      case 3: {
+        isValid = await form.trigger('nickname')
+        // 닉네임 검증 중이거나 검증 실패한 경우 진행 차단
+        const nicknameErrors = form.formState.errors.nickname
+        const isNicknameValidating = nicknameValidationState.isValidating
+        const isNicknameValid = nicknameValidationState.isValid
+
+        if (
+          nicknameErrors ||
+          !form.getValues('nickname') ||
+          isNicknameValidating ||
+          !isNicknameValid
+        ) {
+          hasValidationError = true
+        }
         break
+      }
     }
 
-    if (isValid && currentStep < totalSteps) {
+    if (isValid && !hasValidationError && currentStep < totalSteps) {
       setCurrentStep(currentStep + 1)
     }
   }
@@ -99,12 +135,39 @@ const MultiStepRegisterForm: FunctionComponent<MultiStepRegisterFormProps> = ({
 
   const isCurrentStepValid = () => {
     switch (currentStep) {
-      case 1:
-        return !form.formState.errors.userId && form.getValues('userId')
-      case 2:
-        return !form.formState.errors.password && form.getValues('password')
-      case 3:
-        return !form.formState.errors.nicknmae && form.getValues('nicknmae')
+      case 1: {
+        const emailValue = form.getValues('userId')
+        const hasError = form.formState.errors.userId
+
+        // 이메일이 있고, 에러가 없고, 검증이 완료되었고, 유효한 상태여야 함
+        const isValidEmail =
+          emailValue &&
+          emailValue.includes('@') &&
+          !hasError &&
+          !emailValidationState.isValidating &&
+          emailValidationState.isValid
+
+        return isValidEmail
+      }
+      case 2: {
+        const hasValue = form.getValues('password')
+        const hasError = form.formState.errors.password
+        return hasValue && !hasError
+      }
+      case 3: {
+        const nicknameValue = form.getValues('nickname')
+        const hasError = form.formState.errors.nickname
+
+        // 닉네임이 있고, 에러가 없고, 검증이 완료되었고, 유효한 상태여야 함
+        const isValidNickname =
+          nicknameValue &&
+          nicknameValue.length >= 2 &&
+          !hasError &&
+          !nicknameValidationState.isValidating &&
+          nicknameValidationState.isValid
+
+        return isValidNickname
+      }
       default:
         return false
     }
