@@ -1,10 +1,9 @@
-import { getTokenFromCookie } from '@/lib/utils/getToken'
 import { UsersRepository } from '@/modules/users/users-repository'
 import { NextRequest } from 'next/server'
 
 export const POST = async (req: NextRequest) => {
   const form = await req.formData()
-  const userId = form.get('userEmail') as string
+  const userId = form.get('email') as string
   const password = form.get('password') as string
   const nickname = form.get('nickname') as string
   try {

@@ -47,6 +47,7 @@ export class AuthRepository {
 
   async register(data: RegisterRequest): Promise<AuthResponse> {
     // 클라이언트 사이드 validation
+    console.log('Registering user:', data)
     if (!data.userId || !data.password || !data.nickname) {
       return {
         success: false,

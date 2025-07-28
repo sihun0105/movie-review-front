@@ -66,7 +66,7 @@ export class AuthDataSource {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          userEmail: data.userId,
+          email: data.userId,
           password: data.password,
           nickname: data.nickname,
         }),
