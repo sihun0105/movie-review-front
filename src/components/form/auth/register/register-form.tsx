@@ -25,7 +25,7 @@ const RegisterForm: FunctionComponent<RegisterFormProps> = ({
       {
         nickname: data.nicknmae,
         password: data.password,
-        userEmail: data.userId,
+        email: data.userId,
       },
       {
         onSuccess: async () => {

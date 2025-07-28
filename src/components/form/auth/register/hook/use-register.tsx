@@ -7,14 +7,14 @@ const fetcher = async (
     arg,
   }: {
     arg: {
-      userEmail: string
+      email: string
       password: string
       nickname: string
     }
   },
 ) => {
   const formData = new FormData()
-  formData.append('userEmail', arg.userEmail)
+  formData.append('email', arg.email)
   formData.append('password', arg.password)
   formData.append('nickname', arg.nickname)
   const res = await fetch(url, {
@@ -37,7 +37,7 @@ export const useRegister = () => {
 
   const register = (
     arg: {
-      userEmail: string
+      email: string
       password: string
       nickname: string
     },
