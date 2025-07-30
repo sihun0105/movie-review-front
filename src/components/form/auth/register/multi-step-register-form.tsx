@@ -11,6 +11,7 @@ import { useRegister } from './hook/use-register'
 import { useRouter } from 'next/navigation'
 import { ChevronLeft, Check } from 'lucide-react'
 import { motion, AnimatePresence } from 'framer-motion'
+import { TermsAgreement } from './fields/terms-agreement'
 import { useAppToast } from '@/hooks/use-app-toast'
 
 interface MultiStepRegisterFormProps extends HTMLAttributes<HTMLDivElement> {}
@@ -25,7 +26,7 @@ const MultiStepRegisterForm: FunctionComponent<MultiStepRegisterFormProps> = ({
   const { register: _register, isRegisting } = useRegister()
   const router = useRouter()
   const [currentStep, setCurrentStep] = useState(1)
-  const totalSteps = 3
+  const totalSteps = 4
 
   const handleNext = async () => {
     let isValid = false
@@ -75,6 +76,15 @@ const MultiStepRegisterForm: FunctionComponent<MultiStepRegisterFormProps> = ({
         }
         break
       }
+      case 4: {
+        isValid = await form.trigger('termsAgreed')
+        // 약관 동의 확인
+        const termsErrors = form.formState.errors.termsAgreed
+        if (termsErrors || !form.getValues('termsAgreed')) {
+          hasValidationError = true
+        }
+        break
+      }
     }
 
     if (isValid && !hasValidationError && currentStep < totalSteps) {
@@ -115,6 +125,8 @@ const MultiStepRegisterForm: FunctionComponent<MultiStepRegisterFormProps> = ({
         return '비밀번호를 입력해주세요'
       case 3:
         return '닉네임을 입력해주세요'
+      case 4:
+        return '약관에 동의해주세요'
       default:
         return ''
     }
@@ -128,6 +140,8 @@ const MultiStepRegisterForm: FunctionComponent<MultiStepRegisterFormProps> = ({
         return '안전한 비밀번호를 설정해주세요.'
       case 3:
         return '다른 사용자들에게 보여질 닉네임을 입력해주세요.'
+      case 4:
+        return '서비스 이용을 위해 약관에 동의해주세요.'
       default:
         return ''
     }
@@ -167,6 +181,11 @@ const MultiStepRegisterForm: FunctionComponent<MultiStepRegisterFormProps> = ({
           nicknameValidationState.isValid
 
         return isValidNickname
+      }
+      case 4: {
+        const termsAgreed = form.getValues('termsAgreed')
+        const hasError = form.formState.errors.termsAgreed
+        return termsAgreed && !hasError
       }
       default:
         return false
@@ -253,6 +272,25 @@ const MultiStepRegisterForm: FunctionComponent<MultiStepRegisterFormProps> = ({
                     <NicknameInputField />
                   </motion.div>
                 )}
+                {currentStep === 4 && (
+                  <motion.div
+                    key="step4"
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -20 }}
+                    transition={{ duration: 0.2 }}
+                  >
+                    <TermsAgreement
+                      onAgreementChange={(isAgreed) => {
+                        form.setValue('termsAgreed', isAgreed)
+                        if (isAgreed) {
+                          form.clearErrors('termsAgreed')
+                        }
+                      }}
+                      isValid={form.getValues('termsAgreed')}
+                    />
+                  </motion.div>
+                )}
               </AnimatePresence>
             </div>
           </Form>
@@ -272,7 +310,7 @@ const MultiStepRegisterForm: FunctionComponent<MultiStepRegisterFormProps> = ({
         ) : (
           <Button
             onClick={handleSubmit}
-            disabled={!form.formState.isValid || isRegisting}
+            disabled={!isCurrentStepValid() || isRegisting}
             className="flex h-14 w-full items-center justify-center gap-2 rounded-xl bg-blue-500 text-lg font-semibold shadow-lg transition-all duration-200 hover:bg-blue-600 disabled:bg-gray-200 disabled:text-gray-400"
           >
             {isRegisting ? (
