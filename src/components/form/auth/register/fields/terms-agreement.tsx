@@ -1,4 +1,10 @@
-import { FunctionComponent, HTMLAttributes, useState, useEffect } from 'react'
+import {
+  FunctionComponent,
+  HTMLAttributes,
+  useState,
+  useEffect,
+  memo,
+} from 'react'
 import { cn } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
 import ReactMarkdown from 'react-markdown'
@@ -6,6 +12,7 @@ import remarkGfm from 'remark-gfm'
 import { ChevronDown, ChevronUp, FileText, Shield } from 'lucide-react'
 import { Checkbox } from '@/components/ui/checkbox'
 import { ScrollArea } from '@/components/ui/scroll-area'
+import { useRegisterFormContext } from '../hook/register-form-context'
 
 interface TermsAgreementProps extends HTMLAttributes<HTMLDivElement> {
   onAgreementChange: (isAgreed: boolean) => void
@@ -23,6 +30,7 @@ const TermsAgreement: FunctionComponent<TermsAgreementProps> = ({
   isValid: _isValid,
   ...props
 }) => {
+  const { form } = useRegisterFormContext()
   const [termsData, setTermsData] = useState<TermsData>({
     termsOfService: '',
     privacyPolicy: '',
@@ -38,6 +46,7 @@ const TermsAgreement: FunctionComponent<TermsAgreementProps> = ({
     privacyPolicy: false,
   })
 
+  // 약관 데이터 로드 (한 번만 실행)
   useEffect(() => {
     const loadTerms = async () => {
       try {
@@ -64,12 +73,20 @@ const TermsAgreement: FunctionComponent<TermsAgreementProps> = ({
     loadTerms()
   }, [])
 
+  // 필수 약관 동의 상태 변경 시 부모 컴포넌트에 알림
   useEffect(() => {
-    // 필수 약관 모두 동의했는지 확인
     const isAllRequiredAgreed =
       agreements.termsOfService && agreements.privacyPolicy
     onAgreementChange(isAllRequiredAgreed)
-  }, [agreements, onAgreementChange])
+  }, [agreements.termsOfService, agreements.privacyPolicy, onAgreementChange])
+
+  // 마케팅 동의 상태를 form에 별도로 설정 (form.setValue가 무한 루프를 발생시키지 않도록 주의)
+  useEffect(() => {
+    const currentMarketingValue = form.getValues('marketingAgreed')
+    if (currentMarketingValue !== agreements.marketing) {
+      form.setValue('marketingAgreed', agreements.marketing)
+    }
+  }, [agreements.marketing, form])
 
   const handleAgreementChange = (
     type: keyof typeof agreements,
@@ -285,3 +302,11 @@ const TermsAgreement: FunctionComponent<TermsAgreementProps> = ({
 }
 
 export { TermsAgreement }
+
+// React.memo를 사용해서 불필요한 리렌더링 방지
+export default memo(TermsAgreement, (prevProps, nextProps) => {
+  return (
+    prevProps.isValid === nextProps.isValid &&
+    prevProps.onAgreementChange === nextProps.onAgreementChange
+  )
+})

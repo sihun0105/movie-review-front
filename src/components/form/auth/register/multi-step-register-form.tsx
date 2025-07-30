@@ -1,7 +1,13 @@
 'use client'
 
 import { Form } from '@/components/ui/form'
-import { FunctionComponent, HTMLAttributes, useState } from 'react'
+import {
+  FunctionComponent,
+  HTMLAttributes,
+  useState,
+  useMemo,
+  useCallback,
+} from 'react'
 import { Button } from '@/components/ui/button'
 import { IdInputField } from './fields/id-input-field'
 import { PasswordInputField } from './fields/password-input-field'
@@ -34,6 +40,15 @@ const MultiStepRegisterForm: FunctionComponent<MultiStepRegisterFormProps> = ({
 
     switch (currentStep) {
       case 1: {
+        isValid = await form.trigger('termsAgreed')
+        // 약관 동의 확인
+        const termsErrors = form.formState.errors.termsAgreed
+        if (termsErrors || !form.getValues('termsAgreed')) {
+          hasValidationError = true
+        }
+        break
+      }
+      case 2: {
         isValid = await form.trigger('userId')
         // 이메일 검증 중이거나 검증 실패한 경우 진행 차단
         const emailErrors = form.formState.errors.userId
@@ -50,7 +65,7 @@ const MultiStepRegisterForm: FunctionComponent<MultiStepRegisterFormProps> = ({
         }
         break
       }
-      case 2: {
+      case 3: {
         isValid = await form.trigger('password')
         // 비밀번호 검증 실패한 경우 진행 차단
         const passwordErrors = form.formState.errors.password
@@ -59,7 +74,7 @@ const MultiStepRegisterForm: FunctionComponent<MultiStepRegisterFormProps> = ({
         }
         break
       }
-      case 3: {
+      case 4: {
         isValid = await form.trigger('nickname')
         // 닉네임 검증 중이거나 검증 실패한 경우 진행 차단
         const nicknameErrors = form.formState.errors.nickname
@@ -72,15 +87,6 @@ const MultiStepRegisterForm: FunctionComponent<MultiStepRegisterFormProps> = ({
           isNicknameValidating ||
           !isNicknameValid
         ) {
-          hasValidationError = true
-        }
-        break
-      }
-      case 4: {
-        isValid = await form.trigger('termsAgreed')
-        // 약관 동의 확인
-        const termsErrors = form.formState.errors.termsAgreed
-        if (termsErrors || !form.getValues('termsAgreed')) {
           hasValidationError = true
         }
         break
@@ -98,35 +104,41 @@ const MultiStepRegisterForm: FunctionComponent<MultiStepRegisterFormProps> = ({
     }
   }
 
-  const handleSubmit = form.handleSubmit(async (data) => {
-    await onSubmit(
-      data,
-      () => {
-        showToast(
-          '회원가입이 완료되었습니다! 로그인 페이지로 이동합니다.',
-          3000,
-        )
-        form.reset()
-        setTimeout(() => {
-          router.push('/login')
-        }, 1500)
-      },
-      (error: string) => {
-        showToast(error, 3000)
-      },
-    )
-  })
+  const handleSubmitClick = async () => {
+    // 먼저 수동으로 validation 실행
+    const isValid = await form.trigger()
+
+    if (isValid) {
+      const data = form.getValues()
+      await onSubmit(
+        data,
+        () => {
+          showToast(
+            '회원가입이 완료되었습니다! 로그인 페이지로 이동합니다.',
+            3000,
+          )
+          form.reset()
+          setTimeout(() => {
+            router.push('/login')
+          }, 1500)
+        },
+        (error: string) => {
+          showToast(error, 3000)
+        },
+      )
+    }
+  }
 
   const getStepTitle = () => {
     switch (currentStep) {
       case 1:
-        return '이메일을 입력해주세요'
-      case 2:
-        return '비밀번호를 입력해주세요'
-      case 3:
-        return '닉네임을 입력해주세요'
-      case 4:
         return '약관에 동의해주세요'
+      case 2:
+        return '이메일을 입력해주세요'
+      case 3:
+        return '비밀번호를 입력해주세요'
+      case 4:
+        return '닉네임을 입력해주세요'
       default:
         return ''
     }
@@ -135,23 +147,32 @@ const MultiStepRegisterForm: FunctionComponent<MultiStepRegisterFormProps> = ({
   const getStepSubtitle = () => {
     switch (currentStep) {
       case 1:
-        return '로그인할 때 사용할 이메일 주소를 입력해주세요.'
-      case 2:
-        return '안전한 비밀번호를 설정해주세요.'
-      case 3:
-        return '다른 사용자들에게 보여질 닉네임을 입력해주세요.'
-      case 4:
         return '서비스 이용을 위해 약관에 동의해주세요.'
+      case 2:
+        return '로그인할 때 사용할 이메일 주소를 입력해주세요.'
+      case 3:
+        return '안전한 비밀번호를 설정해주세요.'
+      case 4:
+        return '다른 사용자들에게 보여질 닉네임을 입력해주세요.'
       default:
         return ''
     }
   }
 
-  const isCurrentStepValid = () => {
+  // form 값들을 실시간으로 감지
+  const watchedValues = form.watch()
+  const formErrors = form.formState.errors
+
+  const isCurrentStepValid = useMemo(() => {
     switch (currentStep) {
       case 1: {
-        const emailValue = form.getValues('userId')
-        const hasError = form.formState.errors.userId
+        const termsAgreed = watchedValues.termsAgreed
+        const hasError = formErrors.termsAgreed
+        return termsAgreed && !hasError
+      }
+      case 2: {
+        const emailValue = watchedValues.userId
+        const hasError = formErrors.userId
 
         // 이메일이 있고, 에러가 없고, 검증이 완료되었고, 유효한 상태여야 함
         const isValidEmail =
@@ -163,14 +184,19 @@ const MultiStepRegisterForm: FunctionComponent<MultiStepRegisterFormProps> = ({
 
         return isValidEmail
       }
-      case 2: {
-        const hasValue = form.getValues('password')
-        const hasError = form.formState.errors.password
-        return hasValue && !hasError
-      }
       case 3: {
-        const nicknameValue = form.getValues('nickname')
-        const hasError = form.formState.errors.nickname
+        const passwordValue = watchedValues.password
+        const hasError = formErrors.password
+
+        // 비밀번호가 있고 에러가 없어야 함
+        const isValidPassword =
+          passwordValue && passwordValue.length >= 8 && !hasError
+
+        return isValidPassword
+      }
+      case 4: {
+        const nicknameValue = watchedValues.nickname
+        const hasError = formErrors.nickname
 
         // 닉네임이 있고, 에러가 없고, 검증이 완료되었고, 유효한 상태여야 함
         const isValidNickname =
@@ -182,15 +208,32 @@ const MultiStepRegisterForm: FunctionComponent<MultiStepRegisterFormProps> = ({
 
         return isValidNickname
       }
-      case 4: {
-        const termsAgreed = form.getValues('termsAgreed')
-        const hasError = form.formState.errors.termsAgreed
-        return termsAgreed && !hasError
-      }
       default:
         return false
     }
-  }
+  }, [
+    currentStep,
+    watchedValues,
+    formErrors,
+    emailValidationState.isValidating,
+    emailValidationState.isValid,
+    nicknameValidationState.isValidating,
+    nicknameValidationState.isValid,
+  ])
+
+  // 약관 동의 변경 핸들러를 메모이제이션
+  const handleAgreementChange = useCallback(
+    (isAgreed: boolean) => {
+      const currentValue = form.getValues('termsAgreed')
+      if (currentValue !== isAgreed) {
+        form.setValue('termsAgreed', isAgreed)
+        if (isAgreed) {
+          form.clearErrors('termsAgreed')
+        }
+      }
+    },
+    [form],
+  )
 
   return (
     <div className="flex min-h-screen flex-col bg-gradient-to-br from-blue-50 via-white to-indigo-50">
@@ -212,7 +255,7 @@ const MultiStepRegisterForm: FunctionComponent<MultiStepRegisterFormProps> = ({
         <div className="h-1 w-full rounded-full bg-gray-200">
           <motion.div
             className="h-1 rounded-full bg-blue-500"
-            initial={{ width: '33%' }}
+            initial={{ width: '25%' }}
             animate={{ width: `${(currentStep / totalSteps) * 100}%` }}
             transition={{ duration: 0.3 }}
           />
@@ -247,7 +290,10 @@ const MultiStepRegisterForm: FunctionComponent<MultiStepRegisterFormProps> = ({
                     exit={{ opacity: 0, y: -20 }}
                     transition={{ duration: 0.2 }}
                   >
-                    <IdInputField />
+                    <TermsAgreement
+                      onAgreementChange={handleAgreementChange}
+                      isValid={watchedValues.termsAgreed || false}
+                    />
                   </motion.div>
                 )}
                 {currentStep === 2 && (
@@ -258,7 +304,7 @@ const MultiStepRegisterForm: FunctionComponent<MultiStepRegisterFormProps> = ({
                     exit={{ opacity: 0, y: -20 }}
                     transition={{ duration: 0.2 }}
                   >
-                    <PasswordInputField />
+                    <IdInputField />
                   </motion.div>
                 )}
                 {currentStep === 3 && (
@@ -269,7 +315,7 @@ const MultiStepRegisterForm: FunctionComponent<MultiStepRegisterFormProps> = ({
                     exit={{ opacity: 0, y: -20 }}
                     transition={{ duration: 0.2 }}
                   >
-                    <NicknameInputField />
+                    <PasswordInputField />
                   </motion.div>
                 )}
                 {currentStep === 4 && (
@@ -280,15 +326,7 @@ const MultiStepRegisterForm: FunctionComponent<MultiStepRegisterFormProps> = ({
                     exit={{ opacity: 0, y: -20 }}
                     transition={{ duration: 0.2 }}
                   >
-                    <TermsAgreement
-                      onAgreementChange={(isAgreed) => {
-                        form.setValue('termsAgreed', isAgreed)
-                        if (isAgreed) {
-                          form.clearErrors('termsAgreed')
-                        }
-                      }}
-                      isValid={form.getValues('termsAgreed')}
-                    />
+                    <NicknameInputField />
                   </motion.div>
                 )}
               </AnimatePresence>
@@ -302,15 +340,15 @@ const MultiStepRegisterForm: FunctionComponent<MultiStepRegisterFormProps> = ({
         {currentStep < totalSteps ? (
           <Button
             onClick={handleNext}
-            disabled={!isCurrentStepValid()}
+            disabled={!isCurrentStepValid}
             className="h-14 w-full rounded-xl bg-blue-500 text-lg font-semibold shadow-lg transition-all duration-200 hover:bg-blue-600 disabled:bg-gray-200 disabled:text-gray-400"
           >
             다음
           </Button>
         ) : (
           <Button
-            onClick={handleSubmit}
-            disabled={!isCurrentStepValid() || isRegisting}
+            onClick={handleSubmitClick}
+            disabled={!isCurrentStepValid || isRegisting}
             className="flex h-14 w-full items-center justify-center gap-2 rounded-xl bg-blue-500 text-lg font-semibold shadow-lg transition-all duration-200 hover:bg-blue-600 disabled:bg-gray-200 disabled:text-gray-400"
           >
             {isRegisting ? (

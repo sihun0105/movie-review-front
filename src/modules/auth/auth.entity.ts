@@ -12,6 +12,7 @@ export interface RegisterRequest {
   userId: string
   password: string
   nickname: string
+  marketingAgreed?: boolean
 }
 
 export interface LoginRequest {

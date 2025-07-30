@@ -34,6 +34,7 @@ const formSchema = z.object({
   termsAgreed: z.boolean().refine((val) => val === true, {
     message: '이용약관에 동의해주세요.',
   }),
+  marketingAgreed: z.boolean().optional(),
 })
 
 const useRegisterForm = () => {
@@ -54,6 +55,7 @@ const useRegisterForm = () => {
       password: '',
       nickname: '',
       termsAgreed: false,
+      marketingAgreed: false,
     },
   })
 
