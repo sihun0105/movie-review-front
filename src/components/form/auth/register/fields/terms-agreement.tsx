@@ -130,10 +130,7 @@ const TermsAgreement: FunctionComponent<TermsAgreementProps> = ({
 
   return (
     <div className={cn('space-y-6', className)} {...props}>
-      <div className="space-y-2 text-center">
-        <h2 className="text-2xl font-bold text-gray-900">약관 동의</h2>
-        <p className="text-gray-600">서비스 이용을 위해 약관에 동의해주세요.</p>
-      </div>
+      <div className="space-y-2 text-center"></div>
 
       {/* 전체 동의 */}
       <div className="rounded-lg border border-gray-200 bg-gray-50 p-4">
