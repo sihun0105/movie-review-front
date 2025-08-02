@@ -76,7 +76,7 @@ const ModernLoginForm: FunctionComponent<ModernLoginFormProps> = ({
                   비밀번호
                 </label>
                 <div className="relative">
-                  <PasswordInputField />
+                  <PasswordInputField showPassword={showPassword} />
                   <button
                     type="button"
                     onClick={() => setShowPassword(!showPassword)}
