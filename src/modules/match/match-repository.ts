@@ -164,7 +164,8 @@ export class MatchRepository {
       throw new Error('매치 ID가 필요합니다.')
     }
 
-    return await this.dataSource.getMatchApplications(matchId)
+    const result = await this.dataSource.getMatchApplications(matchId)
+    return result
   }
 
   // 매치 신청 상태 업데이트 (승인/거절)

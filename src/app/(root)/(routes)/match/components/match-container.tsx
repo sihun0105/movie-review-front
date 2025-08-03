@@ -4,23 +4,19 @@ import { useState } from 'react'
 import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
 import { useToast } from '@/hooks/use-toast'
-import { CreateMatchPostRequest } from '@/lib/type'
-import { useMatchPosts, useCreateMatch } from '../hooks'
+import { useMatchPosts } from '../hooks'
 import { MatchHeaderSection } from '../sections/match-header-section'
-import { MatchFormSection } from '../sections/match-form-section'
 import { MatchListSection } from '../sections/match-list-section'
 
 export const MatchContainer = () => {
   const { status } = useSession()
   const router = useRouter()
   const { toast } = useToast()
-  const [showForm, setShowForm] = useState(false)
   const [showApplyDialog, setShowApplyDialog] = useState(false)
   const [selectedMatch, setSelectedMatch] = useState<any>(null)
 
   // SWR hooks
-  const { matchPosts, isLoading: isLoadingPosts, mutate } = useMatchPosts()
-  const { createMatch } = useCreateMatch()
+  const { matchPosts, isLoading: isLoadingPosts } = useMatchPosts()
 
   // 매치 신청 함수
   const handleApplyToMatch = async (matchId: string, message: string) => {
@@ -57,25 +53,6 @@ export const MatchContainer = () => {
     return null
   }
 
-  // 매치 생성
-  const handleCreateMatch = async (data: CreateMatchPostRequest) => {
-    try {
-      await createMatch(data)
-      toast({
-        title: '성공',
-        description: '매치가 성공적으로 등록되었습니다.',
-      })
-      setShowForm(false)
-      mutate() // 목록 새로고침
-    } catch (error) {
-      toast({
-        title: '오류',
-        description: '매치 등록에 실패했습니다.',
-        variant: 'destructive',
-      })
-    }
-  }
-
   // 매치 신청
   const handleApply = (matchId: string) => {
     const match = matchPosts.find((m) => m.id === matchId)
@@ -105,16 +82,7 @@ export const MatchContainer = () => {
 
   return (
     <>
-      <MatchHeaderSection onCreateClick={() => setShowForm(true)} />
-
-      {showForm && (
-        <div className="mb-8">
-          <MatchFormSection
-            onSubmit={handleCreateMatch}
-            onCancel={() => setShowForm(false)}
-          />
-        </div>
-      )}
+      <MatchHeaderSection />
 
       <MatchListSection
         matchPosts={matchPosts}

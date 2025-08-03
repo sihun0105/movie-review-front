@@ -18,7 +18,9 @@ const fetcher = async (url: string) => {
 }
 
 export const useMatchApplications = (matchId: string) => {
-  const { data, error, isLoading, mutate } = useSWR<MatchApplication[]>(
+  const { data, error, isLoading, mutate } = useSWR<{
+    applications: MatchApplication[]
+  }>(
     matchId ? AppClientApiEndpoint.getMatchApplications(matchId) : null,
     fetcher,
     {
@@ -28,7 +30,7 @@ export const useMatchApplications = (matchId: string) => {
   )
 
   return {
-    applications: data || [],
+    applications: data?.applications || [],
     isLoading,
     error,
     mutate,

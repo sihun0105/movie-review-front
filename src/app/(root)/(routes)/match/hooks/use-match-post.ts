@@ -18,7 +18,7 @@ const fetcher = async (url: string) => {
 }
 
 export const useMatchPost = (matchId: string) => {
-  const { data, error, isLoading, mutate } = useSWR<MatchPost>(
+  const { data, error, isLoading, mutate } = useSWR<{ matchPost: MatchPost }>(
     matchId ? AppClientApiEndpoint.getMatchPost(matchId) : null,
     fetcher,
     {
@@ -28,7 +28,7 @@ export const useMatchPost = (matchId: string) => {
   )
 
   return {
-    matchPost: data,
+    matchPost: data?.matchPost,
     isLoading,
     error,
     mutate,

@@ -36,7 +36,6 @@ const MatchDetailContainer = () => {
   } = useMatchApplications(matchId)
   const { applyToMatch } = useApplyMatch(matchId)
   const { deleteMatch, isDeleting } = useDeleteMatch(matchId)
-
   const isAuthor = matchPost?.userno?.toString() === session?.user?.id
 
   // 로그인 체크
