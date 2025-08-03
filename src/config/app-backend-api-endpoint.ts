@@ -177,6 +177,15 @@ const AppBackEndApiEndpoint = {
   updateApplicationStatus: (matchId: string, applicationId: string) => {
     return `${process.env.NEXT_PUBLIC_SERVER_API}/match/${matchId}/applications/${applicationId}`
   },
+  getMyApplications: () => {
+    return `${process.env.NEXT_PUBLIC_SERVER_API}/match/my-applications`
+  },
+  getMyPosts: () => {
+    return `${process.env.NEXT_PUBLIC_SERVER_API}/match/my-posts`
+  },
+  cancelApplication: (applicationId: string) => {
+    return `${process.env.NEXT_PUBLIC_SERVER_API}/match/applications/${applicationId}`
+  },
 }
 
 export { AppBackEndApiEndpoint }
