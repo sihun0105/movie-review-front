@@ -216,7 +216,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
                   <Footer className="pb-[var(--footer-height)]" />
                 </main>
                 <BottomNav />
-                <ChatSupport />
+                {/* <ChatSupport /> */}
                 <Toaster />
               </div>
             </MessageModalContextProvider>

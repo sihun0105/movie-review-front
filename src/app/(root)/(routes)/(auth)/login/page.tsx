@@ -1,4 +1,3 @@
-'use client'
 import { LoginFormProvider } from '@/components/form/auth/login/hook/login-form-context'
 import { FunctionComponent } from 'react'
 import { ModernLoginForm } from '@/components/form/auth/login/modern-login-form'

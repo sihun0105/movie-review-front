@@ -158,6 +158,41 @@ const AppClientApiEndpoint = {
       },
     )
   },
+
+  // Match 관련
+  getMatchPosts: (page: number = 1, pageSize: number = 10) => {
+    return queryString.stringifyUrl(
+      {
+        url: '/api/match',
+        query: { page, pageSize },
+      },
+      {
+        skipEmptyString: true,
+        skipNull: true,
+      },
+    )
+  },
+  createMatchPost: () => {
+    return '/api/match'
+  },
+  getMatchPost: (matchId: string) => {
+    return `/api/match/${matchId}`
+  },
+  updateMatchPost: (matchId: string) => {
+    return `/api/match/${matchId}`
+  },
+  deleteMatchPost: (matchId: string) => {
+    return `/api/match/${matchId}`
+  },
+  applyToMatch: (matchId: string) => {
+    return `/api/match/${matchId}/apply`
+  },
+  getMatchApplications: (matchId: string) => {
+    return `/api/match/${matchId}/applications`
+  },
+  updateApplicationStatus: (matchId: string, applicationId: string) => {
+    return `/api/match/${matchId}/applications/${applicationId}`
+  },
 }
 
 export { AppClientApiEndpoint }

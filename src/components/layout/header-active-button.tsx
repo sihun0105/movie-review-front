@@ -26,6 +26,9 @@ const HeaderActiveButton: FunctionComponent<HeaderActiveButtonProps> = ({}) => {
         <DropdownMenuItem>
           <Link href={'/account'}>내 정보</Link>
         </DropdownMenuItem>
+        <DropdownMenuItem>
+          <Link href={'/match/my-matches'}>내 매칭 관리</Link>
+        </DropdownMenuItem>
         <DropdownMenuItem
           onClick={() => {
             signOut()
