@@ -145,6 +145,38 @@ const AppBackEndApiEndpoint = {
   getMovieDetailByTheater: (movieCd: string) => {
     return `${process.env.NEXT_PUBLIC_SERVER_API}/movie-theater/movie/${movieCd}`
   },
+
+  // Match 관련
+  getMatchPosts: (page: number = 1, pageSize: number = 10) => {
+    return queryString.stringifyUrl(
+      {
+        url: `${process.env.NEXT_PUBLIC_SERVER_API}/match`,
+        query: { page, pageSize },
+      },
+      { skipEmptyString: true, skipNull: true },
+    )
+  },
+  createMatchPost: () => {
+    return `${process.env.NEXT_PUBLIC_SERVER_API}/match`
+  },
+  getMatchPost: (matchId: string) => {
+    return `${process.env.NEXT_PUBLIC_SERVER_API}/match/${matchId}`
+  },
+  updateMatchPost: (matchId: string) => {
+    return `${process.env.NEXT_PUBLIC_SERVER_API}/match/${matchId}`
+  },
+  deleteMatchPost: (matchId: string) => {
+    return `${process.env.NEXT_PUBLIC_SERVER_API}/match/${matchId}`
+  },
+  applyToMatch: (matchId: string) => {
+    return `${process.env.NEXT_PUBLIC_SERVER_API}/match/${matchId}/apply`
+  },
+  getMatchApplications: (matchId: string) => {
+    return `${process.env.NEXT_PUBLIC_SERVER_API}/match/${matchId}/applications`
+  },
+  updateApplicationStatus: (matchId: string, applicationId: string) => {
+    return `${process.env.NEXT_PUBLIC_SERVER_API}/match/${matchId}/applications/${applicationId}`
+  },
 }
 
 export { AppBackEndApiEndpoint }

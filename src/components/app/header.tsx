@@ -9,7 +9,6 @@ import Link from 'next/link'
 import { AppSkeleton } from './app-skeleton'
 import { DarkModeToggle } from './dark-mode-toggle'
 import { useTheme } from 'next-themes'
-import Script from 'next/script'
 
 interface HeaderProps {
   className?: string
@@ -50,6 +49,25 @@ const Header: FunctionComponent<HeaderProps> = ({ className }) => {
             <Clapperboard />
           )}
         </Link>
+
+        {/* Navigation Links */}
+        {isLogin && (
+          <div className="flex items-center gap-4">
+            <Link
+              href="/"
+              className="text-sm font-medium transition-colors hover:text-primary"
+            >
+              홈
+            </Link>
+            <Link
+              href="/match"
+              className="text-sm font-medium transition-colors hover:text-primary"
+            >
+              영화 메이트
+            </Link>
+          </div>
+        )}
+
         <div className="flex items-center gap-2">
           <DarkModeToggle />
           {isLoading && <AppSkeleton className="h-8 w-20" />}
