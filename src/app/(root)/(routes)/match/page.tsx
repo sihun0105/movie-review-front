@@ -1,15 +1,13 @@
-'use client'
-
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { useSession } from 'next-auth/react'
 import { CreateMatchPostRequest } from '@/lib/type'
-import { MatchCard } from '@/components/app/match-card'
 import { MatchPostForm } from '@/components/app/match-post-form'
 import { MatchApplyDialog } from '@/components/app/match-apply-dialog'
 import { Button } from '@/components/ui/button'
 import { useToast } from '@/hooks/use-toast'
 import { useMatchPosts, useCreateMatch, useApplyMatch } from './hooks'
+import { MatchCard } from './components/match-card'
 
 const MatchPage = () => {
   const { data: _session, status } = useSession()
