@@ -20,7 +20,7 @@ export async function GET(): Promise<ReturnType<typeof getServerSideSitemap>> {
       ...movies.map((movie) => ({
         loc: `https://drunkenmovie.shop/movie/${movie.id}`,
         lastmod: movie.updatedAt?.toISOString?.() || new Date().toISOString(),
-        changefreq: 'weekly' as const,
+        changefreq: 'daily' as const,
         priority: 0.8,
       })),
     )
@@ -34,7 +34,7 @@ export async function GET(): Promise<ReturnType<typeof getServerSideSitemap>> {
         lastmod: article.updatedAt
           ? new Date(article.updatedAt).toISOString()
           : new Date().toISOString(),
-        changefreq: 'weekly' as const,
+        changefreq: 'daily' as const,
         priority: 0.6,
       })),
     )
@@ -57,13 +57,13 @@ export async function GET(): Promise<ReturnType<typeof getServerSideSitemap>> {
     {
       loc: 'https://drunkenmovie.shop/account',
       lastmod: new Date().toISOString(),
-      changefreq: 'monthly' as const,
+      changefreq: 'daily' as const,
       priority: 0.5,
     },
     {
-      loc: 'https://drunkenmovie.shop/recruit',
+      loc: 'https://drunkenmovie.shop/match',
       lastmod: new Date().toISOString(),
-      changefreq: 'monthly' as const,
+      changefreq: 'daily' as const,
       priority: 0.3,
     },
   )
