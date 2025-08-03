@@ -1,6 +1,8 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+import { useRouter } from 'next/navigation'
+import { useSession } from 'next-auth/react'
 import { MatchPost, CreateMatchPostRequest } from '@/lib/type'
 import { MatchService } from '@/modules/match'
 import { MatchCard } from '@/components/app/match-card'
@@ -10,6 +12,8 @@ import { Button } from '@/components/ui/button'
 import { useToast } from '@/hooks/use-toast'
 
 const MatchPage = () => {
+  const { data: _session, status } = useSession()
+  const router = useRouter()
   const [matchPosts, setMatchPosts] = useState<MatchPost[]>([])
   const [isLoading, setIsLoading] = useState(false)
   const [showForm, setShowForm] = useState(false)
@@ -17,24 +21,20 @@ const MatchPage = () => {
   const [showApplyDialog, setShowApplyDialog] = useState(false)
   const { toast } = useToast()
 
-  // 매치 게시글 목록 조회
-  const fetchMatchPosts = async () => {
-    setIsLoading(true)
-    try {
-      const response = await MatchService.getMatchPosts()
-      setMatchPosts(response.matchPosts)
-    } catch (error) {
-      toast({
-        title: '오류',
-        description: '매치 게시글을 불러오는데 실패했습니다.',
-        variant: 'destructive',
-      })
-    } finally {
-      setIsLoading(false)
-    }
-  }
-
+  // 로그인 체크
   useEffect(() => {
+    if (status === 'loading') return // 로딩 중이면 대기
+
+    if (status === 'unauthenticated') {
+      router.push('/login')
+      return
+    }
+  }, [status, router])
+
+  // 매치 게시글 목록 조회
+  useEffect(() => {
+    if (status !== 'authenticated') return // 로그인된 경우에만 실행
+
     const loadMatchPosts = async () => {
       setIsLoading(true)
       try {
@@ -52,7 +52,39 @@ const MatchPage = () => {
     }
 
     loadMatchPosts()
-  }, [toast])
+  }, [status, toast])
+
+  // 로그인되지 않은 경우 렌더링하지 않음
+  if (status === 'loading') {
+    return (
+      <main className="container mx-auto px-4 py-8">
+        <div className="py-8 text-center">
+          <p>로딩 중...</p>
+        </div>
+      </main>
+    )
+  }
+
+  if (status === 'unauthenticated') {
+    return null // 리다이렉트 중이므로 아무것도 렌더링하지 않음
+  }
+
+  // 매치 게시글 목록 조회
+  const fetchMatchPosts = async () => {
+    setIsLoading(true)
+    try {
+      const response = await MatchService.getMatchPosts()
+      setMatchPosts(response.matchPosts)
+    } catch (error) {
+      toast({
+        title: '오류',
+        description: '매치 게시글을 불러오는데 실패했습니다.',
+        variant: 'destructive',
+      })
+    } finally {
+      setIsLoading(false)
+    }
+  }
 
   // 매치 게시글 작성
   const handleCreatePost = async (data: CreateMatchPostRequest) => {

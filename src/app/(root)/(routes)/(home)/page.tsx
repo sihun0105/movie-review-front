@@ -1,8 +1,10 @@
 import { AppSkeleton } from '@/components/app/app-skeleton'
 // import GoogleAd from '@/components/app/googleAd'
 import MovieCard from '@/components/app/movie-state-card'
+import { MatchBanner } from '@/components/app/match-banner'
 import { Movie } from '@/modules/movie/movie-entity'
 import { MovieRepository } from '@/modules/movie/movie-repository'
+import { getCurrentUser } from '@/lib/utils/server-utils'
 import { Metadata } from 'next'
 import { FunctionComponent } from 'react'
 
@@ -29,11 +31,15 @@ const getMovieList = async (): Promise<Movie[]> => {
 
 const Page: FunctionComponent<PageProps> = async ({}) => {
   const data = await getMovieList()
+  const user = await getCurrentUser()
+  const isAuthenticated = !!user
+
   if (!data) return <AppSkeleton className="container min-h-[364px] p-6" />
 
   return (
     <main>
       <section className="container flex flex-col gap-4 p-6">
+        <MatchBanner isAuthenticated={isAuthenticated} />
         {data.map((movie, index) => (
           <div key={movie.id} className="relative">
             <MovieCard data={{ ...movie, rank: index + 1 }} />

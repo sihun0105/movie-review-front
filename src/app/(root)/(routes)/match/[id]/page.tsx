@@ -13,7 +13,7 @@ import { useSession } from 'next-auth/react'
 const MatchDetailPage = () => {
   const params = useParams()
   const router = useRouter()
-  const { data: session } = useSession()
+  const { data: session, status } = useSession()
   const { toast } = useToast()
 
   const [matchPost, setMatchPost] = useState<MatchPost | null>(null)
@@ -23,6 +23,16 @@ const MatchDetailPage = () => {
 
   const matchId = params?.id as string
   const isAuthor = matchPost?.userno.toString() === session?.user?.id
+
+  // 로그인 체크
+  useEffect(() => {
+    if (status === 'loading') return // 로딩 중이면 대기
+
+    if (status === 'unauthenticated') {
+      router.push('/login')
+      return
+    }
+  }, [status, router])
 
   const fetchMatchDetail = useCallback(async () => {
     setIsLoading(true)
@@ -117,12 +127,16 @@ const MatchDetailPage = () => {
     }
   }
 
-  if (isLoading || !matchPost) {
+  if (status === 'loading' || isLoading || !matchPost) {
     return (
       <main className="container mx-auto px-4 py-8">
         <div className="text-center">로딩 중...</div>
       </main>
     )
+  }
+
+  if (status === 'unauthenticated') {
+    return null // 리다이렉트 중이므로 아무것도 렌더링하지 않음
   }
 
   const isFullyBooked =
