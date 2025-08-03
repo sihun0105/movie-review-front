@@ -1,8 +1,7 @@
-'use client'
-
 import { FunctionComponent } from 'react'
 import ArticleSection from './components/article-section'
 import NewArticleToggle from './components/new-article-toggle'
+
 const Page: FunctionComponent = () => {
   return (
     <>

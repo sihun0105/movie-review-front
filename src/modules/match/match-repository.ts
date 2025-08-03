@@ -75,10 +75,10 @@ export class MatchRepository {
 
     if (
       !data.maxParticipants ||
-      data.maxParticipants < 2 ||
+      data.maxParticipants < 1 ||
       data.maxParticipants > 10
     ) {
-      throw new Error('최대 인원은 2-10명 사이여야 합니다.')
+      throw new Error('최대 인원은 1-10명 사이여야 합니다.')
     }
 
     if (!data.location || data.location.trim() === '') {
