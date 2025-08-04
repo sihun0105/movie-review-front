@@ -1,6 +1,6 @@
 import AppThemeProvider from '@/components/app/app-theme-provider'
 import BottomNav from '@/components/app/bottom-nav'
-import ChatSupport from '@/components/app/chat-support'
+
 import Footer from '@/components/app/footer'
 import Header from '@/components/app/header'
 import { Toaster } from '@/components/ui/toaster'
