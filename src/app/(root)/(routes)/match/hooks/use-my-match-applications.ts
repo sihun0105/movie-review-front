@@ -1,4 +1,3 @@
-import { AppClientApiEndpoint } from '@/config/app-client-api-endpoint'
 import { MatchApplication } from '@/lib/type'
 import useSWR from 'swr'
 
@@ -11,21 +10,17 @@ const fetcher = async (url: string) => {
   })
 
   if (!response.ok) {
-    throw new Error('Failed to fetch match applications')
+    throw new Error('Failed to fetch my applications')
   }
 
   return await response.json()
 }
 
-export const useMatchApplications = (matchId: string) => {
-  const apiUrl = matchId
-    ? AppClientApiEndpoint.getMatchApplications(matchId)
-    : null
-
+export const useMyMatchApplications = () => {
   const { data, error, isLoading, mutate } = useSWR<{
     applications: MatchApplication[]
-  }>(apiUrl, fetcher, {
-    refreshInterval: 10000, // 10초마다 새로고침 (신청 상태 확인)
+  }>('/api/match/my-applications', fetcher, {
+    refreshInterval: 10000, // 10초마다 새로고침
     revalidateOnFocus: true,
   })
 

@@ -1,10 +1,11 @@
 'use client'
 
+import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { Button } from '@/components/ui/button'
 import Box from '@/components/ui/box'
-import { useToast } from '@/hooks/use-toast'
 import { MatchPost, MatchApplication } from '@/lib/type'
+import { ChatDialog } from '@/components/app/chat-dialog'
 
 interface MatchAuthorViewProps {
   matchPost: MatchPost
@@ -27,21 +28,22 @@ const MatchAuthorView = ({
   mutateApplications: _mutateApplications,
 }: MatchAuthorViewProps) => {
   const router = useRouter()
-  const { toast } = useToast()
-
+  const [chatOpen, setChatOpen] = useState(false)
+  const [selectedApplicant, setSelectedApplicant] = useState<{
+    id: string
+    name: string
+  } | null>(null)
+  console.log(selectedApplicant)
   // 매치 삭제
   const handleDelete = async () => {
     if (!window.confirm('정말로 이 매치를 삭제하시겠습니까?')) return
     await onDelete()
   }
 
-  // 1:1 채팅방 오픈 (추후 구현)
-  const handleOpenChat = (_applicantId: string) => {
-    // TODO: 1:1 채팅방 오픈 로직 구현
-    toast({
-      title: '준비 중',
-      description: '1:1 채팅 기능은 곧 제공될 예정입니다.',
-    })
+  // 1:1 채팅방 오픈
+  const handleOpenChat = (applicantId: string, applicantName: string) => {
+    setSelectedApplicant({ id: applicantId, name: applicantName })
+    setChatOpen(true)
   }
 
   return (
@@ -198,6 +200,7 @@ const MatchAuthorView = ({
                           onClick={() =>
                             handleOpenChat(
                               application.applicantUserno.toString(),
+                              application.applicantName,
                             )
                           }
                         >
@@ -215,6 +218,17 @@ const MatchAuthorView = ({
           </div>
         )}
       </Box>
+
+      {/* 채팅 다이얼로그 */}
+      {selectedApplicant && (
+        <ChatDialog
+          isOpen={chatOpen}
+          onClose={() => setChatOpen(false)}
+          targetUserId={selectedApplicant.id}
+          targetUserName={selectedApplicant.name}
+          matchTitle={matchPost.title}
+        />
+      )}
     </main>
   )
 }

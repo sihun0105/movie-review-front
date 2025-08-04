@@ -186,6 +186,9 @@ const AppBackEndApiEndpoint = {
   cancelApplication: (applicationId: string) => {
     return `${process.env.NEXT_PUBLIC_SERVER_API}/match/applications/${applicationId}`
   },
+  getMyApplication: (matchId: string) => {
+    return `${process.env.NEXT_PUBLIC_SERVER_API}/match/${matchId}/my-application`
+  },
 }
 
 export { AppBackEndApiEndpoint }

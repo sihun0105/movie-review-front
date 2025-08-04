@@ -224,7 +224,28 @@ export class MatchDataSource {
       throw new Error('내 신청 목록을 불러오는데 실패했습니다.')
     }
   }
+  // 내가 신청한 매치의 신청 상태 조회
+  async getMyApplication(matchId: string): Promise<MatchApplication | null> {
+    try {
+      const response = await fetch(
+        AppBackEndApiEndpoint.getMyApplication(matchId),
+        {
+          method: 'GET',
+          headers: this.getAuthHeaders(),
+        },
+      )
 
+      if (!response.ok) {
+        throw new Error('Failed to fetch my application')
+      }
+
+      const data = await response.json()
+      return data.application || null
+    } catch (error) {
+      console.error('My application fetch error:', error)
+      throw new Error('내 신청 상태를 불러오는데 실패했습니다.')
+    }
+  }
   // 내가 작성한 매치들 조회
   async getMyPosts(): Promise<MatchPost[]> {
     try {
