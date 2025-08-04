@@ -190,6 +190,9 @@ const AppClientApiEndpoint = {
   getMatchApplications: (matchId: string) => {
     return `/api/match/${matchId}/applications`
   },
+  getMyApplication: (matchId: string) => {
+    return `/api/match/${matchId}/my-application`
+  },
   updateApplicationStatus: (matchId: string, applicationId: string) => {
     return `/api/match/${matchId}/applications/${applicationId}`
   },

@@ -11,26 +11,26 @@ const fetcher = async (url: string) => {
   })
 
   if (!response.ok) {
-    throw new Error('Failed to fetch match applications')
+    if (response.status === 404) {
+      // 신청하지 않은 경우 404 반환
+      return null
+    }
+    throw new Error('Failed to fetch my application')
   }
 
   return await response.json()
 }
 
-export const useMatchApplications = (matchId: string) => {
-  const apiUrl = matchId
-    ? AppClientApiEndpoint.getMatchApplications(matchId)
-    : null
-
+export const useMyApplication = (matchId: string) => {
   const { data, error, isLoading, mutate } = useSWR<{
-    applications: MatchApplication[]
-  }>(apiUrl, fetcher, {
-    refreshInterval: 10000, // 10초마다 새로고침 (신청 상태 확인)
+    application: MatchApplication | null
+  }>(matchId ? AppClientApiEndpoint.getMyApplication(matchId) : null, fetcher, {
+    refreshInterval: 10000, // 10초마다 새로고침
     revalidateOnFocus: true,
   })
 
   return {
-    applications: data?.applications || [],
+    application: data?.application || null,
     isLoading,
     error,
     mutate,

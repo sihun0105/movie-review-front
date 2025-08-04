@@ -198,6 +198,15 @@ export class MatchRepository {
     return await this.dataSource.getMyApplications()
   }
 
+  // 내가 신청한 매치의 신청 상태 조회
+  async getMyApplication(matchId: string): Promise<MatchApplication | null> {
+    if (!matchId || matchId.trim() === '') {
+      throw new Error('매치 ID가 필요합니다.')
+    }
+
+    const result = await this.dataSource.getMyApplication(matchId)
+    return result
+  }
   // 내가 작성한 매치들 조회
   async getMyPosts(): Promise<MatchPost[]> {
     return await this.dataSource.getMyPosts()

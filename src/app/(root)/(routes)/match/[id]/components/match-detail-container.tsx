@@ -28,14 +28,18 @@ const MatchDetailContainer = () => {
     isLoading: isMatchLoading,
     error: matchError,
   } = useMatchPost(matchId)
-  const {
-    applications,
-    isLoading: isApplicationsLoading,
-    mutate: mutateApplications,
-  } = useMatchApplications(matchId)
+
   const { applyToMatch } = useApplyMatch(matchId)
   const { deleteMatch, isDeleting } = useDeleteMatch(matchId)
   const isAuthor = matchPost?.userno === session?.user?.id
+
+  // 작성자인 경우에만 신청 목록 조회
+  const {
+    applications,
+    isLoading: _isApplicationsLoading,
+    error: _applicationsError,
+    mutate: mutateApplications,
+  } = useMatchApplications(isAuthor ? matchId : '')
 
   // 로그인 체크
   useEffect(() => {
@@ -120,7 +124,7 @@ const MatchDetailContainer = () => {
   }
 
   // 로딩 상태
-  if (status === 'loading' || isMatchLoading || isApplicationsLoading) {
+  if (status === 'loading' || isMatchLoading) {
     return (
       <main className="container mx-auto px-4 py-8">
         <div className="py-8 text-center">
@@ -164,13 +168,7 @@ const MatchDetailContainer = () => {
     )
   }
 
-  return (
-    <MatchViewerView
-      matchPost={matchPost}
-      applications={applications}
-      onApply={handleApplySubmit}
-    />
-  )
+  return <MatchViewerView matchPost={matchPost} onApply={handleApplySubmit} />
 }
 
 export { MatchDetailContainer }

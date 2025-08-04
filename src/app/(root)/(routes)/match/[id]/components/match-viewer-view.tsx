@@ -4,27 +4,33 @@ import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { Button } from '@/components/ui/button'
 import { MatchApplyDialog } from '@/components/app/match-apply-dialog'
+import { ChatDialog } from '@/components/app/chat-dialog'
 import Box from '@/components/ui/box'
-import { MatchPost, MatchApplication } from '@/lib/type'
+import { MatchPost } from '@/lib/type'
+import { useMyApplication } from '../../hooks/use-my-application'
 
 interface MatchViewerViewProps {
   matchPost: MatchPost
-  applications: MatchApplication[]
   onApply: (message: string) => Promise<void>
 }
 
-const MatchViewerView = ({
-  matchPost,
-  applications,
-  onApply,
-}: MatchViewerViewProps) => {
+const MatchViewerView = ({ matchPost, onApply }: MatchViewerViewProps) => {
   const router = useRouter()
   const [showApplyDialog, setShowApplyDialog] = useState(false)
+  const [chatOpen, setChatOpen] = useState(false)
+
+  // 특정 매치에 대한 내 신청 상태 조회
+  const { application: myApplication } = useMyApplication(matchPost.id)
 
   // 매치 신청
   const handleApplySubmit = async (message: string) => {
     await onApply(message)
     setShowApplyDialog(false)
+  }
+
+  // 채팅 시작
+  const handleStartChat = () => {
+    setChatOpen(true)
   }
 
   return (
@@ -83,36 +89,63 @@ const MatchViewerView = ({
           </p>
         </div>
 
-        {/* 신청하기 버튼 */}
-        <div className="mt-6 flex justify-center">
-          <Button
-            onClick={() => setShowApplyDialog(true)}
-            disabled={
-              matchPost.currentParticipants >= matchPost.maxParticipants
-            }
-            size="lg"
-          >
-            {matchPost.currentParticipants >= matchPost.maxParticipants
-              ? '모집 완료'
-              : '신청하기'}
-          </Button>
+        {/* 신청하기 버튼 또는 현재 상태 */}
+        <div className="mt-6 flex flex-col items-center gap-4">
+          {!myApplication ? (
+            // 아직 신청하지 않은 경우
+            <Button
+              onClick={() => setShowApplyDialog(true)}
+              disabled={
+                matchPost.currentParticipants >= matchPost.maxParticipants
+              }
+              size="lg"
+            >
+              {matchPost.currentParticipants >= matchPost.maxParticipants
+                ? '모집 완료'
+                : '신청하기'}
+            </Button>
+          ) : (
+            // 이미 신청한 경우
+            <div className="text-center">
+              <div
+                className={`inline-block rounded px-4 py-2 text-sm font-medium ${
+                  myApplication.status === 'pending'
+                    ? 'bg-yellow-100 text-yellow-800'
+                    : myApplication.status === 'accepted'
+                      ? 'bg-green-100 text-green-800'
+                      : 'bg-red-100 text-red-800'
+                }`}
+              >
+                {myApplication.status === 'pending'
+                  ? '신청 대기 중'
+                  : myApplication.status === 'accepted'
+                    ? '신청 승인됨'
+                    : '신청 거절됨'}
+              </div>
+              {myApplication.status === 'accepted' && (
+                <div className="mt-4">
+                  <Button onClick={handleStartChat} size="lg">
+                    작성자와 채팅하기
+                  </Button>
+                </div>
+              )}
+            </div>
+          )}
         </div>
       </Box>
 
-      {/* 신청 현황 (간단한 정보만) */}
+      {/* 모집 현황 */}
       <Box>
         <div className="mb-4">
-          <h2 className="text-xl font-bold">신청 현황</h2>
+          <h2 className="text-xl font-bold">모집 현황</h2>
         </div>
 
         <div className="py-6 text-center">
           <div className="mb-2 text-3xl font-bold text-blue-600">
-            {applications.filter((app) => app.status === 'accepted').length}
+            {matchPost.currentParticipants}
           </div>
-          <div className="mb-4 text-sm text-gray-600">승인된 신청자</div>
-
-          <div className="text-lg text-gray-700">
-            전체 신청자: {applications.length}명
+          <div className="mb-4 text-sm text-gray-600">
+            / {matchPost.maxParticipants}명
           </div>
 
           {matchPost.currentParticipants >= matchPost.maxParticipants && (
@@ -130,6 +163,17 @@ const MatchViewerView = ({
         onApply={handleApplySubmit}
         matchTitle={matchPost?.title || ''}
       />
+
+      {/* 채팅 다이얼로그 */}
+      {myApplication?.status === 'accepted' && (
+        <ChatDialog
+          isOpen={chatOpen}
+          onClose={() => setChatOpen(false)}
+          targetUserId={matchPost.userno.toString()}
+          targetUserName={matchPost.author}
+          matchTitle={matchPost.title}
+        />
+      )}
     </main>
   )
 }
