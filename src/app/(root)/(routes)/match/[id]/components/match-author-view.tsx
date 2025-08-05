@@ -1,11 +1,9 @@
 'use client'
 
-import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { Button } from '@/components/ui/button'
 import Box from '@/components/ui/box'
 import { MatchPost, MatchApplication } from '@/lib/type'
-import { ChatDialog } from '@/components/app/chat-dialog'
 
 interface MatchAuthorViewProps {
   matchPost: MatchPost
@@ -28,22 +26,16 @@ const MatchAuthorView = ({
   mutateApplications: _mutateApplications,
 }: MatchAuthorViewProps) => {
   const router = useRouter()
-  const [chatOpen, setChatOpen] = useState(false)
-  const [selectedApplicant, setSelectedApplicant] = useState<{
-    id: string
-    name: string
-  } | null>(null)
-  console.log(selectedApplicant)
+
   // 매치 삭제
   const handleDelete = async () => {
     if (!window.confirm('정말로 이 매치를 삭제하시겠습니까?')) return
     await onDelete()
   }
 
-  // 1:1 채팅방 오픈
-  const handleOpenChat = (applicantId: string, applicantName: string) => {
-    setSelectedApplicant({ id: applicantId, name: applicantName })
-    setChatOpen(true)
+  // 1:1 채팅방으로 이동
+  const handleOpenChat = (applicantId: string) => {
+    router.push(`/match/${matchPost.id}/chat/${applicantId}`)
   }
 
   return (
@@ -200,7 +192,6 @@ const MatchAuthorView = ({
                           onClick={() =>
                             handleOpenChat(
                               application.applicantUserno.toString(),
-                              application.applicantName,
                             )
                           }
                         >
@@ -218,17 +209,6 @@ const MatchAuthorView = ({
           </div>
         )}
       </Box>
-
-      {/* 채팅 다이얼로그 */}
-      {selectedApplicant && (
-        <ChatDialog
-          isOpen={chatOpen}
-          onClose={() => setChatOpen(false)}
-          targetUserId={selectedApplicant.id}
-          targetUserName={selectedApplicant.name}
-          matchTitle={matchPost.title}
-        />
-      )}
     </main>
   )
 }

@@ -189,6 +189,20 @@ const AppBackEndApiEndpoint = {
   getMyApplication: (matchId: string) => {
     return `${process.env.NEXT_PUBLIC_SERVER_API}/match/${matchId}/my-application`
   },
+
+  // ✅ Chat 관련
+  createChatRoom: () => {
+    return `${process.env.NEXT_PUBLIC_SERVER_API}/chat/rooms`
+  },
+  getChatRoom: (chatRoomId: string) => {
+    return `${process.env.NEXT_PUBLIC_SERVER_API}/chat/rooms/${chatRoomId}`
+  },
+  getChatRooms: () => {
+    return `${process.env.NEXT_PUBLIC_SERVER_API}/chat/rooms`
+  },
+  getChatMessages: (chatRoomId: string) => {
+    return `${process.env.NEXT_PUBLIC_SERVER_API}/chat/rooms/${chatRoomId}/messages`
+  },
 }
 
 export { AppBackEndApiEndpoint }
