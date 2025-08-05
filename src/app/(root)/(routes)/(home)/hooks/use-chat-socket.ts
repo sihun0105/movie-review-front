@@ -2,24 +2,18 @@
 import { useEffect, useRef, useCallback, useState } from 'react'
 import { io, Socket } from 'socket.io-client'
 import { useSession } from 'next-auth/react'
-
-interface ChatMessage {
-  id: number
-  nickName: string
-  message: string
-  timestamp?: string
-}
+import { ChatMessageEntity } from '@/modules/chat'
 
 interface UseChatSocketProps {
   namespace?: string
-  channel?: number
-  onMessage?: (_message: ChatMessage) => void
+  chatRoomId?: string
+  onMessage?: (_message: ChatMessageEntity) => void
   onOnlineList?: (_users: number[]) => void
 }
 
 const useChatSocket = ({
   namespace = 'ws-home',
-  channel,
+  chatRoomId,
   onMessage,
   onOnlineList,
 }: UseChatSocketProps = {}) => {
@@ -56,12 +50,10 @@ const useChatSocket = ({
         console.log('Connected to namespace:', namespaceName)
       })
 
-      socketRef.current.on('message', (message: ChatMessage) => {
+      socketRef.current.on('message', (message: ChatMessageEntity) => {
+        console.log('Socket received message:', message)
         if (onMessageRef.current) {
-          onMessageRef.current({
-            ...message,
-            timestamp: new Date().toISOString(),
-          })
+          onMessageRef.current(message)
         }
       })
 
@@ -79,30 +71,57 @@ const useChatSocket = ({
         setIsConnected(false)
       }
     }
-  }, [namespace]) // onMessage, onOnlineList 제거
+  }, [namespace])
 
-  // 로그인 처리
+  // 채팅방 참여
   useEffect(() => {
-    if (socketRef.current && session?.user?.id && channel) {
-      socketRef.current.emit('login', {
-        id: parseInt(session.user.id),
-        channels: [channel],
+    if (socketRef.current && session?.user?.id && chatRoomId) {
+      socketRef.current.emit('joinRoom', {
+        userId: parseInt(session.user.id),
+        chatRoomId: chatRoomId,
       })
     }
-  }, [session?.user?.id, channel])
+  }, [session?.user?.id, chatRoomId])
 
   // 메시지 전송
   const sendMessage = useCallback(
-    (message: string) => {
-      if (socketRef.current && session?.user?.id && channel) {
-        socketRef.current.emit('message', {
-          channel,
-          userId: parseInt(session.user.id),
-          message,
+    async (content: string) => {
+      if (socketRef.current && session?.user?.id && chatRoomId) {
+        const payload = {
+          chatRoomId,
+          senderId: parseInt(session.user.id),
+          content,
+          messageType: 'text',
+        }
+
+        // Socket.IO로 실시간 전송
+        console.log('Emitting message:', payload)
+        socketRef.current.emit('sendMessage', payload)
+
+        // HTTP API로도 메시지 저장 (백업용)
+        try {
+          await fetch(`/api/chat/rooms/${chatRoomId}/messages`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              content,
+              senderId: parseInt(session.user.id),
+            }),
+          })
+        } catch (error) {
+          console.error('Failed to send message via HTTP API:', error)
+        }
+      } else {
+        console.log('Cannot send message:', {
+          hasSocket: !!socketRef.current,
+          userId: session?.user?.id,
+          chatRoomId,
         })
       }
     },
-    [session?.user?.id, channel],
+    [session?.user?.id, chatRoomId],
   )
 
   // 헬스 체크

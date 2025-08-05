@@ -54,6 +54,36 @@ const AppClientApiEndpoint = {
       },
     )
   },
+
+  // Chat 관련 API
+  getChatRooms: () => {
+    return '/api/chat/rooms'
+  },
+  getChatRoom: (roomId: string) => {
+    return `/api/chat/rooms/${roomId}`
+  },
+  getChatMessages: (roomId: string, userId?: number, page?: number) => {
+    const query: Record<string, any> = {}
+    if (userId) query.userId = userId
+    if (page) query.page = page
+
+    return queryString.stringifyUrl(
+      {
+        url: `/api/chat/rooms/${roomId}/messages`,
+        query,
+      },
+      {
+        skipEmptyString: true,
+        skipNull: true,
+      },
+    )
+  },
+  sendChatMessage: (roomId: string) => {
+    return `/api/chat/rooms/${roomId}/messages`
+  },
+  createDirectChat: () => {
+    return '/api/chat/direct'
+  },
   getMovieDetail: (movieCd: string) => {
     return queryString.stringifyUrl(
       {

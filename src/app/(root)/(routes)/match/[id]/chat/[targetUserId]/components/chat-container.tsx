@@ -9,13 +9,8 @@ import { ScrollArea } from '@/components/ui/scroll-area'
 import Box from '@/components/ui/box'
 import useChatSocket from '@/app/(root)/(routes)/(home)/hooks/use-chat-socket'
 import { useMatchPost } from '@/app/(root)/(routes)/match/hooks/use-match-post'
-
-interface ChatMessage {
-  id: number
-  nickName: string
-  message: string
-  timestamp?: string
-}
+import { useChatRoom } from '@/app/(root)/(routes)/match/hooks/use-chat-room'
+import { ChatMessageEntity } from '@/modules/chat'
 
 interface ChatContainerProps {
   matchId: string
@@ -24,8 +19,7 @@ interface ChatContainerProps {
 
 const ChatContainer = ({ matchId, targetUserId }: ChatContainerProps) => {
   const router = useRouter()
-  const { data: _session, status } = useSession()
-  const [messages, setMessages] = useState<ChatMessage[]>([])
+  const { data: session, status } = useSession()
   const [newMessage, setNewMessage] = useState('')
   const [onlineUsers, setOnlineUsers] = useState<number[]>([])
   const messagesEndRef = useRef<HTMLDivElement>(null)
@@ -33,21 +27,47 @@ const ChatContainer = ({ matchId, targetUserId }: ChatContainerProps) => {
   // 매치 정보 조회
   const { matchPost, isLoading: isMatchLoading } = useMatchPost(matchId)
 
-  // 채널은 matchId를 기반으로 생성 (단순히 숫자로 변환)
-  const channelId =
-    parseInt(matchId) ||
-    Math.abs(matchId.split('').reduce((a, b) => a + b.charCodeAt(0), 0))
+  // 채팅방 관리
+  const {
+    chatRoom,
+    messages,
+    loading: chatLoading,
+    error: chatError,
+    addMessage,
+  } = useChatRoom(matchId, targetUserId)
 
+  // 소켓 연결
   const { sendMessage, isConnected } = useChatSocket({
-    namespace: 'ws-chat',
-    channel: channelId,
-    onMessage: (message) => {
-      setMessages((prev) => [...prev, message])
+    namespace: 'ws-home',
+    chatRoomId: chatRoom?.chatRoomId,
+    onMessage: (message: ChatMessageEntity) => {
+      console.log('Received message:', message)
+      addMessage(message)
     },
     onOnlineList: (users) => {
       setOnlineUsers(users)
     },
   })
+
+  // 디버깅을 위한 로그
+  useEffect(() => {
+    console.log('Chat setup:', {
+      matchId,
+      targetUserId,
+      chatRoomId: chatRoom?.chatRoomId,
+      isConnected,
+      messagesCount: messages.length,
+      userId: session?.user?.id,
+      userNickname: session?.user?.name,
+    })
+  }, [
+    matchId,
+    targetUserId,
+    chatRoom?.chatRoomId,
+    isConnected,
+    messages.length,
+    session,
+  ])
 
   // 로그인 체크
   useEffect(() => {
@@ -59,7 +79,13 @@ const ChatContainer = ({ matchId, targetUserId }: ChatContainerProps) => {
 
   // 메시지 전송
   const handleSendMessage = () => {
-    if (newMessage.trim() && isConnected) {
+    if (newMessage.trim() && isConnected && chatRoom) {
+      console.log('Sending message:', {
+        content: newMessage.trim(),
+        chatRoomId: chatRoom.chatRoomId,
+        isConnected,
+      })
+
       sendMessage(newMessage.trim())
       setNewMessage('')
     }
@@ -79,7 +105,7 @@ const ChatContainer = ({ matchId, targetUserId }: ChatContainerProps) => {
   }, [messages])
 
   // 로딩 중
-  if (status === 'loading' || isMatchLoading) {
+  if (status === 'loading' || isMatchLoading || chatLoading) {
     return (
       <main className="container mx-auto px-4 py-8">
         <div className="py-8 text-center">
@@ -94,6 +120,21 @@ const ChatContainer = ({ matchId, targetUserId }: ChatContainerProps) => {
     return null
   }
 
+  // 에러 발생 시
+  if (chatError) {
+    return (
+      <main className="container mx-auto px-4 py-8">
+        <div className="py-8 text-center">
+          <h1 className="text-2xl font-bold text-red-600">오류</h1>
+          <p className="text-gray-600">{chatError}</p>
+          <Button onClick={() => router.push('/match')} className="mt-4">
+            매치 목록으로
+          </Button>
+        </div>
+      </main>
+    )
+  }
+
   // 매치 정보가 없는 경우
   if (!matchPost) {
     return (
@@ -104,6 +145,17 @@ const ChatContainer = ({ matchId, targetUserId }: ChatContainerProps) => {
           <Button onClick={() => router.push('/match')} className="mt-4">
             매치 목록으로
           </Button>
+        </div>
+      </main>
+    )
+  }
+
+  // 채팅방이 아직 준비되지 않은 경우
+  if (!chatRoom) {
+    return (
+      <main className="container mx-auto px-4 py-8">
+        <div className="py-8 text-center">
+          <p>채팅방을 준비하고 있습니다...</p>
         </div>
       </main>
     )
@@ -163,27 +215,29 @@ const ChatContainer = ({ matchId, targetUserId }: ChatContainerProps) => {
                 <br />첫 메시지를 보내보세요!
               </div>
             ) : (
-              messages.map((message, index) => (
-                <div
-                  key={index}
-                  className={`flex ${
-                    message.nickName === '나' ? 'justify-end' : 'justify-start'
-                  }`}
-                >
+              messages.map((message, index) => {
+                const isMyMessage =
+                  message.senderId === parseInt(session?.user?.id || '0')
+                return (
                   <div
-                    className={`max-w-xs rounded-lg px-4 py-3 ${
-                      message.nickName === '나'
-                        ? 'bg-blue-500 text-white'
-                        : 'bg-gray-200 text-gray-800'
+                    key={index}
+                    className={`flex ${
+                      isMyMessage ? 'justify-end' : 'justify-start'
                     }`}
                   >
-                    <div className="mb-1 text-sm font-medium">
-                      {message.nickName}
-                    </div>
-                    <div className="break-words">{message.message}</div>
-                    {message.timestamp && (
+                    <div
+                      className={`max-w-xs rounded-lg px-4 py-3 ${
+                        isMyMessage
+                          ? 'bg-blue-500 text-white'
+                          : 'bg-gray-200 text-gray-800'
+                      }`}
+                    >
+                      <div className="mb-1 text-sm font-medium">
+                        {message.senderName}
+                      </div>
+                      <div className="break-words">{message.content}</div>
                       <div className="mt-1 text-xs opacity-70">
-                        {new Date(message.timestamp).toLocaleTimeString(
+                        {new Date(message.createdAt).toLocaleTimeString(
                           'ko-KR',
                           {
                             hour: '2-digit',
@@ -191,10 +245,10 @@ const ChatContainer = ({ matchId, targetUserId }: ChatContainerProps) => {
                           },
                         )}
                       </div>
-                    )}
+                    </div>
                   </div>
-                </div>
-              ))
+                )
+              })
             )}
             <div ref={messagesEndRef} />
           </div>
