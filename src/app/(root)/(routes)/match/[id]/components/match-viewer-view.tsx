@@ -4,20 +4,18 @@ import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { Button } from '@/components/ui/button'
 import { MatchApplyDialog } from '@/components/app/match-apply-dialog'
-import { ChatDialog } from '@/components/app/chat-dialog'
 import Box from '@/components/ui/box'
 import { MatchPost } from '@/lib/type'
 import { useMyApplication } from '../../hooks/use-my-application'
 
 interface MatchViewerViewProps {
   matchPost: MatchPost
-  onApply: (message: string) => Promise<void>
+  onApply: (_message: string) => Promise<void>
 }
 
 const MatchViewerView = ({ matchPost, onApply }: MatchViewerViewProps) => {
   const router = useRouter()
   const [showApplyDialog, setShowApplyDialog] = useState(false)
-  const [chatOpen, setChatOpen] = useState(false)
 
   // 특정 매치에 대한 내 신청 상태 조회
   const { application: myApplication } = useMyApplication(matchPost.id)
@@ -28,9 +26,9 @@ const MatchViewerView = ({ matchPost, onApply }: MatchViewerViewProps) => {
     setShowApplyDialog(false)
   }
 
-  // 채팅 시작
+  // 채팅 페이지로 이동
   const handleStartChat = () => {
-    setChatOpen(true)
+    router.push(`/match/${matchPost.id}/chat/${matchPost.userno}`)
   }
 
   return (
@@ -163,17 +161,6 @@ const MatchViewerView = ({ matchPost, onApply }: MatchViewerViewProps) => {
         onApply={handleApplySubmit}
         matchTitle={matchPost?.title || ''}
       />
-
-      {/* 채팅 다이얼로그 */}
-      {myApplication?.status === 'accepted' && (
-        <ChatDialog
-          isOpen={chatOpen}
-          onClose={() => setChatOpen(false)}
-          targetUserId={matchPost.userno.toString()}
-          targetUserName={matchPost.author}
-          matchTitle={matchPost.title}
-        />
-      )}
     </main>
   )
 }

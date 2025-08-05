@@ -1,5 +1,5 @@
 'use client'
-import { useEffect, useRef, useCallback } from 'react'
+import { useEffect, useRef, useCallback, useState } from 'react'
 import { io, Socket } from 'socket.io-client'
 import { useSession } from 'next-auth/react'
 
@@ -13,8 +13,8 @@ interface ChatMessage {
 interface UseChatSocketProps {
   namespace?: string
   channel?: number
-  onMessage?: (message: ChatMessage) => void
-  onOnlineList?: (users: number[]) => void
+  onMessage?: (_message: ChatMessage) => void
+  onOnlineList?: (_users: number[]) => void
 }
 
 const useChatSocket = ({
@@ -24,7 +24,18 @@ const useChatSocket = ({
   onOnlineList,
 }: UseChatSocketProps = {}) => {
   const socketRef = useRef<Socket | null>(null)
+  const [isConnected, setIsConnected] = useState(false)
   const { data: session } = useSession()
+
+  // 콜백을 ref로 저장하여 의존성 배열 문제 해결
+  const onMessageRef = useRef(onMessage)
+  const onOnlineListRef = useRef(onOnlineList)
+
+  // 콜백 ref 업데이트
+  useEffect(() => {
+    onMessageRef.current = onMessage
+    onOnlineListRef.current = onOnlineList
+  }, [onMessage, onOnlineList])
 
   useEffect(() => {
     if (!socketRef.current) {
@@ -33,13 +44,21 @@ const useChatSocket = ({
       })
 
       // 연결 이벤트 리스너 등록
+      socketRef.current.on('connect', () => {
+        setIsConnected(true)
+      })
+
+      socketRef.current.on('disconnect', () => {
+        setIsConnected(false)
+      })
+
       socketRef.current.on('hello', (namespaceName: string) => {
         console.log('Connected to namespace:', namespaceName)
       })
 
       socketRef.current.on('message', (message: ChatMessage) => {
-        if (onMessage) {
-          onMessage({
+        if (onMessageRef.current) {
+          onMessageRef.current({
             ...message,
             timestamp: new Date().toISOString(),
           })
@@ -47,16 +66,20 @@ const useChatSocket = ({
       })
 
       socketRef.current.on('onlineList', (users: number[]) => {
-        if (onOnlineList) {
-          onOnlineList(users)
+        if (onOnlineListRef.current) {
+          onOnlineListRef.current(users)
         }
       })
     }
 
     return () => {
-      socketRef.current?.disconnect()
+      if (socketRef.current) {
+        socketRef.current.disconnect()
+        socketRef.current = null
+        setIsConnected(false)
+      }
     }
-  }, [namespace, onMessage, onOnlineList])
+  }, [namespace]) // onMessage, onOnlineList 제거
 
   // 로그인 처리
   useEffect(() => {
@@ -93,7 +116,7 @@ const useChatSocket = ({
     socket: socketRef.current,
     sendMessage,
     sendHealth,
-    isConnected: socketRef.current?.connected || false,
+    isConnected,
   }
 }
 
