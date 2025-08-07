@@ -38,7 +38,7 @@ const useChatSocket = ({
   useEffect(() => {
     if (!socketRef.current) {
       socketRef.current = io(
-        `${process.env.NEXT_PUBLIC_API_URL}/${actualNamespace}`,
+        `${process.env.NEXT_PUBLIC_CHAT_SERVER_API}/${actualNamespace}`,
         {
           transports: ['websocket', 'polling'],
         },
