@@ -3,7 +3,6 @@ import { useEffect, useRef, useCallback, useState } from 'react'
 import { io, Socket } from 'socket.io-client'
 import { useSession } from 'next-auth/react'
 import { ChatMessageEntity } from '@/modules/chat'
-import { AppEnv } from '@/config/app-env'
 
 interface UseChatSocketProps {
   namespace?: string
@@ -38,9 +37,12 @@ const useChatSocket = ({
 
   useEffect(() => {
     if (!socketRef.current) {
-      socketRef.current = io(`${AppEnv.chatServerApi}/${actualNamespace}`, {
-        transports: ['websocket', 'polling'],
-      })
+      socketRef.current = io(
+        `${process.env.NEXT_PUBLIC_API_URL}/${actualNamespace}`,
+        {
+          transports: ['websocket', 'polling'],
+        },
+      )
 
       // 연결 이벤트 리스너 등록
       socketRef.current.on('connect', () => {
