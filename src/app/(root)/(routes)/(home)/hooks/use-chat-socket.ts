@@ -3,6 +3,7 @@ import { useEffect, useRef, useCallback, useState } from 'react'
 import { io, Socket } from 'socket.io-client'
 import { useSession } from 'next-auth/react'
 import { ChatMessageEntity } from '@/modules/chat'
+import { AppEnv } from '@/config/app-env'
 
 interface UseChatSocketProps {
   namespace?: string
@@ -12,7 +13,7 @@ interface UseChatSocketProps {
 }
 
 const useChatSocket = ({
-  namespace = 'ws-home',
+  namespace,
   chatRoomId,
   onMessage,
   onOnlineList,
@@ -20,6 +21,10 @@ const useChatSocket = ({
   const socketRef = useRef<Socket | null>(null)
   const [isConnected, setIsConnected] = useState(false)
   const { data: session } = useSession()
+
+  // 네임스페이스 결정: chatRoomId가 있으면 해당 채팅방, 없으면 일반 채팅
+  const actualNamespace =
+    namespace || (chatRoomId ? `ws-chat-${chatRoomId}` : 'ws-chat')
 
   // 콜백을 ref로 저장하여 의존성 배열 문제 해결
   const onMessageRef = useRef(onMessage)
@@ -33,16 +38,18 @@ const useChatSocket = ({
 
   useEffect(() => {
     if (!socketRef.current) {
-      socketRef.current = io(`https://drunkenmovie.shop/${namespace}`, {
+      socketRef.current = io(`${AppEnv.chatServerApi}/${actualNamespace}`, {
         transports: ['websocket', 'polling'],
       })
 
       // 연결 이벤트 리스너 등록
       socketRef.current.on('connect', () => {
+        console.log('Socket connected to:', actualNamespace)
         setIsConnected(true)
       })
 
       socketRef.current.on('disconnect', () => {
+        console.log('Socket disconnected from:', actualNamespace)
         setIsConnected(false)
       })
 
@@ -58,9 +65,14 @@ const useChatSocket = ({
       })
 
       socketRef.current.on('onlineList', (users: number[]) => {
+        console.log('Online users updated:', users)
         if (onOnlineListRef.current) {
           onOnlineListRef.current(users)
         }
+      })
+
+      socketRef.current.on('error', (error: any) => {
+        console.error('Socket error:', error)
       })
     }
 
@@ -71,7 +83,7 @@ const useChatSocket = ({
         setIsConnected(false)
       }
     }
-  }, [namespace])
+  }, [actualNamespace])
 
   // 채팅방 참여
   useEffect(() => {
@@ -85,7 +97,7 @@ const useChatSocket = ({
 
   // 메시지 전송
   const sendMessage = useCallback(
-    async (content: string) => {
+    (content: string) => {
       if (socketRef.current && session?.user?.id && chatRoomId) {
         const payload = {
           chatRoomId,
@@ -94,25 +106,9 @@ const useChatSocket = ({
           messageType: 'text',
         }
 
-        // Socket.IO로 실시간 전송
-        console.log('Emitting message:', payload)
+        console.log('Sending message:', payload)
+        // Socket.IO로 실시간 전송 (백엔드에서 저장 처리)
         socketRef.current.emit('sendMessage', payload)
-
-        // HTTP API로도 메시지 저장 (백업용)
-        try {
-          await fetch(`/api/chat/rooms/${chatRoomId}/messages`, {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-              content,
-              senderId: parseInt(session.user.id),
-            }),
-          })
-        } catch (error) {
-          console.error('Failed to send message via HTTP API:', error)
-        }
       } else {
         console.log('Cannot send message:', {
           hasSocket: !!socketRef.current,
