@@ -13,6 +13,7 @@ import { IdInputField } from './fields/id-input-field'
 import { PasswordInputField } from './fields/password-input-field'
 import { useRegisterFormContext } from './hook/register-form-context'
 import { NicknameInputField } from './fields/nickname-input-field'
+import { GenderSelectField } from './fields/gender-select-field'
 import { useRegister } from './hook/use-register'
 import { useRouter } from 'next/navigation'
 import { ChevronLeft, Check } from 'lucide-react'
@@ -32,7 +33,7 @@ const MultiStepRegisterForm: FunctionComponent<MultiStepRegisterFormProps> = ({
   const { register: _register, isRegisting } = useRegister()
   const router = useRouter()
   const [currentStep, setCurrentStep] = useState(1)
-  const totalSteps = 4
+  const totalSteps = 5
 
   const handleNext = async () => {
     let isValid = false
@@ -91,6 +92,15 @@ const MultiStepRegisterForm: FunctionComponent<MultiStepRegisterFormProps> = ({
         }
         break
       }
+      case 5: {
+        isValid = await form.trigger('gender')
+        // 성별 선택 검증
+        const genderErrors = form.formState.errors.gender
+        if (genderErrors || !form.getValues('gender')) {
+          hasValidationError = true
+        }
+        break
+      }
     }
 
     if (isValid && !hasValidationError && currentStep < totalSteps) {
@@ -139,6 +149,8 @@ const MultiStepRegisterForm: FunctionComponent<MultiStepRegisterFormProps> = ({
         return '비밀번호를 입력해주세요'
       case 4:
         return '닉네임을 입력해주세요'
+      case 5:
+        return '성별을 선택해주세요'
       default:
         return ''
     }
@@ -154,6 +166,8 @@ const MultiStepRegisterForm: FunctionComponent<MultiStepRegisterFormProps> = ({
         return '안전한 비밀번호를 설정해주세요.'
       case 4:
         return '다른 사용자들에게 보여질 닉네임을 입력해주세요.'
+      case 5:
+        return '프로필 설정을 위해 성별을 선택해주세요.'
       default:
         return ''
     }
@@ -207,6 +221,15 @@ const MultiStepRegisterForm: FunctionComponent<MultiStepRegisterFormProps> = ({
           nicknameValidationState.isValid
 
         return isValidNickname
+      }
+      case 5: {
+        const genderValue = watchedValues.gender
+        const hasError = formErrors.gender
+
+        // 성별이 선택되었고 에러가 없어야 함
+        const isValidGender = genderValue && !hasError
+
+        return isValidGender
       }
       default:
         return false
@@ -327,6 +350,17 @@ const MultiStepRegisterForm: FunctionComponent<MultiStepRegisterFormProps> = ({
                     transition={{ duration: 0.2 }}
                   >
                     <NicknameInputField />
+                  </motion.div>
+                )}
+                {currentStep === 5 && (
+                  <motion.div
+                    key="step5"
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -20 }}
+                    transition={{ duration: 0.2 }}
+                  >
+                    <GenderSelectField />
                   </motion.div>
                 )}
               </AnimatePresence>

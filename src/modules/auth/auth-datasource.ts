@@ -69,6 +69,7 @@ export class AuthDataSource {
           email: data.userId,
           password: data.password,
           nickname: data.nickname,
+          gender: data.gender,
           marketingAgreed: data.marketingAgreed || false,
         }),
       })

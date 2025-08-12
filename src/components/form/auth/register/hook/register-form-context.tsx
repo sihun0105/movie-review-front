@@ -31,6 +31,9 @@ const formSchema = z.object({
     .max(10, {
       message: '닉네임은 최대 10자까지 가능합니다.',
     }),
+  gender: z.enum(['male', 'female'], {
+    required_error: '성별을 선택해주세요.',
+  }),
   termsAgreed: z.boolean().refine((val) => val === true, {
     message: '이용약관에 동의해주세요.',
   }),
@@ -54,6 +57,7 @@ const useRegisterForm = () => {
       userId: '',
       password: '',
       nickname: '',
+      gender: undefined,
       termsAgreed: false,
       marketingAgreed: false,
     },
@@ -70,6 +74,7 @@ const useRegisterForm = () => {
         userId: values.userId,
         password: values.password,
         nickname: values.nickname,
+        gender: values.gender,
         marketingAgreed: values.marketingAgreed,
       })
 
