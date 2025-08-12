@@ -7,6 +7,7 @@ import { IdInputField } from './fields/id-input-field'
 import { PasswordInputField } from './fields/password-input-field'
 import { useRegisterFormContext } from './hook/register-form-context'
 import { NicknameInputField } from './fields/nickname-input-field'
+import { GenderSelectField } from './fields/gender-select-field'
 import { useRegister } from './hook/use-register'
 import { useRouter } from 'next/navigation'
 
@@ -26,6 +27,7 @@ const RegisterForm: FunctionComponent<RegisterFormProps> = ({
         nickname: data.nickname,
         password: data.password,
         email: data.userId,
+        gender: data.gender,
       },
       {
         onSuccess: async () => {
@@ -46,6 +48,7 @@ const RegisterForm: FunctionComponent<RegisterFormProps> = ({
           <IdInputField />
           <PasswordInputField />
           <NicknameInputField />
+          <GenderSelectField />
           <Button
             type="submit"
             className="w-full"

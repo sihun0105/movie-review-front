@@ -32,10 +32,12 @@ export class UsersDatasource {
     userId,
     password,
     nickname,
+    gender,
   }: {
     userId: string
     password: string
     nickname: string
+    gender: string
   }) {
     try {
       const res = await fetch(AppBackEndApiEndpoint.signUp(), {
@@ -47,6 +49,7 @@ export class UsersDatasource {
           email: userId,
           password: password,
           nickname: nickname,
+          gender: gender,
         }),
         cache: 'no-cache',
       })

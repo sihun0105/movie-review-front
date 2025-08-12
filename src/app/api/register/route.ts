@@ -6,9 +6,10 @@ export const POST = async (req: NextRequest) => {
   const userId = form.get('email') as string
   const password = form.get('password') as string
   const nickname = form.get('nickname') as string
+  const gender = form.get('gender') as string
   try {
     const repo = new UsersRepository()
-    const data = await repo.signUp({ userId, password, nickname })
+    const data = await repo.signUp({ userId, password, nickname, gender })
     return new Response(
       JSON.stringify({
         data,

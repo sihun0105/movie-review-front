@@ -24,16 +24,19 @@ export class UsersRepository {
     userId,
     password,
     nickname,
+    gender,
   }: {
     userId: string
     password: string
     nickname: string
+    gender: string
   }) {
     try {
       const result = await this.datasource.signUp({
         userId: userId,
         password: password,
         nickname: nickname,
+        gender: gender,
       })
       return result
     } catch (err) {

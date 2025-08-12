@@ -10,6 +10,7 @@ const fetcher = async (
       email: string
       password: string
       nickname: string
+      gender: 'male' | 'female'
     }
   },
 ) => {
@@ -17,6 +18,7 @@ const fetcher = async (
   formData.append('email', arg.email)
   formData.append('password', arg.password)
   formData.append('nickname', arg.nickname)
+  formData.append('gender', arg.gender)
   const res = await fetch(url, {
     method: 'POST',
     body: formData,
@@ -40,6 +42,7 @@ export const useRegister = () => {
       email: string
       password: string
       nickname: string
+      gender: 'male' | 'female'
     },
     {
       onSuccess,
