@@ -4,6 +4,7 @@ import { useRouter } from 'next/navigation'
 import { Button } from '@/components/ui/button'
 import Box from '@/components/ui/box'
 import { MatchPost, MatchApplication } from '@/lib/type'
+import { GenderIcon } from '@/components/app/gender-icon'
 
 interface MatchAuthorViewProps {
   matchPost: MatchPost
@@ -52,12 +53,17 @@ const MatchAuthorView = ({
           <div className="flex-1">
             <h1 className="mb-2 text-3xl font-bold">{matchPost.title}</h1>
             <div className="mb-4 text-sm text-gray-600">
-              <span>작성자: {matchPost.author}</span>
-              <span className="mx-2">•</span>
-              <span>
-                작성일:{' '}
-                {new Date(matchPost.createdAt).toLocaleDateString('ko-KR')}
-              </span>
+              <div className="flex items-center gap-2">
+                <span>작성자:</span>
+                <GenderIcon gender={matchPost.authorGender} size="sm" />
+                <span>{matchPost.author}</span>
+              </div>
+              <div className="mt-1">
+                <span>
+                  작성일:{' '}
+                  {new Date(matchPost.createdAt).toLocaleDateString('ko-KR')}
+                </span>
+              </div>
             </div>
           </div>
           <div className="flex gap-2">

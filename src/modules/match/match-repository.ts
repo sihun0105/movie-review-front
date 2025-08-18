@@ -28,7 +28,8 @@ export class MatchRepository {
       throw new Error('페이지 크기는 1-100 사이여야 합니다.')
     }
 
-    return await this.dataSource.getMatchPosts(page, pageSize)
+    const data = await this.dataSource.getMatchPosts(page, pageSize)
+    return data
   }
 
   // 매치 게시글 상세 조회
