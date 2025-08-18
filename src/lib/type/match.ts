@@ -1,8 +1,16 @@
+export enum Gender {
+  // eslint-disable-next-line no-unused-vars
+  MALE = 'male',
+  // eslint-disable-next-line no-unused-vars
+  FEMALE = 'female'
+}
+
 export interface MatchPost {
   id: string
   title: string
   userno: number
   author: string
+  authorGender: Gender
   content: string
   movieTitle: string
   theaterName: string

@@ -5,6 +5,8 @@ import { useRouter } from 'next/navigation'
 import { MatchPost } from '@/lib/type'
 import { Button } from '@/components/ui/button'
 import Box from '@/components/ui/box'
+import { GenderIcon } from '@/components/app/gender-icon'
+import { GenderBadge } from '@/components/app/gender-badge'
 
 interface MatchCardProps {
   matchPost: MatchPost
@@ -35,7 +37,10 @@ export const MatchCard = ({ matchPost, onApply }: MatchCardProps) => {
     <Box className="rounded-lg border p-6 shadow-sm transition-shadow hover:shadow-md">
       <div className="mb-4 flex items-start justify-between">
         <div className="flex-1">
-          <h3 className="mb-2 text-lg font-semibold">{matchPost.title}</h3>
+          <div className="mb-2 flex items-center gap-2">
+            <h3 className="text-lg font-semibold">{matchPost.title}</h3>
+            <GenderBadge gender={matchPost.authorGender} size="sm" />
+          </div>
           <p className="mb-2 text-sm text-gray-600">{matchPost.content}</p>
         </div>
         <div className="text-sm text-gray-500">
@@ -62,7 +67,10 @@ export const MatchCard = ({ matchPost, onApply }: MatchCardProps) => {
         </div>
         <div className="flex items-center text-sm">
           <span className="w-20 font-medium text-gray-700">작성자:</span>
-          <span>{matchPost.author}</span>
+          <div className="flex items-center gap-2">
+            <GenderIcon gender={matchPost.authorGender} size="sm" />
+            <span>{matchPost.author}</span>
+          </div>
         </div>
       </div>
 

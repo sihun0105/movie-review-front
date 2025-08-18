@@ -7,6 +7,7 @@ import { MatchApplyDialog } from '@/components/app/match-apply-dialog'
 import Box from '@/components/ui/box'
 import { MatchPost } from '@/lib/type'
 import { useMyApplication } from '../../hooks/use-my-application'
+import { GenderIcon } from '@/components/app/gender-icon'
 
 interface MatchViewerViewProps {
   matchPost: MatchPost
@@ -44,12 +45,17 @@ const MatchViewerView = ({ matchPost, onApply }: MatchViewerViewProps) => {
         <div className="mb-6">
           <h1 className="mb-2 text-3xl font-bold">{matchPost.title}</h1>
           <div className="mb-4 text-sm text-gray-600">
-            <span>작성자: {matchPost.author}</span>
-            <span className="mx-2">•</span>
-            <span>
-              작성일:{' '}
-              {new Date(matchPost.createdAt).toLocaleDateString('ko-KR')}
-            </span>
+            <div className="flex items-center gap-2">
+              <span>작성자:</span>
+              <GenderIcon gender={matchPost.authorGender} size="sm" />
+              <span>{matchPost.author}</span>
+            </div>
+            <div className="mt-1">
+              <span>
+                작성일:{' '}
+                {new Date(matchPost.createdAt).toLocaleDateString('ko-KR')}
+              </span>
+            </div>
           </div>
         </div>
 
