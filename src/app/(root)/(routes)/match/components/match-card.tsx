@@ -39,7 +39,7 @@ export const MatchCard = ({ matchPost, onApply }: MatchCardProps) => {
         <div className="flex-1">
           <div className="mb-2 flex items-center gap-2">
             <h3 className="text-lg font-semibold">{matchPost.title}</h3>
-            <GenderBadge gender={matchPost.authorGender} size="sm" />
+            <GenderBadge gender={matchPost.gender} size="sm" />
           </div>
           <p className="mb-2 text-sm text-gray-600">{matchPost.content}</p>
         </div>
@@ -68,7 +68,7 @@ export const MatchCard = ({ matchPost, onApply }: MatchCardProps) => {
         <div className="flex items-center text-sm">
           <span className="w-20 font-medium text-gray-700">작성자:</span>
           <div className="flex items-center gap-2">
-            <GenderIcon gender={matchPost.authorGender} size="sm" />
+            <GenderIcon gender={matchPost.gender} size="sm" />
             <span>{matchPost.author}</span>
           </div>
         </div>

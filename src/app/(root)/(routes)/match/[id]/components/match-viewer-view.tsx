@@ -47,7 +47,7 @@ const MatchViewerView = ({ matchPost, onApply }: MatchViewerViewProps) => {
           <div className="mb-4 text-sm text-gray-600">
             <div className="flex items-center gap-2">
               <span>작성자:</span>
-              <GenderIcon gender={matchPost.authorGender} size="sm" />
+              <GenderIcon gender={matchPost.gender} size="sm" />
               <span>{matchPost.author}</span>
             </div>
             <div className="mt-1">

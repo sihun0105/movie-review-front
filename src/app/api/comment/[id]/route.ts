@@ -64,7 +64,6 @@ export const GET = async (req: NextRequest) => {
   }
 }
 export const PUT = async (req: NextRequest) => {
-  console.log('PUT request received')
   const form = await req.formData()
   const commentId = form.get('commentId') as string
   const comment = form.get('comment') as string
