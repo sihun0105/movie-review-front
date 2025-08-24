@@ -5,6 +5,8 @@ import { Button } from '@/components/ui/button'
 import Box from '@/components/ui/box'
 import { MatchPost, MatchApplication } from '@/lib/type'
 import { GenderIcon } from '@/components/app/gender-icon'
+import { GenderBadge } from '@/components/app/gender-badge'
+import { DebugGenderBadge } from '@/components/app/debug-gender-badge'
 
 interface MatchAuthorViewProps {
   matchPost: MatchPost
@@ -55,7 +57,7 @@ const MatchAuthorView = ({
             <div className="mb-4 text-sm text-gray-600">
               <div className="flex items-center gap-2">
                 <span>작성자:</span>
-                <GenderIcon gender={matchPost.authorGender} size="sm" />
+                <GenderIcon gender={matchPost.gender} size="sm" />
                 <span>{matchPost.author}</span>
               </div>
               <div className="mt-1">
@@ -133,9 +135,15 @@ const MatchAuthorView = ({
                 <div className="flex items-start justify-between">
                   <div className="flex-1">
                     <div className="mb-2 flex items-center gap-2">
-                      <span className="font-medium">
-                        {application.applicantName}
-                      </span>
+                      <div className="flex items-center gap-2">
+                        <span className="font-medium">
+                          {application.applicantName}
+                        </span>
+                        <DebugGenderBadge
+                          gender={application.gender}
+                          size="sm"
+                        />
+                      </div>
                       <span
                         className={`rounded px-2 py-1 text-xs ${
                           application.status === 'pending'

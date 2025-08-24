@@ -17,7 +17,6 @@ export const MatchContainer = () => {
 
   // SWR hooks
   const { matchPosts, isLoading: isLoadingPosts } = useMatchPosts()
-
   // 매치 신청 함수
   const handleApplyToMatch = async (matchId: string, message: string) => {
     try {

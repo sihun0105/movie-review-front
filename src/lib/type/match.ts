@@ -2,7 +2,7 @@ export enum Gender {
   // eslint-disable-next-line no-unused-vars
   MALE = 'male',
   // eslint-disable-next-line no-unused-vars
-  FEMALE = 'female'
+  FEMALE = 'female',
 }
 
 export interface MatchPost {
@@ -10,7 +10,7 @@ export interface MatchPost {
   title: string
   userno: number
   author: string
-  authorGender: Gender
+  gender: Gender
   content: string
   movieTitle: string
   theaterName: string
@@ -28,6 +28,7 @@ export interface MatchApplication {
   matchPostId: string
   applicantUserno: number
   applicantName: string
+  gender: Gender
   message: string
   status: 'pending' | 'accepted' | 'rejected'
   createdAt: string

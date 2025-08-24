@@ -40,7 +40,7 @@ const MatchDetailContainer = () => {
     error: _applicationsError,
     mutate: mutateApplications,
   } = useMatchApplications(isAuthor ? matchId : '')
-
+  console.log(applications)
   // 로그인 체크
   useEffect(() => {
     if (status === 'loading') return

@@ -55,7 +55,6 @@ export async function POST(
     const { roomId } = params
     const body = await request.json()
     const { content, senderId } = body
-    console.log('POST /api/chat/rooms/[roomId]/messages body:', body)
     if (!content || typeof content !== 'string') {
       return NextResponse.json(
         { error: 'Content is required' },
