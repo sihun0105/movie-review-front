@@ -1,5 +1,6 @@
 import { MovieRepository } from '@/modules/movie/movie-repository'
 import { ArticleRepository } from '@/modules/article/article-repository'
+import { MatchRepository } from '@/modules/match/match-repository'
 import { ISitemapField } from 'next-sitemap'
 import { getServerSideSitemap } from 'next-sitemap'
 
@@ -11,6 +12,10 @@ export async function GET(): Promise<ReturnType<typeof getServerSideSitemap>> {
   // 게시글 데이터 (최대 50개만, 필요시 pageSize 조정)
   const articleRepo = new ArticleRepository()
   const { articles } = await articleRepo.listArticles(1, 50)
+
+  // 매치 데이터 (최대 50개만)
+  const matchRepo = new MatchRepository()
+  const { matchPosts: matches } = await matchRepo.getMatchPosts(1, 50)
 
   const fields: ISitemapField[] = []
 
@@ -40,6 +45,20 @@ export async function GET(): Promise<ReturnType<typeof getServerSideSitemap>> {
     )
   }
 
+  // 매치 상세 페이지
+  if (matches && Array.isArray(matches)) {
+    fields.push(
+      ...matches.map((match) => ({
+        loc: `https://drunkenmovie.shop/match/${match.id}`,
+        lastmod: match.updatedAt
+          ? new Date(match.updatedAt).toISOString()
+          : new Date().toISOString(),
+        changefreq: 'weekly' as const,
+        priority: 0.5,
+      })),
+    )
+  }
+
   // 주요 루트 경로
   fields.push(
     {
@@ -64,7 +83,7 @@ export async function GET(): Promise<ReturnType<typeof getServerSideSitemap>> {
       loc: 'https://drunkenmovie.shop/match',
       lastmod: new Date().toISOString(),
       changefreq: 'daily' as const,
-      priority: 0.3,
+      priority: 0.7,
     },
   )
 
