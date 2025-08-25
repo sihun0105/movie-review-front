@@ -24,13 +24,6 @@ const DescriptionSection: FunctionComponent<DescriptionSectionProps> = ({
   if (data) {
     return (
       <>
-        <head>
-          <title>{data.title} - Drunken Movie</title>
-          <meta name="description" content={data.plot} />
-          <meta property="og:title" content={`${data.title} - Drunken Movie`} />
-          <meta property="og:description" content={data.plot} />
-          <meta property="og:image" content={data.poster} />
-        </head>
         <MovieVodModal />
         <MovieDetail movie={data} />
         {data.vods && <MovieCarousel data={data.vods} title={data.title} />}
