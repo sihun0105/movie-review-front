@@ -76,7 +76,8 @@ const Page: FunctionComponent<PageProps> = async ({ params: { id } }) => {
   const reviews = await getReviews(id)
   const score = await getScore(id)
 
-  const jsonLd = {
+  // 평가가 있는 경우에만 aggregateRating 포함
+  const jsonLd: any = {
     '@context': 'https://schema.org',
     '@type': 'Movie',
     name: movieData.title,
@@ -84,14 +85,6 @@ const Page: FunctionComponent<PageProps> = async ({ params: { id } }) => {
     description: movieData.plot,
     image: movieData.poster,
     url: `https://drunkenmovie.shop/movie/${id}`,
-    aggregateRating: {
-      '@type': 'AggregateRating',
-      ratingValue: score.averageScore.toFixed(1) || '0',
-      ratingCount: score.scoreCount || 0,
-      reviewCount: reviews.length || 0,
-      bestRating: '5',
-      worstRating: '1',
-    },
     review: reviews.map((r) => ({
       '@type': 'Review',
       author: { '@type': 'Person', name: r.nickname },
@@ -99,14 +92,24 @@ const Page: FunctionComponent<PageProps> = async ({ params: { id } }) => {
     })),
   }
 
+  // 점수가 있고 평가 수가 있을 때만 aggregateRating 추가
+  if (score.scoreCount > 0 && score.averageScore > 0) {
+    jsonLd.aggregateRating = {
+      '@type': 'AggregateRating',
+      ratingValue: score.averageScore.toFixed(1),
+      ratingCount: score.scoreCount,
+      reviewCount: reviews.length,
+      bestRating: '5',
+      worstRating: '1',
+    }
+  }
+
   return (
     <>
-      <head>
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-        />
-      </head>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       <main
         id="movie-detail-page"
         className="container relative flex min-h-screen flex-col gap-2"
