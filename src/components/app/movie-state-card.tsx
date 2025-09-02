@@ -2,7 +2,7 @@ import { Movie } from '@/modules/movie/movie-entity'
 import Image from 'next/image'
 import Link from 'next/link'
 import { FunctionComponent } from 'react'
-import { FaCrown } from 'react-icons/fa'
+import { FaCrown, FaCommentDots, FaStar } from 'react-icons/fa'
 
 interface MovieCardProps {
   data: Movie
@@ -41,6 +41,23 @@ const MovieCard: FunctionComponent<MovieCardProps> = ({ data: movie }) => {
             <div className="stat-value text-xl font-bold ">
               {movie.audience.toLocaleString()}
             </div>
+
+            {/* 댓글 개수와 평가 개수 표시 */}
+            <div className="mt-3 flex items-center gap-4">
+              {movie.commentCount !== undefined && (
+                <div className="flex items-center gap-1 text-sm text-gray-600">
+                  <FaCommentDots className="text-blue-500" />
+                  <span>댓글 {movie.commentCount.toLocaleString()}</span>
+                </div>
+              )}
+              {movie.scoreCount !== undefined && (
+                <div className="flex items-center gap-1 text-sm text-gray-600">
+                  <FaStar className="text-yellow-500" />
+                  <span>평가 {movie.scoreCount.toLocaleString()}</span>
+                </div>
+              )}
+            </div>
+
             <div className="stat-desc mt-2 ">장르: {movie.genre}</div>
             <div className="stat-desc ">감독: {movie.director}</div>
             <div className="stat-desc ">
