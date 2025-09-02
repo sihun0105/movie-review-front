@@ -14,6 +14,8 @@ export interface Movie {
   director: string
   ratting: string
   vods: MovieVod[]
+  commentCount?: number
+  scoreCount?: number
 }
 export type MovieVod = {
   id: number
