@@ -40,7 +40,9 @@ export function isMovie(arg: any): arg is Movie {
     arg.updatedAt instanceof Date &&
     typeof arg.genre === 'string' &&
     typeof arg.director === 'string' &&
-    typeof arg.ratting === 'string'
+    typeof arg.ratting === 'string' &&
+    typeof arg.commentCount === 'number' &&
+    typeof arg.scoreCount === 'number'
   )
 }
 
