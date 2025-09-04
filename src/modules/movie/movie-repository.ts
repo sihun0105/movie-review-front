@@ -59,6 +59,8 @@ export class MovieRepository {
       director: unknown.director,
       ratting: unknown.ratting,
       vods: unknown.vods,
+      commentCount: unknown.commentCount,
+      scoreCount: unknown.scoreCount,
     } as Movie
     assertMovie(result)
     return result

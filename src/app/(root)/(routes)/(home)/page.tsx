@@ -26,7 +26,6 @@ interface PageProps {}
 const getMovieList = async (): Promise<Movie[]> => {
   const repo = new MovieRepository()
   const result = await repo.getMovie()
-  console.log(result)
   return result
 }
 
