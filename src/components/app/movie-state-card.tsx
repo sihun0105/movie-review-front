@@ -42,18 +42,22 @@ const MovieCard: FunctionComponent<MovieCardProps> = ({ data: movie }) => {
               {movie.audience.toLocaleString()}
             </div>
 
-            {/* 댓글 개수와 평가 개수 표시 */}
+            {/* 평균점수와 댓글 개수 표시 */}
             <div className="mt-3 flex items-center gap-4">
+              {movie.averageScore !== undefined &&
+                movie.scoreCount !== undefined && (
+                  <div className="flex items-center gap-1 text-sm text-gray-600">
+                    <FaStar className="text-yellow-500" />
+                    <span className="font-semibold">
+                      {movie.averageScore.toFixed(1)} (
+                      {movie.scoreCount.toLocaleString()})
+                    </span>
+                  </div>
+                )}
               {movie.commentCount !== undefined && (
                 <div className="flex items-center gap-1 text-sm text-gray-600">
                   <FaCommentDots className="text-blue-500" />
                   <span>댓글 {movie.commentCount.toLocaleString()}</span>
-                </div>
-              )}
-              {movie.scoreCount !== undefined && (
-                <div className="flex items-center gap-1 text-sm text-gray-600">
-                  <FaStar className="text-yellow-500" />
-                  <span>평가 {movie.scoreCount.toLocaleString()}</span>
                 </div>
               )}
             </div>
