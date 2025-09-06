@@ -80,7 +80,7 @@ const MatchListSection: FunctionComponent<MatchListSectionProps> = ({
 
   return (
     <>
-      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+      <div className="flex flex-col gap-6">
         {matchPosts.map((match) => (
           <MatchCard key={match.id} matchPost={match} onApply={onApply} />
         ))}
@@ -98,7 +98,7 @@ const MatchListSection: FunctionComponent<MatchListSectionProps> = ({
             <Button
               variant="outline"
               onClick={loadMore}
-              className="w-full max-w-xs"
+              className="w-full max-w-xs border-blue-300 bg-white text-blue-600 hover:border-blue-400 hover:bg-blue-50"
             >
               더 많은 매치 보기
             </Button>
