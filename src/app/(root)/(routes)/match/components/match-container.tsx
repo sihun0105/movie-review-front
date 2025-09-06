@@ -16,7 +16,12 @@ export const MatchContainer = () => {
   const [selectedMatch, setSelectedMatch] = useState<any>(null)
 
   // SWR hooks
-  const { matchPosts, isLoading: isLoadingPosts } = useMatchPosts()
+  const {
+    matchPosts,
+    hasMore,
+    loadMore,
+    isLoading: isLoadingPosts,
+  } = useMatchPosts()
   // 매치 신청 함수
   const handleApplyToMatch = async (matchId: string, message: string) => {
     try {
@@ -86,6 +91,8 @@ export const MatchContainer = () => {
       <MatchListSection
         matchPosts={matchPosts}
         isLoading={isLoadingPosts}
+        hasMore={hasMore}
+        loadMore={loadMore}
         selectedMatch={selectedMatch}
         showApplyDialog={showApplyDialog}
         onApply={handleApply}
