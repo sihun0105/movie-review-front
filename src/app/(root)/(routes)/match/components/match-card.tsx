@@ -82,6 +82,12 @@ export const MatchCard = ({ matchPost, onApply }: MatchCardProps) => {
           size="sm"
           onClick={handleApply}
           disabled={isLoading || isFullyBooked}
+          variant={isFullyBooked ? 'secondary' : 'default'}
+          className={
+            isFullyBooked
+              ? 'cursor-not-allowed bg-[var(--button-disabled)] text-[var(--button-disabled-text)] hover:bg-[var(--button-disabled)]'
+              : ''
+          }
         >
           {isLoading ? '신청 중...' : isFullyBooked ? '모집완료' : '신청하기'}
         </Button>
