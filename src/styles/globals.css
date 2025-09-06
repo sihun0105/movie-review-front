@@ -20,7 +20,7 @@
     --input: 0 0% 89.8%;
 
     /* --primary: 0 0% 9%; */
-    --primary: var(--blue-001);
+    --primary: 217 91% 60%;
     --primary-foreground: 0 0% 98%;
 
     --secondary: 0 0% 96.1%;
@@ -38,8 +38,23 @@
 
     --green-001: #abb389;
     --orange-001: #ffcc00;
-    --blue-001: #dee9fc;
-    --blue-002: #4377d2;
+    --blue-001: #3b82f6;
+    --blue-002: #2563eb;
+    --blue-003: #1d4ed8;
+
+    /* Button variants */
+    --button-primary: var(--blue-002);
+    --button-primary-hover: var(--blue-003);
+    --button-primary-text: #ffffff;
+    --button-outline-border: #d1d5db;
+    --button-outline-border-hover: #9ca3af;
+    --button-outline-bg: #ffffff;
+    --button-outline-bg-hover: #f9fafb;
+    --button-outline-text: #374151;
+    --button-link: var(--blue-002);
+    --button-link-hover: var(--blue-003);
+    --button-disabled: #9ca3af;
+    --button-disabled-text: #ffffff;
 
     --gray-001: #ffffff;
     --gray-002: #f5f5f5;
@@ -95,7 +110,7 @@
     --input: var(--gray-006);
 
     --primary: var(--blue-002);
-    --primary-foreground: 210 40% 4.9%;
+    --primary-foreground: 0 0% 98%;
 
     --secondary: 210 40% 4.9%;
     --secondary-foreground: 222.2 47.4% 96.1%;
@@ -116,6 +131,20 @@
     --gray-006: #333333;
     --gray-007: #4d4d4d;
     --gray-010: #ffffff;
+
+    /* Button variants - Dark mode */
+    --button-primary: var(--blue-002);
+    --button-primary-hover: var(--blue-001);
+    --button-primary-text: #ffffff;
+    --button-outline-border: #374151;
+    --button-outline-border-hover: #6b7280;
+    --button-outline-bg: transparent;
+    --button-outline-bg-hover: #1f2937;
+    --button-outline-text: #d1d5db;
+    --button-link: var(--blue-001);
+    --button-link-hover: var(--blue-002);
+    --button-disabled: #4b5563;
+    --button-disabled-text: #9ca3af;
   }
   .dark {
     --background: 0 0% 3.9%;
@@ -125,7 +154,7 @@
     --popover: 0 0% 3.9%;
     --popover-foreground: 0 0% 98%;
     --primary: var(--blue-002);
-    --primary-foreground: 210 40% 4.9%;
+    --primary-foreground: 0 0% 98%;
     --secondary: 0 0% 14.9%;
     --secondary-foreground: 0 0% 98%;
     --muted: 0 0% 14.9%;
@@ -142,6 +171,20 @@
     --chart-3: 30 80% 55%;
     --chart-4: 280 65% 60%;
     --chart-5: 340 75% 55%;
+
+    /* Button variants - Dark mode (.dark class) */
+    --button-primary: var(--blue-002);
+    --button-primary-hover: var(--blue-001);
+    --button-primary-text: #ffffff;
+    --button-outline-border: #374151;
+    --button-outline-border-hover: #6b7280;
+    --button-outline-bg: transparent;
+    --button-outline-bg-hover: #1f2937;
+    --button-outline-text: #d1d5db;
+    --button-link: var(--blue-001);
+    --button-link-hover: var(--blue-002);
+    --button-disabled: #4b5563;
+    --button-disabled-text: #9ca3af;
   }
 }
 

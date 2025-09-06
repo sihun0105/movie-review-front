@@ -98,7 +98,7 @@ const MatchListSection: FunctionComponent<MatchListSectionProps> = ({
             <Button
               variant="outline"
               onClick={loadMore}
-              className="w-full max-w-xs border-blue-300 bg-white text-blue-600 hover:border-blue-400 hover:bg-blue-50"
+              className="w-full max-w-xs"
             >
               더 많은 매치 보기
             </Button>

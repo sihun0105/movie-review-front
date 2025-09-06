@@ -75,22 +75,18 @@ export const MatchCard = ({ matchPost, onApply }: MatchCardProps) => {
       </div>
 
       <div className="flex justify-end gap-2">
-        <Button
-          variant="outline"
-          size="sm"
-          onClick={handleViewDetails}
-          className="border-gray-300 bg-white text-gray-700 hover:border-gray-400 hover:bg-gray-50"
-        >
+        <Button variant="outline" size="sm" onClick={handleViewDetails}>
           상세보기
         </Button>
         <Button
           size="sm"
           onClick={handleApply}
           disabled={isLoading || isFullyBooked}
+          variant={isFullyBooked ? 'secondary' : 'default'}
           className={
             isFullyBooked
-              ? 'cursor-not-allowed bg-gray-400 text-white hover:bg-gray-400'
-              : 'bg-blue-600 text-white shadow-sm hover:bg-blue-700'
+              ? 'cursor-not-allowed bg-[var(--button-disabled)] text-[var(--button-disabled-text)] hover:bg-[var(--button-disabled)]'
+              : ''
           }
         >
           {isLoading ? '신청 중...' : isFullyBooked ? '모집완료' : '신청하기'}
