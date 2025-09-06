@@ -61,6 +61,7 @@ export class MovieRepository {
       vods: unknown.vods,
       commentCount: unknown.commentCount,
       scoreCount: unknown.scoreCount,
+      averageScore: unknown.averageScore,
     } as Movie
     assertMovie(result)
     return result

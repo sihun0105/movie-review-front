@@ -16,6 +16,7 @@ export interface Movie {
   vods: MovieVod[]
   commentCount?: number
   scoreCount?: number
+  averageScore?: number
 }
 export type MovieVod = {
   id: number
@@ -41,8 +42,9 @@ export function isMovie(arg: any): arg is Movie {
     typeof arg.genre === 'string' &&
     typeof arg.director === 'string' &&
     typeof arg.ratting === 'string' &&
-    typeof arg.commentCount === 'number' &&
-    typeof arg.scoreCount === 'number'
+    (typeof arg.commentCount === 'number' || arg.commentCount === undefined) &&
+    (typeof arg.scoreCount === 'number' || arg.scoreCount === undefined) &&
+    (typeof arg.averageScore === 'number' || arg.averageScore === undefined)
   )
 }
 
