@@ -21,7 +21,7 @@ export async function generateMetadata(): Promise<Metadata> {
   const topRatedMovies =
     data
       ?.filter((movie) => movie.averageScore && movie.averageScore > 0)
-      ?.slice(0, 3)
+      ?.slice(0, 9)
       ?.map(
         (movie) => `${movie.title} (평점 ${movie.averageScore?.toFixed(1)})`,
       )
