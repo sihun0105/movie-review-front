@@ -115,7 +115,7 @@ export async function generateMetadata({
       }
     }
 
-    const title = `${movie.title}${hasValidScore ? ` (⭐${score.averageScore.toFixed(1)})` : ''} - DrunkenMovie`
+    const title = `${movie.title} - DrunkenMovie`
 
     const currentDate = new Date().toISOString().slice(0, 10)
 
