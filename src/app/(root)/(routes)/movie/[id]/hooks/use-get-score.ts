@@ -1,4 +1,5 @@
 import useSWR from 'swr'
+import { useSession } from 'next-auth/react'
 import { AppClientApiEndpoint } from '@/config/app-client-api-endpoint'
 
 interface UpdateScoreResult {
@@ -6,8 +7,8 @@ interface UpdateScoreResult {
   score: number
 }
 
-const getKey = (id: number) => {
-  if (!id) return null
+const getKey = (id: number, isAuthenticated: boolean) => {
+  if (!id || !isAuthenticated) return null
   return AppClientApiEndpoint.getScore(id)
 }
 
@@ -29,8 +30,9 @@ const fetcher = async (url: string): Promise<UpdateScoreResult> => {
 }
 
 const useGetScore = (id: number) => {
+  const { data: session } = useSession()
   const { data, error, isLoading, mutate } = useSWR<UpdateScoreResult>(
-    getKey(id),
+    getKey(id, !!session),
     fetcher,
   )
 
@@ -39,6 +41,7 @@ const useGetScore = (id: number) => {
     error,
     isLoading,
     mutate,
+    isAuthenticated: !!session,
   }
 }
 

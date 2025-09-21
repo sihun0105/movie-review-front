@@ -9,6 +9,7 @@ import { useCreateArticle } from '../hooks/use-create-article'
 import { TitleInputField } from './title-input-field'
 import { ContentInputField } from './content-input-field'
 import { useAppToast } from '@/hooks/use-app-toast'
+import { useSession } from 'next-auth/react'
 
 interface CreateArticleFormProps {}
 
@@ -16,7 +17,21 @@ const CreateArticleForm: FunctionComponent<CreateArticleFormProps> = ({}) => {
   const { form } = useCreateArticleFormContext()
   const { showToast } = useAppToast()
   const { createArticle, isCreating } = useCreateArticle()
+  const { status } = useSession()
   const router = useRouter()
+  // 인증 체크
+  if (status === 'loading') {
+    return (
+      <div className="py-8 text-center">
+        <p>로딩 중...</p>
+      </div>
+    )
+  }
+
+  if (status === 'unauthenticated') {
+    router.push('/login')
+    return null
+  }
 
   const handleSubmit = form.handleSubmit((data) => {
     createArticle(

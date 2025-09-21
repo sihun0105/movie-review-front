@@ -1,5 +1,6 @@
 import { throttle } from 'lodash'
 import useSWR from 'swr'
+import { useSession } from 'next-auth/react'
 import { AppClientApiEndpoint } from '@/config/app-client-api-endpoint'
 import { useAppToast } from '@/hooks/use-app-toast'
 import { useAuthenticationCheck } from '@/hooks/use-authentication-check'
@@ -9,7 +10,8 @@ interface UpdateScoreResult {
   score: number
 }
 
-const getKey = (id: number) => (id ? AppClientApiEndpoint.getScore(id) : null)
+const getKey = (id: number, isAuthenticated: boolean) =>
+  id && isAuthenticated ? AppClientApiEndpoint.getScore(id) : null
 
 const fetcher = async (url: string): Promise<UpdateScoreResult> => {
   const res = await fetch(url)
@@ -42,11 +44,13 @@ const throttledUpdateScore = throttle(async (id: number, score: number) => {
 }, 500)
 
 const useUpdateScore = (id: number) => {
+  const { data: session } = useSession()
   const { showToast } = useAppToast()
   const { requireAuthentication } = useAuthenticationCheck()
+  const isAuthenticated = !!session
 
   const { data, mutate, error, isValidating } = useSWR<UpdateScoreResult>(
-    getKey(id),
+    getKey(id, isAuthenticated),
     fetcher,
   )
 
