@@ -38,6 +38,19 @@ ARG NEXT_PUBLIC_CHAT_SERVER_API
 ENV NEXT_PUBLIC_SERVER_API=${NEXT_PUBLIC_SERVER_API} \
     NEXT_PUBLIC_CHAT_SERVER_API=${NEXT_PUBLIC_CHAT_SERVER_API}
 
+# 빌드 타임 page data 수집 시 assertValue 통과용 placeholder.
+# 실제 값은 런타임에 docker-compose env_file로 주입됨 (이미지에 시크릿 박히지 않음).
+ARG COOKIE_TOKEN_KEY=build-placeholder
+ARG NEXTAUTH_URL=http://localhost:3000
+ARG NEXTAUTH_SECRET=build-placeholder
+ARG GOOGLE_CLIENT_ID=build-placeholder
+ARG GOOGLE_CLIENT_SECRET=build-placeholder
+ENV COOKIE_TOKEN_KEY=${COOKIE_TOKEN_KEY} \
+    NEXTAUTH_URL=${NEXTAUTH_URL} \
+    NEXTAUTH_SECRET=${NEXTAUTH_SECRET} \
+    GOOGLE_CLIENT_ID=${GOOGLE_CLIENT_ID} \
+    GOOGLE_CLIENT_SECRET=${GOOGLE_CLIENT_SECRET}
+
 RUN pnpm run build
 
 # ─────────────────────────────────────────────
