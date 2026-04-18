@@ -1,36 +1,74 @@
 'use client'
-import { FunctionComponent } from 'react'
-import { useGetComments } from '../hooks/use-get-comment'
-import InfiniteScroll from 'react-infinite-scroll-component'
-import ReviewCard from '../components/review-card'
-interface CommentSectionProps {}
 
-const CommentSection: FunctionComponent<CommentSectionProps> = ({}) => {
-  const { data, next, hasMore, isLoading, error } = useGetComments()
+import ReviewCard from '@/components/app/app-review-card'
+import { Reply } from '@/lib/type'
+import { useSession } from 'next-auth/react'
+import { FunctionComponent } from 'react'
+import InfiniteScroll from 'react-infinite-scroll-component'
+import { ModifyCommentModal } from '../components/modify-comment-modal'
+import { ModifyCommentFormProvider } from '../hooks/modify-comment-context'
+import { useComments } from '../hooks/use-comments'
+import { useModifyCommentModalContext } from '../hooks/use-modify-comment-context'
+
+const CommentSection: FunctionComponent = () => {
+  const { data, next, hasMore, isLoading, error } = useComments()
+  const session = useSession()
+  const userId = session.data?.user?.id
+  const { deleteComment } = useComments()
+  const { setOpen, setComment, setReplyId } = useModifyCommentModalContext()
+  const handleModifyComment = (reply: Reply) => {
+    setReplyId(reply.id)
+    setComment(reply.content)
+    setOpen(true)
+  }
   if (isLoading)
     return (
       <div className="flex h-[40vh] items-center justify-center">
-        <div>loading...</div>
+        <div>로딩 중...</div>
       </div>
     )
   if (!data) return null
+
   return (
-    <main className="max-h-[40vh] min-h-[40vh] overflow-y-auto">
+    <main className="border-gray-300  ">
+      <h2 className="text-lg font-bold text-gray-700">댓글</h2>
       <InfiniteScroll
         dataLength={data.length}
         next={next}
         hasMore={hasMore}
-        loader={<div className=" w-full items-center justify-center"></div>}
+        loader={
+          <div className="flex items-center justify-center">로딩 중...</div>
+        }
       >
-        <section className="mt-3 grid gap-1">
-          {data.map((pageData: any) =>
-            pageData.map((comment: any, idx: any) => (
-              <ReviewCard comment={comment} key={idx} />
+        <section className="space-y-3 ">
+          {data.map((page) =>
+            page?.comments?.map((comment: Reply) => (
+              <ReviewCard
+                reply={{
+                  id: comment.id,
+                  content: comment.content,
+                  userno: comment.userno,
+                  nickname: comment.nickname,
+                  updatedAt: new Date(comment.updatedAt),
+                  createdAt: new Date(comment.createdAt),
+                }}
+                onDelete={() => deleteComment({ commentId: comment.id })}
+                onModify={handleModifyComment}
+                userId={userId}
+                key={comment.id}
+              />
             )),
           )}
         </section>
       </InfiniteScroll>
-      {error && <div className="m-2">데이터를 불러오는데 실패했습니다.</div>}
+      <ModifyCommentFormProvider>
+        <ModifyCommentModal />
+      </ModifyCommentFormProvider>
+      {error && (
+        <div className="text-center text-red-500">
+          데이터를 불러오는데 실패했습니다.
+        </div>
+      )}
     </main>
   )
 }

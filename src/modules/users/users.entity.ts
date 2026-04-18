@@ -4,7 +4,7 @@ export interface UserEntity {
   phone?: string
   name: string
   email?: string
-  profile: string
+  image: string
   nickname: string
 }
 

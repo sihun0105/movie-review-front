@@ -52,4 +52,23 @@ export class CommentDatasource {
     }
     return res.json()
   }
+
+  async modifyComment(id: string, comment: string) {
+    const res = await fetch(AppBackEndApiEndpoint.modifyComment(), {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${this.token}`,
+      },
+      cache: 'no-cache',
+      body: JSON.stringify({
+        commentId: +id,
+        comment,
+      }),
+    })
+    if (!res.ok) {
+      throw new Error('댓글을 수정할 수 없습니다.')
+    }
+    return res.json()
+  }
 }

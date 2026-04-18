@@ -40,12 +40,9 @@ export const GET = async (req: NextRequest) => {
   const parsedPage = Number(page) + 1
   const movieId = searchParams.get('movieId')
   const token = await getTokenFromCookie()
-  const repository = new CommentRepository(token)
+  const repository = new CommentRepository(token ?? undefined)
   try {
-    const data = await repository.getCommentList(
-      movieId+'',
-      parsedPage,
-    )
+    const data = await repository.getCommentList(movieId + '', parsedPage)
     return new Response(
       JSON.stringify({
         data,
@@ -66,7 +63,38 @@ export const GET = async (req: NextRequest) => {
     })
   }
 }
+export const PUT = async (req: NextRequest) => {
+  const form = await req.formData()
+  const commentId = form.get('commentId') as string
+  const comment = form.get('comment') as string
+  try {
+    const token = await getTokenFromCookie()
+    if (!token) {
+      return new Response(null, { status: 401 })
+    }
+    const repo = new CommentRepository(token)
+    const data = await repo.modifyComment(commentId, comment)
 
+    return new Response(
+      JSON.stringify({
+        data,
+      }),
+      {
+        status: 200,
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      },
+    )
+  } catch (error) {
+    return new Response(JSON.stringify({ message: 'An error occurred' }), {
+      status: 500,
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+  }
+}
 
 export const DELETE = async (req: NextRequest) => {
   const form = await req.formData()

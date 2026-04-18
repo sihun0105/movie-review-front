@@ -10,6 +10,7 @@ import {
 } from '@/components/ui/dropdown-menu'
 import { Button } from '../ui/button'
 import { SessionContext, signOut } from 'next-auth/react'
+import Link from 'next/link'
 interface HeaderActiveButtonProps {}
 
 const HeaderActiveButton: FunctionComponent<HeaderActiveButtonProps> = ({}) => {
@@ -17,11 +18,17 @@ const HeaderActiveButton: FunctionComponent<HeaderActiveButtonProps> = ({}) => {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="outline">{userdata?.data?.user.email}</Button>
+        <Button variant="outline">{userdata?.data?.user.nickname}</Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-56">
         <DropdownMenuLabel>My Account</DropdownMenuLabel>
         <DropdownMenuSeparator />
+        <DropdownMenuItem>
+          <Link href={'/account'}>내 정보</Link>
+        </DropdownMenuItem>
+        <DropdownMenuItem>
+          <Link href={'/match/my-matches'}>내 매칭 관리</Link>
+        </DropdownMenuItem>
         <DropdownMenuItem
           onClick={() => {
             signOut()

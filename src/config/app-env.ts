@@ -9,6 +9,18 @@ const AppEnv = {
     process.env.NEXTAUTH_URL,
     'NEXTAUTH_URL is not defined',
   ),
+  nextPublicServerApi: assertValue(
+    process.env.NEXT_PUBLIC_SERVER_API,
+    'NEXT_PUBLIC_SERVER_API is not defined',
+  ),
+  serverApi:
+    process.env.SERVER_API ||
+    process.env.NEXT_PUBLIC_SERVER_API ||
+    'http://127.0.0.1:3030',
+  chatServerApi:
+    process.env.CHAT_SERVER_API ||
+    process.env.NEXT_PUBLIC_CHAT_SERVER_API ||
+    'http://127.0.0.1:3031',
   nextAuthSecret: assertValue(
     process.env.NEXTAUTH_SECRET,
     'NEXTAUTH_SECRET is not defined',

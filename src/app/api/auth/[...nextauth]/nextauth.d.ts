@@ -8,6 +8,7 @@ export interface UserEntity {
   email?: string
   nickname?: string
   phone?: string
+  image?: string
 }
 declare module 'next-auth' {
   interface Session {
@@ -16,6 +17,7 @@ declare module 'next-auth' {
   interface User {
     phone: string
     nickname: string
+    image: string
   }
 }
 

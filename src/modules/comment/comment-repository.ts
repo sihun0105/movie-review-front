@@ -1,5 +1,6 @@
+import { Reply } from '@/lib/type'
 import { CommentDatasource } from './comment-datasource'
-import { Comment, assertComment } from './comment-entity'
+import { assertComment } from './comment-entity'
 
 export class CommentRepository {
   private datasource: CommentDatasource
@@ -7,21 +8,28 @@ export class CommentRepository {
     private token?: string,
     datasource?: CommentDatasource,
   ) {
-    this.datasource = datasource ?? new CommentDatasource(token)
+    this.datasource = datasource ?? new CommentDatasource(token ?? undefined)
   }
 
-  async getCommentList(id: string, page?: number): Promise<Comment[]> {
+  async getCommentList(
+    id: string,
+    page?: number,
+  ): Promise<{ comments: Reply[]; hasNext: boolean }> {
     const data = await this.datasource.getCommentList(id, page ?? 0)
-    if (data.replys === undefined) {
-      console.log('data.replys is undefined')
-      return []
+
+    if (!data.replies) {
+      console.log('data.replies is undefined')
+      return { comments: [], hasNext: false }
     }
-    return data.replys.map((item: any) => {
-      return this.convertUnkownToComment(item)
-    })
+    const comments = data.replies.map((item: any) =>
+      this.convertUnkownToComment(item),
+    )
+    const hasNext = data.hasNext ?? false
+
+    return { comments, hasNext }
   }
 
-  async createComment(id: string, comment: string): Promise<Comment> {
+  async createComment(id: string, comment: string): Promise<Reply> {
     const data = await this.datasource.createComment(id, comment)
     return data
   }
@@ -30,15 +38,19 @@ export class CommentRepository {
     const data = await this.datasource.deleteComment(id)
     return data
   }
-  private convertUnkownToComment(unknown: any): Comment {
+  async modifyComment(id: string, comment: string): Promise<Reply> {
+    const data = await this.datasource.modifyComment(id, comment)
+    return data
+  }
+  private convertUnkownToComment(unknown: any): Reply {
     const result = {
       id: unknown.replyId,
-      userId: unknown.userId,
-      userName: unknown.nickname,
-      comment: unknown.comment,
+      userno: unknown.userId,
+      nickname: unknown.nickname,
+      content: unknown.comment,
       createdAt: new Date(unknown.createdAt),
       updatedAt: new Date(unknown.updatedAt),
-    } as Comment
+    } as Reply
     assertComment(result)
     return result
   }

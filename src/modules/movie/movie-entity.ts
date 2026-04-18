@@ -13,8 +13,22 @@ export interface Movie {
   genre: string
   director: string
   ratting: string
+  vods: MovieVod[]
+  commentCount?: number
+  scoreCount?: number
+  averageScore?: number
 }
-
+export type MovieVod = {
+  id: number
+  title: string
+  vodUrl: string
+  movieCd: number
+}
+export type AverageMovieScore = {
+  movieCd: number
+  averageScore: number
+  scoreCount: number
+}
 export function isMovie(arg: any): arg is Movie {
   return (
     arg !== null &&
@@ -27,12 +41,53 @@ export function isMovie(arg: any): arg is Movie {
     arg.updatedAt instanceof Date &&
     typeof arg.genre === 'string' &&
     typeof arg.director === 'string' &&
-    typeof arg.ratting === 'string'
+    typeof arg.ratting === 'string' &&
+    (typeof arg.commentCount === 'number' || arg.commentCount === undefined) &&
+    (typeof arg.scoreCount === 'number' || arg.scoreCount === undefined) &&
+    (typeof arg.averageScore === 'number' || arg.averageScore === undefined)
   )
 }
 
 export function assertMovie(arg: any): asserts arg is Movie {
   if (!isMovie(arg)) {
     throw new Error('Invalid Movie')
+  }
+}
+
+export interface Score {
+  id: number
+  score: number
+  userId: number
+  movieCd: number
+}
+export function isScore(arg: any): arg is Score {
+  return (
+    arg !== null &&
+    typeof arg === 'object' &&
+    typeof arg.id === 'number' &&
+    typeof arg.score === 'number' &&
+    typeof arg.userId === 'number' &&
+    typeof arg.movieCd === 'number'
+  )
+}
+export function assertScore(arg: any): asserts arg is Score {
+  if (!isScore(arg)) {
+    throw new Error('Invalid Score')
+  }
+}
+export function isAverageMovieScore(arg: any): arg is AverageMovieScore {
+  return (
+    arg !== null &&
+    typeof arg === 'object' &&
+    typeof arg.movieCd === 'number' &&
+    typeof arg.averageScore === 'number' &&
+    typeof arg.scoreCount === 'number'
+  )
+}
+export function assertAverageMovieScore(
+  arg: any,
+): asserts arg is AverageMovieScore {
+  if (!isAverageMovieScore(arg)) {
+    throw new Error('Invalid AverageMovieScore')
   }
 }

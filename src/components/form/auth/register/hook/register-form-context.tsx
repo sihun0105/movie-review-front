@@ -2,52 +2,100 @@
 
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
-import { createContext, useContext } from 'react'
+import { createContext, useContext, useState } from 'react'
 import * as z from 'zod'
+import { auth } from '@/modules/auth'
 
 const formSchema = z.object({
   userId: z
     .string()
-    .min(4, {
-      message: 'userId must be at least 4 characters.',
+    .min(1, {
+      message: '이메일을 입력해주세요.',
     })
     .email({
-      message: 'userId must be email.',
+      message: '올바른 이메일 형식을 입력해주세요.',
     }),
-  password: z.string().min(4, {
-    message: 'password must be at least 4 characters.',
+  password: z
+    .string()
+    .min(8, {
+      message: '비밀번호는 최소 8자 이상이어야 합니다.',
+    })
+    .regex(/^(?=.*[a-zA-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]/, {
+      message: '비밀번호는 영문, 숫자, 특수문자를 포함해야 합니다.',
+    }),
+  nickname: z
+    .string()
+    .min(2, {
+      message: '닉네임은 최소 2자 이상이어야 합니다.',
+    })
+    .max(10, {
+      message: '닉네임은 최대 10자까지 가능합니다.',
+    }),
+  gender: z.enum(['male', 'female'], {
+    required_error: '성별을 선택해주세요.',
   }),
-  nicknmae: z.string().min(4, {
-    message: 'nicknmae must be at least 4 characters.',
+  termsAgreed: z.boolean().refine((val) => val === true, {
+    message: '이용약관에 동의해주세요.',
   }),
+  marketingAgreed: z.boolean().optional(),
 })
 
 const useRegisterForm = () => {
+  const [emailValidationState, setEmailValidationState] = useState({
+    isValidating: false,
+    isValid: false,
+  })
+  const [nicknameValidationState, setNicknameValidationState] = useState({
+    isValidating: false,
+    isValid: false,
+  })
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     mode: 'onTouched',
     defaultValues: {
       userId: '',
       password: '',
-      nicknmae: '',
+      nickname: '',
+      gender: undefined,
+      termsAgreed: false,
+      marketingAgreed: false,
     },
   })
 
   const onSubmit = async (
     values: z.infer<typeof formSchema>,
     onSuccess: () => void,
-    onError: () => void,
+    onError: (error: string) => void,
   ) => {
-    await new Promise((resolve) =>
-      setTimeout(() => {
-        return resolve(onSuccess())
-      }, 200),
-    )
+    try {
+      // 새로운 auth 모듈을 사용한 회원가입 처리
+      const result = await auth.register({
+        userId: values.userId,
+        password: values.password,
+        nickname: values.nickname,
+        gender: values.gender,
+        marketingAgreed: values.marketingAgreed,
+      })
+
+      if (result.success) {
+        onSuccess()
+      } else {
+        onError(result.message || '회원가입에 실패했습니다.')
+      }
+    } catch (error) {
+      console.error('Register submit error:', error)
+      onError('회원가입 중 오류가 발생했습니다.')
+    }
   }
 
   return {
     form,
     onSubmit,
+    emailValidationState,
+    setEmailValidationState,
+    nicknameValidationState,
+    setNicknameValidationState,
   }
 }
 
@@ -68,12 +116,23 @@ export const RegisterFormProvider = ({
 }: {
   children: React.ReactNode
 }) => {
-  const { form, onSubmit } = useRegisterForm()
+  const {
+    form,
+    onSubmit,
+    emailValidationState,
+    setEmailValidationState,
+    nicknameValidationState,
+    setNicknameValidationState,
+  } = useRegisterForm()
   return (
     <RegisterFormContext.Provider
       value={{
         form,
         onSubmit,
+        emailValidationState,
+        setEmailValidationState,
+        nicknameValidationState,
+        setNicknameValidationState,
       }}
     >
       {children}

@@ -2,7 +2,7 @@ import { Movie } from '@/modules/movie/movie-entity'
 import Image from 'next/image'
 import Link from 'next/link'
 import { FunctionComponent } from 'react'
-import { FaCrown } from 'react-icons/fa'
+import { FaCrown, FaCommentDots, FaStar } from 'react-icons/fa'
 
 interface MovieCardProps {
   data: Movie
@@ -24,22 +24,44 @@ const MovieCard: FunctionComponent<MovieCardProps> = ({ data: movie }) => {
             )}
             <Image
               src={movie.poster}
-              alt={movie.title}
+              alt={`${movie.title} 포스터`}
               blurDataURL="iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg=="
               placeholder="blur"
               fill
+              style={{ objectFit: 'contain' }}
             />
             <div className="absolute bottom-2 left-2 text-5xl font-bold text-gray-300">
               {movie.rank}
             </div>
           </section>
           <section className="mt-4 text-black ">
-            <div className="stat-title whitespace-normal text-lg font-semibold ">
+            <h1 className="stat-title whitespace-normal text-lg font-semibold ">
               {movie.title}
-            </div>
+            </h1>
             <div className="stat-value text-xl font-bold ">
               {movie.audience.toLocaleString()}
             </div>
+
+            {/* 평균점수와 댓글 개수 표시 */}
+            <div className="mt-3 flex items-center gap-4">
+              {movie.averageScore !== undefined &&
+                movie.scoreCount !== undefined && (
+                  <div className="flex items-center gap-1 text-sm text-gray-600">
+                    <FaStar className="text-yellow-500" />
+                    <span className="font-semibold">
+                      {movie.averageScore.toFixed(1)} (
+                      {movie.scoreCount.toLocaleString()})
+                    </span>
+                  </div>
+                )}
+              {movie.commentCount !== undefined && (
+                <div className="flex items-center gap-1 text-sm text-gray-600">
+                  <FaCommentDots className="text-blue-500" />
+                  <span>댓글 {movie.commentCount.toLocaleString()}</span>
+                </div>
+              )}
+            </div>
+
             <div className="stat-desc mt-2 ">장르: {movie.genre}</div>
             <div className="stat-desc ">감독: {movie.director}</div>
             <div className="stat-desc ">

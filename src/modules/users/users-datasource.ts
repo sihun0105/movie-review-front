@@ -13,6 +13,7 @@ export class UsersDatasource {
         headers: {
           'Content-Type': 'application/json',
         },
+        cache: 'no-cache',
         body: JSON.stringify({
           email: userId,
           password: password,
@@ -31,10 +32,12 @@ export class UsersDatasource {
     userId,
     password,
     nickname,
+    gender,
   }: {
     userId: string
     password: string
     nickname: string
+    gender: string
   }) {
     try {
       const res = await fetch(AppBackEndApiEndpoint.signUp(), {
@@ -46,7 +49,9 @@ export class UsersDatasource {
           email: userId,
           password: password,
           nickname: nickname,
+          gender: gender,
         }),
+        cache: 'no-cache',
       })
       if (!res.ok) {
         throw new Error('UsersDatasource-signUp 에러')
@@ -69,6 +74,7 @@ export class UsersDatasource {
           provider: 'google',
           accessToken: params.id,
         }),
+        cache: 'no-cache',
       })
       if (!res.ok) {
         throw new Error(`[${res.status}] ${res.statusText}`)
@@ -90,6 +96,38 @@ export class UsersDatasource {
       headers: {
         'Content-Type': 'application/json',
       },
+    })
+    if (!res.ok) {
+      throw new Error(`[${res.status}] ${res.statusText}`)
+    }
+    return res.json()
+  }
+
+  async updateProfile({ nickname }: { nickname: string }) {
+    const res = await fetch(AppBackEndApiEndpoint.updateProfileNickname(), {
+      cache: 'no-cache',
+      method: 'PATCH',
+      body: JSON.stringify({ nickname }),
+      headers: {
+        'Content-Type': 'application/json; charset=utf-8',
+        Authorization: `Bearer ${this.token}`,
+      },
+    })
+    if (!res.ok) {
+      throw new Error(`[${res.status}] ${res.statusText}`)
+    }
+    return res.json()
+  }
+  async updateImage({ file }: { file: File | null }) {
+    const formData = new FormData()
+    formData.append('file', file ? file : '')
+    const res = await fetch(AppBackEndApiEndpoint.updateProfileImage(), {
+      method: 'PATCH',
+      body: formData,
+      headers: {
+        Authorization: `Bearer ${this.token}`,
+      },
+      cache: 'no-cache',
     })
     if (!res.ok) {
       throw new Error(`[${res.status}] ${res.statusText}`)
