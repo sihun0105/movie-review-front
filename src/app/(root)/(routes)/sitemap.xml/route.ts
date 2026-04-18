@@ -4,18 +4,18 @@ import { MatchRepository } from '@/modules/match/match-repository'
 import { ISitemapField } from 'next-sitemap'
 import { getServerSideSitemap } from 'next-sitemap'
 
+export const dynamic = 'force-dynamic'
+
 export async function GET(): Promise<ReturnType<typeof getServerSideSitemap>> {
-  // 영화 데이터
-  const movieRepo = new MovieRepository()
-  const movies = await movieRepo.getMovie()
+  const movies = await new MovieRepository().getMovie().catch(() => [])
 
-  // 게시글 데이터 (최대 50개만, 필요시 pageSize 조정)
-  const articleRepo = new ArticleRepository()
-  const { articles } = await articleRepo.listArticles(1, 50)
+  const { articles } = await new ArticleRepository()
+    .listArticles(1, 50)
+    .catch(() => ({ articles: [], hasNext: false }))
 
-  // 매치 데이터 (최대 50개만)
-  const matchRepo = new MatchRepository()
-  const { matchPosts: matches } = await matchRepo.getMatchPosts(1, 50)
+  const { matchPosts: matches } = await new MatchRepository()
+    .getMatchPosts(1, 50)
+    .catch(() => ({ matchPosts: [], hasNext: false }))
 
   const fields: ISitemapField[] = []
 
