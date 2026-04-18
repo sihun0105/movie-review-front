@@ -8,10 +8,15 @@ import { getCurrentUser } from '@/lib/utils/server-utils'
 import { Metadata } from 'next'
 import { FunctionComponent } from 'react'
 
+export const dynamic = 'force-dynamic'
+
 const getMovieList = async (): Promise<Movie[]> => {
-  const repo = new MovieRepository()
-  const result = await repo.getMovie()
-  return result
+  try {
+    const repo = new MovieRepository()
+    return await repo.getMovie()
+  } catch {
+    return []
+  }
 }
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -50,8 +55,8 @@ const Page: FunctionComponent<PageProps> = async ({}) => {
   const user = await getCurrentUser()
   const isAuthenticated = !!user
 
-  console.log(data)
-  if (!data) return <AppSkeleton className="container min-h-[364px] p-6" />
+  if (!data || data.length === 0)
+    return <AppSkeleton className="container min-h-[364px] p-6" />
 
   return (
     <main>
