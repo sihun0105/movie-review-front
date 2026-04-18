@@ -1,5 +1,8 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  output: 'standalone',
+  poweredByHeader: false,
+  reactStrictMode: true,
   images: {
     domains: [
       'kmdb.or.kr',
@@ -7,6 +10,7 @@ const nextConfig = {
       'uploads.drunkenmovie.shop',
       'image.tmdb.org',
     ],
+    formats: ['image/avif', 'image/webp'],
   },
 }
 
