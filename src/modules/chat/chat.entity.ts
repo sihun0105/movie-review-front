@@ -77,3 +77,34 @@ export function assertChatMessageEntity(
     throw new Error('Invalid ChatMessageEntity')
   }
 }
+
+// 요청·파라미터 타입
+export interface CreateChatRoomRequest {
+  memberIds: number[]
+  roomName: string
+  type: 'direct' | 'group'
+}
+
+export interface GetChatRoomParams {
+  chatRoomId: string
+  userId: number
+}
+
+export interface GetChatRoomsParams {
+  userId: number
+  page?: number
+  pageSize?: number
+}
+
+export interface GetMessagesParams {
+  chatRoomId: string
+  userId: number
+  page?: number
+  pageSize?: number
+}
+
+export interface SendMessageRequest {
+  chatRoomId: string
+  senderId: number
+  content: string
+}
