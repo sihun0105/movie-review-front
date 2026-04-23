@@ -1,6 +1,6 @@
 import { Article, LikeState, Reply } from '@/lib/type'
 import { ArticleDatasource } from './article-datasource'
-import { assertArticle, assertArticleComment } from './article-entity'
+import { assertArticle, assertArticleComment } from './article.entity'
 import console from 'console'
 
 export class ArticleRepository {

@@ -1,6 +1,6 @@
 import { Reply } from '@/lib/type'
 import { CommentDatasource } from './comment-datasource'
-import { assertComment } from './comment-entity'
+import { assertComment } from './comment.entity'
 
 export class CommentRepository {
   private datasource: CommentDatasource

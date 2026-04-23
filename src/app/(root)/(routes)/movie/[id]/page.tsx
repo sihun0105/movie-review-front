@@ -1,6 +1,6 @@
 import { Reply } from '@/lib/type'
 import { CommentRepository } from '@/modules/comment/comment-repository'
-import { AverageMovieScore, Movie } from '@/modules/movie/movie-entity'
+import { AverageMovieScore, Movie } from '@/modules/movie/movie.entity'
 import { MovieRepository } from '@/modules/movie/movie-repository'
 import { Metadata } from 'next'
 import { FunctionComponent } from 'react'

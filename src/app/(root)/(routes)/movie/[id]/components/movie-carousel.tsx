@@ -1,4 +1,4 @@
-import { MovieVod } from '@/modules/movie/movie-entity'
+import { MovieVod } from '@/modules/movie/movie.entity'
 import { FunctionComponent, Suspense } from 'react'
 import MovieVodModal from './movie-vod-modal'
 import { useVodModalContext } from '../hooks/use-vod-modal-context'
