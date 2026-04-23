@@ -91,3 +91,20 @@ export function assertAverageMovieScore(
     throw new Error('Invalid AverageMovieScore')
   }
 }
+
+export interface CGVTheater {
+  id: number
+  name: string
+  region: string
+  address: string
+  phone: string
+  website: string
+  latitude: number
+  longitude: number
+  createdAt: string
+  updatedAt: string
+}
+
+export interface CGVTheaterList {
+  theaters: CGVTheater[]
+}
