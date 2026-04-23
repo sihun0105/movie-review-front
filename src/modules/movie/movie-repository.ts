@@ -6,7 +6,7 @@ import {
   assertAverageMovieScore,
   assertMovie,
   assertScore,
-} from './movie-entity'
+} from './movie.entity'
 
 export interface CGVTheaterList {
   theaters: CGVTheater[]
