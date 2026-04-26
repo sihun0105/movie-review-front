@@ -14,7 +14,6 @@ export class AuthRepository {
   }
 
   async validateEmail(email: string): Promise<ValidationResponse> {
-    console.log('Validating email:', email)
     if (!email || !email.includes('@')) {
       return {
         isAvailable: false,
@@ -22,9 +21,7 @@ export class AuthRepository {
       }
     }
 
-    const result = await this.dataSource.validateEmail(email)
-    console.log('Email validation result:', result)
-    return result
+    return await this.dataSource.validateEmail(email)
   }
 
   async validateNickname(nickname: string): Promise<ValidationResponse> {
@@ -46,8 +43,6 @@ export class AuthRepository {
   }
 
   async register(data: RegisterRequest): Promise<AuthResponse> {
-    // 클라이언트 사이드 validation
-    console.log('Registering user:', data)
     if (!data.userId || !data.password || !data.nickname) {
       return {
         success: false,

@@ -1,7 +1,6 @@
 import { Article, LikeState, Reply } from '@/lib/type'
 import { ArticleDatasource } from './article-datasource'
-import { assertArticle, assertArticleComment } from './article-entity'
-import console from 'console'
+import { assertArticle, assertArticleComment } from './article.entity'
 
 export class ArticleRepository {
   private datasource: ArticleDatasource
@@ -17,11 +16,8 @@ export class ArticleRepository {
     page = 1,
     pageSize = 10,
   ): Promise<{ articles: Article[]; hasNext: boolean }> {
-    console.log('listArticles called with page:', page, 'pageSize:', pageSize)
-
     const data = await this.datasource.listArticles(page, pageSize)
     if (!data.articles) {
-      console.log('data.articles is undefined')
       return { articles: [], hasNext: false }
     }
 
@@ -108,7 +104,6 @@ export class ArticleRepository {
     dislikes: number
   }> {
     const data = await this.datasource.updateArticleLike(id, state)
-    console.log('updateArticleLike data:', data)
     return {
       likes: data.likes,
       dislikes: data.dislikes,
@@ -149,10 +144,7 @@ export class ArticleRepository {
     return data
   }
   async modifyComment(id: string, comment: string): Promise<Reply> {
-    console.log('modifyComment called with id:', id, 'comment:', comment)
-    console.log('modifyComment id:', id, 'comment:', comment)
     const data = await this.datasource.modifyComment(id, comment)
-    console.log('modifyComment data:', data)
     return data
   }
 }

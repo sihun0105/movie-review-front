@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { getTokenFromCookie } from '@/lib/utils/getToken'
-import { MatchRepository } from '@/modules/match/match-repository'
+import { MatchApplicationRepository } from '@/modules/match/match-application-repository'
 
 // PUT /api/match/[id]/applications/[applicationId] - 신청 상태 변경 (승인/거절)
 export async function PUT(
@@ -15,7 +15,7 @@ export async function PUT(
 
     const { id, applicationId } = params
     const body = await request.json()
-    const matchRepository = new MatchRepository(token)
+    const matchRepository = new MatchApplicationRepository(token)
 
     await matchRepository.updateApplicationStatus(
       id,

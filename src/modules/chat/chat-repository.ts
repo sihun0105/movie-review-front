@@ -1,46 +1,20 @@
+import { ChatDatasource } from './chat-datasource'
 import {
-  ChatDatasource,
+  ChatRoomEntity,
+  ChatRoomsResponseEntity,
+  MessagesResponseEntity,
   CreateChatRoomRequest,
   GetChatRoomParams,
   GetChatRoomsParams,
   GetMessagesParams,
   SendMessageRequest,
-} from './chat-datasource'
-import {
-  ChatRoomEntity,
-  ChatRoomsResponseEntity,
-  MessagesResponseEntity,
-  ChatMessageEntity,
   assertChatRoomEntity,
   assertChatMessageEntity,
 } from './chat.entity'
-
-// API 응답을 ChatRoomEntity로 변환하는 헬퍼 함수
-function convertApiResponseToChatRoomEntity(apiResponse: any): ChatRoomEntity {
-  return {
-    chatRoomId: apiResponse.id,
-    roomName: apiResponse.name,
-    type: apiResponse.type,
-    memberIds: apiResponse.memberIds,
-    createdAt: apiResponse.createdAt,
-    updatedAt: apiResponse.updatedAt,
-  }
-}
-
-// API 응답을 ChatMessageEntity로 변환하는 헬퍼 함수
-function convertApiResponseToChatMessageEntity(
-  apiResponse: any,
-): ChatMessageEntity {
-  return {
-    messageId: apiResponse.id || apiResponse.messageId,
-    chatRoomId: apiResponse.chatRoomId,
-    senderId: apiResponse.senderId,
-    senderName: apiResponse.senderName, // undefined일 수 있음
-    content: apiResponse.content,
-    messageType: apiResponse.messageType, // undefined일 수 있음
-    createdAt: apiResponse.createdAt,
-  }
-}
+import {
+  convertApiResponseToChatRoomEntity,
+  convertApiResponseToChatMessageEntity,
+} from './chat-mapper'
 
 export class ChatRepository {
   private datasource: ChatDatasource
@@ -89,7 +63,6 @@ export class ChatRepository {
   ): Promise<ChatRoomsResponseEntity> {
     try {
       const result = await this.datasource.getChatRooms(params)
-      console.log('Chat rooms result:', result)
 
       // 각 채팅방 API 응답을 엔티티로 변환하고 검증
       const convertedChatRooms = result.chatRooms.map((room) => {
@@ -115,7 +88,6 @@ export class ChatRepository {
   ): Promise<MessagesResponseEntity> {
     try {
       const result = await this.datasource.getMessages(params)
-      console.log('Messages result:', result)
 
       // 메시지가 없는 경우 빈 배열로 초기화
       if (!result.messages || !Array.isArray(result.messages)) {
@@ -159,7 +131,6 @@ export class ChatRepository {
       const chatRoomsResponse = await this.getChatRooms({
         userId: currentUserId,
       })
-      console.log('Chat rooms response:', chatRoomsResponse)
       // direct 타입 채팅방 중에서 상대방과의 채팅방이 있는지 확인
       const existingRoom = chatRoomsResponse.chatRooms.find(
         (room) =>
@@ -207,7 +178,6 @@ export class ChatRepository {
   async sendMessage(request: SendMessageRequest): Promise<any> {
     try {
       const result = await this.datasource.sendMessage(request)
-      console.log('Send message result:', result)
       return result
     } catch (error) {
       console.error(`메시지 전송 실패 (채팅방: ${request.chatRoomId}):`, error)

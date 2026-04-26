@@ -1,28 +1,14 @@
 import { MovieDatasource } from './movie-datasource'
 import {
   AverageMovieScore,
+  CGVTheaterList,
   Movie,
   Score,
   assertAverageMovieScore,
   assertMovie,
   assertScore,
-} from './movie-entity'
+} from './movie.entity'
 
-export interface CGVTheaterList {
-  theaters: CGVTheater[]
-}
-export interface CGVTheater {
-  id: number
-  name: string
-  region: string
-  address: string
-  phone: string
-  website: string
-  latitude: number
-  longitude: number
-  createdAt: string
-  updatedAt: string
-}
 export class MovieRepository {
   private datasource: MovieDatasource
   constructor(

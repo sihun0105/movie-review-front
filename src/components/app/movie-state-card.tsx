@@ -1,4 +1,4 @@
-import { Movie } from '@/modules/movie/movie-entity'
+import { Movie } from '@/modules/movie/movie.entity'
 import Image from 'next/image'
 import Link from 'next/link'
 import { FunctionComponent } from 'react'

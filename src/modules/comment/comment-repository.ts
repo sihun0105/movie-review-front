@@ -1,6 +1,6 @@
 import { Reply } from '@/lib/type'
 import { CommentDatasource } from './comment-datasource'
-import { assertComment } from './comment-entity'
+import { assertComment } from './comment.entity'
 
 export class CommentRepository {
   private datasource: CommentDatasource
@@ -18,7 +18,6 @@ export class CommentRepository {
     const data = await this.datasource.getCommentList(id, page ?? 0)
 
     if (!data.replies) {
-      console.log('data.replies is undefined')
       return { comments: [], hasNext: false }
     }
     const comments = data.replies.map((item: any) =>
