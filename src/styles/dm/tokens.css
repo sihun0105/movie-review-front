@@ -1,0 +1,34 @@
+/*
+ * Cinéma Noir 디자인 토큰
+ * Phase 1 — 신규 dm.* 네임스페이스, 기존 토큰과 분리.
+ * 사용 방법: Tailwind className `text-dm-text`, `bg-dm-red`, `font-dm-display` 등.
+ */
+
+@layer base {
+  :root {
+    /* surfaces */
+    --dm-bg: #0a0a0c;
+    --dm-bg-deep: #050506;
+    --dm-surface: #15151a;
+    --dm-surface-2: #1e1e24;
+    --dm-line: #2a2a30;
+    --dm-line-2: #3a3a42;
+
+    /* text */
+    --dm-text: #f2ece1;
+    --dm-text-muted: #9a948a;
+    --dm-text-faint: #5c5853;
+
+    /* accents */
+    --dm-red: #c0302a;
+    --dm-red-deep: #8f1f1a;
+    --dm-amber: #d99520;
+    --dm-amber-light: #ecb85a;
+
+    /* poster default oklch palette (per-movie override 가능) */
+    --dm-poster-h: 18;
+    --dm-poster-c: 0.11;
+    --dm-poster-l-top: 0.32;
+    --dm-poster-l-bot: 0.09;
+  }
+}
