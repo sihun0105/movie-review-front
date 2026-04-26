@@ -8,9 +8,11 @@ import { MessageModalContextProvider } from '@/hooks/use-message-modal-context'
 import { cn } from '@/lib/utils'
 import { SessionProvider } from '@/providers/session-provider'
 import '@/styles/globals.css'
-import type { Metadata } from 'next'
-import { Roboto } from 'next/font/google'
+import { Bebas_Neue, IBM_Plex_Mono, Playfair_Display, Roboto } from 'next/font/google'
 import Script from 'next/script'
+import { siteMetadata, siteJsonLd } from './site-metadata'
+
+export const metadata = siteMetadata
 
 const roboto = Roboto({
   weight: ['400', '700'],
@@ -19,96 +21,33 @@ const roboto = Roboto({
   display: 'swap',
 })
 
-export const metadata: Metadata = {
-  metadataBase: new URL('https://drunkenmovie.shop'),
-  title: '영화 뭐함 - 영화뭐함 | 최신 영화 리뷰와 추천',
-  description:
-    '영화 뭐함? 영화뭐함에서 최신 영화 리뷰, 평점, 추천을 확인하세요! 어떤 영화를 볼지 고민될 때 영화 뭐함 사이트에서 완벽한 답을 찾으세요.',
-  keywords: [
-    '영화 뭐함',
-    '영화뭐함',
-    '영화 추천',
-    '영화 리뷰',
-    '영화 평점',
-    '최신 영화',
-    '영화 순위',
-    '영화 정보',
-    '영화 커뮤니티',
-    '영화 고민',
-    '무슨 영화',
-    '어떤 영화',
-    '영화 선택',
-    '영화 찾기',
-    '볼만한 영화',
-    'DrunkenMovie',
-    'drunkenmovie',
-  ],
-  authors: [{ name: '영화뭐함 - DrunkenMovie' }],
-  openGraph: {
-    type: 'website',
-    locale: 'ko_KR',
-    url: 'https://drunkenmovie.shop',
-    siteName: '영화 뭐함 - 영화뭐함',
-    title: '영화 뭐함? 영화뭐함에서 찾는 완벽한 영화 추천',
-    description:
-      '영화 뭐함? 영화뭐함에서 최신 영화 리뷰, 평점, 추천을 확인하세요! 어떤 영화를 볼지 고민될 때 완벽한 답을 찾으세요.',
-    images: [
-      {
-        url: '/images/og-image.png',
-        width: 1200,
-        height: 630,
-        alt: '영화 뭐함 - 영화뭐함 OG 이미지',
-      },
-    ],
-  },
-  twitter: {
-    card: 'summary_large_image',
-    title: '영화 뭐함? 영화뭐함에서 찾는 완벽한 영화 추천',
-    description:
-      '영화 뭐함? 영화뭐함에서 최신 영화 리뷰, 평점, 추천을 확인하세요!',
-    images: ['/images/og-image.png'],
-  },
-  viewport: {
-    width: 'device-width',
-    initialScale: 1,
-    maximumScale: 1,
-  },
-  alternates: {
-    canonical: 'https://drunkenmovie.shop',
-  },
-}
+const dmDisplay = Playfair_Display({
+  weight: ['400', '700'],
+  style: ['normal', 'italic'],
+  subsets: ['latin'],
+  display: 'swap',
+  variable: '--dm-font-display',
+})
+
+const dmMono = IBM_Plex_Mono({
+  weight: ['400', '500'],
+  subsets: ['latin'],
+  display: 'swap',
+  variable: '--dm-font-mono',
+})
+
+const dmRank = Bebas_Neue({
+  weight: ['400'],
+  subsets: ['latin'],
+  display: 'swap',
+  variable: '--dm-font-rank',
+})
 
 export default function RootLayout({
   children,
 }: {
   children: React.ReactNode
 }) {
-  const jsonLd = {
-    '@context': 'https://schema.org',
-    '@type': 'WebSite',
-    name: '영화 뭐함 - 영화뭐함',
-    alternateName: ['영화뭐함', '영화 뭐함', 'DrunkenMovie'],
-    url: 'https://drunkenmovie.shop',
-    description:
-      '영화 뭐함? 영화뭐함에서 최신 영화 리뷰, 평점, 추천을 확인하세요!',
-    potentialAction: {
-      '@type': 'SearchAction',
-      target: {
-        '@type': 'EntryPoint',
-        urlTemplate: 'https://drunkenmovie.shop/search?q={search_term_string}',
-      },
-      'query-input': 'required name=search_term_string',
-    },
-    mainEntity: {
-      '@type': 'Organization',
-      name: '영화뭐함',
-      sameAs: ['https://drunkenmovie.shop'],
-      logo: {
-        '@type': 'ImageObject',
-        url: 'https://drunkenmovie.shop/images/og-image.png',
-      },
-    },
-  }
   return (
     <html lang="ko">
       <head>
@@ -132,7 +71,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 
         <script
           type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(siteJsonLd) }}
         />
         <link rel="icon" href="/favicon/favicon.ico" />
         <link
@@ -182,6 +121,9 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         className={cn(
           'flex min-h-screen flex-col items-center',
           roboto.className,
+          dmDisplay.variable,
+          dmMono.variable,
+          dmRank.variable,
         )}
       >
         {/* Google Tag Manager (noscript) */}
