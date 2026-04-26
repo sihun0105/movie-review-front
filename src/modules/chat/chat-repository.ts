@@ -3,7 +3,6 @@ import {
   ChatRoomEntity,
   ChatRoomsResponseEntity,
   MessagesResponseEntity,
-  ChatMessageEntity,
   CreateChatRoomRequest,
   GetChatRoomParams,
   GetChatRoomsParams,
@@ -12,33 +11,10 @@ import {
   assertChatRoomEntity,
   assertChatMessageEntity,
 } from './chat.entity'
-
-// API 응답을 ChatRoomEntity로 변환하는 헬퍼 함수
-function convertApiResponseToChatRoomEntity(apiResponse: any): ChatRoomEntity {
-  return {
-    chatRoomId: apiResponse.id,
-    roomName: apiResponse.name,
-    type: apiResponse.type,
-    memberIds: apiResponse.memberIds,
-    createdAt: apiResponse.createdAt,
-    updatedAt: apiResponse.updatedAt,
-  }
-}
-
-// API 응답을 ChatMessageEntity로 변환하는 헬퍼 함수
-function convertApiResponseToChatMessageEntity(
-  apiResponse: any,
-): ChatMessageEntity {
-  return {
-    messageId: apiResponse.id || apiResponse.messageId,
-    chatRoomId: apiResponse.chatRoomId,
-    senderId: apiResponse.senderId,
-    senderName: apiResponse.senderName, // undefined일 수 있음
-    content: apiResponse.content,
-    messageType: apiResponse.messageType, // undefined일 수 있음
-    createdAt: apiResponse.createdAt,
-  }
-}
+import {
+  convertApiResponseToChatRoomEntity,
+  convertApiResponseToChatMessageEntity,
+} from './chat-mapper'
 
 export class ChatRepository {
   private datasource: ChatDatasource
