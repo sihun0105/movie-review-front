@@ -23,8 +23,26 @@ module.exports = {
       },
       fontFamily: {
         sans: ['var(--app-font)', 'sans-serif'],
+        'dm-display': ['var(--dm-font-display)', 'serif'],
+        'dm-mono': ['var(--dm-font-mono)', 'monospace'],
+        'dm-rank': ['var(--dm-font-rank)', 'sans-serif'],
       },
       colors: {
+        dm: {
+          bg: 'var(--dm-bg)',
+          'bg-deep': 'var(--dm-bg-deep)',
+          surface: 'var(--dm-surface)',
+          'surface-2': 'var(--dm-surface-2)',
+          line: 'var(--dm-line)',
+          'line-2': 'var(--dm-line-2)',
+          text: 'var(--dm-text)',
+          'text-muted': 'var(--dm-text-muted)',
+          'text-faint': 'var(--dm-text-faint)',
+          red: 'var(--dm-red)',
+          'red-deep': 'var(--dm-red-deep)',
+          amber: 'var(--dm-amber)',
+          'amber-light': 'var(--dm-amber-light)',
+        },
         'app-purple': {
           '001': 'var(--purple-001)',
           '002': 'var(--purple-002)',
