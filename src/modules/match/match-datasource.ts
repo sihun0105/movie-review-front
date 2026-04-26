@@ -39,9 +39,7 @@ export class MatchDataSource {
         throw new Error('Failed to fetch match posts')
       }
 
-      const data = await response.json()
-      console.log('Match posts data:', data)
-      return data
+      return await response.json()
     } catch (error) {
       console.error('Match posts fetch error:', error)
       throw new Error('매치 게시글을 불러오는데 실패했습니다.')
@@ -73,7 +71,6 @@ export class MatchDataSource {
 
   // 매치 게시글 작성
   async createMatchPost(data: CreateMatchPostRequest): Promise<MatchPost> {
-    console.log('Creating match post with data:', data)
     try {
       const response = await fetch(AppBackEndApiEndpoint.createMatchPost(), {
         method: 'POST',
@@ -175,9 +172,7 @@ export class MatchDataSource {
         throw new Error('Failed to fetch match applications')
       }
 
-      const data = await response.json()
-      console.log('Match applications data:', data)
-      return data
+      return await response.json()
     } catch (error) {
       console.error('Match applications fetch error:', error)
       throw new Error('매치 신청 목록을 불러오는데 실패했습니다.')
