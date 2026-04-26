@@ -8,7 +8,7 @@ import { MessageModalContextProvider } from '@/hooks/use-message-modal-context'
 import { cn } from '@/lib/utils'
 import { SessionProvider } from '@/providers/session-provider'
 import '@/styles/globals.css'
-import { Bebas_Neue, IBM_Plex_Mono, Playfair_Display, Roboto } from 'next/font/google'
+import { Roboto } from 'next/font/google'
 import Script from 'next/script'
 import { siteMetadata, siteJsonLd } from './site-metadata'
 
@@ -21,27 +21,10 @@ const roboto = Roboto({
   display: 'swap',
 })
 
-const dmDisplay = Playfair_Display({
-  weight: ['400', '700'],
-  style: ['normal', 'italic'],
-  subsets: ['latin'],
-  display: 'swap',
-  variable: '--dm-font-display',
-})
-
-const dmMono = IBM_Plex_Mono({
-  weight: ['400', '500'],
-  subsets: ['latin'],
-  display: 'swap',
-  variable: '--dm-font-mono',
-})
-
-const dmRank = Bebas_Neue({
-  weight: ['400'],
-  subsets: ['latin'],
-  display: 'swap',
-  variable: '--dm-font-rank',
-})
+// dm 폰트는 runtime <link> 로 로드한다.
+// next/font/google 는 빌드 타임에 fonts.gstatic.com 으로 fetch 하는데, Docker
+// 빌드 환경의 네트워크 제약으로 실패한 이력이 있어 (PR #213·#215) 안정성을
+// 위해 클라이언트 사이드 로드로 전환. 폰트 family 는 dm/tokens.css 에 정의.
 
 export default function RootLayout({
   children,
@@ -51,6 +34,17 @@ export default function RootLayout({
   return (
     <html lang="ko">
       <head>
+        {/* dm 폰트 — runtime fetch (build network 우회) */}
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link
+          rel="preconnect"
+          href="https://fonts.gstatic.com"
+          crossOrigin="anonymous"
+        />
+        <link
+          href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=IBM+Plex+Mono:wght@400;500&family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&display=swap"
+          rel="stylesheet"
+        />
         {/* Google Tag Manager */}
         <Script
           id="google-tag-manager"
@@ -121,9 +115,6 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         className={cn(
           'flex min-h-screen flex-col items-center',
           roboto.className,
-          dmDisplay.variable,
-          dmMono.variable,
-          dmRank.variable,
         )}
       >
         {/* Google Tag Manager (noscript) */}

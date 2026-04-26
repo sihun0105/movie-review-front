@@ -33,4 +33,9 @@
   --dm-poster-c: 0.11;
   --dm-poster-l-top: 0.32;
   --dm-poster-l-bot: 0.09;
+
+  /* fonts (runtime <link> 으로 로드, layout.tsx 참고) */
+  --dm-font-display: 'Playfair Display', serif;
+  --dm-font-mono: 'IBM Plex Mono', monospace;
+  --dm-font-rank: 'Bebas Neue', sans-serif;
 }
