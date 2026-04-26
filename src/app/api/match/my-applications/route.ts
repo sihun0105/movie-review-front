@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server'
 import { getTokenFromCookie } from '@/lib/utils/getToken'
-import { MatchRepository } from '@/modules/match/match-repository'
+import { MatchApplicationRepository } from '@/modules/match/match-application-repository'
 
 export async function GET() {
   try {
@@ -9,7 +9,7 @@ export async function GET() {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
 
-    const matchRepository = new MatchRepository(token)
+    const matchRepository = new MatchApplicationRepository(token)
     const applications = await matchRepository.getMyApplications()
 
     return NextResponse.json({ applications })

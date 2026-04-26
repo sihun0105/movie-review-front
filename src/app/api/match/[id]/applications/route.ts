@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { getTokenFromCookie } from '@/lib/utils/getToken'
-import { MatchRepository } from '@/modules/match/match-repository'
+import { MatchApplicationRepository } from '@/modules/match/match-application-repository'
 
 // GET /api/match/[id]/applications - match 신청 목록 조회
 export async function GET(
@@ -14,7 +14,7 @@ export async function GET(
     }
 
     const { id } = params
-    const matchRepository = new MatchRepository(token)
+    const matchRepository = new MatchApplicationRepository(token)
 
     const data = await matchRepository.getMatchApplications(id)
     return NextResponse.json(data)

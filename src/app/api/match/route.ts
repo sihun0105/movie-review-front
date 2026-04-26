@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { getTokenFromCookie } from '@/lib/utils/getToken'
-import { MatchRepository } from '@/modules/match/match-repository'
+import { MatchPostRepository } from '@/modules/match/match-post-repository'
 
 // GET /api/match - match 목록 조회
 export async function GET(request: NextRequest) {
@@ -10,7 +10,7 @@ export async function GET(request: NextRequest) {
     const limit = parseInt(searchParams.get('limit') || '10')
 
     const token = getTokenFromCookie()
-    const matchRepository = new MatchRepository(token)
+    const matchRepository = new MatchPostRepository(token)
 
     const data = await matchRepository.getMatchPosts(page, limit)
     return NextResponse.json(data)
@@ -32,7 +32,7 @@ export async function POST(request: NextRequest) {
     }
 
     const body = await request.json()
-    const matchRepository = new MatchRepository(token)
+    const matchRepository = new MatchPostRepository(token)
 
     const data = await matchRepository.createMatchPost(body)
     return NextResponse.json(data)

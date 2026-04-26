@@ -1,3 +1,5 @@
 export * from './match.entity'
-export * from './match-datasource'
-export * from './match-repository'
+export * from './match-post-datasource'
+export * from './match-application-datasource'
+export * from './match-post-repository'
+export * from './match-application-repository'

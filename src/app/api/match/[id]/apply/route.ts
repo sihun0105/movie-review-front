@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { getTokenFromCookie } from '@/lib/utils/getToken'
-import { MatchRepository } from '@/modules/match/match-repository'
+import { MatchApplicationRepository } from '@/modules/match/match-application-repository'
 
 // POST /api/match/[id]/apply - match 신청
 export async function POST(
@@ -15,7 +15,7 @@ export async function POST(
 
     const { id } = params
     const body = await request.json()
-    const matchRepository = new MatchRepository(token)
+    const matchRepository = new MatchApplicationRepository(token)
 
     const applyData = {
       matchPostId: id,

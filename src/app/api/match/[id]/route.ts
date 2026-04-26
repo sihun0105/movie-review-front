@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { getTokenFromCookie } from '@/lib/utils/getToken'
-import { MatchRepository } from '@/modules/match/match-repository'
+import { MatchPostRepository } from '@/modules/match/match-post-repository'
 
 // GET /api/match/[id] - match 상세 조회
 export async function GET(
@@ -10,7 +10,7 @@ export async function GET(
   try {
     const { id } = params
     const token = getTokenFromCookie()
-    const matchRepository = new MatchRepository(token)
+    const matchRepository = new MatchPostRepository(token)
 
     const data = await matchRepository.getMatchPost(id)
     return NextResponse.json(data)
@@ -36,7 +36,7 @@ export async function PUT(
 
     const { id } = params
     const body = await request.json()
-    const matchRepository = new MatchRepository(token)
+    const matchRepository = new MatchPostRepository(token)
 
     const data = await matchRepository.updateMatchPost(id, body)
     return NextResponse.json(data)
@@ -61,7 +61,7 @@ export async function DELETE(
     }
 
     const { id } = params
-    const matchRepository = new MatchRepository(token)
+    const matchRepository = new MatchPostRepository(token)
 
     await matchRepository.deleteMatchPost(id)
     return NextResponse.json({ message: 'Match deleted successfully' })

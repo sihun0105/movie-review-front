@@ -1,6 +1,6 @@
 import { MovieRepository } from '@/modules/movie/movie-repository'
 import { ArticleRepository } from '@/modules/article/article-repository'
-import { MatchRepository } from '@/modules/match/match-repository'
+import { MatchPostRepository } from '@/modules/match/match-post-repository'
 import { ISitemapField } from 'next-sitemap'
 import { getServerSideSitemap } from 'next-sitemap'
 
@@ -13,7 +13,7 @@ export async function GET(): Promise<ReturnType<typeof getServerSideSitemap>> {
     .listArticles(1, 50)
     .catch(() => ({ articles: [], hasNext: false }))
 
-  const { matchPosts: matches } = await new MatchRepository()
+  const { matchPosts: matches } = await new MatchPostRepository()
     .getMatchPosts(1, 50)
     .catch(() => ({ matchPosts: [], hasNext: false }))
 
