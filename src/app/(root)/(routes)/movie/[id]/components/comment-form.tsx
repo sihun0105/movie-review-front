@@ -33,23 +33,20 @@ const CommentForm: FunctionComponent<CommentFormProps> = ({ id }) => {
   })
 
   return (
-    <div className="">
-      <Form {...form}>
-        <form onSubmit={handleSubmit}>
-          <div className="flex w-full flex-row items-center justify-center gap-2">
-            <CommentInputField className="" />
-            <Button
-              variant="default"
-              type="submit"
-              className=""
-              disabled={isCreatingComment}
-            >
-              댓글작성
-            </Button>
-          </div>
-        </form>
-      </Form>
-    </div>
+    <Form {...form}>
+      <form onSubmit={handleSubmit}>
+        <div className="flex w-full flex-row items-center gap-2">
+          <CommentInputField />
+          <Button
+            type="submit"
+            disabled={isCreatingComment}
+            className="rounded-none border border-dm-red bg-dm-red px-3 text-[12px] font-semibold text-white hover:bg-dm-red-deep"
+          >
+            등록
+          </Button>
+        </div>
+      </form>
+    </Form>
   )
 }
 
