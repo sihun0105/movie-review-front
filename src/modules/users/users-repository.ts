@@ -9,17 +9,12 @@ export class UsersRepository {
   ) {
     this.datasource = datasource ?? new UsersDatasource(token)
   }
+
   async login({ userId, password }: { userId: string; password: string }) {
-    try {
-      const result = await this.datasource.login({
-        userId: userId,
-        password: password,
-      })
-      return this.convertToUserEntity(result)
-    } catch (err) {
-      throw new Error('UsersRepository-signIn 에러')
-    }
+    const result = await this.datasource.login({ userId, password })
+    return this.convertToUserEntity(result)
   }
+
   async signUp({
     userId,
     password,
@@ -31,41 +26,20 @@ export class UsersRepository {
     nickname: string
     gender: string
   }) {
-    try {
-      const result = await this.datasource.signUp({
-        userId: userId,
-        password: password,
-        nickname: nickname,
-        gender: gender,
-      })
-      return result
-    } catch (err) {
-      throw new Error('UsersRepository-signUp 에러')
-    }
+    return await this.datasource.signUp({ userId, password, nickname, gender })
   }
 
   async signInWithProvider(params: { id: string }) {
-    try {
-      const result = await this.datasource.signInWithProvider({
-        id: params.id,
-      })
-      return this.convertToUserEntity(result)
-    } catch (error) {
-      console.log(error)
-      throw new Error('UsersRepository-signInWithProvider 에러')
-    }
+    const result = await this.datasource.signInWithProvider({ id: params.id })
+    return this.convertToUserEntity(result)
   }
+
   async signUpWithProvider(params: {
     email: string
     platform: string
     nickname: string
   }) {
-    try {
-      const result = await this.datasource.signUpWithProvider(params)
-      return result
-    } catch (error) {
-      throw new Error('UsersRepository-signUpWithProvider 에러')
-    }
+    return await this.datasource.signUpWithProvider(params)
   }
 
   convertToUserEntity(arg: any) {
@@ -81,24 +55,12 @@ export class UsersRepository {
     assertUserEntity(result)
     return result
   }
+
   async updateProfile({ nickname }: { nickname: string }) {
-    try {
-      const result = await this.datasource.updateProfile({
-        nickname: nickname,
-      })
-      return result
-    } catch (error) {
-      throw new Error('UsersRepository-updateProfile 에러')
-    }
+    return await this.datasource.updateProfile({ nickname })
   }
+
   async updateImage({ file }: { file: File }) {
-    try {
-      const result = await this.datasource.updateImage({
-        file: file,
-      })
-      return result
-    } catch (error) {
-      throw new Error('UsersRepository-updateProfile 에러')
-    }
+    return await this.datasource.updateImage({ file })
   }
 }

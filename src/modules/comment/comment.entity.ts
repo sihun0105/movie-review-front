@@ -14,7 +14,6 @@ export function isComment(arg: any): arg is Reply {
 }
 
 export function assertComment(arg: any): asserts arg is Reply {
-  console.log('assertComment arg:', arg)
   if (!isComment(arg)) {
     throw new Error('Invalid Comment')
   }

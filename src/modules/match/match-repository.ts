@@ -38,14 +38,11 @@ export class MatchRepository {
       throw new Error('매치 ID가 필요합니다.')
     }
 
-    const result = await this.dataSource.getMatchPost(matchId)
-    console.log('Fetched match post:', result)
-    return result
+    return await this.dataSource.getMatchPost(matchId)
   }
 
   // 매치 게시글 작성
   async createMatchPost(data: CreateMatchPostRequest): Promise<MatchPost> {
-    console.log('Creating match post with data:', data)
     // 클라이언트 사이드 validation
     if (!data.title || data.title.trim() === '') {
       throw new Error('제목을 입력해주세요.')
