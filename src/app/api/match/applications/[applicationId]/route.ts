@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server'
 import { getTokenFromCookie } from '@/lib/utils/getToken'
-import { MatchRepository } from '@/modules/match/match-repository'
+import { MatchApplicationRepository } from '@/modules/match/match-application-repository'
 
 export async function DELETE(
   _request: Request,
@@ -20,7 +20,7 @@ export async function DELETE(
       )
     }
 
-    const matchRepository = new MatchRepository(token)
+    const matchRepository = new MatchApplicationRepository(token)
     await matchRepository.cancelApplication(applicationId)
 
     return NextResponse.json({

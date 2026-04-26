@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { getTokenFromCookie } from '@/lib/utils/getToken'
-import { MatchRepository } from '@/modules/match/match-repository'
+import { MatchApplicationRepository } from '@/modules/match/match-application-repository'
 
 // GET /api/match/[id]/my-application - 내 신청 상태 조회
 export async function GET(
@@ -14,7 +14,7 @@ export async function GET(
     }
 
     const { id } = params
-    const matchRepository = new MatchRepository(token)
+    const matchRepository = new MatchApplicationRepository(token)
 
     // 현재 사용자의 신청 상태만 조회
     const myApplication = await matchRepository.getMyApplication(id)
