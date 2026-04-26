@@ -1,6 +1,6 @@
 'use client'
 
-import ReviewCard from '@/components/app/app-review-card'
+import { DmReviewCard, SectionHead } from '@/components/dm'
 import { Reply } from '@/lib/type'
 import { useSession } from 'next-auth/react'
 import { FunctionComponent } from 'react'
@@ -23,27 +23,35 @@ const CommentSection: FunctionComponent = () => {
   }
   if (isLoading)
     return (
-      <div className="flex h-[40vh] items-center justify-center">
-        <div>로딩 중...</div>
+      <div className="flex h-[40vh] items-center justify-center text-dm-text-muted">
+        로딩 중...
       </div>
     )
   if (!data) return null
 
+  const totalCount = data.reduce(
+    (acc, page) => acc + (page?.comments?.length ?? 0),
+    0,
+  )
+
   return (
-    <main className="border-gray-300  ">
-      <h2 className="text-lg font-bold text-gray-700">댓글</h2>
+    <section className="bg-dm-bg px-4 pb-20 text-dm-text">
+      <SectionHead meta={totalCount.toLocaleString()}>리뷰</SectionHead>
       <InfiniteScroll
         dataLength={data.length}
         next={next}
         hasMore={hasMore}
         loader={
-          <div className="flex items-center justify-center">로딩 중...</div>
+          <div className="py-4 text-center font-dm-mono text-[11px] text-dm-text-faint">
+            로딩 중...
+          </div>
         }
       >
-        <section className="space-y-3 ">
+        <div>
           {data.map((page) =>
             page?.comments?.map((comment: Reply) => (
-              <ReviewCard
+              <DmReviewCard
+                key={comment.id}
                 reply={{
                   id: comment.id,
                   content: comment.content,
@@ -55,21 +63,20 @@ const CommentSection: FunctionComponent = () => {
                 onDelete={() => deleteComment({ commentId: comment.id })}
                 onModify={handleModifyComment}
                 userId={userId}
-                key={comment.id}
               />
             )),
           )}
-        </section>
+        </div>
       </InfiniteScroll>
       <ModifyCommentFormProvider>
         <ModifyCommentModal />
       </ModifyCommentFormProvider>
       {error && (
-        <div className="text-center text-red-500">
+        <div className="text-center text-dm-red">
           데이터를 불러오는데 실패했습니다.
         </div>
       )}
-    </main>
+    </section>
   )
 }
 
