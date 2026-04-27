@@ -1,171 +1,139 @@
 'use client'
 
-import { useState } from 'react'
-import { useRouter } from 'next/navigation'
-import { Button } from '@/components/ui/button'
 import { MatchApplyDialog } from '@/components/app/match-apply-dialog'
-import Box from '@/components/ui/box'
+import {
+  DmMatchDetailCard,
+  Poster,
+  paletteForMovie,
+  SectionHead,
+} from '@/components/dm'
 import { MatchPost } from '@/lib/type'
+import Link from 'next/link'
+import { useRouter } from 'next/navigation'
+import { useState } from 'react'
 import { useMyApplication } from '../../hooks/use-my-application'
-import { GenderIcon } from '@/components/app/gender-icon'
 
 interface MatchViewerViewProps {
   matchPost: MatchPost
   onApply: (_message: string) => Promise<void>
 }
 
+function ApplicationStatusBadge({ status }: { status: string }) {
+  const map = {
+    pending: { label: '신청 대기 중', className: 'border-dm-amber text-dm-amber' },
+    accepted: {
+      label: '신청 승인됨',
+      className: 'border-[#6fc96f] text-[#6fc96f]',
+    },
+    rejected: { label: '신청 거절됨', className: 'border-dm-red text-dm-red' },
+  } as const
+  const cfg = map[status as keyof typeof map]
+  if (!cfg) return null
+  return (
+    <span
+      className={`inline-block border px-3 py-1.5 font-dm-mono text-[11px] uppercase tracking-[0.5px] ${cfg.className}`}
+    >
+      {cfg.label}
+    </span>
+  )
+}
+
 const MatchViewerView = ({ matchPost, onApply }: MatchViewerViewProps) => {
   const router = useRouter()
   const [showApplyDialog, setShowApplyDialog] = useState(false)
-
-  // 특정 매치에 대한 내 신청 상태 조회
   const { application: myApplication } = useMyApplication(matchPost.id)
-
-  // 매치 신청
   const handleApplySubmit = async (message: string) => {
     await onApply(message)
     setShowApplyDialog(false)
   }
-
-  // 채팅 페이지로 이동
-  const handleStartChat = () => {
-    router.push(`/match/${matchPost.id}/chat/${matchPost.userno}`)
-  }
+  const palette = paletteForMovie(matchPost.id, matchPost.movieTitle)
+  const isFull = matchPost.currentParticipants >= matchPost.maxParticipants
 
   return (
-    <main className="container mx-auto px-4 py-8">
-      <div className="mb-4">
-        <Button variant="outline" onClick={() => router.push('/match')}>
-          ← 목록으로
-        </Button>
+    <main className="relative min-h-page bg-dm-bg pb-[140px] text-dm-text">
+      <div className="flex items-center border-b border-dm-line px-4 py-3.5">
+        <button
+          aria-label="뒤로"
+          onClick={() => router.back()}
+          className="flex h-[34px] w-[34px] items-center justify-center rounded-full bg-white/[0.06] text-dm-text"
+        >
+          <svg width="8" height="14" viewBox="0 0 8 14">
+            <path
+              d="M7 1L1 7l6 6"
+              stroke="currentColor"
+              strokeWidth="1.8"
+              fill="none"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+          </svg>
+        </button>
+        <div className="flex-1 text-center font-dm-display text-[17px] italic font-bold text-dm-text">
+          매칭 상세
+        </div>
+        <div className="w-[34px]" aria-hidden />
       </div>
 
-      {/* 매치 정보 */}
-      <Box className="mb-8">
-        <div className="mb-6">
-          <h1 className="mb-2 text-3xl font-bold">{matchPost.title}</h1>
-          <div className="mb-4 text-sm text-gray-600">
-            <div className="flex items-center gap-2">
-              <span>작성자:</span>
-              <GenderIcon gender={matchPost.gender} size="sm" />
-              <span>{matchPost.author}</span>
+      <div className="flex gap-2.5 border-b border-dm-line px-4 py-4">
+        <div className="w-[60px] flex-shrink-0">
+          <Poster title={matchPost.movieTitle} palette={palette} />
+        </div>
+        <div className="min-w-0">
+          <div className="font-dm-mono text-[10px] uppercase tracking-[0.5px] text-dm-text-muted">
+            관람 예정 작품
+          </div>
+          <div className="mt-0.5 font-dm-display text-[18px] italic text-dm-text">
+            {matchPost.movieTitle}
+          </div>
+          <div className="mt-1 break-keep text-[11px] text-dm-text-muted">
+            {matchPost.title}
+          </div>
+        </div>
+      </div>
+
+      <div className="px-4 pt-4">
+        <DmMatchDetailCard match={matchPost} />
+
+        {matchPost.content && (
+          <div className="mt-4">
+            <SectionHead>호스트의 인사</SectionHead>
+            <div className="break-keep border border-dm-line bg-dm-surface p-3.5 font-dm-display text-[14px] italic leading-[1.6] text-dm-text">
+              &ldquo;{matchPost.content}&rdquo;
             </div>
-            <div className="mt-1">
-              <span>
-                작성일:{' '}
-                {new Date(matchPost.createdAt).toLocaleDateString('ko-KR')}
-              </span>
-            </div>
           </div>
-        </div>
+        )}
+      </div>
 
-        <div className="grid gap-4 md:grid-cols-2">
-          <div>
-            <h3 className="mb-2 font-semibold">영화 정보</h3>
-            <p className="text-gray-600">{matchPost.movieTitle}</p>
-          </div>
-          <div>
-            <h3 className="mb-2 font-semibold">상영관</h3>
-            <p className="text-gray-600">{matchPost.theaterName}</p>
-          </div>
-          <div>
-            <h3 className="mb-2 font-semibold">상영 시간</h3>
-            <p className="text-gray-600">
-              {new Date(matchPost.showTime).toLocaleString('ko-KR')}
-            </p>
-          </div>
-          <div>
-            <h3 className="mb-2 font-semibold">모집 인원</h3>
-            <p className="text-gray-600">
-              {matchPost.currentParticipants}/{matchPost.maxParticipants}명
-            </p>
-          </div>
-          <div>
-            <h3 className="mb-2 font-semibold">위치</h3>
-            <p className="text-gray-600">{matchPost.location}</p>
-          </div>
-        </div>
-
-        <div className="mt-6">
-          <h3 className="mb-2 font-semibold">상세 내용</h3>
-          <p className="whitespace-pre-wrap text-gray-700">
-            {matchPost.content}
-          </p>
-        </div>
-
-        {/* 신청하기 버튼 또는 현재 상태 */}
-        <div className="mt-6 flex flex-col items-center gap-4">
-          {!myApplication ? (
-            // 아직 신청하지 않은 경우
-            <Button
-              onClick={() => setShowApplyDialog(true)}
-              disabled={
-                matchPost.currentParticipants >= matchPost.maxParticipants
-              }
-              size="lg"
-            >
-              {matchPost.currentParticipants >= matchPost.maxParticipants
-                ? '모집 완료'
-                : '신청하기'}
-            </Button>
-          ) : (
-            // 이미 신청한 경우
-            <div className="text-center">
-              <div
-                className={`inline-block rounded px-4 py-2 text-sm font-medium ${
-                  myApplication.status === 'pending'
-                    ? 'bg-yellow-100 text-yellow-800'
-                    : myApplication.status === 'accepted'
-                      ? 'bg-green-100 text-green-800'
-                      : 'bg-red-100 text-red-800'
-                }`}
+      <div className="fixed bottom-[72px] left-1/2 z-25 w-full max-w-[460px] -translate-x-1/2 border-t border-dm-line bg-dm-bg/95 px-3 py-3 backdrop-blur-md">
+        {myApplication ? (
+          <div className="flex flex-col items-center gap-2">
+            <ApplicationStatusBadge status={myApplication.status} />
+            {myApplication.status === 'accepted' && (
+              <Link
+                href={`/match/${matchPost.id}/chat/${matchPost.userno}`}
+                className="block w-full bg-dm-red py-3.5 text-center text-[15px] font-bold tracking-[-0.01em] text-white"
               >
-                {myApplication.status === 'pending'
-                  ? '신청 대기 중'
-                  : myApplication.status === 'accepted'
-                    ? '신청 승인됨'
-                    : '신청 거절됨'}
-              </div>
-              {myApplication.status === 'accepted' && (
-                <div className="mt-4">
-                  <Button onClick={handleStartChat} size="lg">
-                    작성자와 채팅하기
-                  </Button>
-                </div>
-              )}
-            </div>
-          )}
-        </div>
-      </Box>
-
-      {/* 모집 현황 */}
-      <Box>
-        <div className="mb-4">
-          <h2 className="text-xl font-bold">모집 현황</h2>
-        </div>
-
-        <div className="py-6 text-center">
-          <div className="mb-2 text-3xl font-bold text-blue-600">
-            {matchPost.currentParticipants}
+                작성자와 채팅하기
+              </Link>
+            )}
           </div>
-          <div className="mb-4 text-sm text-gray-600">
-            / {matchPost.maxParticipants}명
-          </div>
+        ) : (
+          <button
+            type="button"
+            onClick={() => setShowApplyDialog(true)}
+            disabled={isFull}
+            className="w-full bg-dm-red py-3.5 text-[15px] font-bold tracking-[-0.01em] text-white shadow-[0_0_0_1px_var(--dm-line-2),0_6px_20px_-8px_var(--dm-red)] disabled:bg-dm-surface-2 disabled:text-dm-text-faint disabled:shadow-none"
+          >
+            {isFull ? '모집 완료' : '🎟  신청하기'}
+          </button>
+        )}
+      </div>
 
-          {matchPost.currentParticipants >= matchPost.maxParticipants && (
-            <div className="mt-4 rounded-lg bg-red-50 p-3">
-              <p className="font-medium text-red-600">모집이 완료되었습니다</p>
-            </div>
-          )}
-        </div>
-      </Box>
-
-      {/* 매치 신청 다이얼로그 */}
       <MatchApplyDialog
         isOpen={showApplyDialog}
         onClose={() => setShowApplyDialog(false)}
         onApply={handleApplySubmit}
-        matchTitle={matchPost?.title || ''}
+        matchTitle={matchPost?.movieTitle || matchPost?.title || ''}
       />
     </main>
   )
