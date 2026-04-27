@@ -5,7 +5,7 @@ interface PageProps {}
 
 const Page: FunctionComponent<PageProps> = () => {
   return (
-    <main className="container mx-auto px-4 py-8">
+    <main className="min-h-page bg-dm-bg pb-5 text-dm-text">
       <MatchContainer />
     </main>
   )

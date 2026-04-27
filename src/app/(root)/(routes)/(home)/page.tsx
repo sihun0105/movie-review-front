@@ -63,8 +63,9 @@ const Page: FunctionComponent = async () => {
   const sorted = [...data].sort(
     (a, b) => (a.rank ?? 999) - (b.rank ?? 999),
   )
-  const featured = sorted[0]
-  const grid = sorted.slice(1, 7)
+  const top10 = sorted.slice(0, 10)
+  const featured = top10[0]
+  const grid = top10.slice(1)
 
   return (
     <main className="bg-dm-bg pb-5 text-dm-text">

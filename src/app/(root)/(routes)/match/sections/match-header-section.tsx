@@ -1,16 +1,17 @@
 import { FunctionComponent } from 'react'
-import { Button } from '@/components/ui/button'
 import Link from 'next/link'
 
 const MatchHeaderSection: FunctionComponent = () => {
   return (
-    <div className="mb-8 flex items-center justify-between">
-      <div>
-        <h1 className="mb-2 text-3xl font-bold">영화 메이트 찾기</h1>
-        <p className="text-gray-600">함께 영화를 볼 사람을 찾아보세요!</p>
-      </div>
-      <Link href="/match/new">
-        <Button>매치 등록하기</Button>
+    <div className="flex items-center border-b border-dm-line px-4 py-3.5">
+      <h1 className="break-keep whitespace-nowrap font-dm-display text-[20px] italic font-bold text-dm-text">
+        같이 볼 사람
+      </h1>
+      <Link
+        href="/match/new"
+        className="ml-auto inline-flex items-center gap-1 whitespace-nowrap bg-dm-red px-2.5 py-1.5 text-[11px] font-semibold text-white"
+      >
+        ＋ 쓰기
       </Link>
     </div>
   )
