@@ -9,6 +9,13 @@ interface TopGridCardProps {
   rank: number
 }
 
+function formatAudience(n: number | undefined): string | null {
+  if (!n || n < 1) return null
+  if (n >= 10000) return `${Math.round(n / 10000)}만`
+  if (n >= 1000) return `${(n / 1000).toFixed(1)}천`
+  return `${n}`
+}
+
 export function TopGridCard({ movie, rank }: TopGridCardProps) {
   const palette = paletteForMovie(movie.id, movie.title)
   const rating = movie.averageScore ?? 0
@@ -21,6 +28,7 @@ export function TopGridCard({ movie, rank }: TopGridCardProps) {
       : 'text-dm-text-faint'
   const intenLabel =
     rankInten > 0 ? `▲${rankInten}` : rankInten < 0 ? `▼${-rankInten}` : '—'
+  const audience = formatAudience(movie.audience)
 
   return (
     <Link href={`/movie/${movie.id}`} className="block">
@@ -29,6 +37,11 @@ export function TopGridCard({ movie, rank }: TopGridCardProps) {
         <span className="absolute left-0 top-0 border-b border-r border-dm-line bg-dm-bg/[0.85] px-1.5 py-px font-dm-rank text-[15px] leading-[1.1] text-dm-text">
           {String(rank).padStart(2, '0')}
         </span>
+        {audience && (
+          <span className="absolute bottom-1 right-1 inline-flex items-center gap-0.5 border border-dm-amber/40 bg-black/65 px-1 py-px font-dm-mono text-[9px] tracking-[0.3px] text-dm-amber">
+            👥 {audience}
+          </span>
+        )}
       </div>
       <div className="mt-1 truncate text-[11px] leading-tight text-dm-text">
         {movie.title}
