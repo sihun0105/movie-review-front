@@ -1,8 +1,5 @@
 import AppThemeProvider from '@/components/app/app-theme-provider'
-import BottomNav from '@/components/app/bottom-nav'
-
-import Footer from '@/components/app/footer'
-import Header from '@/components/app/header'
+import { DmAppBar, DmAppFooter, DmBottomNav } from '@/components/dm'
 import { Toaster } from '@/components/ui/toaster'
 import { MessageModalContextProvider } from '@/hooks/use-message-modal-context'
 import { cn } from '@/lib/utils'
@@ -113,7 +110,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
       </head>
       <body
         className={cn(
-          'flex min-h-screen flex-col items-center',
+          'flex min-h-screen flex-col items-center bg-dm-bg text-dm-text',
           roboto.className,
         )}
       >
@@ -131,14 +128,13 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         <SessionProvider>
           <AppThemeProvider>
             <MessageModalContextProvider>
-              <div className="mx-auto flex min-h-screen w-full max-w-[460px] flex-col">
-                <Header />
-                <main className="min-h-page">
+              <div className="mx-auto flex min-h-screen w-full max-w-[460px] flex-col bg-dm-bg">
+                <DmAppBar />
+                <main className="flex min-h-page flex-1 flex-col">
                   {children}
-                  <Footer className="pb-[var(--footer-height)]" />
+                  <DmAppFooter className="mt-auto pb-[88px]" />
                 </main>
-                <BottomNav />
-                {/* <ChatSupport /> */}
+                <DmBottomNav />
                 <Toaster />
               </div>
             </MessageModalContextProvider>

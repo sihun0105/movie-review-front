@@ -387,9 +387,9 @@ const Page: FunctionComponent<PageProps> = async ({ params: { id } }) => {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
       />
-      <main
+      <div
         id="movie-detail-page"
-        className="container relative flex min-h-screen flex-col gap-2"
+        className="relative flex flex-col bg-dm-bg pb-[140px] text-dm-text"
       >
         <ModifyCommentModalContextProvider>
           <VodModalContextProvider>
@@ -397,8 +397,8 @@ const Page: FunctionComponent<PageProps> = async ({ params: { id } }) => {
             <CommentSection />
           </VodModalContextProvider>
         </ModifyCommentModalContextProvider>
-      </main>
-      <ActiveSection id={id} className="container sticky bottom-14" />
+      </div>
+      <ActiveSection id={id} />
     </>
   )
 }
