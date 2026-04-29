@@ -1,40 +1,49 @@
 'use client'
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
+
 import { useSession } from 'next-auth/react'
 import { FunctionComponent } from 'react'
-import { useUpdateProfileModalContext } from '../hooks/use-update-profile-modal-context'
 import { UpdateProfileModal } from '../components/update-profile-modal'
-interface ProfileSectionProps {}
+import { useUpdateProfileModalContext } from '../hooks/use-update-profile-modal-context'
 
-const ProfileSection: FunctionComponent<ProfileSectionProps> = ({}) => {
-  const userData = useSession()
+const ProfileSection: FunctionComponent = () => {
+  const { data } = useSession()
   const { setOpen } = useUpdateProfileModalContext()
-  return (
-    <main className="container ">
-      <UpdateProfileModal />
-      <p className="font-bold">프로필</p>
-      <div className="flex flex-row justify-between gap-2 rounded-md ">
-        <div className="flex flex-row items-center justify-center gap-2">
-          <Avatar className="h-[32px] w-[32px]">
-            <AvatarImage
-              key={userData.data?.user?.image}
-              src={userData.data?.user?.image}
-              width={32}
-              height={32}
-              alt="User_Avatar"
-            />
-            <AvatarFallback></AvatarFallback>
-          </Avatar>
+  const user = data?.user
+  const initial = user?.nickname?.charAt(0).toUpperCase() ?? '?'
 
-          <p>{userData.data?.user?.nickname}</p>
+  return (
+    <section className="flex items-center gap-3.5 border-b border-dm-line px-5 py-5">
+      <UpdateProfileModal />
+      <div
+        aria-hidden
+        className="flex h-16 w-16 items-center justify-center rounded-full text-[24px] font-bold text-white"
+        style={{
+          background: user?.image
+            ? undefined
+            : 'linear-gradient(135deg, var(--dm-red) 0%, var(--dm-red-deep) 100%)',
+          backgroundImage: user?.image ? `url(${user.image})` : undefined,
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+        }}
+      >
+        {!user?.image && initial}
+      </div>
+      <div className="min-w-0 flex-1">
+        <div className="truncate text-[17px] font-bold text-dm-text">
+          {user?.nickname ?? '게스트'}
         </div>
-        <div className="flex items-center">
-          <button onClick={() => setOpen(true)}>
-            <p>편집</p>
-          </button>
+        <div className="mt-0.5 truncate text-[11px] text-dm-text-muted">
+          {user?.email ?? ''}
         </div>
       </div>
-    </main>
+      <button
+        type="button"
+        onClick={() => setOpen(true)}
+        className="border border-dm-line-2 px-2.5 py-1.5 font-dm-mono text-[10px] uppercase tracking-[0.5px] text-dm-text-muted hover:border-dm-amber hover:text-dm-amber"
+      >
+        편집
+      </button>
+    </section>
   )
 }
 
