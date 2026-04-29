@@ -1,33 +1,33 @@
 'use client'
 
-import { useState, useEffect, useRef } from 'react'
-import { useRouter } from 'next/navigation'
-import { useSession } from 'next-auth/react'
-import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
-import { ScrollArea } from '@/components/ui/scroll-area'
-import Box from '@/components/ui/box'
 import useChatSocket from '@/app/(root)/(routes)/(home)/hooks/use-chat-socket'
-import { useMatchPost } from '@/app/(root)/(routes)/match/hooks/use-match-post'
 import { useChatRoom } from '@/app/(root)/(routes)/match/hooks/use-chat-room'
+import { useMatchPost } from '@/app/(root)/(routes)/match/hooks/use-match-post'
+import { DmChatBubble, DmChatTicketPin } from '@/components/dm'
 import { ChatMessageEntity } from '@/modules/chat'
+import { useSession } from 'next-auth/react'
+import { useRouter } from 'next/navigation'
+import { useEffect, useRef, useState } from 'react'
 
 interface ChatContainerProps {
   matchId: string
   targetUserId: string
 }
 
+function ChatStatus({ children }: { children: React.ReactNode }) {
+  return (
+    <main className="flex min-h-page items-center justify-center bg-dm-bg text-dm-text-muted">
+      <div className="text-center">{children}</div>
+    </main>
+  )
+}
+
 const ChatContainer = ({ matchId, targetUserId }: ChatContainerProps) => {
   const router = useRouter()
   const { data: session, status } = useSession()
   const [newMessage, setNewMessage] = useState('')
-  const [onlineUsers, setOnlineUsers] = useState<number[]>([])
   const messagesEndRef = useRef<HTMLDivElement>(null)
-
-  // 매치 정보 조회
-  const { matchPost, isLoading: isMatchLoading } = useMatchPost(matchId)
-
-  // 채팅방 관리
+  const { matchPost, isLoading: matchLoading } = useMatchPost(matchId)
   const {
     chatRoom,
     messages,
@@ -35,247 +35,155 @@ const ChatContainer = ({ matchId, targetUserId }: ChatContainerProps) => {
     error: chatError,
     addMessage,
   } = useChatRoom(matchId, targetUserId)
-
-  // 소켓 연결
   const { sendMessage, isConnected } = useChatSocket({
     namespace: 'ws-home',
     chatRoomId: chatRoom?.chatRoomId,
-    onMessage: (message: ChatMessageEntity) => {
-      console.log('Received message:', message)
-      addMessage(message)
-    },
-    onOnlineList: (users) => {
-      setOnlineUsers(users)
-    },
+    onMessage: (message: ChatMessageEntity) => addMessage(message),
+    onOnlineList: () => {},
   })
 
-  // 디버깅을 위한 로그
   useEffect(() => {
-    console.log('Chat setup:', {
-      matchId,
-      targetUserId,
-      chatRoomId: chatRoom?.chatRoomId,
-      isConnected,
-      messagesCount: messages.length,
-      userId: session?.user?.id,
-      userNickname: session?.user?.name,
-    })
-  }, [
-    matchId,
-    targetUserId,
-    chatRoom?.chatRoomId,
-    isConnected,
-    messages.length,
-    session,
-  ])
-
-  // 로그인 체크
-  useEffect(() => {
-    if (status === 'loading') return
-    if (status === 'unauthenticated') {
-      router.push('/login')
-    }
+    if (status === 'unauthenticated') router.push('/login')
   }, [status, router])
 
-  // 메시지 전송
-  const handleSendMessage = () => {
-    if (newMessage.trim() && isConnected && chatRoom) {
-      console.log('Sending message:', {
-        content: newMessage.trim(),
-        chatRoomId: chatRoom.chatRoomId,
-        isConnected,
-      })
+  useEffect(() => {
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
+  }, [messages])
 
+  const handleSend = () => {
+    if (newMessage.trim() && isConnected && chatRoom) {
       sendMessage(newMessage.trim())
       setNewMessage('')
     }
   }
 
-  // 엔터키로 메시지 전송
-  const handleKeyPress = (e: React.KeyboardEvent) => {
-    if (e.key === 'Enter' && !e.shiftKey) {
-      e.preventDefault()
-      handleSendMessage()
-    }
+  if (status === 'loading' || matchLoading || chatLoading) {
+    return <ChatStatus>로딩 중...</ChatStatus>
   }
-
-  // 스크롤을 항상 아래로
-  useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
-  }, [messages])
-
-  // 로딩 중
-  if (status === 'loading' || isMatchLoading || chatLoading) {
-    return (
-      <main className="container mx-auto px-4 py-8">
-        <div className="py-8 text-center">
-          <p>로딩 중...</p>
-        </div>
-      </main>
-    )
-  }
-
-  // 로그인되지 않은 경우
-  if (status === 'unauthenticated') {
-    return null
-  }
-
-  // 에러 발생 시
+  if (status === 'unauthenticated') return null
   if (chatError) {
     return (
-      <main className="container mx-auto px-4 py-8">
-        <div className="py-8 text-center">
-          <h1 className="text-2xl font-bold text-red-600">오류</h1>
-          <p className="text-gray-600">{chatError}</p>
-          <Button onClick={() => router.push('/match')} className="mt-4">
-            매치 목록으로
-          </Button>
-        </div>
-      </main>
+      <ChatStatus>
+        <p className="text-dm-red">오류: {chatError}</p>
+        <button
+          type="button"
+          onClick={() => router.push('/match')}
+          className="mt-3 border border-dm-line-2 px-3 py-1.5 text-[12px] text-dm-text"
+        >
+          매칭 목록으로
+        </button>
+      </ChatStatus>
     )
   }
-
-  // 매치 정보가 없는 경우
   if (!matchPost) {
-    return (
-      <main className="container mx-auto px-4 py-8">
-        <div className="py-8 text-center">
-          <h1 className="text-2xl font-bold text-red-600">오류</h1>
-          <p className="text-gray-600">매치 정보를 찾을 수 없습니다.</p>
-          <Button onClick={() => router.push('/match')} className="mt-4">
-            매치 목록으로
-          </Button>
-        </div>
-      </main>
-    )
+    return <ChatStatus>매치 정보를 찾을 수 없습니다.</ChatStatus>
   }
-
-  // 채팅방이 아직 준비되지 않은 경우
   if (!chatRoom) {
-    return (
-      <main className="container mx-auto px-4 py-8">
-        <div className="py-8 text-center">
-          <p>채팅방을 준비하고 있습니다...</p>
-        </div>
-      </main>
-    )
+    return <ChatStatus>채팅방을 준비하고 있습니다...</ChatStatus>
   }
 
-  const targetUserName =
+  const targetName =
     matchPost.userno.toString() === targetUserId
       ? matchPost.author
       : `사용자 ${targetUserId}`
+  const myUserId = parseInt(session?.user?.id || '0')
+  const initial = targetName.charAt(0).toUpperCase()
 
   return (
-    <main className="container mx-auto px-4 py-8">
-      {/* 헤더 */}
-      <div className="mb-6">
-        <Button
-          variant="outline"
+    <main className="flex h-page flex-col bg-dm-bg text-dm-text">
+      <header className="flex items-center gap-2.5 border-b border-dm-line px-3.5 py-2.5">
+        <button
+          aria-label="뒤로"
           onClick={() => router.push(`/match/${matchId}`)}
-          className="mb-4"
+          className="flex h-[34px] w-[34px] items-center justify-center rounded-full bg-white/[0.06] text-dm-text"
         >
-          ← 매치로 돌아가기
-        </Button>
-        <div>
-          <h1 className="text-2xl font-bold">{targetUserName}님과의 채팅</h1>
-          <p className="mt-1 text-gray-600">매치: {matchPost.title}</p>
+          <svg width="8" height="14" viewBox="0 0 8 14">
+            <path
+              d="M7 1L1 7l6 6"
+              stroke="currentColor"
+              strokeWidth="1.8"
+              fill="none"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+          </svg>
+        </button>
+        <span
+          aria-hidden
+          className="flex h-9 w-9 items-center justify-center rounded-full border border-dm-line-2 bg-dm-surface-2 text-[14px] font-bold text-dm-text"
+        >
+          {initial}
+        </span>
+        <div className="min-w-0 flex-1">
+          <div className="text-[14px] font-semibold text-dm-text">
+            {targetName}
+          </div>
+          <div
+            className={`text-[10px] ${isConnected ? 'text-[#6fc96f]' : 'text-dm-text-faint'}`}
+          >
+            ● {isConnected ? 'online' : '연결 중...'}
+          </div>
         </div>
+      </header>
+
+      <DmChatTicketPin
+        movieTitle={matchPost.movieTitle}
+        showTime={matchPost.showTime}
+        venue={matchPost.theaterName}
+      />
+
+      <div className="flex-1 overflow-y-auto px-3.5 pt-3">
+        {messages.length === 0 ? (
+          <div className="py-10 text-center font-dm-mono text-[11px] text-dm-text-faint">
+            아직 메시지가 없어요. 첫 메시지를 보내보세요.
+          </div>
+        ) : (
+          messages.map((message, index) => {
+            const isMine = message.senderId === myUserId
+            const prev = messages[index - 1]
+            const showAvatar =
+              !isMine && (!prev || prev.senderId !== message.senderId)
+            return (
+              <DmChatBubble
+                key={index}
+                content={message.content}
+                isMine={isMine}
+                senderName={
+                  isMine ? undefined : message.senderName ?? targetName
+                }
+                createdAt={message.createdAt}
+                showAvatar={showAvatar}
+                avatarInitial={initial}
+              />
+            )
+          })
+        )}
+        <div ref={messagesEndRef} />
       </div>
 
-      {/* 채팅 영역 */}
-      <Box className="flex h-[600px] flex-col">
-        {/* 연결 상태 */}
-        <div className="border-b px-4 py-3">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center">
-              <span
-                className={`mr-2 inline-block h-2 w-2 rounded-full ${
-                  isConnected ? 'bg-green-500' : 'bg-red-500'
-                }`}
-              />
-              <span className="text-sm">
-                {isConnected ? '연결됨' : '연결 중...'}
-              </span>
-            </div>
-            {onlineUsers.length > 0 && (
-              <span className="text-sm text-gray-500">
-                온라인: {onlineUsers.length}명
-              </span>
-            )}
-          </div>
-        </div>
-
-        {/* 메시지 영역 */}
-        <ScrollArea className="flex-1 p-4">
-          <div className="space-y-4">
-            {messages.length === 0 ? (
-              <div className="py-8 text-center text-gray-500">
-                아직 메시지가 없습니다.
-                <br />첫 메시지를 보내보세요!
-              </div>
-            ) : (
-              messages.map((message, index) => {
-                const isMyMessage =
-                  message.senderId === parseInt(session?.user?.id || '0')
-                return (
-                  <div
-                    key={index}
-                    className={`flex ${
-                      isMyMessage ? 'justify-end' : 'justify-start'
-                    }`}
-                  >
-                    <div
-                      className={`max-w-xs rounded-lg px-4 py-3 ${
-                        isMyMessage
-                          ? 'bg-blue-500 text-white'
-                          : 'bg-gray-200 text-gray-800'
-                      }`}
-                    >
-                      <div className="mb-1 text-sm font-medium">
-                        {message.senderName}
-                      </div>
-                      <div className="break-words">{message.content}</div>
-                      <div className="mt-1 text-xs opacity-70">
-                        {new Date(message.createdAt).toLocaleTimeString(
-                          'ko-KR',
-                          {
-                            hour: '2-digit',
-                            minute: '2-digit',
-                          },
-                        )}
-                      </div>
-                    </div>
-                  </div>
-                )
-              })
-            )}
-            <div ref={messagesEndRef} />
-          </div>
-        </ScrollArea>
-
-        {/* 메시지 입력 */}
-        <div className="border-t p-4">
-          <div className="flex gap-2">
-            <Input
-              value={newMessage}
-              onChange={(e) => setNewMessage(e.target.value)}
-              onKeyPress={handleKeyPress}
-              placeholder={
-                isConnected ? '메시지를 입력하세요...' : '연결 중입니다...'
-              }
-              disabled={!isConnected}
-              className="flex-1"
-            />
-            <Button
-              onClick={handleSendMessage}
-              disabled={!newMessage.trim() || !isConnected}
-            >
-              전송
-            </Button>
-          </div>
-        </div>
-      </Box>
+      <div className="flex gap-2 border-t border-dm-line bg-dm-bg p-2.5">
+        <input
+          value={newMessage}
+          onChange={(e) => setNewMessage(e.target.value)}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter' && !e.shiftKey) {
+              e.preventDefault()
+              handleSend()
+            }
+          }}
+          placeholder={isConnected ? '메시지 쓰기...' : '연결 중입니다...'}
+          disabled={!isConnected}
+          className="h-9 flex-1 border border-dm-line-2 bg-dm-surface px-3 text-[13px] text-dm-text placeholder:text-dm-text-faint focus:border-dm-amber focus:outline-none disabled:opacity-50"
+        />
+        <button
+          type="button"
+          onClick={handleSend}
+          disabled={!newMessage.trim() || !isConnected}
+          className="border border-dm-red bg-dm-red px-3 text-[12px] font-semibold text-white disabled:border-dm-line-2 disabled:bg-dm-surface-2 disabled:text-dm-text-faint"
+        >
+          전송
+        </button>
+      </div>
     </main>
   )
 }
