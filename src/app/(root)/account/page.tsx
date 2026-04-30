@@ -2,13 +2,12 @@ import { FunctionComponent } from 'react'
 import AccountSection from './sections/account-section'
 import ProfileSection from './sections/profile-section'
 import { UpdateProfileModalContextProvider } from './hooks/use-update-profile-modal-context'
-interface PageProps {}
 
-const Page: FunctionComponent<PageProps> = ({}) => {
+const Page: FunctionComponent = () => {
   return (
-    <main>
-      <AccountSection />
+    <main className="min-h-page bg-dm-bg pb-5 text-dm-text">
       <UpdateProfileModalContextProvider>
+        <AccountSection />
         <ProfileSection />
       </UpdateProfileModalContextProvider>
     </main>
