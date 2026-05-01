@@ -1,6 +1,5 @@
 'use client'
 
-import { Button } from '@/components/ui/button'
 import { Form } from '@/components/ui/form'
 import { FunctionComponent, useState } from 'react'
 import { useMatchPostFormContext } from './hooks/match-post-form-context'
@@ -11,7 +10,6 @@ import { TheaterNameInputField } from './fields/theater-name-input-field'
 import { ShowTimeInputField } from './fields/show-time-input-field'
 import { MaxParticipantsInputField } from './fields/max-participants-input-field'
 import { LocationInputField } from './fields/location-input-field'
-import Box from '@/components/ui/box'
 import { CreateMatchPostRequest } from '@/lib/type'
 
 interface MatchPostFormProps {
@@ -47,36 +45,38 @@ const MatchPostForm: FunctionComponent<MatchPostFormProps> = ({
   })
 
   return (
-    <Box className="rounded-lg border p-6">
-      <h2 className="mb-6 text-xl font-semibold">영화 메이트 모집</h2>
+    <Form {...form}>
+      <form onSubmit={handleSubmit} className="space-y-4">
+        <TitleInputField />
+        <ContentInputField />
 
-      <Form {...form}>
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <TitleInputField />
-          <ContentInputField />
+        <div className="grid grid-cols-2 gap-3">
+          <MovieTitleInputField />
+          <TheaterNameInputField />
+        </div>
 
-          <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-            <MovieTitleInputField />
-            <TheaterNameInputField />
-          </div>
+        <ShowTimeInputField />
+        <MaxParticipantsInputField />
+        <LocationInputField />
 
-          <ShowTimeInputField />
-
-          <MaxParticipantsInputField />
-
-          <LocationInputField />
-
-          <div className="flex justify-end gap-2 pt-4">
-            <Button type="button" variant="outline" onClick={onCancel}>
-              취소
-            </Button>
-            <Button type="submit" disabled={isLoading}>
-              {isLoading ? '등록 중...' : '등록하기'}
-            </Button>
-          </div>
-        </form>
-      </Form>
-    </Box>
+        <div className="flex gap-2 pt-2">
+          <button
+            type="button"
+            onClick={onCancel}
+            className="flex-1 border border-dm-line py-3 font-dm-mono text-[13px] text-dm-text-muted hover:border-dm-amber hover:text-dm-amber"
+          >
+            취소
+          </button>
+          <button
+            type="submit"
+            disabled={isLoading}
+            className="flex-1 bg-dm-red py-3 font-dm-mono text-[13px] text-white disabled:bg-dm-surface-2 disabled:text-dm-text-faint"
+          >
+            {isLoading ? '등록 중...' : '등록하기 →'}
+          </button>
+        </div>
+      </form>
+    </Form>
   )
 }
 
