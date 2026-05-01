@@ -39,11 +39,9 @@ export class AuthDataSource {
 
   async register(data: RegisterRequest): Promise<AuthResponse> {
     try {
-      const response = await fetch(AppBackEndApiEndpoint.signUp(), {
+      const response = await fetch('/api/auth/signup', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           email: data.userId,
           password: data.password,
@@ -52,23 +50,12 @@ export class AuthDataSource {
           marketingAgreed: data.marketingAgreed || false,
         }),
       })
-
-      if (!response.ok) {
-        throw new Error('Failed to register')
-      }
-
+      if (!response.ok) throw new Error('Failed to register')
       const result = await response.json()
-      return {
-        success: true,
-        message: '회원가입이 완료되었습니다.',
-        ...result,
-      }
+      return { success: true, message: '회원가입이 완료되었습니다.', ...result }
     } catch (error) {
       console.error('Register error:', error)
-      return {
-        success: false,
-        message: '회원가입 중 오류가 발생했습니다.',
-      }
+      return { success: false, message: '회원가입 중 오류가 발생했습니다.' }
     }
   }
 
