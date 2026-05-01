@@ -1,5 +1,11 @@
 import AppThemeProvider from '@/components/app/app-theme-provider'
-import { DmAppBar, DmAppFooter, DmBottomNav } from '@/components/dm'
+import {
+  DmAppBar,
+  DmAppFooter,
+  DmBottomNav,
+  DmDesktopLeftNav,
+  DmDesktopRightSidebar,
+} from '@/components/dm'
 import { Toaster } from '@/components/ui/toaster'
 import { MessageModalContextProvider } from '@/hooks/use-message-modal-context'
 import { cn } from '@/lib/utils'
@@ -108,12 +114,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
           href="/favicon/favicon-256x256.png"
         />
       </head>
-      <body
-        className={cn(
-          'flex min-h-screen flex-col items-center bg-dm-bg text-dm-text',
-          roboto.className,
-        )}
-      >
+      <body className={cn('bg-dm-bg text-dm-text', roboto.className)}>
         {/* Google Tag Manager (noscript) */}
         <noscript>
           <iframe
@@ -128,15 +129,27 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         <SessionProvider>
           <AppThemeProvider>
             <MessageModalContextProvider>
-              <div className="mx-auto flex min-h-screen w-full max-w-[460px] flex-col bg-dm-bg">
-                <DmAppBar />
-                <main className="flex min-h-page flex-1 flex-col">
-                  {children}
-                  <DmAppFooter className="mt-auto pb-[88px]" />
-                </main>
-                <DmBottomNav />
-                <Toaster />
+              {/* mobile: single column max-w-[460px] centered
+                  desktop lg+: 3-column [240px | 1fr | 320px] max-w-[1400px] */}
+              <div className="mx-auto flex min-h-screen w-full max-w-[460px] flex-col lg:max-w-[1400px] lg:flex-row lg:items-start">
+                <DmDesktopLeftNav />
+
+                <div className="flex w-full min-w-0 flex-1 flex-col lg:border-x lg:border-dm-line">
+                  <div className="lg:hidden">
+                    <DmAppBar />
+                  </div>
+                  <main className="flex min-h-page flex-1 flex-col">
+                    {children}
+                    <DmAppFooter className="mt-auto pb-[88px] lg:pb-8" />
+                  </main>
+                  <div className="lg:hidden">
+                    <DmBottomNav />
+                  </div>
+                </div>
+
+                <DmDesktopRightSidebar />
               </div>
+              <Toaster />
             </MessageModalContextProvider>
           </AppThemeProvider>
         </SessionProvider>
