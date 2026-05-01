@@ -9,52 +9,31 @@ import {
 export class AuthDataSource {
   async validateEmail(email: string): Promise<ValidationResponse> {
     try {
-      const response = await fetch(AppBackEndApiEndpoint.validateEmail(), {
+      const response = await fetch('/api/auth/validate/email', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        cache: 'default',
-        body: JSON.stringify({
-          email: email,
-        }),
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email }),
       })
-
-      if (!response.ok) {
-        throw new Error('Failed to validate email')
-      }
-
+      if (!response.ok) throw new Error('Failed to validate email')
       return await response.json()
     } catch (error) {
       console.error('Email validation error:', error)
-      return {
-        isAvailable: false,
-        message: '이메일 검증 중 오류가 발생했습니다.',
-      }
+      return { isAvailable: false, message: '이메일 검증 중 오류가 발생했습니다.' }
     }
   }
 
   async validateNickname(nickname: string): Promise<ValidationResponse> {
     try {
-      const response = await fetch(AppBackEndApiEndpoint.validateNickname(), {
+      const response = await fetch('/api/auth/validate/nickname', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ nickname }),
       })
-
-      if (!response.ok) {
-        throw new Error('Failed to validate nickname')
-      }
-
+      if (!response.ok) throw new Error('Failed to validate nickname')
       return await response.json()
     } catch (error) {
       console.error('Nickname validation error:', error)
-      return {
-        isAvailable: false,
-        message: '닉네임 검증 중 오류가 발생했습니다.',
-      }
+      return { isAvailable: false, message: '닉네임 검증 중 오류가 발생했습니다.' }
     }
   }
 
