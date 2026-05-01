@@ -1,7 +1,8 @@
 'use client'
+
+import type { LikeState } from '@/lib/type'
 import { FunctionComponent, useState } from 'react'
 import { useUpdateLike } from '../hooks/use-update-like'
-import type { LikeState } from '@/lib/type'
 
 interface LikeSectionProps {
   id: string
@@ -14,35 +15,31 @@ const LikeSection: FunctionComponent<LikeSectionProps> = ({ id }) => {
   const likes = data?.likes || 0
   const dislikes = data?.dislikes || 0
 
-  const handleLike = () => {
-    setSelected('like')
-    update('like')
-  }
-
-  const handleDislike = () => {
-    setSelected('dislike')
-    update('dislike')
-  }
-
   return (
-    <>
-      <div className="mb-6 flex gap-4">
-        <button
-          onClick={handleLike}
-          disabled={isValidating}
-          className={`rounded border px-3 py-1 hover:bg-gray-100 ${selected === 'like' ? 'border-blue-400 bg-blue-100' : ''}`}
-        >
-          👍 좋아요 ({likes})
-        </button>
-        <button
-          onClick={handleDislike}
-          disabled={isValidating}
-          className={`rounded border px-3 py-1 hover:bg-gray-100 ${selected === 'dislike' ? 'border-red-400 bg-red-100' : ''}`}
-        >
-          👎 싫어요 ({dislikes})
-        </button>
-      </div>
-    </>
+    <div className="flex gap-3 border-b border-dm-line px-5 py-4">
+      <button
+        onClick={() => { setSelected('like'); update('like') }}
+        disabled={isValidating}
+        className={`flex items-center gap-1.5 border px-3 py-1.5 font-dm-mono text-[12px] transition ${
+          selected === 'like'
+            ? 'border-dm-amber bg-dm-amber/10 text-dm-amber'
+            : 'border-dm-line text-dm-text-faint hover:border-dm-amber hover:text-dm-amber'
+        }`}
+      >
+        👍 {likes}
+      </button>
+      <button
+        onClick={() => { setSelected('dislike'); update('dislike') }}
+        disabled={isValidating}
+        className={`flex items-center gap-1.5 border px-3 py-1.5 font-dm-mono text-[12px] transition ${
+          selected === 'dislike'
+            ? 'border-dm-red bg-dm-red/10 text-dm-red'
+            : 'border-dm-line text-dm-text-faint hover:border-dm-red hover:text-dm-red'
+        }`}
+      >
+        👎 {dislikes}
+      </button>
+    </div>
   )
 }
 

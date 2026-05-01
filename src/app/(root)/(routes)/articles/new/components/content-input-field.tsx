@@ -1,12 +1,8 @@
 import { FormControl, FormField, FormItem } from '@/components/ui/form'
-import { Textarea } from '@/components/ui/textarea'
-import { cn } from '@/lib/utils'
-import { FunctionComponent, HTMLAttributes } from 'react'
+import { FunctionComponent } from 'react'
 import { useCreateArticleFormContext } from '../hooks/create-article-form-context'
 
-interface ContentInputFieldProps extends HTMLAttributes<HTMLDivElement> {}
-
-const ContentInputField: FunctionComponent<ContentInputFieldProps> = ({}) => {
+const ContentInputField: FunctionComponent = () => {
   const { form } = useCreateArticleFormContext()
   return (
     <FormField
@@ -14,12 +10,12 @@ const ContentInputField: FunctionComponent<ContentInputFieldProps> = ({}) => {
       name="content"
       render={({ field }) => (
         <FormItem className="w-full">
-          <FormControl className="w-full">
-            <Textarea
+          <FormControl>
+            <textarea
               {...field}
-              className={cn('min-h-[200px] w-full rounded border px-3 py-2')}
+              rows={10}
               placeholder="내용을 입력해주세요."
-              rows={1}
+              className="w-full resize-none border border-dm-line-2 bg-dm-surface px-3.5 py-3 text-[14px] text-dm-text placeholder:text-dm-text-faint focus:border-dm-amber focus:outline-none"
             />
           </FormControl>
         </FormItem>

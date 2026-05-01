@@ -1,25 +1,14 @@
-import { cn } from '@/lib/utils'
-import { FunctionComponent, ReactNode } from 'react'
+'use client'
+
 import Link from 'next/link'
 import { Pencil } from 'lucide-react'
+import { FunctionComponent } from 'react'
 
-interface NewArticleToggleProps {
-  className?: string
-  children?: ReactNode
-}
-
-const NewArticleToggle: FunctionComponent<NewArticleToggleProps> = ({
-  className,
-  children,
-}) => {
+const NewArticleToggle: FunctionComponent = () => {
   return (
     <Link
       href="/articles/new"
-      className={cn(
-        'flex h-14 w-14 items-center justify-center rounded-full bg-primary text-black shadow-md transition-all duration-300 hover:shadow-lg hover:shadow-black/30',
-
-        className,
-      )}
+      className="flex h-12 w-12 items-center justify-center rounded-full bg-dm-red text-white shadow-lg"
     >
       <Pencil className="h-5 w-5" />
     </Link>

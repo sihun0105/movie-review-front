@@ -1,13 +1,11 @@
 'use client'
 
-import { Button } from '@/components/ui/button'
-import { Form } from '@/components/ui/form'
 import { useRouter } from 'next/navigation'
 import { FunctionComponent } from 'react'
-import { useCommentFormContext } from '../hooks/comment-form-context'
-import { CommentInputField } from './comment-input-field'
 import { useArticleComments } from '../hooks/use-article-comments'
+import { useCommentFormContext } from '../hooks/comment-form-context'
 import { useCreateArticleComment } from '../hooks/use-create-article-comment'
+import { CommentInputField } from './comment-input-field'
 
 interface CommentFormProps {
   id: string
@@ -21,10 +19,7 @@ const CommentForm: FunctionComponent<CommentFormProps> = ({ id }) => {
 
   const handleSubmit = form.handleSubmit((data) => {
     createComment(
-      {
-        comment: data.comment,
-        articleId: id,
-      },
+      { comment: data.comment, articleId: id },
       {
         onSuccess: () => {
           form.reset()
@@ -35,23 +30,16 @@ const CommentForm: FunctionComponent<CommentFormProps> = ({ id }) => {
   })
 
   return (
-    <div className="">
-      <Form {...form}>
-        <form onSubmit={handleSubmit}>
-          <div className="flex w-full flex-row items-center justify-center gap-2">
-            <CommentInputField className="" />
-            <Button
-              variant="default"
-              type="submit"
-              className=""
-              disabled={isCreatingComment}
-            >
-              댓글작성
-            </Button>
-          </div>
-        </form>
-      </Form>
-    </div>
+    <form onSubmit={handleSubmit} className="flex items-center gap-2">
+      <CommentInputField />
+      <button
+        type="submit"
+        disabled={isCreatingComment}
+        className="shrink-0 bg-dm-red px-3 py-2 font-dm-mono text-[11px] uppercase tracking-[0.5px] text-white disabled:bg-dm-surface-2 disabled:text-dm-text-faint"
+      >
+        등록
+      </button>
+    </form>
   )
 }
 

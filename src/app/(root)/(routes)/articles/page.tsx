@@ -4,17 +4,17 @@ import NewArticleToggle from './components/new-article-toggle'
 
 const Page: FunctionComponent = () => {
   return (
-    <>
-      <main className="container relative mx-auto min-h-screen max-w-[460px]">
-        <h1 className="mb-4 text-2xl font-bold">
-          영화 뭐함? 영화 커뮤니티 게시판
+    <div className="relative min-h-page bg-dm-bg pb-[100px] text-dm-text">
+      <div className="flex items-center border-b border-dm-line px-4 py-3.5">
+        <h1 className="font-dm-display text-[20px] italic font-bold text-dm-text">
+          커뮤니티
         </h1>
-        <ArticleSection />
-        <div className="sticky bottom-24 z-50 flex justify-end px-6">
-          <NewArticleToggle>글쓰기</NewArticleToggle>
-        </div>
-      </main>
-    </>
+      </div>
+      <ArticleSection />
+      <div className="fixed bottom-[72px] right-4 z-50">
+        <NewArticleToggle />
+      </div>
+    </div>
   )
 }
 
