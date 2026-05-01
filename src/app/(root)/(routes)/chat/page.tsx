@@ -1,19 +1,23 @@
-import { FunctionComponent } from 'react'
+import { FunctionComponent, Suspense } from 'react'
+import { ChatRoomList } from './components/chat-room-list'
 
 const Page: FunctionComponent = () => {
   return (
-    <div className="flex min-h-page flex-col items-center justify-center bg-dm-bg">
-      <div className="mb-3 font-dm-display text-[32px] italic text-dm-text">
-        Chat.
+    <div className="min-h-page bg-dm-bg text-dm-text">
+      <div className="flex items-center border-b border-dm-line px-4 py-3.5">
+        <h1 className="font-dm-display text-[20px] italic font-bold text-dm-text">
+          채팅
+        </h1>
       </div>
-      <div className="mb-1 font-dm-mono text-[11px] uppercase tracking-[2px] text-dm-amber">
-        Coming Soon
-      </div>
-      <div className="font-dm-mono text-[11px] text-dm-text-faint">
-        매칭 후 채팅은{' '}
-        <span className="text-dm-text">매칭 상세 페이지</span>에서 이용할 수
-        있어요.
-      </div>
+      <Suspense
+        fallback={
+          <div className="flex h-[40vh] items-center justify-center font-dm-mono text-[12px] text-dm-text-faint">
+            loading...
+          </div>
+        }
+      >
+        <ChatRoomList />
+      </Suspense>
     </div>
   )
 }
