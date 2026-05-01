@@ -14,8 +14,8 @@ type AuthType = 'kakao' | 'naver' | 'google' | 'apple'
 const buttonStyles: Record<AuthType, string> = {
   kakao: 'bg-[#FAE64C] text-black',
   naver: 'bg-[#1EC800] text-white',
-  google: 'bg-white text-black border',
-  apple: 'bg-white text-black border',
+  google: 'bg-transparent text-dm-text border border-dm-line-2',
+  apple: 'bg-transparent text-dm-text border border-dm-line-2',
 } as const
 
 const socialIcon: {

@@ -50,7 +50,7 @@ const MatchViewerView = ({ matchPost, onApply }: MatchViewerViewProps) => {
   const isFull = matchPost.currentParticipants >= matchPost.maxParticipants
 
   return (
-    <main className="relative min-h-page bg-dm-bg pb-[140px] text-dm-text">
+    <div className="relative min-h-page bg-dm-bg pb-[140px] text-dm-text">
       <div className="flex items-center border-b border-dm-line px-4 py-3.5">
         <button
           aria-label="뒤로"
@@ -135,7 +135,7 @@ const MatchViewerView = ({ matchPost, onApply }: MatchViewerViewProps) => {
         onApply={handleApplySubmit}
         matchTitle={matchPost?.movieTitle || matchPost?.title || ''}
       />
-    </main>
+    </div>
   )
 }
 
