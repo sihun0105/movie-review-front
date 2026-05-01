@@ -1,68 +1,28 @@
-import {
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from '@/components/ui/form'
-import { FunctionComponent, HTMLAttributes, useState, useEffect } from 'react'
-import { cn } from '@/lib/utils'
-import { Input } from '@/components/ui/input'
+'use client'
+
+import { FormControl, FormField, FormItem, FormMessage } from '@/components/ui/form'
+import { FunctionComponent, useEffect, useState } from 'react'
 import { useRegisterFormContext } from '../hook/register-form-context'
-import { Check, X } from 'lucide-react'
 
-interface PasswordInputFieldProps extends HTMLAttributes<HTMLDivElement> {}
+const inputCls = 'w-full border border-dm-line-2 bg-dm-surface px-3.5 py-3 text-[14px] text-dm-text placeholder:text-dm-text-faint focus:border-dm-amber focus:outline-none'
+const labelCls = 'mb-2 block font-dm-mono text-[10px] uppercase tracking-[1px] text-dm-text-muted'
 
-const PasswordInputField: FunctionComponent<PasswordInputFieldProps> = ({
-  className,
-  ...props
-}) => {
+const rules = [
+  { key: 'length', label: '8자 이상', test: (v: string) => v.length >= 8 },
+  { key: 'letter', label: '영문 포함', test: (v: string) => /[a-zA-Z]/.test(v) },
+  { key: 'number', label: '숫자 포함', test: (v: string) => /\d/.test(v) },
+  { key: 'special', label: '특수문자 포함 (@$!%*?&)', test: (v: string) => /[@$!%*?&]/.test(v) },
+]
+
+const PasswordInputField: FunctionComponent = () => {
   const { form } = useRegisterFormContext()
-  const [validationChecks, setValidationChecks] = useState({
-    length: false,
-    hasLetter: false,
-    hasNumber: false,
-    hasSpecial: false,
-  })
-
-  const passwordValue = form.watch('password')
+  const [checks, setChecks] = useState({ length: false, letter: false, number: false, special: false })
+  const pw = form.watch('password')
 
   useEffect(() => {
-    if (!passwordValue) {
-      setValidationChecks({
-        length: false,
-        hasLetter: false,
-        hasNumber: false,
-        hasSpecial: false,
-      })
-      return
-    }
-
-    setValidationChecks({
-      length: passwordValue.length >= 8,
-      hasLetter: /[a-zA-Z]/.test(passwordValue),
-      hasNumber: /\d/.test(passwordValue),
-      hasSpecial: /[@$!%*?&]/.test(passwordValue),
-    })
-  }, [passwordValue])
-
-  const ValidationCheck = ({
-    isValid,
-    text,
-  }: {
-    isValid: boolean
-    text: string
-  }) => (
-    <div
-      className={cn(
-        'flex items-center gap-2 text-sm',
-        isValid ? 'text-green-600' : 'text-gray-400',
-      )}
-    >
-      {isValid ? <Check className="h-4 w-4" /> : <X className="h-4 w-4" />}
-      <span>{text}</span>
-    </div>
-  )
+    if (!pw) { setChecks({ length: false, letter: false, number: false, special: false }); return }
+    setChecks({ length: pw.length >= 8, letter: /[a-zA-Z]/.test(pw), number: /\d/.test(pw), special: /[@$!%*?&]/.test(pw) })
+  }, [pw])
 
   return (
     <FormField
@@ -70,41 +30,23 @@ const PasswordInputField: FunctionComponent<PasswordInputFieldProps> = ({
       name="password"
       render={({ field }) => (
         <FormItem>
-          <FormLabel className={cn('text-black')}>비밀번호</FormLabel>
+          <label className={labelCls}>비밀번호</label>
           <FormControl>
-            <Input
-              {...field}
-              className={cn('w-full')}
-              placeholder="비밀번호"
-              type="password"
-            />
+            <input {...field} type="password" placeholder="••••••••" className={inputCls} />
           </FormControl>
-          <div className="space-y-2">
-            <FormMessage />
-            {passwordValue && (
-              <div className="space-y-1">
-                <p className="text-sm font-medium text-gray-700">
-                  비밀번호 요구사항:
-                </p>
-                <ValidationCheck
-                  isValid={validationChecks.length}
-                  text="최소 8자 이상"
-                />
-                <ValidationCheck
-                  isValid={validationChecks.hasLetter}
-                  text="영문 포함"
-                />
-                <ValidationCheck
-                  isValid={validationChecks.hasNumber}
-                  text="숫자 포함"
-                />
-                <ValidationCheck
-                  isValid={validationChecks.hasSpecial}
-                  text="특수문자 포함 (@$!%*?&)"
-                />
-              </div>
-            )}
-          </div>
+          <FormMessage className="font-dm-mono text-[11px] text-dm-red" />
+          {pw && (
+            <div className="mt-2 space-y-1.5">
+              {rules.map((r) => {
+                const ok = checks[r.key as keyof typeof checks]
+                return (
+                  <div key={r.key} className={`flex items-center gap-2 font-dm-mono text-[11px] ${ok ? 'text-green-400' : 'text-dm-text-faint'}`}>
+                    <span>{ok ? '✓' : '○'}</span>{r.label}
+                  </div>
+                )
+              })}
+            </div>
+          )}
         </FormItem>
       )}
     />
