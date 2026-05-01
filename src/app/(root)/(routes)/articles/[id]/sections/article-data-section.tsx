@@ -1,10 +1,11 @@
 'use client'
+
 import { Article } from '@/lib/type'
-import { FunctionComponent } from 'react'
-import { User2, Calendar, Pencil, Trash2 } from 'lucide-react'
-import { useSession } from 'next-auth/react'
-import { useDeleteArticle } from '../../new/hooks/use-delete-article'
 import { useAppToast } from '@/hooks/use-app-toast'
+import { useSession } from 'next-auth/react'
+import { FunctionComponent } from 'react'
+import { Pencil, Trash2 } from 'lucide-react'
+import { useDeleteArticle } from '../../new/hooks/use-delete-article'
 import { ModifyArticleModal } from '../components/modify-article-modal'
 import { useModifyArticleModalContext } from '../hooks/use-modify-article-context'
 
@@ -18,78 +19,68 @@ const ArticleDataSection: FunctionComponent<ArticleDataSectionProps> = ({
   const { showToast } = useAppToast()
   const { data: session } = useSession()
   const userId = session?.user?.id ?? -1
-  const { deleteArticle, deleteError, isDeleting } = useDeleteArticle(
-    Number(data.id),
-  )
-  const { setOpen, setArticle, open } = useModifyArticleModalContext()
+  const { deleteArticle, isDeleting } = useDeleteArticle(Number(data.id))
+  const { setOpen, setArticle } = useModifyArticleModalContext()
+
   const handleDelete = () => {
-    if (window.confirm('정말로 이 게시글을 삭제하시겠습니까?')) {
-      deleteArticle(
-        { articleId: Number(data.id) },
-        {
-          onSuccess: () => {
-            showToast('게시글이 삭제되었습니다.')
-            window.location.href = '/articles'
-          },
-          onError: () => {
-            showToast('게시글 삭제에 실패했습니다. 다시 시도해주세요.')
-          },
+    if (!window.confirm('정말로 이 게시글을 삭제하시겠습니까?')) return
+    deleteArticle(
+      { articleId: Number(data.id) },
+      {
+        onSuccess: () => {
+          showToast('게시글이 삭제되었습니다.')
+          window.location.href = '/articles'
         },
-      )
-    }
+        onError: () => {
+          showToast('게시글 삭제에 실패했습니다. 다시 시도해주세요.')
+        },
+      },
+    )
   }
 
-  const localUpdatedAt = data.updatedAt
-    ? new Date(data.createdAt).toLocaleString()
+  const dateStr = data.createdAt
+    ? new Date(data.createdAt).toLocaleDateString('ko-KR')
     : ''
 
   return (
-    <section className="relative mb-8 overflow-hidden rounded-xl border bg-white p-0 shadow-md">
-      {/* 썸네일 영역 (이미지가 있다면 표시) */}
-      {/* <div className="flex h-48 w-full items-center justify-center bg-gray-100">
-        <span className="text-gray-400">썸네일 이미지</span>
-      </div> */}
-      {/* 우측 상단 버튼 영역 */}
-      {userId === data.userno && (
-        <div className="absolute right-4 top-4 z-10 flex gap-2">
-          <button
-            className="rounded border bg-white p-2 transition hover:bg-gray-100"
-            onClick={() => {
-              setArticle(data)
-              setOpen(true)
-            }}
-          >
-            <Pencil className="h-4 w-4 text-gray-600" />
-          </button>
-          <button
-            className="rounded border bg-red-50 p-2 transition hover:bg-red-100"
-            onClick={handleDelete}
-            disabled={isDeleting}
-          >
-            <Trash2 className="h-4 w-4 text-red-600" />
-          </button>
-        </div>
-      )}
-      <div className="p-7">
-        <h1 className="mb-3 text-3xl font-extrabold tracking-tight text-gray-900">
+    <section className="border-b border-dm-line px-5 py-5">
+      <ModifyArticleModal />
+
+      <div className="flex items-start justify-between gap-2">
+        <h1 className="flex-1 text-[20px] font-bold leading-snug text-dm-text">
           {data.title}
         </h1>
-        <div className="mb-5 flex items-center gap-3 text-sm text-gray-500">
-          <span className="inline-flex items-center gap-1">
-            <User2 className="h-4 w-4 text-gray-400" />
-            {data.author}
-          </span>
-          <span className="inline-flex items-center gap-1">
-            <Calendar className="h-4 w-4 text-gray-400" />
-            {localUpdatedAt}
-          </span>
-        </div>
-        <hr className="mb-5 border-gray-200" />
-        <div className="whitespace-pre-wrap text-base leading-relaxed text-gray-800">
-          {data.content}
-        </div>
+        {userId === data.userno && (
+          <div className="flex shrink-0 gap-1.5">
+            <button
+              className="border border-dm-line p-1.5 text-dm-text-muted hover:border-dm-amber hover:text-dm-amber"
+              onClick={() => {
+                setArticle(data)
+                setOpen(true)
+              }}
+            >
+              <Pencil className="h-3.5 w-3.5" />
+            </button>
+            <button
+              className="border border-dm-line p-1.5 text-dm-text-muted hover:border-dm-red hover:text-dm-red disabled:opacity-50"
+              onClick={handleDelete}
+              disabled={isDeleting}
+            >
+              <Trash2 className="h-3.5 w-3.5" />
+            </button>
+          </div>
+        )}
       </div>
-      <ModifyArticleModal />
+
+      <div className="mt-2 flex items-center gap-2 font-dm-mono text-[11px] text-dm-text-faint">
+        <span>{data.author}</span>
+        <span>·</span>
+        <span>{dateStr}</span>
+      </div>
+
+      <div className="mt-5 border-t border-dm-line pt-5 text-[14px] leading-relaxed text-dm-text-muted whitespace-pre-wrap">
+        {data.content}
+      </div>
     </section>
   )
 }

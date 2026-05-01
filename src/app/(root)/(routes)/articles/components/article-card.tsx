@@ -1,10 +1,10 @@
 'use client'
 
 import { Article } from '@/lib/type'
-import { ThumbsUp, ThumbsDown, MessageCircle } from 'lucide-react'
-import { FunctionComponent } from 'react'
+import { MessageCircle, ThumbsDown, ThumbsUp } from 'lucide-react'
 import Link from 'next/link'
-import { useArticleRead } from '@/app/(root)/(routes)/articles/hooks/use-article-read'
+import { FunctionComponent } from 'react'
+import { useArticleRead } from '../hooks/use-article-read'
 
 interface ArticleCardProps {
   article: Article
@@ -14,38 +14,46 @@ const ArticleCard: FunctionComponent<ArticleCardProps> = ({ article }) => {
   const { isRead, markAsRead } = useArticleRead(article.id)
 
   return (
-    <div className="rounded-2xl border p-4 shadow-sm transition hover:shadow-md">
-      <Link href={`/articles/${article.id}`} onClick={markAsRead}>
-        <div>
-          <h2 className="mb-1 flex items-center gap-2 text-lg font-semibold hover:underline">
-            {article.title}
-            {!isRead && (
-              <span className="ml-2 rounded bg-red-100 px-2 py-0.5 text-xs text-red-600">
-                읽지 않음
-              </span>
-            )}
-          </h2>
-          <p className="mb-2 text-sm text-gray-500">작성자: {article.author}</p>
-          <p className="mb-2 text-xs text-gray-400">
-            작성일: {new Date(article.createdAt).toLocaleString()}
-          </p>
-          <p className="mb-3 line-clamp-2 text-sm text-gray-700">
-            {article.content}
-          </p>
-        </div>
-      </Link>
-      <div className="mt-2 flex items-center gap-4 text-sm text-gray-600">
-        <div className="flex items-center gap-1">
-          <ThumbsUp className="h-4 w-4" /> {article.likeCount}
-        </div>
-        <div className="flex items-center gap-1">
-          <ThumbsDown className="h-4 w-4" /> {article.dislikeCount}
-        </div>
-        <div className="flex items-center gap-1">
-          <MessageCircle className="h-4 w-4" /> {article.commentCount}
+    <Link
+      href={`/articles/${article.id}`}
+      onClick={markAsRead}
+      className="block border-b border-dm-line px-4 py-3.5 hover:bg-dm-surface"
+    >
+      <div className="flex items-start justify-between gap-2">
+        <h2 className="flex-1 truncate text-[15px] font-semibold text-dm-text">
+          {article.title}
+          {!isRead && (
+            <span className="ml-2 inline-block rounded bg-dm-red/20 px-1.5 py-0.5 font-dm-mono text-[9px] uppercase tracking-[0.5px] text-dm-red">
+              NEW
+            </span>
+          )}
+        </h2>
+      </div>
+
+      <p className="mt-0.5 line-clamp-1 text-[12px] text-dm-text-muted">
+        {article.content}
+      </p>
+
+      <div className="mt-2 flex items-center gap-3 font-dm-mono text-[11px] text-dm-text-faint">
+        <span>{article.author}</span>
+        <span>·</span>
+        <span>{new Date(article.createdAt).toLocaleDateString()}</span>
+        <div className="ml-auto flex items-center gap-3">
+          <span className="flex items-center gap-1">
+            <ThumbsUp className="h-3 w-3" />
+            {article.likeCount}
+          </span>
+          <span className="flex items-center gap-1">
+            <ThumbsDown className="h-3 w-3" />
+            {article.dislikeCount}
+          </span>
+          <span className="flex items-center gap-1">
+            <MessageCircle className="h-3 w-3" />
+            {article.commentCount}
+          </span>
         </div>
       </div>
-    </div>
+    </Link>
   )
 }
 

@@ -1,28 +1,21 @@
 import { FormControl, FormField, FormItem } from '@/components/ui/form'
-import { FunctionComponent, HTMLAttributes } from 'react'
-import { cn } from '@/lib/utils'
-import { Textarea } from '@/components/ui/textarea'
+import { FunctionComponent } from 'react'
 import { useCommentFormContext } from '../hooks/comment-form-context'
 
-interface CommentInputFieldProps extends HTMLAttributes<HTMLDivElement> {}
-
-const CommentInputField: FunctionComponent<CommentInputFieldProps> = ({
-  className,
-  ...props
-}) => {
+const CommentInputField: FunctionComponent = () => {
   const { form } = useCommentFormContext()
   return (
     <FormField
       control={form.control}
       name="comment"
       render={({ field }) => (
-        <FormItem className="w-full">
-          <FormControl className="w-full">
-            <Textarea
+        <FormItem className="flex-1">
+          <FormControl>
+            <textarea
               {...field}
-              className={cn('w-full', 'resize-none')}
-              placeholder="댓글을 입력해주세요."
               rows={1}
+              placeholder="댓글을 입력해주세요."
+              className="w-full resize-none border border-dm-line-2 bg-dm-bg px-3 py-2 text-[13px] text-dm-text placeholder:text-dm-text-faint focus:border-dm-amber focus:outline-none"
             />
           </FormControl>
         </FormItem>
