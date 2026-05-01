@@ -1,52 +1,30 @@
-import {
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from '@/components/ui/form'
-import { AppDatePicker } from '@/components/app/app-date-picker'
-import { FunctionComponent, HTMLAttributes } from 'react'
+import { FormControl, FormField, FormItem, FormMessage } from '@/components/ui/form'
+import { FunctionComponent } from 'react'
 import { useMatchPostFormContext } from '../hooks/match-post-form-context'
 
-interface ShowTimeInputFieldProps extends HTMLAttributes<HTMLDivElement> {}
+const cls = 'w-full border border-dm-line-2 bg-dm-surface px-3.5 py-3 text-[14px] text-dm-text focus:border-dm-amber focus:outline-none [color-scheme:dark]'
+const labelCls = 'mb-1.5 block font-dm-mono text-[10px] uppercase tracking-[1px] text-dm-text-muted'
 
-const ShowTimeInputField: FunctionComponent<ShowTimeInputFieldProps> = () => {
+const ShowTimeInputField: FunctionComponent = () => {
   const { form } = useMatchPostFormContext()
-
   return (
     <FormField
       control={form.control}
       name="showTime"
-      render={({ field }) => {
-        const currentValue = field.value ? new Date(field.value) : undefined
-
-        const handleDateChange = (date?: Date) => {
-          if (date) {
-            // YYYY-MM-DD 형식으로 변환
-            const year = date.getFullYear()
-            const month = String(date.getMonth() + 1).padStart(2, '0')
-            const day = String(date.getDate()).padStart(2, '0')
-            field.onChange(`${year}-${month}-${day}`)
-          } else {
-            field.onChange(undefined)
-          }
-        }
-
-        return (
-          <FormItem>
-            <FormLabel>상영 시간</FormLabel>
-            <FormControl>
-              <AppDatePicker
-                value={currentValue}
-                onChange={handleDateChange}
-                placeholder="날짜를 선택하세요"
-              />
-            </FormControl>
-            <FormMessage />
-          </FormItem>
-        )
-      }}
+      render={({ field }) => (
+        <FormItem>
+          <label className={labelCls}>상영 시간</label>
+          <FormControl>
+            <input
+              type="date"
+              value={field.value ?? ''}
+              onChange={(e) => field.onChange(e.target.value || undefined)}
+              className={cls}
+            />
+          </FormControl>
+          <FormMessage />
+        </FormItem>
+      )}
     />
   )
 }

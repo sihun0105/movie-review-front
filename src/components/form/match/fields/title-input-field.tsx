@@ -1,28 +1,21 @@
-import {
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from '@/components/ui/form'
-import { Input } from '@/components/ui/input'
-import { FunctionComponent, HTMLAttributes } from 'react'
+import { FormControl, FormField, FormItem, FormMessage } from '@/components/ui/form'
+import { FunctionComponent } from 'react'
 import { useMatchPostFormContext } from '../hooks/match-post-form-context'
 
-interface TitleInputFieldProps extends HTMLAttributes<HTMLDivElement> {}
+const inputCls = 'w-full border border-dm-line-2 bg-dm-surface px-3.5 py-3 text-[14px] text-dm-text placeholder:text-dm-text-faint focus:border-dm-amber focus:outline-none'
+const labelCls = 'mb-1.5 block font-dm-mono text-[10px] uppercase tracking-[1px] text-dm-text-muted'
 
-const TitleInputField: FunctionComponent<TitleInputFieldProps> = () => {
+const TitleInputField: FunctionComponent = () => {
   const { form } = useMatchPostFormContext()
-
   return (
     <FormField
       control={form.control}
       name="title"
       render={({ field }) => (
         <FormItem>
-          <FormLabel>제목</FormLabel>
+          <label className={labelCls}>제목</label>
           <FormControl>
-            <Input {...field} placeholder="모집 글 제목을 입력하세요" />
+            <input {...field} className={inputCls} placeholder="모집 글 제목을 입력하세요" />
           </FormControl>
           <FormMessage />
         </FormItem>

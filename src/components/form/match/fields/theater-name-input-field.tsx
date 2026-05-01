@@ -1,30 +1,21 @@
-import {
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from '@/components/ui/form'
-import { Input } from '@/components/ui/input'
-import { FunctionComponent, HTMLAttributes } from 'react'
+import { FormControl, FormField, FormItem, FormMessage } from '@/components/ui/form'
+import { FunctionComponent } from 'react'
 import { useMatchPostFormContext } from '../hooks/match-post-form-context'
 
-interface TheaterNameInputFieldProps extends HTMLAttributes<HTMLDivElement> {}
+const cls = 'w-full border border-dm-line-2 bg-dm-surface px-3.5 py-3 text-[14px] text-dm-text placeholder:text-dm-text-faint focus:border-dm-amber focus:outline-none'
+const labelCls = 'mb-1.5 block font-dm-mono text-[10px] uppercase tracking-[1px] text-dm-text-muted'
 
-const TheaterNameInputField: FunctionComponent<
-  TheaterNameInputFieldProps
-> = () => {
+const TheaterNameInputField: FunctionComponent = () => {
   const { form } = useMatchPostFormContext()
-
   return (
     <FormField
       control={form.control}
       name="theaterName"
       render={({ field }) => (
         <FormItem>
-          <FormLabel>영화관</FormLabel>
+          <label className={labelCls}>영화관</label>
           <FormControl>
-            <Input {...field} placeholder="영화관 이름" />
+            <input {...field} className={cls} placeholder="영화관 이름" />
           </FormControl>
           <FormMessage />
         </FormItem>
