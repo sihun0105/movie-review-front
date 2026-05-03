@@ -5,7 +5,6 @@ import { ModifyCommentModalContextProvider } from './hooks/use-modify-comment-co
 import { VodModalContextProvider } from './hooks/use-vod-modal-context'
 import { buildBreadcrumbJsonLd, buildMovieJsonLd } from './json-ld'
 import { generateMovieMetadata } from './metadata'
-import ActiveSection from './sections/active-section'
 import CommentSection from './sections/comment-section'
 import DescriptionSection from './sections/description-section'
 
@@ -41,16 +40,15 @@ const Page: FunctionComponent<PageProps> = async ({ params: { id } }) => {
       />
       <div
         id="movie-detail-page"
-        className="relative flex flex-col bg-dm-bg pb-[140px] text-dm-text"
+        className="relative flex flex-col bg-dm-bg pb-[88px] text-dm-text"
       >
         <ModifyCommentModalContextProvider>
           <VodModalContextProvider>
             <DescriptionSection id={id} />
-            <CommentSection />
+            <CommentSection id={id} />
           </VodModalContextProvider>
         </ModifyCommentModalContextProvider>
       </div>
-      <ActiveSection id={id} />
     </>
   )
 }

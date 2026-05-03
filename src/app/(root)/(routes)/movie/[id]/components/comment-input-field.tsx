@@ -1,31 +1,21 @@
 import { FormControl, FormField, FormItem } from '@/components/ui/form'
-import { FunctionComponent, HTMLAttributes } from 'react'
-import { cn } from '@/lib/utils'
-import { Textarea } from '@/components/ui/textarea'
+import { FunctionComponent } from 'react'
 import { useCommentFormContext } from '../hooks/comment-form-context'
 
-interface CommentInputFieldProps extends HTMLAttributes<HTMLDivElement> {}
-
-const CommentInputField: FunctionComponent<CommentInputFieldProps> = ({
-  className,
-  ...props
-}) => {
+const CommentInputField: FunctionComponent = () => {
   const { form } = useCommentFormContext()
   return (
     <FormField
       control={form.control}
       name="comment"
       render={({ field }) => (
-        <FormItem className="w-full">
-          <FormControl className="w-full">
-            <Textarea
+        <FormItem>
+          <FormControl>
+            <textarea
               {...field}
-              className={cn(
-                'w-full resize-none rounded-none border border-dm-line-2 bg-dm-surface text-[13px] text-dm-text placeholder:text-dm-text-faint focus-visible:ring-1 focus-visible:ring-dm-amber focus-visible:ring-offset-0',
-                className,
-              )}
+              rows={3}
               placeholder="이 영화에 대해 쓰기..."
-              rows={1}
+              className="w-full resize-none bg-transparent px-3 py-3 text-[13px] text-dm-text placeholder:text-dm-text-faint focus:outline-none"
             />
           </FormControl>
         </FormItem>
