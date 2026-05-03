@@ -85,7 +85,7 @@ const MatchListSection: FunctionComponent<MatchListSectionProps> = ({
   return (
     <>
       <div className="flex flex-col gap-3.5 px-4 py-4">
-        {matchPosts.map((match) => (
+        {matchPosts.filter(Boolean).map((match) => (
           <div key={match.id} className="relative">
             <DmMatchTicket match={match} />
             <button
