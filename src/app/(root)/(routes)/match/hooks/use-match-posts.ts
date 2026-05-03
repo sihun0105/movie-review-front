@@ -32,8 +32,12 @@ export const useMatchPosts = (pageSize: number = 10) => {
       revalidateOnFocus: true,
     })
 
-  // 모든 페이지의 matchPosts를 평면화
-  const matchPosts = data ? data.flatMap((page) => page.matchPosts) : []
+  // 모든 페이지의 matchPosts를 평면화 (null/undefined 방어)
+  const matchPosts = data
+    ? data.flatMap((page) => page?.matchPosts ?? []).filter(
+        (m): m is NonNullable<typeof m> => m != null,
+      )
+    : []
 
   // 다음 페이지가 있는지 확인
   const hasMore =
