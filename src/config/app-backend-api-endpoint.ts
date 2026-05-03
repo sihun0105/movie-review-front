@@ -1,30 +1,38 @@
 import queryString from 'query-string'
+
+// SERVER_API (non-public) 를 우선 사용 → Docker 내부 hostname 설정 가능
+// 미설정 시 NEXT_PUBLIC_SERVER_API 폴백, 그것도 없으면 localhost
+const _base =
+  process.env.SERVER_API ||
+  process.env.NEXT_PUBLIC_SERVER_API ||
+  'http://127.0.0.1:3030'
+
 const AppBackEndApiEndpoint = {
   login: () => {
-    return `${process.env.NEXT_PUBLIC_SERVER_API}/auth/login`
+    return `${_base}/auth/login`
   },
   signUp: () => {
-    return `${process.env.NEXT_PUBLIC_SERVER_API}/user`
+    return `${_base}/user`
   },
   refresh: () => {
-    return `${process.env.NEXT_PUBLIC_SERVER_API}/auth/refresh`
+    return `${_base}/auth/refresh`
   },
   getMovie: () => {
-    return `${process.env.NEXT_PUBLIC_SERVER_API}/movie`
+    return `${_base}/movie`
   },
   oAuth: () => {
-    return `${process.env.NEXT_PUBLIC_SERVER_API}/auth/oauth`
+    return `${_base}/auth/oauth`
   },
   validateEmail: () => {
-    return `${process.env.NEXT_PUBLIC_SERVER_API}/auth/validate/email`
+    return `${_base}/auth/validate/email`
   },
   validateNickname: () => {
-    return `${process.env.NEXT_PUBLIC_SERVER_API}/auth/validate/nickname`
+    return `${_base}/auth/validate/nickname`
   },
   getCommentList: (id: number, page: number) => {
     return queryString.stringifyUrl(
       {
-        url: `${process.env.NEXT_PUBLIC_SERVER_API}/reply`,
+        url: `${_base}/reply`,
         query: {
           movieId: id,
           page: page,
@@ -37,13 +45,13 @@ const AppBackEndApiEndpoint = {
     )
   },
   createNewComment: () => {
-    return `${process.env.NEXT_PUBLIC_SERVER_API}/reply`
+    return `${_base}/reply`
   },
   deleteComment: (id: string) => {
-    return `${process.env.NEXT_PUBLIC_SERVER_API}/reply/${id}`
+    return `${_base}/reply/${id}`
   },
   modifyComment: () => {
-    return `${process.env.NEXT_PUBLIC_SERVER_API}/reply`
+    return `${_base}/reply`
   },
   getChatHistory(nowDate: string) {
     return queryString.stringifyUrl(
@@ -60,55 +68,55 @@ const AppBackEndApiEndpoint = {
     )
   },
   getMovieDetail: (movieCd: string) => {
-    return `${process.env.NEXT_PUBLIC_SERVER_API}/movie/${movieCd}`
+    return `${_base}/movie/${movieCd}`
   },
   updateProfileNickname: () => {
-    return `${process.env.NEXT_PUBLIC_SERVER_API}/user/nickname`
+    return `${_base}/user/nickname`
   },
   updateProfileImage: () => {
-    return `${process.env.NEXT_PUBLIC_SERVER_API}/user/image`
+    return `${_base}/user/image`
   },
   updateScore: (id: number) => {
-    return `${process.env.NEXT_PUBLIC_SERVER_API}/movie/score/${id}`
+    return `${_base}/movie/score/${id}`
   },
   getScore: (id: string) => {
-    return `${process.env.NEXT_PUBLIC_SERVER_API}/movie/score/${id}`
+    return `${_base}/movie/score/${id}`
   },
   getAverageScore: (id: string) => {
-    return `${process.env.NEXT_PUBLIC_SERVER_API}/movie/score/average/${id}`
+    return `${_base}/movie/score/average/${id}`
   },
   // ✅ Article 관련
   createArticle: () => {
-    return `${process.env.NEXT_PUBLIC_SERVER_API}/article`
+    return `${_base}/article`
   },
   getArticle: (id: number) => {
-    return `${process.env.NEXT_PUBLIC_SERVER_API}/article/${id}`
+    return `${_base}/article/${id}`
   },
   listArticles: (page: number, pageSize: number = 10) => {
     return queryString.stringifyUrl(
       {
-        url: `${process.env.NEXT_PUBLIC_SERVER_API}/article`,
+        url: `${_base}/article`,
         query: { page, pageSize },
       },
       { skipEmptyString: true, skipNull: true },
     )
   },
   updateArticle: (id: number) => {
-    return `${process.env.NEXT_PUBLIC_SERVER_API}/article/${id}`
+    return `${_base}/article/${id}`
   },
   deleteArticle: (id: number) => {
-    return `${process.env.NEXT_PUBLIC_SERVER_API}/article/${id}`
+    return `${_base}/article/${id}`
   },
 
   // ✅ 댓글 관련
   createArticleComment: (articleId: number) => {
-    return `${process.env.NEXT_PUBLIC_SERVER_API}/article/${articleId}/comments`
+    return `${_base}/article/${articleId}/comments`
   },
   updateArticleComment: (commentId: number) => {
-    return `${process.env.NEXT_PUBLIC_SERVER_API}/article/comments/${commentId}`
+    return `${_base}/article/comments/${commentId}`
   },
   deleteArticleComment: (commentId: number) => {
-    return `${process.env.NEXT_PUBLIC_SERVER_API}/article/comments/${commentId}`
+    return `${_base}/article/comments/${commentId}`
   },
   listArticleComments: (
     articleId: number,
@@ -117,7 +125,7 @@ const AppBackEndApiEndpoint = {
   ) => {
     return queryString.stringifyUrl(
       {
-        url: `${process.env.NEXT_PUBLIC_SERVER_API}/article/${articleId}/comments`,
+        url: `${_base}/article/${articleId}/comments`,
         query: { page, pageSize },
       },
       { skipEmptyString: true, skipNull: true },
@@ -126,82 +134,82 @@ const AppBackEndApiEndpoint = {
 
   // ✅ 좋아요 관련
   getLikeArticle: (articleId: number) => {
-    return `${process.env.NEXT_PUBLIC_SERVER_API}/article/${articleId}/likes`
+    return `${_base}/article/${articleId}/likes`
   },
   updateLikeArticle: (articleId: number) => {
-    return `${process.env.NEXT_PUBLIC_SERVER_API}/article/${articleId}/like`
+    return `${_base}/article/${articleId}/like`
   },
 
   // 영화관 관련
   getMovieTheaterList: () => {
-    return `${process.env.NEXT_PUBLIC_SERVER_API}/movie/cgv/theaters`
+    return `${_base}/movie/cgv/theaters`
   },
   getMovieTheaterDetail: (id: number) => {
-    return `${process.env.NEXT_PUBLIC_SERVER_API}/movie-theater/${id}`
+    return `${_base}/movie-theater/${id}`
   },
   getMoviesByTheaterId: (theaterId: number) => {
-    return `${process.env.NEXT_PUBLIC_SERVER_API}/movie-theater/${theaterId}/movies`
+    return `${_base}/movie-theater/${theaterId}/movies`
   },
   getMovieDetailByTheater: (movieCd: string) => {
-    return `${process.env.NEXT_PUBLIC_SERVER_API}/movie-theater/movie/${movieCd}`
+    return `${_base}/movie-theater/movie/${movieCd}`
   },
 
   // Match 관련
   getMatchPosts: (page: number = 1, pageSize: number = 10) => {
     return queryString.stringifyUrl(
       {
-        url: `${process.env.NEXT_PUBLIC_SERVER_API}/match`,
+        url: `${_base}/match`,
         query: { page, pageSize },
       },
       { skipEmptyString: true, skipNull: true },
     )
   },
   createMatchPost: () => {
-    return `${process.env.NEXT_PUBLIC_SERVER_API}/match`
+    return `${_base}/match`
   },
   getMatchPost: (matchId: string) => {
-    return `${process.env.NEXT_PUBLIC_SERVER_API}/match/${matchId}`
+    return `${_base}/match/${matchId}`
   },
   updateMatchPost: (matchId: string) => {
-    return `${process.env.NEXT_PUBLIC_SERVER_API}/match/${matchId}`
+    return `${_base}/match/${matchId}`
   },
   deleteMatchPost: (matchId: string) => {
-    return `${process.env.NEXT_PUBLIC_SERVER_API}/match/${matchId}`
+    return `${_base}/match/${matchId}`
   },
   applyToMatch: (matchId: string) => {
-    return `${process.env.NEXT_PUBLIC_SERVER_API}/match/${matchId}/apply`
+    return `${_base}/match/${matchId}/apply`
   },
   getMatchApplications: (matchId: string) => {
-    return `${process.env.NEXT_PUBLIC_SERVER_API}/match/${matchId}/applications`
+    return `${_base}/match/${matchId}/applications`
   },
   updateApplicationStatus: (matchId: string, applicationId: string) => {
-    return `${process.env.NEXT_PUBLIC_SERVER_API}/match/${matchId}/applications/${applicationId}`
+    return `${_base}/match/${matchId}/applications/${applicationId}`
   },
   getMyApplications: () => {
-    return `${process.env.NEXT_PUBLIC_SERVER_API}/match/my-applications`
+    return `${_base}/match/my-applications`
   },
   getMyPosts: () => {
-    return `${process.env.NEXT_PUBLIC_SERVER_API}/match/my-posts`
+    return `${_base}/match/my-posts`
   },
   cancelApplication: (applicationId: string) => {
-    return `${process.env.NEXT_PUBLIC_SERVER_API}/match/applications/${applicationId}`
+    return `${_base}/match/applications/${applicationId}`
   },
   getMyApplication: (matchId: string) => {
-    return `${process.env.NEXT_PUBLIC_SERVER_API}/match/${matchId}/my-application`
+    return `${_base}/match/${matchId}/my-application`
   },
 
   // ✅ Chat 관련
   createChatRoom: () => {
-    return `${process.env.NEXT_PUBLIC_SERVER_API}/chat/rooms`
+    return `${_base}/chat/rooms`
   },
   getChatRoom: (chatRoomId: string) => {
-    return `${process.env.NEXT_PUBLIC_SERVER_API}/chat/rooms/${chatRoomId}`
+    return `${_base}/chat/rooms/${chatRoomId}`
   },
   getChatRooms: () => {
-    return `${process.env.NEXT_PUBLIC_SERVER_API}/chat/rooms`
+    return `${_base}/chat/rooms`
   },
   getChatMessages: (chatRoomId: string) => {
-    return `${process.env.NEXT_PUBLIC_SERVER_API}/chat/rooms/${chatRoomId}/messages`
+    return `${_base}/chat/rooms/${chatRoomId}/messages`
   },
 }
 
