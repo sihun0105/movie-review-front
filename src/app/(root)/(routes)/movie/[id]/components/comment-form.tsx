@@ -1,6 +1,5 @@
 'use client'
 
-import { Button } from '@/components/ui/button'
 import { Form } from '@/components/ui/form'
 import { useRouter } from 'next/navigation'
 import { FunctionComponent } from 'react'
@@ -19,10 +18,7 @@ const CommentForm: FunctionComponent<CommentFormProps> = ({ id }) => {
 
   const handleSubmit = form.handleSubmit((data) => {
     createComment(
-      {
-        comment: data.comment,
-        movieId: id,
-      },
+      { comment: data.comment, movieId: id },
       {
         onSuccess: () => {
           form.reset()
@@ -35,15 +31,15 @@ const CommentForm: FunctionComponent<CommentFormProps> = ({ id }) => {
   return (
     <Form {...form}>
       <form onSubmit={handleSubmit}>
-        <div className="flex w-full flex-row items-center gap-2">
-          <CommentInputField />
-          <Button
+        <CommentInputField />
+        <div className="flex justify-end border-t border-dm-line px-3 py-2">
+          <button
             type="submit"
             disabled={isCreatingComment}
-            className="rounded-none border border-dm-red bg-dm-red px-3 text-[12px] font-semibold text-white hover:bg-dm-red-deep"
+            className="bg-dm-red px-4 py-1.5 font-dm-mono text-[11px] uppercase tracking-[0.5px] text-white disabled:bg-dm-surface-2 disabled:text-dm-text-faint"
           >
-            등록
-          </Button>
+            {isCreatingComment ? '등록 중...' : '등록 →'}
+          </button>
         </div>
       </form>
     </Form>
