@@ -51,7 +51,15 @@ const MatchViewerView = ({ matchPost, onApply }: MatchViewerViewProps) => {
 
   return (
     <div className="relative min-h-page bg-background pb-[140px] text-foreground">
-      <div className="flex items-center border-b border-border px-4 py-3.5">
+      {/* 상단 컬러 그라디언트 */}
+      <div
+        className="h-[80px] w-full"
+        style={{
+          background: `linear-gradient(160deg, oklch(${palette.lt} ${palette.c} ${palette.h}) 0%, oklch(${palette.lb} ${palette.c * 0.5} ${palette.h}) 100%)`,
+          opacity: 0.6,
+        }}
+      />
+      <div className="flex items-center border-b border-border px-4 py-3.5 -mt-[80px] relative bg-background/70 backdrop-blur-sm">
         <button
           aria-label="뒤로"
           onClick={() => router.back()}

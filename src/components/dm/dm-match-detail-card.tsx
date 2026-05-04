@@ -65,7 +65,7 @@ export function DmMatchDetailCard({ match }: DmMatchDetailCardProps) {
   const emptyCount = Math.max(0, cap - joined)
 
   return (
-    <div className="relative border border-border bg-card p-[18px]">
+    <div className="relative border border-border bg-card p-[18px]" style={{ background: 'linear-gradient(160deg, hsl(var(--card)) 0%, hsl(var(--background)) 100%)' }}>
       <FilmStrip position="top" />
 
       <Label>WHEN</Label>
