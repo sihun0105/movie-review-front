@@ -52,7 +52,6 @@ const useUpdateImageForm = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [file])
   const fetchupdateProfileImage = async (data: { file?: File }) => {
-    console.log('fetchupdateProfileImage', data)
     if (!data.file) return null
 
     try {
@@ -63,9 +62,6 @@ const useUpdateImageForm = () => {
         method: 'POST',
         body: formData,
       })
-      if (!res.ok) {
-        console.log(res)
-      }
       return res
     } catch (error) {
       showToast('요청이 실패했습니다.')

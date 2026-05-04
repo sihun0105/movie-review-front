@@ -16,9 +16,6 @@ const getKey = (id: number, isAuthenticated: boolean) =>
 const fetcher = async (url: string): Promise<UpdateScoreResult> => {
   const res = await fetch(url)
   if (!res.ok) {
-    console.log(
-      `[useUpdateScore] ${url}, error: ${res.status} [${res.statusText}]`,
-    )
     throw new Error('Failed to fetch score data.')
   }
   const result = await res.json()
@@ -33,9 +30,6 @@ const throttledUpdateScore = throttle(async (id: number, score: number) => {
   })
 
   if (!res.ok) {
-    console.log(
-      `[useUpdateScore] ${url}, error: ${res.status} [${res.statusText}]`,
-    )
     throw new Error('Failed to update score.')
   }
 
