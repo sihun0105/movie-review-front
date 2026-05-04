@@ -18,9 +18,6 @@ const getKey = (id: number) => {
 const fetcher = async (url: string): Promise<UpdateLikeResult> => {
   const res = await fetch(url)
   if (!res.ok) {
-    console.log(
-      `[useUpdateLike] ${url}, error: ${res.status} [${res.statusText}]`,
-    )
     throw new Error('Failed to fetch like data.')
   }
   const result = await res.json()
@@ -32,9 +29,6 @@ const throttledUpdateLike = throttle(async (id: number, state: LikeState) => {
   const res = await fetch(url, { method: 'POST' })
 
   if (!res.ok) {
-    console.log(
-      `[useUpdateLike] ${url}, error: ${res.status} [${res.statusText}]`,
-    )
     throw new Error('Failed to update like data.')
   }
 

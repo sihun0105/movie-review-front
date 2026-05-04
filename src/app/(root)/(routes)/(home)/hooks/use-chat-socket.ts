@@ -46,28 +46,22 @@ const useChatSocket = ({
 
       // 연결 이벤트 리스너 등록
       socketRef.current.on('connect', () => {
-        console.log('Socket connected to:', actualNamespace)
         setIsConnected(true)
       })
 
       socketRef.current.on('disconnect', () => {
-        console.log('Socket disconnected from:', actualNamespace)
         setIsConnected(false)
       })
 
-      socketRef.current.on('hello', (namespaceName: string) => {
-        console.log('Connected to namespace:', namespaceName)
-      })
+      socketRef.current.on('hello', (_namespaceName: string) => {})
 
       socketRef.current.on('message', (message: ChatMessageEntity) => {
-        console.log('Socket received message:', message)
         if (onMessageRef.current) {
           onMessageRef.current(message)
         }
       })
 
       socketRef.current.on('onlineList', (users: number[]) => {
-        console.log('Online users updated:', users)
         if (onOnlineListRef.current) {
           onOnlineListRef.current(users)
         }
@@ -108,15 +102,7 @@ const useChatSocket = ({
           messageType: 'text',
         }
 
-        console.log('Sending message:', payload)
-        // Socket.IO로 실시간 전송 (백엔드에서 저장 처리)
         socketRef.current.emit('sendMessage', payload)
-      } else {
-        console.log('Cannot send message:', {
-          hasSocket: !!socketRef.current,
-          userId: session?.user?.id,
-          chatRoomId,
-        })
       }
     },
     [session?.user?.id, chatRoomId],

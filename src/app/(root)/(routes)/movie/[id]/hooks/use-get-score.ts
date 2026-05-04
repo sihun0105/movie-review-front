@@ -17,9 +17,6 @@ const fetcher = async (url: string): Promise<UpdateScoreResult> => {
     method: 'GET',
   })
   if (!res.ok) {
-    console.log(
-      `[useGetScore] ${url}, error: ${res.status} [${res.statusText}]`,
-    )
     throw new Error('An error occurred while fetching the data.')
   }
   const result = await res.json()
