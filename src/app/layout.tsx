@@ -11,17 +11,16 @@ import { MessageModalContextProvider } from '@/hooks/use-message-modal-context'
 import { cn } from '@/lib/utils'
 import { SessionProvider } from '@/providers/session-provider'
 import '@/styles/globals.css'
-import { Roboto } from 'next/font/google'
+import { Inter } from 'next/font/google'
 import Script from 'next/script'
 import { siteMetadata, siteJsonLd } from './site-metadata'
 
 export const metadata = siteMetadata
 
-const roboto = Roboto({
-  weight: ['400', '700'],
-  style: ['normal', 'italic'],
+const inter = Inter({
   subsets: ['latin'],
   display: 'swap',
+  variable: '--font-inter',
 })
 
 // dm 폰트는 runtime <link> 로 로드한다.
@@ -37,7 +36,7 @@ export default function RootLayout({
   return (
     <html lang="ko">
       <head>
-        {/* dm 폰트 — runtime fetch (build network 우회) */}
+        {/* Geist Mono — runtime fetch (build network 우회) */}
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link
           rel="preconnect"
@@ -45,7 +44,7 @@ export default function RootLayout({
           crossOrigin="anonymous"
         />
         <link
-          href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=IBM+Plex+Mono:wght@400;500&family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&display=swap"
+          href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400;500&display=swap"
           rel="stylesheet"
         />
         {/* Google Tag Manager */}
@@ -114,7 +113,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
           href="/favicon/favicon-256x256.png"
         />
       </head>
-      <body className={cn('bg-dm-bg text-dm-text', roboto.className)}>
+      <body className={cn('bg-background text-foreground antialiased', inter.className, inter.variable)}>
         {/* Google Tag Manager (noscript) */}
         <noscript>
           <iframe

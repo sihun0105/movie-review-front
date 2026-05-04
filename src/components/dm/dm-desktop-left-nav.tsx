@@ -3,6 +3,7 @@
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useSession } from 'next-auth/react'
+import { cn } from '@/lib/utils'
 
 const NAV = [
   {
@@ -13,8 +14,8 @@ const NAV = [
   },
   {
     href: '/match',
-    label: '같이 볼 사람',
-    icon: <><path d="M4 7h16M4 12h10M4 17h7" /><path d="M18 14l3 3-3 3M16 17h5" /></>,
+    label: '매칭',
+    icon: <path d="M4 7h16M4 12h10M4 17h7" />,
   },
   {
     href: '/chat',
@@ -33,8 +34,6 @@ const NAV = [
   },
 ]
 
-const BROWSE = ['박스오피스', '장르별', '개봉 예정작']
-
 function NavItem({ href, label, icon, exact }: (typeof NAV)[number]) {
   const pathname = usePathname()
   const isActive = exact ? pathname === href : !!pathname?.startsWith(href)
@@ -42,13 +41,14 @@ function NavItem({ href, label, icon, exact }: (typeof NAV)[number]) {
   return (
     <Link
       href={href}
-      className={`flex items-center gap-2.5 px-3 py-2.5 text-[13px] transition-colors ${
+      className={cn(
+        'flex items-center gap-2.5 rounded-md px-3 py-2 text-[14px] transition-colors',
         isActive
-          ? 'border-l-2 border-dm-red bg-dm-surface pl-[10px] text-dm-text'
-          : 'text-dm-text-muted hover:text-dm-text'
-      }`}
+          ? 'bg-secondary text-foreground'
+          : 'text-muted-foreground hover:bg-accent hover:text-foreground',
+      )}
     >
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
         {icon}
       </svg>
       {label}
@@ -62,43 +62,28 @@ export function DmDesktopLeftNav() {
   const initial = user?.nickname?.charAt(0).toUpperCase() ?? '?'
 
   return (
-    <aside className="hidden lg:sticky lg:top-0 lg:flex lg:h-screen lg:w-[240px] lg:shrink-0 lg:flex-col lg:overflow-y-auto lg:border-r lg:border-dm-line" style={{ background: '#0e0e12' }}>
+    <aside className="hidden lg:sticky lg:top-0 lg:flex lg:h-screen lg:w-[240px] lg:shrink-0 lg:flex-col lg:overflow-y-auto lg:border-r lg:border-border">
       <div className="px-4 pb-4 pt-5">
-        <Link href="/" className="font-dm-display text-[22px] italic font-bold tracking-[-0.01em]">
-          drunken<span className="text-dm-red">movie</span>
+        <Link href="/" className="text-[18px] font-bold tracking-[-0.02em] text-foreground">
+          drunken<span className="text-primary">movie</span>
         </Link>
       </div>
 
-      <nav className="flex-1 px-2">
+      <nav className="flex-1 space-y-0.5 px-2">
         {NAV.map((item) => (
           <NavItem key={item.href} {...item} />
-        ))}
-
-        <div className="mt-4 px-3 pb-1.5 font-dm-mono text-[10px] uppercase tracking-[1.5px] text-dm-text-faint">
-          탐색
-        </div>
-        {BROWSE.map((label) => (
-          <div
-            key={label}
-            className="px-3 py-2 text-[13px] text-dm-text-muted"
-          >
-            {label}
-          </div>
         ))}
       </nav>
 
       {user && (
-        <div className="border-t border-dm-line px-4 py-3.5">
+        <div className="border-t border-border px-4 py-3.5">
           <div className="flex items-center gap-2.5">
-            <div
-              className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-[13px] font-bold text-white"
-              style={{ background: 'linear-gradient(135deg, var(--dm-red) 0%, var(--dm-red-deep) 100%)' }}
-            >
+            <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-secondary text-[13px] font-bold text-foreground">
               {initial}
             </div>
             <div className="min-w-0">
-              <div className="truncate text-[12px] font-semibold text-dm-text">{user.nickname}</div>
-              <div className="font-dm-mono text-[10px] text-dm-text-faint">Lv.1</div>
+              <div className="truncate text-[13px] font-semibold text-foreground">{user.nickname}</div>
+              <div className="font-mono text-[10px] text-muted-foreground">멤버</div>
             </div>
           </div>
         </div>

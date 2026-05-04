@@ -21,11 +21,7 @@ export function TopGridCard({ movie, rank }: TopGridCardProps) {
   const rating = movie.averageScore ?? 0
   const rankInten = movie.rankInten ?? 0
   const intenColor =
-    rankInten > 0
-      ? 'text-[#6fc96f]'
-      : rankInten < 0
-      ? 'text-dm-red'
-      : 'text-dm-text-faint'
+    rankInten > 0 ? 'text-green-400' : rankInten < 0 ? 'text-primary' : 'text-muted-foreground'
   const intenLabel =
     rankInten > 0 ? `▲${rankInten}` : rankInten < 0 ? `▼${-rankInten}` : '—'
   const audience = formatAudienceMan(movie.audience)
@@ -34,28 +30,20 @@ export function TopGridCard({ movie, rank }: TopGridCardProps) {
     <Link href={`/movie/${movie.id}`} className="block">
       <div className="relative">
         <Poster title={movie.title} palette={palette} imageUrl={movie.poster} />
-        <span className="absolute left-0 top-0 border-b border-r border-dm-line bg-dm-bg/[0.85] px-1.5 py-px font-dm-rank text-[15px] leading-[1.1] text-dm-text">
-          {String(rank).padStart(2, '0')}
+        <span className="absolute left-0 top-0 rounded-br rounded-tl bg-background/80 px-1.5 py-0.5 font-mono text-[12px] font-semibold text-foreground backdrop-blur-sm">
+          #{rank}
         </span>
       </div>
-      <div className="mt-1 truncate text-[11px] leading-tight text-dm-text">
+      <div className="mt-1.5 truncate text-[12px] font-medium text-foreground">
         {movie.title}
       </div>
-      <div className="mt-px flex items-center gap-[3px]">
-        <span className="text-[10px] text-dm-amber">★</span>
-        <span className="font-dm-mono text-[10px] text-dm-text-muted">
-          {rating.toFixed(1)}
-        </span>
-        <span
-          className={cn('ml-auto font-dm-mono text-[9px]', intenColor)}
-        >
-          {intenLabel}
-        </span>
+      <div className="mt-0.5 flex items-center gap-1">
+        <span className="text-[11px] text-yellow-400">★</span>
+        <span className="font-mono text-[11px] text-muted-foreground">{rating.toFixed(1)}</span>
+        <span className={cn('ml-auto font-mono text-[10px]', intenColor)}>{intenLabel}</span>
       </div>
       {audience && (
-        <div className="mt-0.5 font-dm-mono text-[9px] tracking-[0.3px] text-dm-text-faint">
-          👥 {audience}
-        </div>
+        <div className="mt-0.5 font-mono text-[10px] text-muted-foreground">{audience}</div>
       )}
     </Link>
   )
