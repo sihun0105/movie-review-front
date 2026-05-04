@@ -63,14 +63,14 @@ const MatchPostForm: FunctionComponent<MatchPostFormProps> = ({
           <button
             type="button"
             onClick={onCancel}
-            className="flex-1 border border-dm-line py-3 font-dm-mono text-[13px] text-dm-text-muted hover:border-dm-amber hover:text-dm-amber"
+            className="flex-1 border border-border py-3 font-mono text-[13px] text-muted-foreground hover:border-primary hover:text-yellow-400"
           >
             취소
           </button>
           <button
             type="submit"
             disabled={isLoading}
-            className="flex-1 bg-dm-red py-3 font-dm-mono text-[13px] text-white disabled:bg-dm-surface-2 disabled:text-dm-text-faint"
+            className="flex-1 bg-primary py-3 font-mono text-[13px] text-white disabled:bg-secondary disabled:text-muted-foreground"
           >
             {isLoading ? '등록 중...' : '등록하기 →'}
           </button>

@@ -17,24 +17,24 @@ const ArticleCard: FunctionComponent<ArticleCardProps> = ({ article }) => {
     <Link
       href={`/articles/${article.id}`}
       onClick={markAsRead}
-      className="block border-b border-dm-line px-4 py-3.5 hover:bg-dm-surface"
+      className="block border-b border-border px-4 py-3.5 hover:bg-secondary"
     >
       <div className="flex items-start justify-between gap-2">
-        <h2 className="flex-1 truncate text-[15px] font-semibold text-dm-text">
+        <h2 className="flex-1 truncate text-[15px] font-semibold text-foreground">
           {article.title}
           {!isRead && (
-            <span className="ml-2 inline-block rounded bg-dm-red/20 px-1.5 py-0.5 font-dm-mono text-[9px] uppercase tracking-[0.5px] text-dm-red">
+            <span className="ml-2 inline-block rounded bg-primary/20 px-1.5 py-0.5 font-mono text-[9px] uppercase tracking-[0.5px] text-primary">
               NEW
             </span>
           )}
         </h2>
       </div>
 
-      <p className="mt-0.5 line-clamp-1 text-[12px] text-dm-text-muted">
+      <p className="mt-0.5 line-clamp-1 text-[12px] text-muted-foreground">
         {article.content}
       </p>
 
-      <div className="mt-2 flex items-center gap-3 font-dm-mono text-[11px] text-dm-text-faint">
+      <div className="mt-2 flex items-center gap-3 font-mono text-[11px] text-muted-foreground">
         <span>{article.author}</span>
         <span>·</span>
         <span>{new Date(article.createdAt).toLocaleDateString()}</span>

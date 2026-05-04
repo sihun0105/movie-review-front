@@ -7,17 +7,17 @@ export function DmLoginMarquee() {
           'linear-gradient(180deg, var(--dm-surface) 0%, var(--dm-bg) 100%)',
       }}
     >
-      <div className="font-dm-mono text-[10px] tracking-[2px] text-dm-amber">
+      <div className="font-mono text-[10px] tracking-[2px] text-yellow-400">
         NOW PLAYING
       </div>
-      <h1 className="mt-2.5 font-dm-display text-[32px] italic leading-[1.1] text-dm-text">
+      <h1 className="mt-2.5 font-dm-display text-[32px] italic leading-[1.1] text-foreground">
         영화에
         <br />
         취하는 시간,
         <br />
-        <span className="text-dm-red">drunkenmovie</span>.
+        <span className="text-primary">drunkenmovie</span>.
       </h1>
-      <p className="mt-4 text-[13px] leading-[1.6] text-dm-text-muted">
+      <p className="mt-4 text-[13px] leading-[1.6] text-muted-foreground">
         리뷰를 쓰고, 별점을 남기고,
         <br />
         같이 볼 사람을 만나요.

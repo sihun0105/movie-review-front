@@ -4,9 +4,9 @@ import { MatchApplication } from '@/lib/type'
 import { FunctionComponent } from 'react'
 
 const statusLabel: Record<string, { text: string; cls: string }> = {
-  pending: { text: '대기', cls: 'text-dm-amber border-dm-amber/50 bg-dm-amber/10' },
+  pending: { text: '대기', cls: 'text-yellow-400 border-yellow-400/50 bg-dm-amber/10' },
   accepted: { text: '승인', cls: 'text-green-400 border-green-400/50 bg-green-400/10' },
-  rejected: { text: '거절', cls: 'text-dm-red border-dm-red/50 bg-dm-red/10' },
+  rejected: { text: '거절', cls: 'text-primary border-primary/50 bg-primary/10' },
 }
 
 interface MatchApplicationRowProps {
@@ -25,25 +25,25 @@ const MatchApplicationRow: FunctionComponent<MatchApplicationRowProps> = ({
   const badge = statusLabel[application.status] ?? statusLabel.pending
 
   return (
-    <div className="border-b border-dm-line px-5 py-4">
+    <div className="border-b border-border px-5 py-4">
       <div className="flex items-start justify-between gap-3">
         <div className="min-w-0 flex-1">
           <div className="flex items-center gap-2">
-            <span className="text-[14px] font-semibold text-dm-text">
+            <span className="text-[14px] font-semibold text-foreground">
               {application.applicantName}
             </span>
             <span
-              className={`border px-1.5 py-0.5 font-dm-mono text-[9px] uppercase tracking-[0.5px] ${badge.cls}`}
+              className={`border px-1.5 py-0.5 font-mono text-[9px] uppercase tracking-[0.5px] ${badge.cls}`}
             >
               {badge.text}
             </span>
           </div>
           {application.message && (
-            <p className="mt-1 text-[13px] text-dm-text-muted">
+            <p className="mt-1 text-[13px] text-muted-foreground">
               {application.message}
             </p>
           )}
-          <div className="mt-1 font-dm-mono text-[10px] text-dm-text-faint">
+          <div className="mt-1 font-mono text-[10px] text-muted-foreground">
             {new Date(application.createdAt).toLocaleDateString('ko-KR')}
           </div>
         </div>
@@ -53,13 +53,13 @@ const MatchApplicationRow: FunctionComponent<MatchApplicationRowProps> = ({
             <>
               <button
                 onClick={onAccept}
-                className="border border-green-500/50 px-2.5 py-1 font-dm-mono text-[11px] text-green-400 hover:bg-green-400/10"
+                className="border border-green-500/50 px-2.5 py-1 font-mono text-[11px] text-green-400 hover:bg-green-400/10"
               >
                 승인
               </button>
               <button
                 onClick={onReject}
-                className="border border-dm-line px-2.5 py-1 font-dm-mono text-[11px] text-dm-text-faint hover:border-dm-red hover:text-dm-red"
+                className="border border-border px-2.5 py-1 font-mono text-[11px] text-muted-foreground hover:border-primary hover:text-primary"
               >
                 거절
               </button>
@@ -68,7 +68,7 @@ const MatchApplicationRow: FunctionComponent<MatchApplicationRowProps> = ({
           {application.status === 'accepted' && (
             <button
               onClick={onChat}
-              className="border border-dm-amber/50 px-2.5 py-1 font-dm-mono text-[11px] text-dm-amber hover:bg-dm-amber/10"
+              className="border border-yellow-400/50 px-2.5 py-1 font-mono text-[11px] text-yellow-400 hover:bg-dm-amber/10"
             >
               채팅 →
             </button>

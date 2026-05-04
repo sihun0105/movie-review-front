@@ -15,7 +15,7 @@ const ActiveSection: FunctionComponent<ActiveSectionProps> = ({
   return (
     <div
       className={cn(
-        'fixed bottom-[72px] z-40 w-full max-w-[460px] border-t border-dm-line bg-dm-surface px-3 py-2',
+        'fixed bottom-[72px] z-40 w-full max-w-[460px] border-t border-border bg-secondary px-3 py-2',
         className,
       )}
     >

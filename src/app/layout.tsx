@@ -133,7 +133,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
               <div className="mx-auto flex min-h-screen w-full max-w-[460px] flex-col lg:max-w-[1400px] lg:flex-row lg:items-start">
                 <DmDesktopLeftNav />
 
-                <div className="flex w-full min-w-0 flex-1 flex-col lg:border-x lg:border-dm-line">
+                <div className="flex w-full min-w-0 flex-1 flex-col lg:border-x lg:border-border">
                   <div className="lg:hidden">
                     <DmAppBar />
                   </div>

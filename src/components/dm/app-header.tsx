@@ -19,14 +19,14 @@ export function AppHeader({ title, showBack, right, transparent }: AppHeaderProp
         'sticky top-0 left-0 right-0 z-10 flex h-[52px] items-center px-3.5',
         transparent
           ? 'absolute bg-transparent backdrop-blur-md'
-          : 'bg-dm-bg border-b border-dm-line',
+          : 'bg-background border-b border-border',
       )}
     >
       {showBack ? (
         <button
           onClick={() => router.back()}
           aria-label="뒤로"
-          className="flex h-[34px] w-[34px] items-center justify-center rounded-full bg-white/[0.06] text-dm-text"
+          className="flex h-[34px] w-[34px] items-center justify-center rounded-full bg-white/[0.06] text-foreground"
         >
           <svg width="8" height="14" viewBox="0 0 8 14">
             <path
@@ -42,7 +42,7 @@ export function AppHeader({ title, showBack, right, transparent }: AppHeaderProp
       ) : (
         <div className="w-[34px]" aria-hidden />
       )}
-      <div className="flex-1 text-center font-dm-display text-[17px] italic font-bold tracking-[-0.01em] text-dm-text">
+      <div className="flex-1 text-center font-dm-display text-[17px] italic font-bold tracking-[-0.01em] text-foreground">
         {title}
       </div>
       <div className="flex w-[34px] justify-end">{right}</div>

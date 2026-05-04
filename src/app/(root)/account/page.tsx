@@ -5,10 +5,10 @@ import { UpdateProfileModalContextProvider } from './hooks/use-update-profile-mo
 
 const Page: FunctionComponent = () => {
   return (
-    <main className="min-h-page bg-dm-bg pb-5 text-dm-text">
+    <main className="min-h-page pb-5">
       <UpdateProfileModalContextProvider>
-        <AccountSection />
         <ProfileSection />
+        <AccountSection />
       </UpdateProfileModalContextProvider>
     </main>
   )

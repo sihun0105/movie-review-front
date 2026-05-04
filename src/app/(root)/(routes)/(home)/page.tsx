@@ -1,10 +1,6 @@
 import { AppSkeleton } from '@/components/app/app-skeleton'
 import GoogleAd from '@/components/app/googleAd'
-import {
-  MatchHeroBanner,
-  TopFeaturedCard,
-  TopGridCard,
-} from '@/components/dm'
+import { MatchHeroBanner, MovieListCard } from '@/components/dm'
 import { Movie } from '@/modules/movie/movie.entity'
 import { MovieRepository } from '@/modules/movie/movie-repository'
 import { Metadata } from 'next'
@@ -37,20 +33,15 @@ export async function generateMetadata(): Promise<Metadata> {
   return {
     title: '영화 뭐함? 최신 영화 추천과 리뷰 | 영화뭐함',
     description,
-    keywords:
-      '영화 뭐함, 영화뭐함, 영화 추천, 최신 영화, 인기 영화, 영화 순위, 영화 평점, 영화 리뷰, 볼만한 영화, 어떤 영화',
-    openGraph: {
-      title: '영화 뭐함? 최신 영화 추천과 리뷰 | 영화뭐함',
-      description,
-    },
+    keywords: '영화 뭐함, 영화뭐함, 영화 추천, 최신 영화, 인기 영화, 영화 순위, 영화 평점, 영화 리뷰, 볼만한 영화, 어떤 영화',
+    openGraph: { title: '영화 뭐함? 최신 영화 추천과 리뷰 | 영화뭐함', description },
   }
 }
 
 const TODAY_LABEL = (() => {
   const d = new Date()
-  const m = String(d.getMonth() + 1).padStart(2, '0')
-  const day = String(d.getDate()).padStart(2, '0')
-  return `TONIGHT · ${m}.${day}`
+  const days = ['일', '월', '화', '수', '목', '금', '토']
+  return `${days[d.getDay()]} · ${String(d.getMonth() + 1).padStart(2, '0')}.${String(d.getDate()).padStart(2, '0')}`
 })()
 
 const Page: FunctionComponent = async () => {
@@ -60,31 +51,27 @@ const Page: FunctionComponent = async () => {
     return <AppSkeleton className="container min-h-[364px] p-6" />
   }
 
-  const sorted = [...data].sort(
-    (a, b) => (a.rank ?? 999) - (b.rank ?? 999),
-  )
+  const sorted = [...data].sort((a, b) => (a.rank ?? 999) - (b.rank ?? 999))
   const top10 = sorted.slice(0, 10)
-  const featured = top10[0]
-  const grid = top10.slice(1)
 
   return (
     <main className="pb-5">
-      <MatchHeroBanner todayLabel={TODAY_LABEL} liveCount={24} nearbyCount={7} />
+      <MatchHeroBanner todayLabel={TODAY_LABEL} liveCount={24} />
 
-      <div className="flex items-center gap-2 px-4 pb-2 pt-5">
+      <div className="flex items-center gap-2 px-4 pb-3 pt-5">
         <h2 className="text-[16px] font-semibold text-foreground">박스오피스</h2>
-        <span className="font-mono text-[11px] text-muted-foreground">KOFIC · TOP 10</span>
+        <span className="font-mono text-[10px] text-muted-foreground">KOFIC · TOP 10</span>
       </div>
 
-      {featured && <TopFeaturedCard movie={featured} />}
-
-      <div className="mx-4 mb-4 grid grid-cols-3 gap-3 md:grid-cols-4">
-        {grid.map((movie, i) => (
-          <TopGridCard key={movie.id} movie={movie} rank={i + 2} />
+      <div className="flex flex-col gap-2 px-4">
+        {top10.map((movie) => (
+          <MovieListCard key={movie.id} movie={movie} />
         ))}
       </div>
 
-      <GoogleAd />
+      <div className="mt-4">
+        <GoogleAd />
+      </div>
     </main>
   )
 }

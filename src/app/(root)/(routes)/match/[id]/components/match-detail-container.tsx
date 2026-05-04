@@ -73,7 +73,7 @@ const MatchDetailContainer = () => {
 
   if (status === 'loading' || isMatchLoading)
     return (
-      <div className="flex min-h-page items-center justify-center bg-dm-bg font-dm-mono text-[12px] text-dm-text-faint">
+      <div className="flex min-h-page items-center justify-center bg-background font-mono text-[12px] text-muted-foreground">
         loading...
       </div>
     )
@@ -82,12 +82,12 @@ const MatchDetailContainer = () => {
 
   if (matchError || !matchPost)
     return (
-      <div className="flex min-h-page flex-col items-center justify-center gap-4 bg-dm-bg text-dm-text">
-        <div className="font-dm-mono text-[11px] uppercase tracking-[1px] text-dm-red">Error</div>
-        <div className="text-[14px] text-dm-text-muted">매치 정보를 불러올 수 없습니다.</div>
+      <div className="flex min-h-page flex-col items-center justify-center gap-4 bg-background text-foreground">
+        <div className="font-mono text-[11px] uppercase tracking-[1px] text-primary">Error</div>
+        <div className="text-[14px] text-muted-foreground">매치 정보를 불러올 수 없습니다.</div>
         <button
           onClick={() => router.push('/match')}
-          className="border border-dm-line px-4 py-2 font-dm-mono text-[12px] text-dm-text-faint hover:border-dm-amber hover:text-dm-amber"
+          className="border border-border px-4 py-2 font-mono text-[12px] text-muted-foreground hover:border-primary hover:text-yellow-400"
         >
           목록으로 돌아가기
         </button>

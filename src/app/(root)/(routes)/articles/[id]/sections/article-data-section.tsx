@@ -43,17 +43,17 @@ const ArticleDataSection: FunctionComponent<ArticleDataSectionProps> = ({
     : ''
 
   return (
-    <section className="border-b border-dm-line px-5 py-5">
+    <section className="border-b border-border px-5 py-5">
       <ModifyArticleModal />
 
       <div className="flex items-start justify-between gap-2">
-        <h1 className="flex-1 text-[20px] font-bold leading-snug text-dm-text">
+        <h1 className="flex-1 text-[20px] font-bold leading-snug text-foreground">
           {data.title}
         </h1>
         {userId === data.userno && (
           <div className="flex shrink-0 gap-1.5">
             <button
-              className="border border-dm-line p-1.5 text-dm-text-muted hover:border-dm-amber hover:text-dm-amber"
+              className="border border-border p-1.5 text-muted-foreground hover:border-primary hover:text-yellow-400"
               onClick={() => {
                 setArticle(data)
                 setOpen(true)
@@ -62,7 +62,7 @@ const ArticleDataSection: FunctionComponent<ArticleDataSectionProps> = ({
               <Pencil className="h-3.5 w-3.5" />
             </button>
             <button
-              className="border border-dm-line p-1.5 text-dm-text-muted hover:border-dm-red hover:text-dm-red disabled:opacity-50"
+              className="border border-border p-1.5 text-muted-foreground hover:border-primary hover:text-primary disabled:opacity-50"
               onClick={handleDelete}
               disabled={isDeleting}
             >
@@ -72,13 +72,13 @@ const ArticleDataSection: FunctionComponent<ArticleDataSectionProps> = ({
         )}
       </div>
 
-      <div className="mt-2 flex items-center gap-2 font-dm-mono text-[11px] text-dm-text-faint">
+      <div className="mt-2 flex items-center gap-2 font-mono text-[11px] text-muted-foreground">
         <span>{data.author}</span>
         <span>·</span>
         <span>{dateStr}</span>
       </div>
 
-      <div className="mt-5 border-t border-dm-line pt-5 text-[14px] leading-relaxed text-dm-text-muted whitespace-pre-wrap">
+      <div className="mt-5 border-t border-border pt-5 text-[14px] leading-relaxed text-muted-foreground whitespace-pre-wrap">
         {data.content}
       </div>
     </section>

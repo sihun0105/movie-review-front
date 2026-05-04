@@ -48,12 +48,12 @@ export const MatchApplyDialog = ({
 
   return (
     <AlertDialog open={isOpen} onOpenChange={onClose}>
-      <AlertDialogContent className="rounded-none border border-dm-line-2 bg-dm-bg text-dm-text">
+      <AlertDialogContent className="border border-border bg-card text-foreground">
         <AlertDialogHeader>
-          <AlertDialogTitle className="font-dm-display italic text-dm-text">
+          <AlertDialogTitle className="text-foreground">
             매치 신청
           </AlertDialogTitle>
-          <AlertDialogDescription className="text-dm-text-muted">
+          <AlertDialogDescription className="text-muted-foreground">
             &quot;{matchTitle}&quot; 에 함께 영화보러 가기를 신청합니다.
           </AlertDialogDescription>
         </AlertDialogHeader>
@@ -61,7 +61,7 @@ export const MatchApplyDialog = ({
         <div className="py-2">
           <Label
             htmlFor="message"
-            className="font-dm-mono text-[10px] uppercase tracking-[0.5px] text-dm-text-muted"
+            className="font-mono text-[10px] uppercase tracking-[0.5px] text-muted-foreground"
           >
             신청 메시지
           </Label>
@@ -71,21 +71,21 @@ export const MatchApplyDialog = ({
             onChange={(e) => setMessage(e.target.value)}
             placeholder="자기소개나 영화에 대한 이야기를 간단히 남겨주세요."
             rows={4}
-            className="mt-2 rounded-none border border-dm-line-2 bg-dm-surface text-[13px] text-dm-text placeholder:text-dm-text-faint focus-visible:ring-1 focus-visible:ring-dm-amber focus-visible:ring-offset-0"
+            className="mt-2 border border-border bg-secondary text-[13px] text-foreground placeholder:text-muted-foreground focus-visible:ring-1 focus-visible:ring-ring focus-visible:ring-offset-0"
           />
         </div>
 
         <AlertDialogFooter>
           <AlertDialogCancel
             onClick={onClose}
-            className="rounded-none border-dm-line-2 bg-transparent text-dm-text-muted hover:bg-dm-surface hover:text-dm-text"
+            className="border-border bg-transparent text-muted-foreground hover:bg-secondary hover:text-foreground"
           >
             취소
           </AlertDialogCancel>
           <Button
             onClick={handleApply}
             disabled={isLoading}
-            className="rounded-none border border-dm-red bg-dm-red font-semibold text-white hover:bg-dm-red-deep"
+            className="border border-primary bg-primary font-semibold text-primary-foreground hover:bg-primary/90"
           >
             {isLoading ? '신청 중...' : '🎟 신청하기'}
           </Button>
