@@ -4,7 +4,7 @@ import { FormControl, FormField, FormItem, FormMessage } from '@/components/ui/f
 import { FunctionComponent, useEffect, useState } from 'react'
 import { useRegisterFormContext } from '../hook/register-form-context'
 
-const inputCls = 'w-full border border-border bg-secondary px-3.5 py-3 text-[14px] text-foreground placeholder:text-muted-foreground focus:border-yellow-400 focus:outline-none'
+const inputCls = 'w-full border border-border bg-secondary px-3.5 py-3 text-[14px] text-foreground placeholder:text-muted-foreground focus:border-primary focus:outline-none'
 const labelCls = 'mb-2 block font-mono text-[10px] uppercase tracking-[1px] text-muted-foreground'
 
 const rules = [

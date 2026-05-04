@@ -53,7 +53,7 @@ const ArticleDataSection: FunctionComponent<ArticleDataSectionProps> = ({
         {userId === data.userno && (
           <div className="flex shrink-0 gap-1.5">
             <button
-              className="border border-border p-1.5 text-muted-foreground hover:border-primary hover:text-yellow-400"
+              className="border border-border p-1.5 text-muted-foreground hover:border-primary hover:text-primary"
               onClick={() => {
                 setArticle(data)
                 setOpen(true)

@@ -87,7 +87,7 @@ const MatchDetailContainer = () => {
         <div className="text-[14px] text-muted-foreground">매치 정보를 불러올 수 없습니다.</div>
         <button
           onClick={() => router.push('/match')}
-          className="border border-border px-4 py-2 font-mono text-[12px] text-muted-foreground hover:border-primary hover:text-yellow-400"
+          className="border border-border px-4 py-2 font-mono text-[12px] text-muted-foreground hover:border-primary hover:text-primary"
         >
           목록으로 돌아가기
         </button>

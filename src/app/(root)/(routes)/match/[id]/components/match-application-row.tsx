@@ -4,7 +4,7 @@ import { MatchApplication } from '@/lib/type'
 import { FunctionComponent } from 'react'
 
 const statusLabel: Record<string, { text: string; cls: string }> = {
-  pending: { text: '대기', cls: 'text-yellow-400 border-yellow-400/50 bg-dm-amber/10' },
+  pending: { text: '대기', cls: 'text-muted-foreground border-border bg-secondary' },
   accepted: { text: '승인', cls: 'text-green-400 border-green-400/50 bg-green-400/10' },
   rejected: { text: '거절', cls: 'text-primary border-primary/50 bg-primary/10' },
 }
@@ -68,7 +68,7 @@ const MatchApplicationRow: FunctionComponent<MatchApplicationRowProps> = ({
           {application.status === 'accepted' && (
             <button
               onClick={onChat}
-              className="border border-yellow-400/50 px-2.5 py-1 font-mono text-[11px] text-yellow-400 hover:bg-dm-amber/10"
+              className="border border-border px-2.5 py-1 font-mono text-[11px] text-foreground hover:bg-accent"
             >
               채팅 →
             </button>

@@ -20,7 +20,7 @@ interface MatchViewerViewProps {
 
 function ApplicationStatusBadge({ status }: { status: string }) {
   const map = {
-    pending: { label: '신청 대기 중', className: 'border-yellow-400 text-yellow-400' },
+    pending: { label: '신청 대기 중', className: 'border-border text-muted-foreground' },
     accepted: {
       label: '신청 승인됨',
       className: 'border-[#6fc96f] text-[#6fc96f]',

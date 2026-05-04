@@ -65,19 +65,14 @@ export function DmMatchDetailCard({ match }: DmMatchDetailCardProps) {
   const emptyCount = Math.max(0, cap - joined)
 
   return (
-    <div
-      className="relative border border-border p-[18px]"
-      style={{
-        background: 'linear-gradient(180deg, var(--dm-surface) 0%, #0e0e12 100%)',
-      }}
-    >
+    <div className="relative border border-border bg-card p-[18px]">
       <FilmStrip position="top" />
 
       <Label>WHEN</Label>
       <div className="mt-1 font-dm-rank text-[28px] leading-none text-foreground">
         {m}.{d} {dow}
       </div>
-      <div className="mt-0.5 font-mono text-[14px] text-yellow-400">
+      <div className="mt-0.5 font-mono text-[14px] text-primary">
         {time}{' '}
         <span className="text-[11px] text-muted-foreground">
           · D-{dd >= 0 ? dd : 0}
@@ -95,7 +90,7 @@ export function DmMatchDetailCard({ match }: DmMatchDetailCardProps) {
       <DashedDivider />
 
       <Label>
-        WHO · <span className="text-yellow-400">{joined}</span>/{cap}명
+        WHO · <span className="text-primary">{joined}</span>/{cap}명
       </Label>
       <div className="mt-2 flex flex-wrap gap-1.5">
         {Array.from({ length: joined }).map((_, i) => (

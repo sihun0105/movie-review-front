@@ -31,7 +31,7 @@ const MovieCarousel: FunctionComponent<MovieCarouselProps> = ({ data, title }) =
               setOpen(true)
               setTitle(title)
             }}
-            className="shrink-0 border border-border bg-secondary px-4 py-3 font-mono text-[11px] text-muted-foreground hover:border-primary hover:text-yellow-400"
+            className="shrink-0 border border-border bg-secondary px-4 py-3 font-mono text-[11px] text-muted-foreground hover:border-primary hover:text-primary"
           >
             썸네일
           </button>

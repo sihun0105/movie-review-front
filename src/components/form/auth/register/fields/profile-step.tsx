@@ -25,7 +25,7 @@ const ProfileStep: FunctionComponent = () => {
           <div>
             <div className={labelCls}>
               성별{' '}
-              <span className="text-yellow-400 normal-case tracking-normal">
+              <span className="text-primary normal-case tracking-normal">
                 · 매칭에 사용
               </span>
             </div>

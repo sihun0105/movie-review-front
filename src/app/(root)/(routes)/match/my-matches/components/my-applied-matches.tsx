@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation'
 import { FunctionComponent } from 'react'
 
 const statusBadge: Record<string, { text: string; cls: string }> = {
-  pending: { text: '대기', cls: 'text-yellow-400 border-yellow-400/50' },
+  pending: { text: '대기', cls: 'text-muted-foreground border-border' },
   accepted: { text: '승인', cls: 'text-green-400 border-green-400/50' },
   rejected: { text: '거절', cls: 'text-primary border-primary/50' },
 }
@@ -39,7 +39,7 @@ const MyAppliedMatches: FunctionComponent<MyAppliedMatchesProps> = ({
                 <div className="flex items-center gap-2">
                   <button
                     onClick={() => router.push(`/match/${app.matchPostId}`)}
-                    className="text-[14px] font-semibold text-foreground hover:text-yellow-400"
+                    className="text-[14px] font-semibold text-foreground hover:text-primary"
                   >
                     매칭 상세보기 →
                   </button>
