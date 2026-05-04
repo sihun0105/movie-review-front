@@ -35,7 +35,7 @@ const CommentForm: FunctionComponent<CommentFormProps> = ({ id }) => {
       <button
         type="submit"
         disabled={isCreatingComment}
-        className="shrink-0 bg-dm-red px-3 py-2 font-dm-mono text-[11px] uppercase tracking-[0.5px] text-white disabled:bg-dm-surface-2 disabled:text-dm-text-faint"
+        className="shrink-0 bg-primary px-3 py-2 font-mono text-[11px] uppercase tracking-[0.5px] text-white disabled:bg-secondary disabled:text-muted-foreground"
       >
         등록
       </button>

@@ -18,8 +18,8 @@ function FilmStrip({ position }: { position: 'top' | 'bottom' }) {
       aria-hidden
       className={`-mx-[18px] h-3 ${
         position === 'top'
-          ? '-mt-[18px] mb-3.5 border-b border-dm-line-2'
-          : 'mt-3.5 -mb-[18px] border-t border-dm-line-2'
+          ? '-mt-[18px] mb-3.5 border-b border-border'
+          : 'mt-3.5 -mb-[18px] border-t border-border'
       }`}
       style={{
         background:
@@ -31,7 +31,7 @@ function FilmStrip({ position }: { position: 'top' | 'bottom' }) {
 
 function Label({ children }: { children: React.ReactNode }) {
   return (
-    <div className="font-dm-mono text-[10px] uppercase tracking-[1px] text-dm-text-muted">
+    <div className="font-mono text-[10px] uppercase tracking-[1px] text-muted-foreground">
       {children}
     </div>
   )
@@ -40,7 +40,7 @@ function Label({ children }: { children: React.ReactNode }) {
 function DashedDivider() {
   return (
     <div
-      className="my-3.5 border-t border-dashed border-dm-line-2"
+      className="my-3.5 border-t border-dashed border-border"
       aria-hidden
     />
   )
@@ -66,7 +66,7 @@ export function DmMatchDetailCard({ match }: DmMatchDetailCardProps) {
 
   return (
     <div
-      className="relative border border-dm-line-2 p-[18px]"
+      className="relative border border-border p-[18px]"
       style={{
         background: 'linear-gradient(180deg, var(--dm-surface) 0%, #0e0e12 100%)',
       }}
@@ -74,12 +74,12 @@ export function DmMatchDetailCard({ match }: DmMatchDetailCardProps) {
       <FilmStrip position="top" />
 
       <Label>WHEN</Label>
-      <div className="mt-1 font-dm-rank text-[28px] leading-none text-dm-text">
+      <div className="mt-1 font-dm-rank text-[28px] leading-none text-foreground">
         {m}.{d} {dow}
       </div>
-      <div className="mt-0.5 font-dm-mono text-[14px] text-dm-amber">
+      <div className="mt-0.5 font-mono text-[14px] text-yellow-400">
         {time}{' '}
-        <span className="text-[11px] text-dm-text-faint">
+        <span className="text-[11px] text-muted-foreground">
           · D-{dd >= 0 ? dd : 0}
         </span>
       </div>
@@ -87,21 +87,21 @@ export function DmMatchDetailCard({ match }: DmMatchDetailCardProps) {
       <DashedDivider />
 
       <Label>WHERE</Label>
-      <div className="mt-1 text-[14px] text-dm-text">{match.theaterName}</div>
-      <div className="mt-0.5 text-[11px] text-dm-text-muted">
+      <div className="mt-1 text-[14px] text-foreground">{match.theaterName}</div>
+      <div className="mt-0.5 text-[11px] text-muted-foreground">
         {match.location}
       </div>
 
       <DashedDivider />
 
       <Label>
-        WHO · <span className="text-dm-amber">{joined}</span>/{cap}명
+        WHO · <span className="text-yellow-400">{joined}</span>/{cap}명
       </Label>
       <div className="mt-2 flex flex-wrap gap-1.5">
         {Array.from({ length: joined }).map((_, i) => (
           <span
             key={`f-${i}`}
-            className="flex h-9 w-9 items-center justify-center rounded-full border border-dm-line-2 bg-dm-surface-2 text-[13px] font-bold text-dm-text"
+            className="flex h-9 w-9 items-center justify-center rounded-full border border-border bg-secondary text-[13px] font-bold text-foreground"
           >
             {i === 0 ? match.author?.charAt(0).toUpperCase() ?? '?' : '·'}
           </span>
@@ -109,7 +109,7 @@ export function DmMatchDetailCard({ match }: DmMatchDetailCardProps) {
         {Array.from({ length: emptyCount }).map((_, i) => (
           <span
             key={`e-${i}`}
-            className="flex h-9 w-9 items-center justify-center rounded-full border border-dashed border-dm-line-2 text-[13px] text-dm-text-faint"
+            className="flex h-9 w-9 items-center justify-center rounded-full border border-dashed border-border text-[13px] text-muted-foreground"
           >
             ?
           </span>

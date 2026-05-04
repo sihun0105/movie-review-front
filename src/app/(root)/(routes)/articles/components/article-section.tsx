@@ -11,7 +11,7 @@ const ArticleSection: FunctionComponent = () => {
 
   if (isLoading && data.length === 0)
     return (
-      <div className="flex h-[40vh] items-center justify-center font-dm-mono text-[12px] text-dm-text-faint">
+      <div className="flex h-[40vh] items-center justify-center font-mono text-[12px] text-muted-foreground">
         loading...
       </div>
     )
@@ -24,7 +24,7 @@ const ArticleSection: FunctionComponent = () => {
       next={next}
       hasMore={hasMore}
       loader={
-        <div className="py-4 text-center font-dm-mono text-[11px] text-dm-text-faint">
+        <div className="py-4 text-center font-mono text-[11px] text-muted-foreground">
           loading...
         </div>
       }
@@ -35,7 +35,7 @@ const ArticleSection: FunctionComponent = () => {
         ))}
       </div>
       {error && (
-        <div className="py-4 text-center font-dm-mono text-[11px] text-dm-red">
+        <div className="py-4 text-center font-mono text-[11px] text-primary">
           데이터를 불러오는데 실패했습니다.
         </div>
       )}

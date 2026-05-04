@@ -2,8 +2,8 @@ import { FormControl, FormField, FormItem, FormMessage } from '@/components/ui/f
 import { FunctionComponent } from 'react'
 import { useMatchPostFormContext } from '../hooks/match-post-form-context'
 
-const inputCls = 'w-full border border-dm-line-2 bg-dm-surface px-3.5 py-3 text-[14px] text-dm-text placeholder:text-dm-text-faint focus:border-dm-amber focus:outline-none'
-const labelCls = 'mb-1.5 block font-dm-mono text-[10px] uppercase tracking-[1px] text-dm-text-muted'
+const inputCls = 'w-full border border-border bg-secondary px-3.5 py-3 text-[14px] text-foreground placeholder:text-muted-foreground focus:border-yellow-400 focus:outline-none'
+const labelCls = 'mb-1.5 block font-mono text-[10px] uppercase tracking-[1px] text-muted-foreground'
 
 const TitleInputField: FunctionComponent = () => {
   const { form } = useMatchPostFormContext()

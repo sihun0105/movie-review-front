@@ -7,7 +7,7 @@ interface StarsProps {
 export function Stars({ value, size = 12, className }: StarsProps) {
   const filled = Math.round(value)
   return (
-    <span className={`inline-flex gap-[1px] text-dm-amber ${className ?? ''}`}>
+    <span className={`inline-flex gap-[1px] text-yellow-400 ${className ?? ''}`}>
       {[1, 2, 3, 4, 5].map((i) => (
         <svg
           key={i}

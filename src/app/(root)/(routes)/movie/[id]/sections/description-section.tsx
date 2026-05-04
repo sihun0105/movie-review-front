@@ -16,10 +16,10 @@ const DescriptionSection: FunctionComponent<DescriptionSectionProps> = ({
   const { data, isLoading, error } = useGetMovieDetail(id)
 
   if (isLoading)
-    return <p className="text-center text-dm-text-muted">로딩 중...</p>
+    return <p className="text-center text-muted-foreground">로딩 중...</p>
   if (error || !data)
     return (
-      <p className="text-center text-dm-red">데이터를 불러오지 못했습니다.</p>
+      <p className="text-center text-primary">데이터를 불러오지 못했습니다.</p>
     )
 
   return (

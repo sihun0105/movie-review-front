@@ -27,7 +27,7 @@ export function DmChatTicketPin({
 
   return (
     <div
-      className="mx-3.5 mt-2.5 flex items-center gap-2 border border-dm-red px-2.5 py-2"
+      className="mx-3.5 mt-2.5 flex items-center gap-2 border border-primary px-2.5 py-2"
       style={{
         background:
           'linear-gradient(90deg, rgba(143,31,26,0.13) 0%, transparent 100%)',
@@ -37,15 +37,15 @@ export function DmChatTicketPin({
         🎟
       </span>
       <div className="min-w-0 flex-1">
-        <div className="truncate text-[11px] font-semibold text-dm-text">
+        <div className="truncate text-[11px] font-semibold text-foreground">
           {movieTitle}
         </div>
-        <div className="font-dm-mono text-[10px] text-dm-text-muted">
+        <div className="font-mono text-[10px] text-muted-foreground">
           {m}.{d} · {time}
           {venueShort && ` · ${venueShort}`}
         </div>
       </div>
-      <span className="font-dm-rank text-[18px] leading-none text-dm-amber">
+      <span className="font-dm-rank text-[18px] leading-none text-yellow-400">
         D-{dd >= 0 ? dd : 0}
       </span>
     </div>

@@ -16,14 +16,14 @@ const LikeSection: FunctionComponent<LikeSectionProps> = ({ id }) => {
   const dislikes = data?.dislikes || 0
 
   return (
-    <div className="flex gap-3 border-b border-dm-line px-5 py-4">
+    <div className="flex gap-3 border-b border-border px-5 py-4">
       <button
         onClick={() => { setSelected('like'); update('like') }}
         disabled={isValidating}
-        className={`flex items-center gap-1.5 border px-3 py-1.5 font-dm-mono text-[12px] transition ${
+        className={`flex items-center gap-1.5 border px-3 py-1.5 font-mono text-[12px] transition ${
           selected === 'like'
-            ? 'border-dm-amber bg-dm-amber/10 text-dm-amber'
-            : 'border-dm-line text-dm-text-faint hover:border-dm-amber hover:text-dm-amber'
+            ? 'border-yellow-400 bg-dm-amber/10 text-yellow-400'
+            : 'border-border text-muted-foreground hover:border-primary hover:text-yellow-400'
         }`}
       >
         👍 {likes}
@@ -31,10 +31,10 @@ const LikeSection: FunctionComponent<LikeSectionProps> = ({ id }) => {
       <button
         onClick={() => { setSelected('dislike'); update('dislike') }}
         disabled={isValidating}
-        className={`flex items-center gap-1.5 border px-3 py-1.5 font-dm-mono text-[12px] transition ${
+        className={`flex items-center gap-1.5 border px-3 py-1.5 font-mono text-[12px] transition ${
           selected === 'dislike'
-            ? 'border-dm-red bg-dm-red/10 text-dm-red'
-            : 'border-dm-line text-dm-text-faint hover:border-dm-red hover:text-dm-red'
+            ? 'border-primary bg-primary/10 text-primary'
+            : 'border-border text-muted-foreground hover:border-primary hover:text-primary'
         }`}
       >
         👎 {dislikes}
