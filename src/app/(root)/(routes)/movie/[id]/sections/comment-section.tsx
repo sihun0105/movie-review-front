@@ -34,19 +34,17 @@ const CommentSection: FunctionComponent<CommentSectionProps> = ({ id }) => {
     : 0
 
   return (
-    <section className="bg-dm-bg px-4 pb-10 text-dm-text">
+    <section className="px-4 pb-10">
       <SectionHead meta={totalCount.toLocaleString()}>리뷰</SectionHead>
 
-      {/* 인라인 댓글 입력 */}
-      <div className="mb-5 border border-dm-line bg-dm-surface">
+      <div className="mb-5 rounded-lg border border-border bg-card">
         <CommentFormProvider>
           <CommentForm id={id} />
         </CommentFormProvider>
       </div>
 
-      {/* 댓글 목록 */}
       {isLoading ? (
-        <div className="flex h-[20vh] items-center justify-center font-dm-mono text-[12px] text-dm-text-faint">
+        <div className="flex h-[20vh] items-center justify-center font-mono text-[12px] text-muted-foreground">
           loading...
         </div>
       ) : (
@@ -55,7 +53,7 @@ const CommentSection: FunctionComponent<CommentSectionProps> = ({ id }) => {
           next={next}
           hasMore={hasMore}
           loader={
-            <div className="py-3 text-center font-dm-mono text-[11px] text-dm-text-faint">
+            <div className="py-3 text-center font-mono text-[11px] text-muted-foreground">
               loading...
             </div>
           }
@@ -88,7 +86,7 @@ const CommentSection: FunctionComponent<CommentSectionProps> = ({ id }) => {
       </ModifyCommentFormProvider>
 
       {error && (
-        <div className="py-4 text-center font-dm-mono text-[11px] text-dm-red">
+        <div className="py-4 text-center font-mono text-[11px] text-destructive">
           데이터를 불러오는데 실패했습니다.
         </div>
       )}

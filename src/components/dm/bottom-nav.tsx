@@ -9,7 +9,6 @@ interface NavItem {
   label: string
   href: string
   icon: JSX.Element
-  isMatch?: boolean
 }
 
 const ITEMS: NavItem[] = [
@@ -23,8 +22,7 @@ const ITEMS: NavItem[] = [
     key: 'match',
     label: '매칭',
     href: '/match',
-    icon: <path d="M4 7h16M4 12h10M4 17h7M18 14l3 3-3 3M16 17h5" />,
-    isMatch: true,
+    icon: <path d="M4 7h16M4 12h10M4 17h7" />,
   },
   {
     key: 'chat',
@@ -50,48 +48,33 @@ function activeKey(pathname: string): NavItem['key'] {
 export function DmBottomNav() {
   const pathname = usePathname() ?? '/'
   const active = activeKey(pathname)
+
   return (
-    <nav className="sticky bottom-0 z-20 flex h-[72px] border-t border-dm-line bg-dm-bg/[0.92] backdrop-blur-md">
+    <nav className="sticky bottom-0 z-20 grid h-16 grid-cols-4 border-t border-border bg-background">
       {ITEMS.map((it) => {
         const isActive = active === it.key
-        const accentRed = it.isMatch && isActive
         return (
           <Link
             key={it.key}
             href={it.href}
             className={cn(
-              'relative flex flex-1 flex-col items-center gap-0.5 pt-2.5',
-              isActive
-                ? accentRed
-                  ? 'text-dm-red'
-                  : 'text-dm-text'
-                : 'text-dm-text-faint',
+              'flex flex-col items-center justify-center gap-0.5 text-[11px] font-medium transition-colors',
+              isActive ? 'text-foreground' : 'text-muted-foreground hover:text-foreground',
             )}
           >
-            {isActive && (
-              <span
-                className={cn(
-                  'absolute top-0 h-0.5 w-7',
-                  accentRed ? 'bg-dm-red' : 'bg-dm-amber',
-                )}
-                aria-hidden
-              />
-            )}
             <svg
-              width="22"
-              height="22"
+              width="20"
+              height="20"
               viewBox="0 0 24 24"
-              fill={accentRed ? 'currentColor' : 'none'}
+              fill="none"
               stroke="currentColor"
-              strokeWidth="1.6"
+              strokeWidth="1.8"
               strokeLinecap="round"
               strokeLinejoin="round"
             >
               {it.icon}
             </svg>
-            <span className="font-dm-mono text-[10px] uppercase tracking-[0.5px]">
-              {it.label}
-            </span>
+            {it.label}
           </Link>
         )
       })}
