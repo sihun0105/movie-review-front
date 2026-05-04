@@ -32,13 +32,13 @@ const CommentForm: FunctionComponent<CommentFormProps> = ({ id }) => {
     <Form {...form}>
       <form onSubmit={handleSubmit}>
         <CommentInputField />
-        <div className="flex justify-end border-t border-dm-line px-3 py-2">
+        <div className="flex justify-end border-t border-border px-3 py-2">
           <button
             type="submit"
             disabled={isCreatingComment}
-            className="bg-dm-red px-4 py-1.5 font-dm-mono text-[11px] uppercase tracking-[0.5px] text-white disabled:bg-dm-surface-2 disabled:text-dm-text-faint"
+            className="h-8 rounded-md bg-primary px-4 font-mono text-[12px] text-primary-foreground disabled:opacity-50"
           >
-            {isCreatingComment ? '등록 중...' : '등록 →'}
+            {isCreatingComment ? '등록 중...' : '등록'}
           </button>
         </div>
       </form>

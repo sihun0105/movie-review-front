@@ -1,102 +1,54 @@
 /*
- * 다크 테마 토큰 — `[data-theme='dark']` (AppThemeProvider 토글) + `.dark` (next-themes 호환).
- * 라이트 토큰은 globals.css 의 `:root` 블록.
- *
- * NOTE: @layer base 로 감싸지 않는다. postcss-import 가 globals.css 최상단에
- * inline 시키면 @tailwind base 보다 먼저 @layer 가 등장해 빌드 실패.
+ * shadcn dark (zinc) 토큰 — 앱 항상 다크 모드.
+ * :root 에 직접 override — [data-theme='dark'] 와 .dark 모두 동일하게 적용.
  */
 
-[data-theme='dark'] {
-    --background: 0 0% 10%;
-    --foreground: 222.2 84% 96.1%;
-
-    --muted: 210 40% 4.9%;
-    --muted-foreground: 215.4 16.3% 86.9%;
-
-    --popover: 0 0% 10%;
-    --popover-foreground: 222.2 84% 96.1%;
-
-    --card: 0 0% 10%;
-    --card-foreground: 222.2 84% 96.1%;
-
-    --border: 214.3 31.8% 8.6%;
-    --input: var(--gray-006);
-
-    --primary: var(--blue-002);
-    --primary-foreground: 0 0% 98%;
-
-    --secondary: 210 40% 4.9%;
-    --secondary-foreground: 222.2 47.4% 96.1%;
-
-    --accent: 210 40% 4.9%;
-    --accent-foreground: 222.2 47.4% 96.1%;
-
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 4.9%;
-
-    --ring: 215 20.2% 34.9%;
-
-    --gray-001: #000000;
-    --gray-002: #0a0a0a;
-    --gray-003: #141414;
-    --gray-004: #1e1e1e;
-    --gray-005: #282828;
-    --gray-006: #333333;
-    --gray-007: #4d4d4d;
-    --gray-010: #ffffff;
-
-    /* Button variants - Dark mode */
-    --button-primary: var(--blue-002);
-    --button-primary-hover: var(--blue-001);
-    --button-primary-text: #ffffff;
-    --button-outline-border: #374151;
-    --button-outline-border-hover: #6b7280;
-    --button-outline-bg: transparent;
-    --button-outline-bg-hover: #1f2937;
-    --button-outline-text: #d1d5db;
-    --button-link: var(--blue-001);
-    --button-link-hover: var(--blue-002);
-    --button-disabled: #4b5563;
-    --button-disabled-text: #9ca3af;
-}
-
+:root,
+[data-theme='dark'],
 .dark {
-    --background: 0 0% 3.9%;
+    /* shadcn zinc dark */
+    --background: 240 10% 3.9%;
     --foreground: 0 0% 98%;
-    --card: 0 0% 3.9%;
+
+    --card: 240 10% 5.5%;
     --card-foreground: 0 0% 98%;
-    --popover: 0 0% 3.9%;
+
+    --popover: 240 10% 5.5%;
     --popover-foreground: 0 0% 98%;
-    --primary: var(--blue-002);
+
+    --primary: 0 72% 51%;
     --primary-foreground: 0 0% 98%;
-    --secondary: 0 0% 14.9%;
+
+    --secondary: 240 3.7% 15.9%;
     --secondary-foreground: 0 0% 98%;
-    --muted: 0 0% 14.9%;
-    --muted-foreground: 0 0% 63.9%;
-    --accent: 0 0% 14.9%;
+
+    --muted: 240 3.7% 15.9%;
+    --muted-foreground: 240 5% 64.9%;
+
+    --accent: 240 3.7% 15.9%;
     --accent-foreground: 0 0% 98%;
+
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 0 0% 98%;
-    --border: 0 0% 14.9%;
-    --input: 0 0% 14.9%;
-    --ring: 0 0% 83.1%;
-    --chart-1: 220 70% 50%;
-    --chart-2: 160 60% 45%;
-    --chart-3: 30 80% 55%;
-    --chart-4: 280 65% 60%;
-    --chart-5: 340 75% 55%;
 
-    /* Button variants - Dark mode (.dark class) */
-    --button-primary: var(--blue-002);
-    --button-primary-hover: var(--blue-001);
-    --button-primary-text: #ffffff;
-    --button-outline-border: #374151;
-    --button-outline-border-hover: #6b7280;
-    --button-outline-bg: transparent;
-    --button-outline-bg-hover: #1f2937;
-    --button-outline-text: #d1d5db;
-    --button-link: var(--blue-001);
-    --button-link-hover: var(--blue-002);
-    --button-disabled: #4b5563;
-    --button-disabled-text: #9ca3af;
+    --border: 240 3.7% 15.9%;
+    --input: 240 3.7% 15.9%;
+    --ring: 0 72% 51%;
+
+    --radius: 0.5rem;
+
+    /* dm 토큰 — shadcn 토큰과 매핑 */
+    --dm-bg: hsl(240 10% 3.9%);
+    --dm-bg-deep: hsl(240 10% 2%);
+    --dm-surface: hsl(240 10% 5.5%);
+    --dm-surface-2: hsl(240 3.7% 10%);
+    --dm-line: hsl(240 3.7% 15.9%);
+    --dm-line-2: hsl(240 3.7% 20%);
+    --dm-text: hsl(0 0% 98%);
+    --dm-text-muted: hsl(240 5% 64.9%);
+    --dm-text-faint: hsl(240 5% 45%);
+    --dm-red: hsl(0 72% 51%);
+    --dm-red-deep: hsl(0 72% 36%);
+    --dm-amber: hsl(38 92% 50%);
+    --dm-amber-light: hsl(38 92% 65%);
 }

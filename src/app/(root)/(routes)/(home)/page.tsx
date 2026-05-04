@@ -68,22 +68,17 @@ const Page: FunctionComponent = async () => {
   const grid = top10.slice(1)
 
   return (
-    <main className="bg-dm-bg pb-5 text-dm-text">
+    <main className="pb-5">
       <MatchHeroBanner todayLabel={TODAY_LABEL} liveCount={24} nearbyCount={7} />
 
-      <div className="flex items-baseline px-4 pt-3 pb-2">
-        <h2 className="font-dm-display text-[18px] font-bold">
-          박스오피스{' '}
-          <span className="italic text-dm-red">TOP 10</span>
-        </h2>
-        <span className="ml-auto font-dm-mono text-[10px] tracking-[0.5px] text-dm-text-faint">
-          KOFIC
-        </span>
+      <div className="flex items-center gap-2 px-4 pb-2 pt-5">
+        <h2 className="text-[16px] font-semibold text-foreground">박스오피스</h2>
+        <span className="font-mono text-[11px] text-muted-foreground">KOFIC · TOP 10</span>
       </div>
 
       {featured && <TopFeaturedCard movie={featured} />}
 
-      <div className="mx-4 mb-4 grid grid-cols-3 gap-2 md:grid-cols-4">
+      <div className="mx-4 mb-4 grid grid-cols-3 gap-3 md:grid-cols-4">
         {grid.map((movie, i) => (
           <TopGridCard key={movie.id} movie={movie} rank={i + 2} />
         ))}

@@ -15,7 +15,7 @@ const CommentInputField: FunctionComponent = () => {
               {...field}
               rows={3}
               placeholder="이 영화에 대해 쓰기..."
-              className="w-full resize-none bg-transparent px-3 py-3 text-[13px] text-dm-text placeholder:text-dm-text-faint focus:outline-none"
+              className="w-full resize-none bg-transparent px-3 py-3 text-[13px] text-foreground placeholder:text-muted-foreground focus:outline-none"
             />
           </FormControl>
         </FormItem>
