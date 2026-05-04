@@ -40,7 +40,7 @@ export function DmChatBubble({
         <span
           aria-hidden
           className={cn(
-            'flex h-6 w-6 shrink-0 items-center justify-center self-end rounded-full border border-dm-line-2 bg-dm-surface-2 text-[10px] font-bold text-dm-text',
+            'flex h-6 w-6 shrink-0 items-center justify-center self-end rounded-full border border-border bg-secondary text-[10px] font-bold text-foreground',
             !showAvatar && 'opacity-0',
           )}
         >
@@ -49,7 +49,7 @@ export function DmChatBubble({
       )}
       <div className="flex max-w-[72%] flex-col gap-0.5">
         {!isMine && senderName && showAvatar && (
-          <span className="px-1 text-[10px] text-dm-text-faint">
+          <span className="px-1 text-[10px] text-muted-foreground">
             {senderName}
           </span>
         )}
@@ -57,8 +57,8 @@ export function DmChatBubble({
           className={cn(
             'break-keep px-3 py-2 text-[13px] leading-[1.45]',
             isMine
-              ? 'rounded-[14px_4px_14px_14px] bg-dm-red text-white'
-              : 'rounded-[4px_14px_14px_14px] border border-dm-line-2 bg-dm-surface-2 text-dm-text',
+              ? 'rounded-[14px_4px_14px_14px] bg-primary text-white'
+              : 'rounded-[4px_14px_14px_14px] border border-border bg-secondary text-foreground',
           )}
         >
           {content}
@@ -66,7 +66,7 @@ export function DmChatBubble({
         {time && (
           <span
             className={cn(
-              'px-1 font-dm-mono text-[9px] text-dm-text-faint',
+              'px-1 font-mono text-[9px] text-muted-foreground',
               isMine ? 'text-right' : 'text-left',
             )}
           >

@@ -4,7 +4,7 @@ import { FormControl, FormField, FormMessage } from '@/components/ui/form'
 import { FunctionComponent } from 'react'
 import { useRegisterFormContext } from '../hook/register-form-context'
 
-const labelCls = 'mb-2 block font-dm-mono text-[10px] uppercase tracking-[1px] text-dm-text-muted'
+const labelCls = 'mb-2 block font-mono text-[10px] uppercase tracking-[1px] text-muted-foreground'
 
 const ProfileStep: FunctionComponent = () => {
   const { form } = useRegisterFormContext()
@@ -25,7 +25,7 @@ const ProfileStep: FunctionComponent = () => {
           <div>
             <div className={labelCls}>
               성별{' '}
-              <span className="text-dm-amber normal-case tracking-normal">
+              <span className="text-yellow-400 normal-case tracking-normal">
                 · 매칭에 사용
               </span>
             </div>
@@ -53,7 +53,7 @@ const ProfileStep: FunctionComponent = () => {
                 ))}
               </div>
             </FormControl>
-            <FormMessage className="mt-1 font-dm-mono text-[11px] text-dm-red" />
+            <FormMessage className="mt-1 font-mono text-[11px] text-primary" />
           </div>
         )}
       />
@@ -70,18 +70,18 @@ const ProfileStep: FunctionComponent = () => {
                 onChange={(e) => field.onChange(e.target.checked)}
                 style={{ accentColor: 'var(--dm-red)', marginTop: 2 }}
               />
-              <div className="text-[12px] leading-relaxed text-dm-text-muted">
-                <span className="text-dm-text">이용약관</span> 및{' '}
-                <span className="text-dm-text">개인정보 처리방침</span>에
+              <div className="text-[12px] leading-relaxed text-muted-foreground">
+                <span className="text-foreground">이용약관</span> 및{' '}
+                <span className="text-foreground">개인정보 처리방침</span>에
                 동의해요.
                 <br />
-                <span className="font-dm-mono text-[10px] text-dm-text-faint">
+                <span className="font-mono text-[10px] text-muted-foreground">
                   (만 14세 이상만 가입 가능합니다)
                 </span>
               </div>
             </label>
             {!termsValue && form.formState.isSubmitted && (
-              <p className="mt-1 font-dm-mono text-[11px] text-dm-red">
+              <p className="mt-1 font-mono text-[11px] text-primary">
                 약관에 동의해주세요.
               </p>
             )}

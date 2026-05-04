@@ -38,28 +38,25 @@ function RoomRow({
   return (
     <Link
       href={href}
-      className="flex items-center gap-3 border-b border-dm-line px-4 py-3.5 hover:bg-dm-surface"
+      className="flex items-center gap-3 border-b border-border px-4 py-3.5 hover:bg-secondary"
     >
-      <div
-        className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full border border-dm-line-2 text-[17px] font-bold text-dm-text"
-        style={{ background: 'var(--dm-surface-2)' }}
-      >
+      <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full border border-border bg-secondary text-[17px] font-bold text-foreground">
         {initial}
       </div>
 
       <div className="min-w-0 flex-1">
         <div className="flex items-center gap-2">
-          <span className="truncate text-[14px] font-semibold text-dm-text">
+          <span className="truncate text-[14px] font-semibold text-foreground">
             {targetUserId ? `상대방 #${targetUserId}` : room.roomName}
           </span>
-          <span className="ml-auto shrink-0 font-dm-mono text-[10px] text-dm-text-faint">
+          <span className="ml-auto shrink-0 font-mono text-[10px] text-muted-foreground">
             {timeStr}
           </span>
         </div>
-        <div className="mt-0.5 font-dm-mono text-[9px] tracking-[0.5px] text-dm-amber">
+        <div className="mt-0.5 font-mono text-[9px] tracking-[0.5px] text-primary">
           🎟 {matchId}
         </div>
-        <div className="mt-0.5 text-[12px] text-dm-text-muted">채팅방 열기 →</div>
+        <div className="mt-0.5 text-[12px] text-muted-foreground">채팅방 열기 →</div>
       </div>
     </Link>
   )
@@ -78,7 +75,7 @@ export function ChatRoomList() {
 
   if (status === 'loading' || isLoading)
     return (
-      <div className="flex h-[40vh] items-center justify-center font-dm-mono text-[12px] text-dm-text-faint">
+      <div className="flex h-[40vh] items-center justify-center font-mono text-[12px] text-muted-foreground">
         loading...
       </div>
     )
@@ -93,15 +90,15 @@ export function ChatRoomList() {
   if (rooms.length === 0)
     return (
       <div className="flex h-[40vh] flex-col items-center justify-center gap-3 text-center">
-        <div className="font-dm-display text-[18px] italic text-dm-text-muted">
+        <div className="text-[18px] font-semibold text-muted-foreground">
           아직 채팅이 없어요
         </div>
-        <div className="font-dm-mono text-[11px] text-dm-text-faint">
+        <div className="font-mono text-[11px] text-muted-foreground">
           매칭 신청이 승인되면 채팅이 시작됩니다.
         </div>
         <Link
           href="/match"
-          className="mt-2 border border-dm-line px-4 py-2 font-dm-mono text-[11px] text-dm-text-faint hover:border-dm-amber hover:text-dm-amber"
+          className="mt-2 rounded-md border border-border px-4 py-2 font-mono text-[11px] text-muted-foreground hover:bg-accent hover:text-foreground"
         >
           매칭 찾아보기 →
         </Link>

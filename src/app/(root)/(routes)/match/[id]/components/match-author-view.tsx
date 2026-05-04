@@ -33,21 +33,21 @@ const MatchAuthorView: FunctionComponent<MatchAuthorViewProps> = ({
   }
 
   return (
-    <div className="flex flex-col bg-dm-bg pb-[100px] text-dm-text">
-      <div className="flex items-center gap-3 border-b border-dm-line px-4 py-3.5">
+    <div className="flex flex-col bg-background pb-[100px] text-foreground">
+      <div className="flex items-center gap-3 border-b border-border px-4 py-3.5">
         <button
           onClick={() => router.push('/match')}
-          className="font-dm-mono text-[11px] text-dm-text-faint hover:text-dm-amber"
+          className="font-mono text-[11px] text-muted-foreground hover:text-yellow-400"
         >
           ← 목록
         </button>
-        <span className="font-dm-mono text-[10px] text-dm-text-faint">
+        <span className="font-mono text-[10px] text-muted-foreground">
           HOST VIEW
         </span>
         <button
           onClick={handleDelete}
           disabled={isDeleting}
-          className="ml-auto border border-dm-red/50 px-2.5 py-1 font-dm-mono text-[11px] text-dm-red hover:bg-dm-red/10 disabled:opacity-50"
+          className="ml-auto border border-primary/50 px-2.5 py-1 font-mono text-[11px] text-primary hover:bg-primary/10 disabled:opacity-50"
         >
           {isDeleting ? '삭제 중...' : '삭제'}
         </button>
@@ -55,18 +55,18 @@ const MatchAuthorView: FunctionComponent<MatchAuthorViewProps> = ({
 
       <DmMatchDetailCard match={matchPost} />
 
-      <div className="mt-4 border-t border-dm-line">
+      <div className="mt-4 border-t border-border">
         <div className="flex items-center justify-between px-5 py-3.5">
-          <span className="font-dm-display text-[16px] italic text-dm-text">
+          <span className="font-dm-display text-[16px] italic text-foreground">
             신청 목록
           </span>
-          <span className="font-dm-mono text-[11px] text-dm-text-faint">
+          <span className="font-mono text-[11px] text-muted-foreground">
             {applications.length}명
           </span>
         </div>
 
         {applications.length === 0 ? (
-          <div className="py-10 text-center font-dm-mono text-[12px] text-dm-text-faint">
+          <div className="py-10 text-center font-mono text-[12px] text-muted-foreground">
             아직 신청자가 없습니다.
           </div>
         ) : (

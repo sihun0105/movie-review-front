@@ -36,7 +36,7 @@ export function RatingInput({ movieCd }: RatingInputProps) {
 
   return (
     <div>
-      <div className="font-dm-mono text-[10px] uppercase tracking-[0.5px] text-dm-text-muted">
+      <div className="font-mono text-[10px] uppercase tracking-[0.5px] text-muted-foreground">
         내 별점
       </div>
       <div className="mt-1 flex gap-0.5">
@@ -67,7 +67,7 @@ export function RatingInput({ movieCd }: RatingInputProps) {
         })}
       </div>
       <div
-        className={`mt-1 text-[10px] ${myScore ? 'text-dm-amber' : 'text-dm-text-faint'}`}
+        className={`mt-1 text-[10px] ${myScore ? 'text-yellow-400' : 'text-muted-foreground'}`}
       >
         {myScore ? `${myScore}점 주셨어요` : '별점을 남겨주세요'}
       </div>

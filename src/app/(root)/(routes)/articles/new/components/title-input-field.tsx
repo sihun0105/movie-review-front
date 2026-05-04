@@ -15,7 +15,7 @@ const TitleInputField: FunctionComponent = () => {
               {...field}
               type="text"
               placeholder="제목을 입력해주세요."
-              className="w-full border border-dm-line-2 bg-dm-surface px-3.5 py-3 text-[14px] text-dm-text placeholder:text-dm-text-faint focus:border-dm-amber focus:outline-none"
+              className="w-full border border-border bg-secondary px-3.5 py-3 text-[14px] text-foreground placeholder:text-muted-foreground focus:border-yellow-400 focus:outline-none"
             />
           </FormControl>
         </FormItem>

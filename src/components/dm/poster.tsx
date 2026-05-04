@@ -31,7 +31,7 @@ export function Poster({
     <div
       style={style}
       className={cn(
-        'relative aspect-[2/3] overflow-hidden border border-dm-line',
+        'relative aspect-[2/3] overflow-hidden border border-border',
         rounded === 'none' && 'rounded-none',
         rounded === 'sm' && 'rounded-[2px]',
         rounded === 'md' && 'rounded',
@@ -60,7 +60,7 @@ export function Poster({
       )}
       {/* title card (only when no image) */}
       {!imageUrl && (
-        <div className="absolute inset-x-1.5 bottom-1.5 break-keep font-dm-display text-[11px] italic leading-[1.15] text-dm-text [text-shadow:0_1px_4px_rgba(0,0,0,0.8)]">
+        <div className="absolute inset-x-1.5 bottom-1.5 break-keep font-dm-display text-[11px] italic leading-[1.15] text-foreground [text-shadow:0_1px_4px_rgba(0,0,0,0.8)]">
           {title}
         </div>
       )}

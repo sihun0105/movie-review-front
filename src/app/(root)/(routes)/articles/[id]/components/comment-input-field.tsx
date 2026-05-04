@@ -15,7 +15,7 @@ const CommentInputField: FunctionComponent = () => {
               {...field}
               rows={1}
               placeholder="댓글을 입력해주세요."
-              className="w-full resize-none border border-dm-line-2 bg-dm-bg px-3 py-2 text-[13px] text-dm-text placeholder:text-dm-text-faint focus:border-dm-amber focus:outline-none"
+              className="w-full resize-none border border-border bg-background px-3 py-2 text-[13px] text-foreground placeholder:text-muted-foreground focus:border-yellow-400 focus:outline-none"
             />
           </FormControl>
         </FormItem>

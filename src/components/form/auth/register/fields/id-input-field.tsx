@@ -6,8 +6,8 @@ import { validateEmail } from '@/lib/utils/validation-api'
 import { FunctionComponent, useEffect, useState } from 'react'
 import { useRegisterFormContext } from '../hook/register-form-context'
 
-const inputCls = 'w-full border border-dm-line-2 bg-dm-surface px-3.5 py-3 text-[14px] text-dm-text placeholder:text-dm-text-faint focus:border-dm-amber focus:outline-none'
-const labelCls = 'mb-2 block font-dm-mono text-[10px] uppercase tracking-[1px] text-dm-text-muted'
+const inputCls = 'w-full border border-border bg-secondary px-3.5 py-3 text-[14px] text-foreground placeholder:text-muted-foreground focus:border-yellow-400 focus:outline-none'
+const labelCls = 'mb-2 block font-mono text-[10px] uppercase tracking-[1px] text-muted-foreground'
 
 const IdInputField: FunctionComponent = () => {
   const { form, setEmailValidationState } = useRegisterFormContext()
@@ -59,14 +59,14 @@ const IdInputField: FunctionComponent = () => {
               <input {...field} type="email" placeholder="you@email.com" className={inputCls} />
               {isValidating && (
                 <div className="absolute right-3 top-1/2 -translate-y-1/2">
-                  <div className="h-3.5 w-3.5 animate-spin rounded-full border-2 border-dm-amber border-t-transparent" />
+                  <div className="h-3.5 w-3.5 animate-spin rounded-full border-2 border-yellow-400 border-t-transparent" />
                 </div>
               )}
             </div>
           </FormControl>
-          <FormMessage className="font-dm-mono text-[11px] text-dm-red" />
+          <FormMessage className="font-mono text-[11px] text-primary" />
           {validationMessage && !form.formState.errors.userId && (
-            <p className="font-dm-mono text-[11px] text-green-400">{validationMessage}</p>
+            <p className="font-mono text-[11px] text-green-400">{validationMessage}</p>
           )}
         </FormItem>
       )}

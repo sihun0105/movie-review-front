@@ -26,7 +26,7 @@ const CommentSection: FunctionComponent = () => {
 
   if (isLoading)
     return (
-      <div className="flex h-[20vh] items-center justify-center font-dm-mono text-[12px] text-dm-text-faint">
+      <div className="flex h-[20vh] items-center justify-center font-mono text-[12px] text-muted-foreground">
         loading...
       </div>
     )
@@ -38,10 +38,10 @@ const CommentSection: FunctionComponent = () => {
   return (
     <div className="px-4 pt-5">
       <div className="mb-4 flex items-center gap-2">
-        <span className="font-dm-display text-[16px] italic text-dm-text">
+        <span className="font-dm-display text-[16px] italic text-foreground">
           Comments
         </span>
-        <span className="font-dm-mono text-[11px] text-dm-text-faint">
+        <span className="font-mono text-[11px] text-muted-foreground">
           {totalCount}
         </span>
       </div>
@@ -51,7 +51,7 @@ const CommentSection: FunctionComponent = () => {
         next={next}
         hasMore={hasMore}
         loader={
-          <div className="py-3 text-center font-dm-mono text-[11px] text-dm-text-faint">
+          <div className="py-3 text-center font-mono text-[11px] text-muted-foreground">
             loading...
           </div>
         }
@@ -88,7 +88,7 @@ const CommentSection: FunctionComponent = () => {
       </ModifyCommentFormProvider>
 
       {error && (
-        <div className="py-4 text-center font-dm-mono text-[11px] text-dm-red">
+        <div className="py-4 text-center font-mono text-[11px] text-primary">
           데이터를 불러오는데 실패했습니다.
         </div>
       )}

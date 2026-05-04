@@ -13,13 +13,13 @@ export function Pill({ children, accent, filled, className }: PillProps) {
     <span
       className={cn(
         'inline-flex items-center gap-1 rounded-full border px-2 py-[3px]',
-        'font-dm-mono text-[10px] uppercase tracking-[0.5px]',
-        accent ? 'border-dm-red' : 'border-dm-line-2',
+        'font-mono text-[10px] uppercase tracking-[0.5px]',
+        accent ? 'border-primary' : 'border-border',
         filled
-          ? 'bg-dm-red text-dm-text'
+          ? 'bg-primary text-foreground'
           : accent
-          ? 'text-dm-red'
-          : 'text-dm-text-muted',
+          ? 'text-primary'
+          : 'text-muted-foreground',
         className,
       )}
     >

@@ -43,7 +43,7 @@ const MyMatchesContainer = () => {
 
   if (status === 'loading')
     return (
-      <div className="flex h-[40vh] items-center justify-center font-dm-mono text-[12px] text-dm-text-faint">
+      <div className="flex h-[40vh] items-center justify-center font-mono text-[12px] text-muted-foreground">
         loading...
       </div>
     )
@@ -54,15 +54,15 @@ const MyMatchesContainer = () => {
 
   return (
     <div>
-      <div className="flex border-b border-dm-line">
+      <div className="flex border-b border-border">
         {(['applied', 'created'] as Tab[]).map((tab) => (
           <button
             key={tab}
             onClick={() => setActiveTab(tab)}
-            className={`flex-1 py-3 font-dm-mono text-[11px] uppercase tracking-[1px] transition ${
+            className={`flex-1 py-3 font-mono text-[11px] uppercase tracking-[1px] transition ${
               activeTab === tab
-                ? 'border-b-2 border-dm-amber text-dm-amber'
-                : 'text-dm-text-faint hover:text-dm-text'
+                ? 'border-b-2 border-yellow-400 text-yellow-400'
+                : 'text-muted-foreground hover:text-foreground'
             }`}
           >
             {tab === 'applied' ? '신청한 매칭' : '내가 만든 매칭'}
@@ -71,7 +71,7 @@ const MyMatchesContainer = () => {
       </div>
 
       {isLoading ? (
-        <div className="flex h-[30vh] items-center justify-center font-dm-mono text-[12px] text-dm-text-faint">
+        <div className="flex h-[30vh] items-center justify-center font-mono text-[12px] text-muted-foreground">
           loading...
         </div>
       ) : activeTab === 'applied' ? (

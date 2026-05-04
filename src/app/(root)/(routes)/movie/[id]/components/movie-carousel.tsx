@@ -15,7 +15,7 @@ const MovieCarousel: FunctionComponent<MovieCarouselProps> = ({ data, title }) =
 
   if (!data || data.length === 0)
     return (
-      <p className="text-center font-dm-mono text-[11px] text-dm-text-faint">
+      <p className="text-center font-mono text-[11px] text-muted-foreground">
         VOD 데이터가 없습니다.
       </p>
     )
@@ -31,7 +31,7 @@ const MovieCarousel: FunctionComponent<MovieCarouselProps> = ({ data, title }) =
               setOpen(true)
               setTitle(title)
             }}
-            className="shrink-0 border border-dm-line-2 bg-dm-surface px-4 py-3 font-dm-mono text-[11px] text-dm-text-muted hover:border-dm-amber hover:text-dm-amber"
+            className="shrink-0 border border-border bg-secondary px-4 py-3 font-mono text-[11px] text-muted-foreground hover:border-primary hover:text-yellow-400"
           >
             썸네일
           </button>

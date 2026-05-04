@@ -19,7 +19,7 @@ const CreateArticleForm: FunctionComponent = () => {
 
   if (status === 'loading')
     return (
-      <div className="py-8 text-center font-dm-mono text-[12px] text-dm-text-faint">
+      <div className="py-8 text-center font-mono text-[12px] text-muted-foreground">
         loading...
       </div>
     )
@@ -53,7 +53,7 @@ const CreateArticleForm: FunctionComponent = () => {
         <button
           type="submit"
           disabled={isCreating}
-          className="w-full bg-dm-red py-3.5 font-dm-mono text-[13px] uppercase tracking-[0.5px] text-white disabled:bg-dm-surface-2 disabled:text-dm-text-faint"
+          className="w-full bg-primary py-3.5 font-mono text-[13px] uppercase tracking-[0.5px] text-white disabled:bg-secondary disabled:text-muted-foreground"
         >
           {isCreating ? '작성 중...' : '게시글 작성 →'}
         </button>
