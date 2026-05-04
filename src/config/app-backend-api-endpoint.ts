@@ -29,6 +29,18 @@ const AppBackEndApiEndpoint = {
   validateNickname: () => {
     return `${_base}/auth/validate/nickname`
   },
+  sendVerification: () => {
+    return `${_base}/auth/send-verification`
+  },
+  verifyCode: () => {
+    return `${_base}/auth/verify-code`
+  },
+  forgotPassword: () => {
+    return `${_base}/auth/forgot-password`
+  },
+  resetPassword: () => {
+    return `${_base}/auth/reset-password`
+  },
   getCommentList: (id: number, page: number) => {
     return queryString.stringifyUrl(
       {
