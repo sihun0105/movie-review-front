@@ -3,12 +3,6 @@
 import { useRouter } from 'next/navigation'
 import { useState, useEffect } from 'react'
 
-const NOTIF_KEYS = [
-  { key: 'notif_apply',  label: '매칭 신청 알림',  desc: '내 매칭에 신청이 들어왔을 때' },
-  { key: 'notif_result', label: '신청 결과 알림',   desc: '신청한 매칭의 승인·거절 결과' },
-  { key: 'notif_chat',   label: '채팅 메시지 알림', desc: '새 채팅 메시지가 도착했을 때' },
-] as const
-
 function useLocalToggle(key: string, defaultVal = true) {
   const [on, setOn] = useState(defaultVal)
   useEffect(() => {
@@ -50,10 +44,17 @@ function SectionHead({ children }: { children: React.ReactNode }) {
 
 export default function SettingsPage() {
   const router = useRouter()
-  const toggles = NOTIF_KEYS.map(({ key, label, desc }) => {
-    const [on, toggle] = useLocalToggle(key)
-    return { key, label, desc, on, toggle }
-  })
+
+  // 훅은 항상 최상위에서 고정 순서로 호출해야 함 (Rules of Hooks)
+  const [applyOn, applyToggle] = useLocalToggle('notif_apply')
+  const [resultOn, resultToggle] = useLocalToggle('notif_result')
+  const [chatOn, chatToggle] = useLocalToggle('notif_chat')
+
+  const notifItems = [
+    { key: 'notif_apply',  label: '매칭 신청 알림',  desc: '내 매칭에 신청이 들어왔을 때',  on: applyOn,  toggle: applyToggle },
+    { key: 'notif_result', label: '신청 결과 알림',   desc: '신청한 매칭의 승인·거절 결과',  on: resultOn, toggle: resultToggle },
+    { key: 'notif_chat',   label: '채팅 메시지 알림', desc: '새 채팅 메시지가 도착했을 때',  on: chatOn,   toggle: chatToggle },
+  ]
 
   return (
     <div className="min-h-page bg-background pb-[100px] lg:pb-4 text-foreground">
@@ -75,11 +76,11 @@ export default function SettingsPage() {
         {/* 알림 설정 */}
         <div>
           <SectionHead>알림</SectionHead>
-          <div className="rounded-lg border border-border bg-card overflow-hidden">
-            {toggles.map(({ key, label, desc, on, toggle }, i) => (
+          <div className="overflow-hidden rounded-lg border border-border bg-card">
+            {notifItems.map(({ key, label, desc, on, toggle }, i) => (
               <div
                 key={key}
-                className={`flex items-center justify-between px-4 py-3.5 ${i < toggles.length - 1 ? 'border-b border-border' : ''}`}
+                className={`flex items-center justify-between px-4 py-3.5 ${i < notifItems.length - 1 ? 'border-b border-border' : ''}`}
               >
                 <div className="min-w-0 flex-1 pr-4">
                   <p className="text-[14px] text-foreground">{label}</p>
@@ -97,7 +98,7 @@ export default function SettingsPage() {
         {/* 앱 정보 */}
         <div>
           <SectionHead>앱 정보</SectionHead>
-          <div className="rounded-lg border border-border bg-card overflow-hidden">
+          <div className="overflow-hidden rounded-lg border border-border bg-card">
             {[
               { label: '버전', value: 'v0.1.0' },
               { label: '문의하기', value: 'tlgns14@gmail.com' },
