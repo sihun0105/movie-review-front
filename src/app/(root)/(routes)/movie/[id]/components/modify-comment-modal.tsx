@@ -14,6 +14,7 @@ const ModifyCommentModal: FunctionComponent = () => {
   const { form } = useModifyCommentFormContext()
   const { modifyComment, isModifyingComment } = useComments()
   const textareaRef = useRef<HTMLTextAreaElement>(null)
+  const { ref: registerRef, ...registerProps } = form.register('comment')
 
   useEffect(() => {
     if (open) setTimeout(() => textareaRef.current?.focus(), 80)
@@ -53,10 +54,10 @@ const ModifyCommentModal: FunctionComponent = () => {
         <form onSubmit={handleSubmit}>
           <div className="px-5 py-4">
             <textarea
-              ref={textareaRef}
+              ref={(el) => { registerRef(el); textareaRef.current = el }}
               rows={4}
               placeholder="댓글을 입력해주세요."
-              {...form.register('comment')}
+              {...registerProps}
               className="w-full resize-none rounded-md border border-input bg-background px-3.5 py-3 text-[14px] text-foreground placeholder:text-muted-foreground focus:border-ring focus:outline-none"
             />
             {form.formState.errors.comment && (
