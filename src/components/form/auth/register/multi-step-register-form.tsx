@@ -67,6 +67,17 @@ function VerificationStep({
     }
   }
 
+  const handlePaste = (e: React.ClipboardEvent) => {
+    e.preventDefault()
+    const digits = e.clipboardData.getData('text').replace(/\D/g, '').slice(0, 6)
+    if (!digits) return
+    const next = [...codes]
+    digits.split('').forEach((d, i) => { next[i] = d })
+    setCodes(next)
+    const focusIdx = Math.min(digits.length, 5)
+    inputRefs.current[focusIdx]?.focus()
+  }
+
   const handleVerify = async () => {
     const code = codes.join('')
     if (code.length < 6) return
@@ -129,6 +140,7 @@ function VerificationStep({
             value={c}
             onChange={(e) => handleChange(i, e.target.value)}
             onKeyDown={(e) => handleKeyDown(i, e)}
+            onPaste={handlePaste}
             className="h-12 w-0 min-w-0 flex-1 rounded-md border border-input bg-transparent text-center font-mono text-[18px] font-bold text-foreground focus:border-ring focus:outline-none"
           />
         ))}
