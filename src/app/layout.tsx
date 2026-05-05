@@ -1,4 +1,5 @@
 import AppThemeProvider from '@/components/app/app-theme-provider'
+import { NicknameGuard } from '@/components/app/nickname-guard'
 import {
   DmAppBar,
   DmAppFooter,
@@ -127,6 +128,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 
         <SessionProvider>
           <AppThemeProvider>
+            <NicknameGuard />
             <MessageModalContextProvider>
               {/* mobile: single column max-w-[460px] centered
                   desktop lg+: 3-column [240px | 1fr | 320px] max-w-[1400px] */}
