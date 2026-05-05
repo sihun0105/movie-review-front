@@ -13,7 +13,7 @@ const ModifyCommentModal: FunctionComponent = () => {
   const { open, setOpen, replyId } = useModifyCommentModalContext()
   const { form } = useModifyCommentFormContext()
   const { modifyComment, isModifyingComment } = useComments()
-  const textareaRef = useRef<HTMLTextAreaElement>(null)
+  const textareaRef = useRef<HTMLTextAreaElement | null>(null)
   const { ref: registerRef, ...registerProps } = form.register('comment')
 
   useEffect(() => {

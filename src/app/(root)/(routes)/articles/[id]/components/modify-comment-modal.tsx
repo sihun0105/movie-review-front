@@ -15,7 +15,7 @@ const ModifyCommentModal: FunctionComponent = () => {
   const { form } = useModifyCommentFormContext()
   const { mutate } = useArticleComments()
   const { modifyComment, isModifyingComment } = useModifyArticleComment(mutate)
-  const textareaRef = useRef<HTMLTextAreaElement>(null)
+  const textareaRef = useRef<HTMLTextAreaElement | null>(null)
   const { ref: registerRef, ...registerProps } = form.register('comment')
 
   useEffect(() => {
