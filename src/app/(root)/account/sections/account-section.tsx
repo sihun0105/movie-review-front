@@ -3,6 +3,7 @@
 import { signOut } from 'next-auth/react'
 import Link from 'next/link'
 import { FunctionComponent } from 'react'
+import { AppPath } from '@/config/app-path'
 
 interface MenuItem {
   label: string
@@ -37,7 +38,7 @@ const AccountSection: FunctionComponent = () => {
   const items: MenuItem[] = [
     { label: '내가 쓴 매칭', href: '/match/my-matches' },
     { label: '내가 신청한 매칭', href: '/match/my-matches?tab=applied' },
-    { label: '알림 설정' },
+    { label: '알림 설정', href: AppPath.settings() },
     { label: '로그아웃', onClick: () => signOut({ callbackUrl: '/' }), destructive: true },
   ]
   return (
