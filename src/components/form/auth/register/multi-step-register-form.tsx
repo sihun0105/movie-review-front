@@ -124,11 +124,12 @@ function VerificationStep({
             ref={(el) => { inputRefs.current[i] = el }}
             type="text"
             inputMode="numeric"
+            autoComplete="one-time-code"
             maxLength={1}
             value={c}
             onChange={(e) => handleChange(i, e.target.value)}
             onKeyDown={(e) => handleKeyDown(i, e)}
-            className="h-12 flex-1 rounded-md border border-input bg-transparent text-center font-mono text-[18px] font-bold text-foreground focus:border-ring focus:outline-none"
+            className="h-12 w-0 min-w-0 flex-1 rounded-md border border-input bg-transparent text-center font-mono text-[18px] font-bold text-foreground focus:border-ring focus:outline-none"
           />
         ))}
       </div>

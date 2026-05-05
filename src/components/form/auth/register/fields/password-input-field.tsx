@@ -32,7 +32,7 @@ const PasswordInputField: FunctionComponent = () => {
         <FormItem>
           <label className={labelCls}>비밀번호</label>
           <FormControl>
-            <input {...field} type="password" placeholder="••••••••" className={inputCls} />
+            <input {...field} type="password" autoComplete="new-password" placeholder="••••••••" className={inputCls} />
           </FormControl>
           <FormMessage className="font-mono text-[11px] text-primary" />
           {pw && (
