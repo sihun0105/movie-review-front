@@ -50,7 +50,7 @@ const MatchViewerView = ({ matchPost, onApply }: MatchViewerViewProps) => {
   const isFull = matchPost.currentParticipants >= matchPost.maxParticipants
 
   return (
-    <div className="relative min-h-page bg-background pb-[140px] text-foreground">
+    <div className="relative min-h-page bg-background pb-[140px] lg:pb-6 text-foreground">
       {/* 상단 컬러 그라디언트 */}
       <div
         className="h-[80px] w-full"
@@ -112,7 +112,7 @@ const MatchViewerView = ({ matchPost, onApply }: MatchViewerViewProps) => {
         )}
       </div>
 
-      <div className="fixed bottom-[72px] left-1/2 z-25 w-full max-w-[460px] -translate-x-1/2 border-t border-border bg-background/95 px-3 py-3 backdrop-blur-md">
+      <div className="fixed bottom-[72px] lg:bottom-0 left-1/2 z-25 w-full max-w-[460px] -translate-x-1/2 border-t border-border bg-background/95 px-3 py-3 backdrop-blur-md">
         {myApplication ? (
           <div className="flex flex-col items-center gap-2">
             <ApplicationStatusBadge status={myApplication.status} />

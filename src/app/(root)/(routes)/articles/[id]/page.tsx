@@ -25,7 +25,7 @@ const getArticleData = async (id: string): Promise<Article> => {
 const Page: FunctionComponent<PageProps> = async ({ params: { id } }) => {
   const data = await getArticleData(id)
   return (
-    <div className="relative flex flex-col bg-background pb-[140px] text-foreground">
+    <div className="relative flex flex-col bg-background pb-[140px] lg:pb-6 text-foreground">
       <ModifyCommentModalContextProvider>
         <ModifyArticleModalContextProvider>
           <ArticleDataSection data={data} />

@@ -2,7 +2,7 @@ import { Skeleton } from '@/components/dm/skeleton'
 
 export default function Loading() {
   return (
-    <div className="min-h-page bg-background pb-[88px] text-foreground">
+    <div className="min-h-page bg-background pb-[88px] lg:pb-4 text-foreground">
       {/* 헤더 */}
       <div className="flex items-center border-b border-border px-4 py-3.5">
         <Skeleton className="h-4 w-12" />

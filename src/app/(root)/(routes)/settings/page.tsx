@@ -56,7 +56,7 @@ export default function SettingsPage() {
   })
 
   return (
-    <div className="min-h-page bg-background pb-[100px] text-foreground">
+    <div className="min-h-page bg-background pb-[100px] lg:pb-4 text-foreground">
       {/* 헤더 */}
       <div className="flex items-center border-b border-border px-4 py-3.5">
         <button

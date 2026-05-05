@@ -2,7 +2,7 @@ import { Skeleton } from '@/components/dm/skeleton'
 
 export default function Loading() {
   return (
-    <div className="flex flex-col bg-background pb-[88px] text-foreground">
+    <div className="flex flex-col bg-background pb-[88px] lg:pb-4 text-foreground">
       {/* backdrop */}
       <Skeleton className="h-[180px] w-full" />
 
