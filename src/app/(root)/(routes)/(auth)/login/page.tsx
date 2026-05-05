@@ -9,7 +9,15 @@ import { FunctionComponent } from 'react'
 
 const Page: FunctionComponent = () => {
   const searchParams = useSearchParams()
-  const callbackUrl = searchParams?.get('callbackUrl') ?? AppPath.home()
+  const rawCallback = searchParams?.get('callbackUrl') ?? AppPath.home()
+  const callbackUrl = (() => {
+    try {
+      const { pathname, search, hash } = new URL(rawCallback)
+      return pathname + search + hash
+    } catch {
+      return rawCallback.startsWith('/') ? rawCallback : AppPath.home()
+    }
+  })()
 
   return (
     <main className="flex min-h-page flex-col px-6 py-10">
