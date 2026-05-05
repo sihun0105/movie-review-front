@@ -15,7 +15,7 @@ const ContentInputField: FunctionComponent = () => {
               {...field}
               rows={10}
               placeholder="내용을 입력해주세요."
-              className="w-full resize-none border border-border bg-secondary px-3.5 py-3 text-[14px] text-foreground placeholder:text-muted-foreground focus:border-primary focus:outline-none"
+              className="w-full resize-none rounded-md border border-border bg-secondary px-3.5 py-3 text-[14px] text-foreground placeholder:text-muted-foreground focus:border-ring focus:outline-none"
             />
           </FormControl>
         </FormItem>

@@ -38,8 +38,8 @@ const CommentSection: FunctionComponent = () => {
   return (
     <div className="px-4 pt-5">
       <div className="mb-4 flex items-center gap-2">
-        <span className="font-dm-display text-[16px] italic text-foreground">
-          Comments
+        <span className="text-[15px] font-semibold text-foreground">
+          댓글
         </span>
         <span className="font-mono text-[11px] text-muted-foreground">
           {totalCount}
