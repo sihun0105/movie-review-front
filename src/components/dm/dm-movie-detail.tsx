@@ -27,7 +27,7 @@ export function DmMovieDetail({ movie, averageScore, scoreCount }: DmMovieDetail
       <div
         className="h-[140px] w-full"
         style={{
-          background: `linear-gradient(160deg, ${palette[0]} 0%, ${palette[1]} 100%)`,
+          background: `linear-gradient(160deg, oklch(${palette.lt} ${palette.c} ${palette.h}) 0%, oklch(${palette.lb} ${palette.c * 0.6} ${palette.h}) 100%)`,
           filter: 'blur(0px)',
         }}
       />
