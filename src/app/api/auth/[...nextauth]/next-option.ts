@@ -79,7 +79,7 @@ export const authOptions: AuthOptions = {
           const result = await repo.signInWithProvider({ id: user.id })
           user.id = result.id ?? user.id
           user.nickname = result.nickname ?? user.nickname
-          user.image = result.image ?? user.image
+          user.image = result.image || user.image
           return true
         }
       } catch (error) {
