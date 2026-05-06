@@ -53,7 +53,7 @@ const CreateArticleForm: FunctionComponent = () => {
         <button
           type="submit"
           disabled={isCreating}
-          className="w-full bg-primary py-3.5 font-mono text-[13px] uppercase tracking-[0.5px] text-white disabled:bg-secondary disabled:text-muted-foreground"
+          className="h-11 w-full rounded-md bg-primary text-[14px] font-medium text-primary-foreground disabled:bg-secondary disabled:text-muted-foreground disabled:opacity-50"
         >
           {isCreating ? '작성 중...' : '게시글 작성 →'}
         </button>

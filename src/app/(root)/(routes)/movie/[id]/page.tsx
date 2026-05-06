@@ -40,7 +40,7 @@ const Page: FunctionComponent<PageProps> = async ({ params: { id } }) => {
       />
       <div
         id="movie-detail-page"
-        className="relative flex flex-col bg-background pb-[88px] text-foreground"
+        className="relative flex flex-col bg-background pb-[88px] lg:pb-4 text-foreground"
       >
         <ModifyCommentModalContextProvider>
           <VodModalContextProvider>

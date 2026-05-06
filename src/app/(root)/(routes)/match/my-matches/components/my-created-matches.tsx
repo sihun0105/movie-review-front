@@ -28,7 +28,7 @@ const MyCreatedMatches: FunctionComponent<MyCreatedMatchesProps> = ({
             <div className="min-w-0 flex-1">
               <button
                 onClick={() => router.push(`/match/${match.id}`)}
-                className="text-left text-[14px] font-semibold text-foreground hover:text-yellow-400"
+                className="text-left text-[14px] font-semibold text-foreground hover:text-primary"
               >
                 {match.title}
               </button>
@@ -45,7 +45,7 @@ const MyCreatedMatches: FunctionComponent<MyCreatedMatchesProps> = ({
             </div>
             <button
               onClick={() => router.push(`/match/${match.id}`)}
-              className="shrink-0 border border-border px-2.5 py-1 font-mono text-[11px] text-muted-foreground hover:border-primary hover:text-yellow-400"
+              className="shrink-0 border border-border px-2.5 py-1 font-mono text-[11px] text-muted-foreground hover:border-primary hover:text-primary"
             >
               관리
             </button>

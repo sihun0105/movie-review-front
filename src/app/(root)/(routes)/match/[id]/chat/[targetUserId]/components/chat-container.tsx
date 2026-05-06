@@ -173,7 +173,7 @@ const ChatContainer = ({ matchId, targetUserId }: ChatContainerProps) => {
           }}
           placeholder={isConnected ? '메시지 쓰기...' : '연결 중입니다...'}
           disabled={!isConnected}
-          className="h-9 flex-1 border border-border bg-secondary px-3 text-[13px] text-foreground placeholder:text-muted-foreground focus:border-yellow-400 focus:outline-none disabled:opacity-50"
+          className="h-9 flex-1 border border-border bg-secondary px-3 text-[13px] text-foreground placeholder:text-muted-foreground focus:border-primary focus:outline-none disabled:opacity-50"
         />
         <button
           type="button"

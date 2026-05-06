@@ -23,7 +23,7 @@ export function DmAppFooter({ className }: DmAppFooterProps) {
         <a
           href="mailto:tlgns14@nate.com"
           aria-label="이메일 보내기"
-          className="text-muted-foreground hover:text-yellow-400"
+          className="text-muted-foreground hover:text-primary"
         >
           <Mail className="h-5 w-5" />
         </a>

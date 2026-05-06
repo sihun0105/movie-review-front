@@ -45,7 +45,7 @@ export function DmChatTicketPin({
           {venueShort && ` · ${venueShort}`}
         </div>
       </div>
-      <span className="font-dm-rank text-[18px] leading-none text-yellow-400">
+      <span className="font-mono text-[14px] font-bold leading-none text-primary">
         D-{dd >= 0 ? dd : 0}
       </span>
     </div>

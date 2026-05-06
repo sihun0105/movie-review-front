@@ -6,7 +6,6 @@ import {
 } from '@/components/ui/form'
 import { ChangeEvent, FunctionComponent } from 'react'
 import { useUpdateImageFormContext } from './update-image-form-context'
-import Image from 'next/image'
 import { AppConstants } from '@/config/app-constants'
 interface UpdateIMageFormFieldProps {
   setFile: (file: File) => void
@@ -58,25 +57,18 @@ const UpdateImageFormField: FunctionComponent<UpdateIMageFormFieldProps> = ({
               >
                 <div className="flex items-center justify-center">
                   {loading ? (
-                    <p>로딩중...</p>
-                  ) : imageUrl ? (
-                    <div className="h-20 w-20">
-                      <Image
-                        src={imageUrl}
-                        width={80}
-                        height={80}
-                        alt="image"
-                        className="object-contain"
-                      />
+                    <div className="flex h-20 w-20 items-center justify-center rounded-full bg-secondary font-mono text-[11px] text-muted-foreground">
+                      로딩중
                     </div>
+                  ) : (imageUrl || currentImage) ? (
+                    <img
+                      src={imageUrl || currentImage}
+                      alt="프로필"
+                      className="h-20 w-20 rounded-full object-cover"
+                    />
                   ) : (
-                    <div className="h-20 w-20">
-                      <Image
-                        src={currentImage}
-                        alt="Image"
-                        width={80}
-                        height={80}
-                      />
+                    <div className="flex h-20 w-20 items-center justify-center rounded-full bg-secondary text-[28px] font-bold text-foreground">
+                      +
                     </div>
                   )}
                 </div>

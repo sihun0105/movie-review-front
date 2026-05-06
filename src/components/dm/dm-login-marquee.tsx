@@ -3,11 +3,10 @@ export function DmLoginMarquee() {
     <div
       className="relative overflow-hidden px-6 pt-10 pb-8"
       style={{
-        background:
-          'linear-gradient(180deg, var(--dm-surface) 0%, var(--dm-bg) 100%)',
+        background: 'hsl(var(--card))',
       }}
     >
-      <div className="font-mono text-[10px] tracking-[2px] text-yellow-400">
+      <div className="font-mono text-[10px] tracking-[2px] text-primary">
         NOW PLAYING
       </div>
       <h1 className="mt-2.5 font-dm-display text-[32px] italic leading-[1.1] text-foreground">

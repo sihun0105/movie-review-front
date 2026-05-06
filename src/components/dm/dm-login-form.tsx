@@ -4,10 +4,20 @@ import { signIn } from 'next-auth/react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { useState } from 'react'
 
+function toRelativePath(url: string): string {
+  try {
+    const { pathname, search, hash } = new URL(url)
+    return pathname + search + hash
+  } catch {
+    return url.startsWith('/') ? url : '/'
+  }
+}
+
 export function DmLoginForm() {
   const router = useRouter()
   const searchParams = useSearchParams()
-  const callbackUrl = searchParams?.get('callbackUrl') ?? '/'
+  const rawCallback = searchParams?.get('callbackUrl') ?? '/'
+  const callbackUrl = toRelativePath(rawCallback)
   const [userId, setUserId] = useState('')
   const [password, setPassword] = useState('')
   const [isSubmitting, setIsSubmitting] = useState(false)

@@ -63,7 +63,7 @@ const MatchPostForm: FunctionComponent<MatchPostFormProps> = ({
           <button
             type="button"
             onClick={onCancel}
-            className="flex-1 border border-border py-3 font-mono text-[13px] text-muted-foreground hover:border-primary hover:text-yellow-400"
+            className="flex-1 border border-border py-3 font-mono text-[13px] text-muted-foreground hover:border-primary hover:text-primary"
           >
             취소
           </button>

@@ -33,11 +33,11 @@ const MatchAuthorView: FunctionComponent<MatchAuthorViewProps> = ({
   }
 
   return (
-    <div className="flex flex-col bg-background pb-[100px] text-foreground">
+    <div className="flex flex-col bg-background pb-[100px] lg:pb-4 text-foreground">
       <div className="flex items-center gap-3 border-b border-border px-4 py-3.5">
         <button
           onClick={() => router.push('/match')}
-          className="font-mono text-[11px] text-muted-foreground hover:text-yellow-400"
+          className="font-mono text-[11px] text-muted-foreground hover:text-primary"
         >
           ← 목록
         </button>

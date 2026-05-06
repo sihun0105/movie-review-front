@@ -20,10 +20,10 @@ const LikeSection: FunctionComponent<LikeSectionProps> = ({ id }) => {
       <button
         onClick={() => { setSelected('like'); update('like') }}
         disabled={isValidating}
-        className={`flex items-center gap-1.5 border px-3 py-1.5 font-mono text-[12px] transition ${
+        className={`flex items-center gap-1.5 rounded-md border px-3 py-1.5 font-mono text-[12px] transition ${
           selected === 'like'
-            ? 'border-yellow-400 bg-dm-amber/10 text-yellow-400'
-            : 'border-border text-muted-foreground hover:border-primary hover:text-yellow-400'
+            ? 'border-primary bg-primary/10 text-primary'
+            : 'border-border text-muted-foreground hover:border-primary hover:text-primary'
         }`}
       >
         👍 {likes}
@@ -31,7 +31,7 @@ const LikeSection: FunctionComponent<LikeSectionProps> = ({ id }) => {
       <button
         onClick={() => { setSelected('dislike'); update('dislike') }}
         disabled={isValidating}
-        className={`flex items-center gap-1.5 border px-3 py-1.5 font-mono text-[12px] transition ${
+        className={`flex items-center gap-1.5 rounded-md border px-3 py-1.5 font-mono text-[12px] transition ${
           selected === 'dislike'
             ? 'border-primary bg-primary/10 text-primary'
             : 'border-border text-muted-foreground hover:border-primary hover:text-primary'

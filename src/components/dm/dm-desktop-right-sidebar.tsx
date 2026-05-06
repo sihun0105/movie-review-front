@@ -23,13 +23,13 @@ function MatchCard({ match }: { match: MatchPost }) {
   return (
     <Link
       href={`/match/${match.id}`}
-      className="block border-b border-border px-4 py-3 hover:bg-secondary"
+      className="block border-b border-border px-4 py-3 hover:bg-accent"
     >
       <div className="flex items-baseline gap-1.5">
-        <span className="font-dm-display text-[18px] italic text-yellow-400">
+        <span className="text-[14px] font-semibold text-foreground">
           {dateStr}
         </span>
-        <span className="ml-auto font-mono text-[10px] text-yellow-400">
+        <span className="ml-auto font-mono text-[10px] text-primary">
           {dd}
         </span>
       </div>
@@ -52,15 +52,12 @@ export function DmDesktopRightSidebar() {
   const posts = data?.matchPosts?.slice(0, 5) ?? []
 
   return (
-    <aside
-      className="hidden lg:sticky lg:top-0 lg:flex lg:h-screen lg:w-[320px] lg:shrink-0 lg:flex-col lg:overflow-y-auto lg:border-l lg:border-border"
-      style={{ background: '#0e0e12' }}
-    >
+    <aside className="hidden lg:sticky lg:top-0 lg:flex lg:h-screen lg:w-[320px] lg:shrink-0 lg:flex-col lg:overflow-y-auto lg:border-l lg:border-border lg:bg-background">
       <div className="px-4 pb-2 pt-5">
-        <div className="font-mono text-[10px] tracking-[1.5px] text-yellow-400">
+        <div className="font-mono text-[10px] tracking-[1.5px] text-primary">
           LIVE MATCHING
         </div>
-        <div className="mt-1 font-dm-display text-[20px] italic leading-tight text-foreground">
+        <div className="mt-1 text-[20px] font-semibold leading-tight text-foreground">
           지금 모집 중인
           <br />
           영화 약속
@@ -91,15 +88,12 @@ export function DmDesktopRightSidebar() {
           전체 매칭 보기 →
         </Link>
 
-        <div className="mt-3 border border-dashed border-border p-3" style={{ background: 'rgba(192,48,40,0.04)' }}>
+        <div className="mt-3 rounded-md border border-border bg-primary/5 p-3">
           <div className="flex items-center gap-1.5 font-mono text-[10px] text-primary">
-            <span
-              className="inline-block h-1.5 w-1.5 rounded-full bg-primary"
-              style={{ boxShadow: '0 0 6px var(--dm-red)' }}
-            />
+            <span className="inline-block h-1.5 w-1.5 rounded-full bg-primary" />
             마감 임박
           </div>
-          <div className="mt-1.5 font-dm-display text-[13px] italic leading-snug text-foreground">
+          <div className="mt-1.5 text-[13px] leading-snug text-muted-foreground">
             오늘 마감되는 매칭을
             <br />
             놓치지 마세요.

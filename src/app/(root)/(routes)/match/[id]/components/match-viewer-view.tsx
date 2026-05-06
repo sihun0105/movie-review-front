@@ -20,7 +20,7 @@ interface MatchViewerViewProps {
 
 function ApplicationStatusBadge({ status }: { status: string }) {
   const map = {
-    pending: { label: '신청 대기 중', className: 'border-yellow-400 text-yellow-400' },
+    pending: { label: '신청 대기 중', className: 'border-border text-muted-foreground' },
     accepted: {
       label: '신청 승인됨',
       className: 'border-[#6fc96f] text-[#6fc96f]',
@@ -50,8 +50,16 @@ const MatchViewerView = ({ matchPost, onApply }: MatchViewerViewProps) => {
   const isFull = matchPost.currentParticipants >= matchPost.maxParticipants
 
   return (
-    <div className="relative min-h-page bg-background pb-[140px] text-foreground">
-      <div className="flex items-center border-b border-border px-4 py-3.5">
+    <div className="relative min-h-page bg-background pb-[140px] lg:pb-6 text-foreground">
+      {/* 상단 컬러 그라디언트 */}
+      <div
+        className="h-[80px] w-full"
+        style={{
+          background: `linear-gradient(160deg, oklch(${palette.lt} ${palette.c} ${palette.h}) 0%, oklch(${palette.lb} ${palette.c * 0.5} ${palette.h}) 100%)`,
+          opacity: 0.6,
+        }}
+      />
+      <div className="flex items-center border-b border-border px-4 py-3.5 -mt-[80px] relative bg-background/70 backdrop-blur-sm">
         <button
           aria-label="뒤로"
           onClick={() => router.back()}
@@ -104,7 +112,7 @@ const MatchViewerView = ({ matchPost, onApply }: MatchViewerViewProps) => {
         )}
       </div>
 
-      <div className="fixed bottom-[72px] left-1/2 z-25 w-full max-w-[460px] -translate-x-1/2 border-t border-border bg-background/95 px-3 py-3 backdrop-blur-md">
+      <div className="fixed bottom-[72px] lg:bottom-0 left-1/2 z-25 w-full max-w-[460px] -translate-x-1/2 border-t border-border bg-background/95 px-3 py-3 backdrop-blur-md">
         {myApplication ? (
           <div className="flex flex-col items-center gap-2">
             <ApplicationStatusBadge status={myApplication.status} />

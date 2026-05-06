@@ -2,7 +2,7 @@ import { FormControl, FormField, FormItem, FormMessage } from '@/components/ui/f
 import { FunctionComponent } from 'react'
 import { useMatchPostFormContext } from '../hooks/match-post-form-context'
 
-const cls = 'w-full border border-border bg-secondary px-3.5 py-3 text-[14px] text-foreground placeholder:text-muted-foreground focus:border-yellow-400 focus:outline-none'
+const cls = 'w-full border border-border bg-secondary px-3.5 py-3 text-[14px] text-foreground placeholder:text-muted-foreground focus:border-primary focus:outline-none'
 const labelCls = 'mb-1.5 block font-mono text-[10px] uppercase tracking-[1px] text-muted-foreground'
 
 const MovieTitleInputField: FunctionComponent = () => {

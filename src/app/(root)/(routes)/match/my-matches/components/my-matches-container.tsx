@@ -61,7 +61,7 @@ const MyMatchesContainer = () => {
             onClick={() => setActiveTab(tab)}
             className={`flex-1 py-3 font-mono text-[11px] uppercase tracking-[1px] transition ${
               activeTab === tab
-                ? 'border-b-2 border-yellow-400 text-yellow-400'
+                ? 'border-b-2 border-primary text-primary'
                 : 'text-muted-foreground hover:text-foreground'
             }`}
           >

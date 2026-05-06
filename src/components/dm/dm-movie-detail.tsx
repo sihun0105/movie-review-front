@@ -16,6 +16,7 @@ interface DmMovieDetailProps {
 
 export function DmMovieDetail({ movie, averageScore, scoreCount }: DmMovieDetailProps) {
   const palette = paletteForMovie(movie.id, movie.title)
+  const { h, c, lt, lb } = palette
   const rating = averageScore ?? movie.averageScore ?? 0
   const reviews = scoreCount ?? movie.scoreCount ?? 0
   const genres = movie.genre?.split(/[,/·]/).map((g) => g.trim()).filter(Boolean) ?? []
@@ -23,12 +24,11 @@ export function DmMovieDetail({ movie, averageScore, scoreCount }: DmMovieDetail
 
   return (
     <div className="pb-5">
-      {/* 포스터 배경 블러 */}
+      {/* 포스터 배경 그라디언트 */}
       <div
         className="h-[140px] w-full"
         style={{
-          background: `linear-gradient(160deg, oklch(${palette.lt} ${palette.c} ${palette.h}) 0%, oklch(${palette.lb} ${palette.c * 0.6} ${palette.h}) 100%)`,
-          filter: 'blur(0px)',
+          background: `linear-gradient(160deg, oklch(${lt} ${c} ${h}) 0%, oklch(${lb} ${c * 0.6} ${h}) 100%)`,
         }}
       />
 
