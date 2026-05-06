@@ -3,6 +3,7 @@ import GoogleAd from '@/components/app/googleAd'
 import { MatchHeroBanner, MovieListCard } from '@/components/dm'
 import { Movie } from '@/modules/movie/movie.entity'
 import { MovieRepository } from '@/modules/movie/movie-repository'
+import { MatchPostRepository } from '@/modules/match/match-post-repository'
 import { Metadata } from 'next'
 import { FunctionComponent } from 'react'
 
@@ -14,6 +15,18 @@ const getMovieList = async (): Promise<Movie[]> => {
     return await repo.getMovie()
   } catch {
     return []
+  }
+}
+
+const getMatchLiveCount = async (): Promise<number> => {
+  try {
+    const repo = new MatchPostRepository()
+    const data = await repo.getMatchPosts(1, 100)
+    return data.matchPosts.filter(
+      (m) => m.currentParticipants < m.maxParticipants,
+    ).length
+  } catch {
+    return 0
   }
 }
 
@@ -45,7 +58,7 @@ const TODAY_LABEL = (() => {
 })()
 
 const Page: FunctionComponent = async () => {
-  const data = await getMovieList()
+  const [data, liveCount] = await Promise.all([getMovieList(), getMatchLiveCount()])
 
   if (!data || data.length === 0) {
     return <AppSkeleton className="container min-h-[364px] p-6" />
@@ -56,7 +69,7 @@ const Page: FunctionComponent = async () => {
 
   return (
     <main className="pb-5">
-      <MatchHeroBanner todayLabel={TODAY_LABEL} liveCount={24} />
+      <MatchHeroBanner todayLabel={TODAY_LABEL} liveCount={liveCount || undefined} />
 
       <div className="flex items-center gap-2 px-4 pb-3 pt-5">
         <h2 className="text-[16px] font-semibold text-foreground">박스오피스</h2>
