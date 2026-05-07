@@ -5,6 +5,8 @@ import { useMatchPostFormContext } from '../hooks/match-post-form-context'
 const cls = 'w-full border border-border bg-secondary px-3.5 py-3 text-[14px] text-foreground focus:border-primary focus:outline-none [color-scheme:dark]'
 const labelCls = 'mb-1.5 block font-mono text-[10px] uppercase tracking-[1px] text-muted-foreground'
 
+const today = new Date().toISOString().split('T')[0]
+
 const ShowTimeInputField: FunctionComponent = () => {
   const { form } = useMatchPostFormContext()
   return (
@@ -17,6 +19,7 @@ const ShowTimeInputField: FunctionComponent = () => {
           <FormControl>
             <input
               type="date"
+              min={today}
               value={field.value ?? ''}
               onChange={(e) => field.onChange(e.target.value || undefined)}
               className={cls}
