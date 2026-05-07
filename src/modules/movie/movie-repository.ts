@@ -37,6 +37,7 @@ export class MovieRepository {
       createdAt: new Date(unknown.createdAt),
       updatedAt: new Date(unknown.updatedAt),
       poster: unknown.poster,
+      rank: Number(unknown.rank) || 0,
       rankInten: unknown.rankInten,
       plot: unknown.plot,
       rankOldAndNew: unknown.rankOldAndNew,
