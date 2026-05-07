@@ -1,6 +1,7 @@
 import { MovieDatasource } from './movie-datasource'
 import {
   AverageMovieScore,
+  CGVTheaterDetail,
   CGVTheaterList,
   Movie,
   Score,
@@ -99,7 +100,7 @@ export class MovieRepository {
   }
 
   // 영화관 상세 정보 호출
-  async getMovieTheaterDetail(id: number): Promise<any> {
+  async getMovieTheaterDetail(id: number): Promise<CGVTheaterDetail> {
     const data = await this.datasource.getMovieTheaterDetail(id)
     return {
       id: data.id,
