@@ -21,9 +21,10 @@ const NewMatchContainer = () => {
       })
       router.push('/match')
     } catch (error) {
+      const message = error instanceof Error ? error.message : '매치 등록에 실패했습니다.'
       toast({
         title: '오류',
-        description: '매치 등록에 실패했습니다.',
+        description: message,
         variant: 'destructive',
       })
     }
