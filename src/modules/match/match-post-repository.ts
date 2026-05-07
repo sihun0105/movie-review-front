@@ -56,10 +56,11 @@ export class MatchPostRepository {
       throw new Error('상영 시간을 입력해주세요.')
     }
 
-    const showTime = new Date(data.showTime)
-    const now = new Date()
-    if (showTime <= now) {
-      throw new Error('상영 시간은 현재 시간보다 미래여야 합니다.')
+    const showTimeDate = new Date(data.showTime + 'T00:00:00')
+    const today = new Date()
+    today.setHours(0, 0, 0, 0)
+    if (showTimeDate < today) {
+      throw new Error('상영 시간은 오늘 이후여야 합니다.')
     }
 
     if (
