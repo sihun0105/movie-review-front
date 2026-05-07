@@ -30,15 +30,11 @@ export class ArticleRepository {
   }
 
   async getArticle(id: string): Promise<Article> {
-    try {
-      const data = await this.datasource.getArticle(id)
-      if (!data || !data.article) {
-        throw new Error('존재하지 않는 게시글입니다.')
-      }
-      return this.convertUnknownToArticle(data.article)
-    } catch (error: any) {
+    const data = await this.datasource.getArticle(id)
+    if (!data || !data.article) {
       throw new Error('존재하지 않는 게시글입니다.')
     }
+    return this.convertUnknownToArticle(data.article)
   }
 
   async createArticle(

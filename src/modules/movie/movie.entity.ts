@@ -108,3 +108,16 @@ export interface CGVTheater {
 export interface CGVTheaterList {
   theaters: CGVTheater[]
 }
+
+export interface CGVTheaterDetail {
+  id: number
+  name: string
+  address: string
+  phone: string
+  movies: Array<{
+    movieCd: number
+    title: string
+    poster: string
+    openedAt: Date
+  }>
+}
