@@ -141,7 +141,7 @@ export class MatchPostDataSource {
       }
 
       const data = await response.json()
-      return data.matches || []
+      return data.matchPosts || []
     } catch (error) {
       console.error('My posts fetch error:', error)
       throw new Error('내 게시글 목록을 불러오는데 실패했습니다.')
