@@ -37,10 +37,16 @@ export async function POST(request: NextRequest) {
     const data = await matchRepository.createMatchPost(body)
     return NextResponse.json(data)
   } catch (error) {
+    const message = error instanceof Error ? error.message : 'Internal server error'
+    const isValidationError =
+      message.includes('입력해주세요') ||
+      message.includes('이어야 합니다') ||
+      message.includes('필요합니다') ||
+      message.includes('미래여야')
     console.error('Match create API error:', error)
     return NextResponse.json(
-      { error: 'Internal server error' },
-      { status: 500 },
+      { error: message },
+      { status: isValidationError ? 400 : 500 },
     )
   }
 }
