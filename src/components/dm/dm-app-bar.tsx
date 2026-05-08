@@ -2,11 +2,21 @@
 
 import { signIn, useSession } from 'next-auth/react'
 import Link from 'next/link'
+import useSWR from 'swr'
+
+const fetcher = (url: string) => fetch(url).then((r) => r.json())
 
 export function DmAppBar() {
   const { status } = useSession()
   const isLogin = status === 'authenticated'
   const isLoading = status === 'loading'
+
+  const { data } = useSWR<{ count: number }>(
+    isLogin ? '/api/notifications/unread-count' : null,
+    fetcher,
+    { refreshInterval: 30000 },
+  )
+  const unread = data?.count ?? 0
 
   return (
     <header className="sticky top-0 z-30 flex items-center border-b border-border bg-background/95 px-4 py-3 backdrop-blur-md">
@@ -14,20 +24,36 @@ export function DmAppBar() {
         drunken<span className="text-primary">movie</span>
       </Link>
 
-      <div className="ml-auto flex items-center gap-2">
+      <div className="ml-auto flex items-center gap-1">
         {isLoading && (
           <span className="font-mono text-[11px] text-muted-foreground">···</span>
         )}
         {isLogin && (
-          <Link
-            href="/account"
-            className="flex h-9 w-9 items-center justify-center rounded-md text-muted-foreground hover:bg-accent hover:text-foreground"
-          >
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-              <circle cx="12" cy="8" r="4"/>
-              <path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/>
-            </svg>
-          </Link>
+          <>
+            <Link
+              href="/notifications"
+              className="relative flex h-9 w-9 items-center justify-center rounded-md text-muted-foreground hover:bg-accent hover:text-foreground"
+            >
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M18 8a6 6 0 10-12 0c0 7-3 9-3 9h18s-3-2-3-9"/>
+                <path d="M13.7 21a2 2 0 01-3.4 0"/>
+              </svg>
+              {unread > 0 && (
+                <span className="absolute right-1 top-1 flex h-4 w-4 items-center justify-center rounded-full bg-primary font-mono text-[9px] font-bold text-primary-foreground">
+                  {unread > 99 ? '99+' : unread}
+                </span>
+              )}
+            </Link>
+            <Link
+              href="/account"
+              className="flex h-9 w-9 items-center justify-center rounded-md text-muted-foreground hover:bg-accent hover:text-foreground"
+            >
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                <circle cx="12" cy="8" r="4"/>
+                <path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/>
+              </svg>
+            </Link>
+          </>
         )}
         {!isLoading && !isLogin && (
           <button
