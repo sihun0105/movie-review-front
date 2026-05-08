@@ -223,6 +223,18 @@ const AppBackEndApiEndpoint = {
   getChatMessages: (chatRoomId: string) => {
     return `${_base}/chat/rooms/${chatRoomId}/messages`
   },
+  getNotifications: (page = 1, pageSize = 20) => {
+    return `${_base}/notifications?page=${page}&pageSize=${pageSize}`
+  },
+  getUnreadNotificationCount: () => {
+    return `${_base}/notifications/unread-count`
+  },
+  markNotificationRead: (id: string) => {
+    return `${_base}/notifications/${id}/read`
+  },
+  markAllNotificationsRead: () => {
+    return `${_base}/notifications/read-all`
+  },
 }
 
 export { AppBackEndApiEndpoint }
