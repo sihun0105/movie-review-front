@@ -1,20 +1,23 @@
 import { FunctionComponent } from 'react'
+import Link from 'next/link'
 import ArticleSection from './components/article-section'
-import NewArticleToggle from './components/new-article-toggle'
 
 const Page: FunctionComponent = () => {
   return (
-    <div className="relative min-h-page bg-background pb-[100px] lg:pb-4 text-foreground">
+    <main className="min-h-page bg-background pb-5 text-foreground">
       <div className="flex items-center border-b border-border px-4 py-3.5">
-        <h1 className="font-dm-display text-[20px] italic font-bold text-foreground">
+        <h1 className="text-[18px] font-bold tracking-tight text-foreground">
           커뮤니티
         </h1>
+        <Link
+          href="/articles/new"
+          className="ml-auto inline-flex h-8 items-center rounded-md bg-primary px-3 text-[13px] font-medium text-primary-foreground"
+        >
+          ＋ 만들기
+        </Link>
       </div>
       <ArticleSection />
-      <div className="fixed bottom-[72px] right-4 z-50 lg:bottom-6">
-        <NewArticleToggle />
-      </div>
-    </div>
+    </main>
   )
 }
 
