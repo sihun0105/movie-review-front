@@ -37,12 +37,14 @@ const useChatSocket = ({
 
   useEffect(() => {
     if (!socketRef.current) {
-      socketRef.current = io(
-        `${process.env.NEXT_PUBLIC_CHAT_SERVER_API}/${actualNamespace}`,
-        {
-          transports: ['websocket', 'polling'],
-        },
-      )
+      // 같은 origin 사용 — nginx가 /socket.io/* 를 chat-service로 프록시
+      const base =
+        typeof window !== 'undefined' && window.location.origin
+          ? window.location.origin
+          : process.env.NEXT_PUBLIC_CHAT_SERVER_API
+      socketRef.current = io(`${base}/${actualNamespace}`, {
+        transports: ['websocket', 'polling'],
+      })
 
       // 연결 이벤트 리스너 등록
       socketRef.current.on('connect', () => {
