@@ -9,9 +9,11 @@ import useSWR from 'swr'
 const fetcher = (url: string) => fetch(url).then((r) => r.json())
 
 function parseRoom(room: ChatRoomEntity, currentUserId: number) {
-  const matchId = room.roomName.startsWith('Match Chat - ')
-    ? room.roomName.replace('Match Chat - ', '')
-    : room.roomName
+  // 우선순위: matchPostId 필드(신규) → roomName 파싱(레거시)
+  let matchId: string | null = room.matchPostId ?? null
+  if (!matchId && room.roomName.startsWith('Match Chat - ')) {
+    matchId = room.roomName.replace('Match Chat - ', '')
+  }
   const targetUserId = room.memberIds.find((id) => id !== currentUserId) ?? null
   const date = new Date(room.updatedAt)
   const now = new Date()
@@ -30,10 +32,13 @@ function RoomRow({
   currentUserId: number
 }) {
   const { matchId, targetUserId, timeStr } = parseRoom(room, currentUserId)
-  const href = targetUserId
+  const isLegacy = !matchId
+  const href = matchId && targetUserId
     ? `/match/${matchId}/chat/${targetUserId}`
-    : `/match/${matchId}`
-  const initial = matchId.charAt(0).toUpperCase()
+    : matchId
+      ? `/match/${matchId}`
+      : '#'
+  const initial = (matchId ?? room.roomName).charAt(0).toUpperCase()
 
   return (
     <Link
@@ -53,10 +58,14 @@ function RoomRow({
             {timeStr}
           </span>
         </div>
-        <div className="mt-0.5 font-mono text-[9px] tracking-[0.5px] text-primary">
-          🎟 {matchId}
+        {matchId && !isLegacy && (
+          <div className="mt-0.5 font-mono text-[9px] tracking-[0.5px] text-primary">
+            🎟 {matchId}
+          </div>
+        )}
+        <div className="mt-0.5 text-[12px] text-muted-foreground">
+          {isLegacy ? '이전 채팅 (매치 정보 없음)' : '채팅방 열기 →'}
         </div>
-        <div className="mt-0.5 text-[12px] text-muted-foreground">채팅방 열기 →</div>
       </div>
     </Link>
   )

@@ -10,6 +10,7 @@ export function convertApiResponseToChatRoomEntity(
     memberIds: apiResponse.memberIds,
     createdAt: apiResponse.createdAt,
     updatedAt: apiResponse.updatedAt,
+    matchPostId: apiResponse.matchPostId || undefined,
   }
 }
 
