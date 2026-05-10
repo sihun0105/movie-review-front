@@ -5,7 +5,7 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 
 interface NavItem {
-  key: 'home' | 'match' | 'chat' | 'account'
+  key: 'home' | 'match' | 'articles' | 'chat' | 'account'
   label: string
   href: string
   icon: JSX.Element
@@ -25,6 +25,17 @@ const ITEMS: NavItem[] = [
     icon: <path d="M4 7h16M4 12h10M4 17h7" />,
   },
   {
+    key: 'articles',
+    label: '커뮤니티',
+    href: '/articles',
+    icon: (
+      <>
+        <path d="M4 4h16v12H5.5L4 18V4z" />
+        <path d="M8 9h8M8 13h5" />
+      </>
+    ),
+  },
+  {
     key: 'chat',
     label: '채팅',
     href: '/chat',
@@ -40,6 +51,7 @@ const ITEMS: NavItem[] = [
 
 function activeKey(pathname: string): NavItem['key'] {
   if (pathname.startsWith('/match')) return 'match'
+  if (pathname.startsWith('/articles')) return 'articles'
   if (pathname.startsWith('/chat')) return 'chat'
   if (pathname.startsWith('/account')) return 'account'
   return 'home'
@@ -50,7 +62,7 @@ export function DmBottomNav() {
   const active = activeKey(pathname)
 
   return (
-    <nav className="sticky bottom-0 z-20 grid h-16 grid-cols-4 border-t border-border bg-background">
+    <nav className="sticky bottom-0 z-20 grid h-16 grid-cols-5 border-t border-border bg-background">
       {ITEMS.map((it) => {
         const isActive = active === it.key
         return (
