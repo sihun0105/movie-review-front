@@ -1,5 +1,6 @@
 'use client'
 
+import { Form } from '@/components/ui/form'
 import { useRouter } from 'next/navigation'
 import { FunctionComponent } from 'react'
 import { useArticleComments } from '../hooks/use-article-comments'
@@ -30,16 +31,18 @@ const CommentForm: FunctionComponent<CommentFormProps> = ({ id }) => {
   })
 
   return (
-    <form onSubmit={handleSubmit} className="flex items-center gap-2">
-      <CommentInputField />
-      <button
-        type="submit"
-        disabled={isCreatingComment}
-        className="shrink-0 bg-primary px-3 py-2 font-mono text-[11px] uppercase tracking-[0.5px] text-white disabled:bg-secondary disabled:text-muted-foreground"
-      >
-        등록
-      </button>
-    </form>
+    <Form {...form}>
+      <form onSubmit={handleSubmit} className="flex items-center gap-2">
+        <CommentInputField />
+        <button
+          type="submit"
+          disabled={isCreatingComment}
+          className="shrink-0 bg-primary px-3 py-2 font-mono text-[11px] uppercase tracking-[0.5px] text-white disabled:bg-secondary disabled:text-muted-foreground"
+        >
+          등록
+        </button>
+      </form>
+    </Form>
   )
 }
 
