@@ -75,12 +75,16 @@ export default function ResetPasswordPage() {
           </label>
           <input
             id="password"
-            type="password"
-            autoComplete="new-password"
+            type="text"
+            autoComplete="off"
+            data-1p-ignore="true"
+            data-lpignore="true"
+            data-form-type="other"
             placeholder="••••••••"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             className="h-10 w-full rounded-md border border-input bg-transparent px-3 text-[14px] text-foreground placeholder:text-muted-foreground focus:border-ring focus:outline-none"
+            style={{ WebkitTextSecurity: 'disc' } as React.CSSProperties}
           />
         </div>
 
@@ -90,11 +94,15 @@ export default function ResetPasswordPage() {
           </label>
           <input
             id="confirm"
-            type="password"
-            autoComplete="new-password"
+            type="text"
+            autoComplete="off"
+            data-1p-ignore="true"
+            data-lpignore="true"
+            data-form-type="other"
             placeholder="••••••••"
             value={confirm}
             onChange={(e) => setConfirm(e.target.value)}
+            style={{ WebkitTextSecurity: 'disc' } as React.CSSProperties}
             className="h-10 w-full rounded-md border border-input bg-transparent px-3 text-[14px] text-foreground placeholder:text-muted-foreground focus:border-ring focus:outline-none"
           />
         </div>

@@ -4,7 +4,7 @@ import { FormControl, FormField, FormItem, FormMessage } from '@/components/ui/f
 import { FunctionComponent, useEffect, useState } from 'react'
 import { useRegisterFormContext } from '../hook/register-form-context'
 
-const inputCls = 'w-full border border-border bg-secondary px-3.5 py-3 text-[14px] text-foreground placeholder:text-muted-foreground focus:border-primary focus:outline-none'
+const inputCls = 'w-full border border-border bg-secondary px-3.5 py-3 pr-12 text-[14px] text-foreground placeholder:text-muted-foreground focus:border-primary focus:outline-none'
 const labelCls = 'mb-2 block font-mono text-[10px] uppercase tracking-[1px] text-muted-foreground'
 
 const rules = [
@@ -17,6 +17,7 @@ const rules = [
 const PasswordInputField: FunctionComponent = () => {
   const { form } = useRegisterFormContext()
   const [checks, setChecks] = useState({ length: false, letter: false, number: false, special: false })
+  const [show, setShow] = useState(false)
   const pw = form.watch('password')
 
   useEffect(() => {
@@ -32,7 +33,27 @@ const PasswordInputField: FunctionComponent = () => {
         <FormItem>
           <label className={labelCls}>비밀번호</label>
           <FormControl>
-            <input {...field} type="password" autoComplete="new-password" placeholder="••••••••" className={inputCls} />
+            <div className="relative">
+              <input
+                {...field}
+                type="text"
+                autoComplete="off"
+                data-1p-ignore="true"
+                data-lpignore="true"
+                data-form-type="other"
+                placeholder="••••••••"
+                className={inputCls}
+                style={show ? undefined : { WebkitTextSecurity: 'disc' } as React.CSSProperties}
+              />
+              <button
+                type="button"
+                onClick={() => setShow((v) => !v)}
+                tabIndex={-1}
+                className="absolute right-3 top-1/2 -translate-y-1/2 font-mono text-[10px] uppercase tracking-[1px] text-muted-foreground hover:text-foreground"
+              >
+                {show ? '숨김' : '보기'}
+              </button>
+            </div>
           </FormControl>
           <FormMessage className="font-mono text-[11px] text-primary" />
           {pw && (
