@@ -32,13 +32,11 @@ function RoomRow({
   currentUserId: number
 }) {
   const { matchId, targetUserId, timeStr } = parseRoom(room, currentUserId)
-  const isLegacy = !matchId
-  const href = matchId && targetUserId
-    ? `/match/${matchId}/chat/${targetUserId}`
-    : matchId
-      ? `/match/${matchId}`
-      : '#'
-  const initial = (matchId ?? room.roomName).charAt(0).toUpperCase()
+  // 채팅방은 chatRoomId로 직접 접근 — matchId가 없는 레거시 방도 동작
+  const href = `/chat/${room.chatRoomId}`
+  const initial = (targetUserId ? `${targetUserId}` : room.roomName)
+    .charAt(0)
+    .toUpperCase()
 
   return (
     <Link
@@ -58,13 +56,13 @@ function RoomRow({
             {timeStr}
           </span>
         </div>
-        {matchId && !isLegacy && (
+        {matchId && (
           <div className="mt-0.5 font-mono text-[9px] tracking-[0.5px] text-primary">
             🎟 {matchId}
           </div>
         )}
         <div className="mt-0.5 text-[12px] text-muted-foreground">
-          {isLegacy ? '이전 채팅 (매치 정보 없음)' : '채팅방 열기 →'}
+          채팅방 열기 →
         </div>
       </div>
     </Link>
