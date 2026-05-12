@@ -1,7 +1,7 @@
 'use client'
 
 import { signIn } from 'next-auth/react'
-import { useRouter, useSearchParams } from 'next/navigation'
+import { useSearchParams } from 'next/navigation'
 import { useState } from 'react'
 
 function toRelativePath(url: string): string {
@@ -14,7 +14,6 @@ function toRelativePath(url: string): string {
 }
 
 export function DmLoginForm() {
-  const router = useRouter()
   const searchParams = useSearchParams()
   const rawCallback = searchParams?.get('callbackUrl') ?? '/'
   const callbackUrl = toRelativePath(rawCallback)
@@ -34,12 +33,14 @@ export function DmLoginForm() {
       redirect: false,
       callbackUrl,
     })
-    setIsSubmitting(false)
     if (res?.error) {
+      setIsSubmitting(false)
       setError('이메일 또는 비밀번호가 올바르지 않습니다.')
       return
     }
-    router.push(callbackUrl)
+    // router.push는 클라이언트 사이드 네비게이션이라 방금 설정된 세션 쿠키가
+    // 미들웨어에 전파되기 전에 실행될 수 있음 → 풀 페이지 로드로 강제
+    window.location.href = callbackUrl
   }
 
   return (
