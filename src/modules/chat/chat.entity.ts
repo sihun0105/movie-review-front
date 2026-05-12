@@ -6,6 +6,7 @@ export interface ChatRoomEntity {
   memberIds: number[]
   createdAt: string
   updatedAt: string
+  matchPostId?: string
 }
 
 // 채팅 메시지 엔티티
