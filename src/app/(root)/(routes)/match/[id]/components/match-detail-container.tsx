@@ -2,7 +2,6 @@
 
 import { useAppToast } from '@/hooks/use-app-toast'
 import { useSession } from 'next-auth/react'
-import { useEffect } from 'react'
 import { useParams, useRouter } from 'next/navigation'
 import {
   useApplyMatch,
@@ -28,12 +27,11 @@ const MatchDetailContainer = () => {
     isAuthor ? matchId : '',
   )
 
-  useEffect(() => {
-    if (status === 'loading') return
-    if (status === 'unauthenticated') router.push('/login')
-  }, [status, router])
-
   const handleApplySubmit = async (message: string) => {
+    if (status === 'unauthenticated') {
+      router.push(`/login?callbackUrl=${encodeURIComponent(`/match/${matchId}`)}`)
+      return
+    }
     try {
       await applyToMatch({ message })
       showToast('매치 신청이 완료되었습니다.')
@@ -77,8 +75,6 @@ const MatchDetailContainer = () => {
         loading...
       </div>
     )
-
-  if (status === 'unauthenticated') return null
 
   if (matchError || !matchPost)
     return (
