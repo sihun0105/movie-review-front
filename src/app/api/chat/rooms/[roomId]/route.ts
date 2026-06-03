@@ -27,7 +27,8 @@ export async function GET(
       chatRoomId: roomId,
       userId,
     })
-    return NextResponse.json(data)
+    // 기존 페이지가 { chatRoom } 형태 기대 → 래핑해 반환
+    return NextResponse.json({ chatRoom: data })
   } catch (error) {
     console.error('Chat room detail API error:', error)
     return NextResponse.json(
