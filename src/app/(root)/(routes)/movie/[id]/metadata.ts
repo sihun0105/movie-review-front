@@ -1,10 +1,12 @@
 import { Metadata } from 'next'
 import { getMovieDetail, getReviews, getScore, hasValidScore } from './data'
 
+const SITE_URL = 'https://bollae.kr'
+
 const FALLBACK: Metadata = {
-  title: '영화 상세 - DrunkenMovie',
-  description: 'DrunkenMovie에서 다양한 영화 정보와 리뷰를 확인하세요.',
-  metadataBase: new URL('https://drunkenmovie.shop'),
+  title: '영화 상세 - 볼래',
+  description: '볼래에서 다양한 영화 정보와 리뷰를 확인하세요.',
+  metadataBase: new URL(SITE_URL),
 }
 
 function genreList(genre: unknown): string[] {
@@ -27,8 +29,8 @@ export async function generateMovieMetadata(id: string): Promise<Metadata> {
       movie.director && `${movie.director} 감독`,
       '영화 리뷰',
       '영화 평점',
-      'DrunkenMovie',
-      '영화뭐함',
+      '볼래',
+      'bollae',
       '한국 영화 리뷰',
       validScore && `평점 ${score.averageScore.toFixed(1)}점`,
     ]
@@ -61,15 +63,15 @@ export async function generateMovieMetadata(id: string): Promise<Metadata> {
       if (!isNaN(year)) description = `${description} | ${year}년 개봉`
     }
 
-    const title = `${movie.title} - DrunkenMovie`
+    const title = `${movie.title} - 볼래`
     const currentDate = new Date().toISOString().slice(0, 10)
 
     return {
       title,
       description: description.slice(0, 160),
       keywords,
-      authors: [{ name: 'DrunkenMovie' }],
-      publisher: 'DrunkenMovie',
+      authors: [{ name: '볼래' }],
+      publisher: '볼래',
       robots: {
         index: true,
         follow: true,
@@ -86,8 +88,8 @@ export async function generateMovieMetadata(id: string): Promise<Metadata> {
         title,
         description,
         type: 'video.movie',
-        url: `https://drunkenmovie.shop/movie/${id}`,
-        siteName: 'DrunkenMovie',
+        url: `${SITE_URL}/movie/${id}`,
+        siteName: '볼래',
         locale: 'ko_KR',
         images: [
           {
@@ -107,13 +109,12 @@ export async function generateMovieMetadata(id: string): Promise<Metadata> {
       },
       twitter: {
         card: 'summary_large_image',
-        site: '@DrunkenMovie',
         title,
         description,
         images: [movie.poster],
       },
-      alternates: { canonical: `https://drunkenmovie.shop/movie/${id}` },
-      metadataBase: new URL('https://drunkenmovie.shop'),
+      alternates: { canonical: `${SITE_URL}/movie/${id}` },
+      metadataBase: new URL(SITE_URL),
       other: {
         'movie:title': movie.title,
         'movie:director': movie.director || '',
