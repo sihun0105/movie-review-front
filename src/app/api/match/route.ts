@@ -8,11 +8,12 @@ export async function GET(request: NextRequest) {
     const { searchParams } = new URL(request.url)
     const page = parseInt(searchParams.get('page') || '1')
     const limit = parseInt(searchParams.get('pageSize') || searchParams.get('limit') || '10')
+    const movieTitle = searchParams.get('movieTitle')?.trim()
 
     const token = getTokenFromCookie()
     const matchRepository = new MatchPostRepository(token)
 
-    const data = await matchRepository.getMatchPosts(page, limit)
+    const data = await matchRepository.getMatchPosts(page, limit, movieTitle)
     return NextResponse.json(data)
   } catch (error) {
     console.error('Match list API error:', error)

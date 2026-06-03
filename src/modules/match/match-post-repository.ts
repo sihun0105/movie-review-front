@@ -15,6 +15,7 @@ export class MatchPostRepository {
   async getMatchPosts(
     page: number = 1,
     pageSize: number = 10,
+    movieTitle?: string,
   ): Promise<MatchPostResponse> {
     if (page < 1) {
       throw new Error('페이지 번호는 1 이상이어야 합니다.')
@@ -24,7 +25,7 @@ export class MatchPostRepository {
       throw new Error('페이지 크기는 1-100 사이여야 합니다.')
     }
 
-    return await this.dataSource.getMatchPosts(page, pageSize)
+    return await this.dataSource.getMatchPosts(page, pageSize, movieTitle)
   }
 
   async getMatchPost(matchId: string): Promise<MatchPost> {

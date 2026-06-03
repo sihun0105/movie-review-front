@@ -1,7 +1,15 @@
 import { FunctionComponent } from 'react'
 import { NewMatchContainer } from './components/new-match-container'
 
-const Page: FunctionComponent = () => {
+interface PageProps {
+  searchParams?: {
+    movieTitle?: string
+  }
+}
+
+const Page: FunctionComponent<PageProps> = ({ searchParams }) => {
+  const movieTitle = searchParams?.movieTitle?.trim() || undefined
+
   return (
     <div className="min-h-page bg-background text-foreground">
       <div className="flex items-center border-b border-border px-4 py-3.5">
@@ -10,7 +18,7 @@ const Page: FunctionComponent = () => {
         </h1>
       </div>
       <div className="px-5 py-5">
-        <NewMatchContainer />
+        <NewMatchContainer movieTitle={movieTitle} />
       </div>
     </div>
   )

@@ -8,10 +8,17 @@ import { useMatchPosts } from '../hooks'
 import { MatchHeaderSection } from '../sections/match-header-section'
 import { MatchListSection } from '../sections/match-list-section'
 
-export const MatchContainer = () => {
+interface MatchContainerProps {
+  movieTitle?: string
+}
+
+export const MatchContainer = ({ movieTitle }: MatchContainerProps) => {
   const { status } = useSession()
   const router = useRouter()
   const pathname = usePathname() ?? '/match'
+  const callbackUrl = movieTitle
+    ? `${pathname}?movieTitle=${encodeURIComponent(movieTitle)}`
+    : pathname
   const { toast } = useToast()
   const [showApplyDialog, setShowApplyDialog] = useState(false)
   const [selectedMatch, setSelectedMatch] = useState<any>(null)
@@ -22,7 +29,7 @@ export const MatchContainer = () => {
     hasMore,
     loadMore,
     isLoading: isLoadingPosts,
-  } = useMatchPosts()
+  } = useMatchPosts(10, movieTitle)
   // 매치 신청 함수
   const handleApplyToMatch = async (matchId: string, message: string) => {
     try {
@@ -55,7 +62,7 @@ export const MatchContainer = () => {
   // 매치 신청
   const handleApply = (matchId: string) => {
     if (status === 'unauthenticated') {
-      router.push(`/login?callbackUrl=${encodeURIComponent(pathname)}`)
+      router.push(`/login?callbackUrl=${encodeURIComponent(callbackUrl)}`)
       return
     }
     const match = matchPosts.find((m) => m.id === matchId)
@@ -85,7 +92,7 @@ export const MatchContainer = () => {
 
   return (
     <>
-      <MatchHeaderSection />
+      <MatchHeaderSection movieTitle={movieTitle} />
 
       <MatchListSection
         matchPosts={matchPosts}

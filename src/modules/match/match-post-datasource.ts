@@ -23,10 +23,12 @@ export class MatchPostDataSource {
   async getMatchPosts(
     page: number = 1,
     pageSize: number = 10,
+    movieTitle?: string,
   ): Promise<MatchPostResponse> {
     try {
+      const url = AppBackEndApiEndpoint.getMatchPosts(page, pageSize)
       const response = await fetch(
-        AppBackEndApiEndpoint.getMatchPosts(page, pageSize),
+        movieTitle ? `${url}&movieTitle=${encodeURIComponent(movieTitle)}` : url,
         {
           method: 'GET',
           headers: this.getAuthHeaders(),
