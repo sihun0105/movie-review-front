@@ -83,7 +83,7 @@ export function DmMovieDetail({
               onClick={onVodClick}
               className="flex-1 rounded-md border border-border py-2.5 text-[13px] font-medium text-foreground hover:bg-accent"
             >
-              ▶ VOD 보기
+              ▶ 영상 보기
             </button>
           )}
           <Link

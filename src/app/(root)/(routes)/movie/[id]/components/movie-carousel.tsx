@@ -16,7 +16,7 @@ const MovieCarousel: FunctionComponent<MovieCarouselProps> = ({ data, title }) =
   if (!data || data.length === 0)
     return (
       <p className="text-center font-mono text-[11px] text-muted-foreground">
-        VOD 데이터가 없습니다.
+        영상 데이터가 없습니다.
       </p>
     )
 
