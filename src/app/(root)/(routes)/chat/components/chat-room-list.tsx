@@ -32,8 +32,11 @@ function RoomRow({
   currentUserId: number
 }) {
   const { matchId, targetUserId, timeStr } = parseRoom(room, currentUserId)
-  // 채팅방은 chatRoomId로 직접 접근 — matchId가 없는 레거시 방도 동작
-  const href = `/chat/${room.chatRoomId}`
+  // matchId가 있으면 매치 컨텍스트가 있는 채팅 페이지로,
+  // 없으면(레거시 룸) chatRoomId 직접 진입 페이지로 폴백
+  const href = matchId && targetUserId
+    ? `/match/${matchId}/chat/${targetUserId}`
+    : `/chat/${room.chatRoomId}`
   const initial = (targetUserId ? `${targetUserId}` : room.roomName)
     .charAt(0)
     .toUpperCase()
