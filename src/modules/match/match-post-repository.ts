@@ -5,6 +5,12 @@ import type {
   CreateMatchPostRequest,
 } from './match.entity'
 
+interface MatchPostQuery {
+  movieTitle?: string
+  filter?: string
+  userno?: number
+}
+
 export class MatchPostRepository {
   private dataSource: MatchPostDataSource
 
@@ -15,7 +21,7 @@ export class MatchPostRepository {
   async getMatchPosts(
     page: number = 1,
     pageSize: number = 10,
-    movieTitle?: string,
+    query: MatchPostQuery = {},
   ): Promise<MatchPostResponse> {
     if (page < 1) {
       throw new Error('페이지 번호는 1 이상이어야 합니다.')
@@ -25,7 +31,7 @@ export class MatchPostRepository {
       throw new Error('페이지 크기는 1-100 사이여야 합니다.')
     }
 
-    return await this.dataSource.getMatchPosts(page, pageSize, movieTitle)
+    return await this.dataSource.getMatchPosts(page, pageSize, query)
   }
 
   async getMatchPost(matchId: string): Promise<MatchPost> {
