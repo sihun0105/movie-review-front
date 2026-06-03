@@ -29,7 +29,9 @@ const MatchDetailContainer = () => {
 
   const handleApplySubmit = async (message: string) => {
     if (status === 'unauthenticated') {
-      router.push(`/login?callbackUrl=${encodeURIComponent(`/match/${matchId}`)}`)
+      router.push(
+        `/login?callbackUrl=${encodeURIComponent(`/match/${matchId}?intent=apply`)}`,
+      )
       return
     }
     try {
