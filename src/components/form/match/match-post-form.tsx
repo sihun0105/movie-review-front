@@ -46,7 +46,7 @@ const MatchPostForm: FunctionComponent<MatchPostFormProps> = ({
 
   return (
     <Form {...form}>
-      <form onSubmit={handleSubmit} className="space-y-4">
+      <form onSubmit={handleSubmit} className="space-y-4 pb-4 lg:pb-0">
         <TitleInputField />
         <ContentInputField />
 
@@ -59,7 +59,7 @@ const MatchPostForm: FunctionComponent<MatchPostFormProps> = ({
         <MaxParticipantsInputField />
         <LocationInputField />
 
-        <div className="flex gap-2 pt-2">
+        <div className="sticky bottom-0 z-10 flex gap-2 border-t border-border bg-background/95 py-3 backdrop-blur lg:static lg:border-t-0 lg:bg-transparent lg:py-0 lg:pt-2 lg:backdrop-blur-none">
           <button
             type="button"
             onClick={onCancel}
