@@ -87,18 +87,6 @@ export function DmDesktopRightSidebar() {
         >
           전체 매칭 보기 →
         </Link>
-
-        <div className="mt-3 rounded-md border border-border bg-primary/5 p-3">
-          <div className="flex items-center gap-1.5 font-mono text-[10px] text-primary">
-            <span className="inline-block h-1.5 w-1.5 rounded-full bg-primary" />
-            마감 임박
-          </div>
-          <div className="mt-1.5 text-[13px] leading-snug text-muted-foreground">
-            오늘 마감되는 매칭을
-            <br />
-            놓치지 마세요.
-          </div>
-        </div>
       </div>
     </aside>
   )
