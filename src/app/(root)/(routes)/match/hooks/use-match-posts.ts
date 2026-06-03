@@ -19,15 +19,17 @@ const fetcher = async (url: string): Promise<MatchPostResponse> => {
 
 /** 매치 게시글 목록 key */
 const getKey =
-  (pageSize: number = 10) =>
+  (pageSize: number = 10, movieTitle?: string) =>
   (pageIndex: number, previousPageData: MatchPostResponse | null) => {
     if (previousPageData && !previousPageData.hasNext) return null
-    return AppClientApiEndpoint.getMatchPosts(pageIndex + 1, pageSize)
+    const url = AppClientApiEndpoint.getMatchPosts(pageIndex + 1, pageSize)
+    if (!movieTitle) return url
+    return `${url}&movieTitle=${encodeURIComponent(movieTitle)}`
   }
 
-export const useMatchPosts = (pageSize: number = 10) => {
+export const useMatchPosts = (pageSize: number = 10, movieTitle?: string) => {
   const { data, setSize, mutate, error, isLoading, isValidating } =
-    useSWRInfinite<MatchPostResponse>(getKey(pageSize), fetcher, {
+    useSWRInfinite<MatchPostResponse>(getKey(pageSize, movieTitle), fetcher, {
       refreshInterval: 30000, // 30초마다 새로고침
       revalidateOnFocus: true,
     })

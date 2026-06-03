@@ -25,6 +25,7 @@ export function DmMovieDetail({
   const { h, c, lt, lb } = palette
   const rating = averageScore ?? movie.averageScore ?? 0
   const reviews = scoreCount ?? movie.scoreCount ?? 0
+  const matchHref = `/match?movieTitle=${encodeURIComponent(movie.title)}`
   const genres = movie.genre?.split(/[,/·]/).map((g) => g.trim()).filter(Boolean) ?? []
   const releaseYear = movie.openedAt ? new Date(movie.openedAt).getFullYear() : undefined
 
@@ -86,7 +87,7 @@ export function DmMovieDetail({
             </button>
           )}
           <Link
-            href="/match"
+            href={matchHref}
             className="flex flex-1 items-center justify-center rounded-md bg-primary py-2.5 text-[13px] font-medium text-primary-foreground"
           >
             같이 볼 사람 찾기
