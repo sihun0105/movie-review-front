@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import { useSession } from 'next-auth/react'
-import { usePathname, useRouter } from 'next/navigation'
+import { useRouter } from 'next/navigation'
 import { useToast } from '@/hooks/use-toast'
 import { useMatchPosts } from '../hooks'
 import type { MatchPostFilter } from '../hooks'
@@ -17,10 +17,6 @@ export const MatchContainer = ({ movieTitle }: MatchContainerProps) => {
   const { data: session, status } = useSession()
   const userId = session?.user?.id ? Number(session.user.id) : null
   const router = useRouter()
-  const pathname = usePathname() ?? '/match'
-  const callbackUrl = movieTitle
-    ? `${pathname}?movieTitle=${encodeURIComponent(movieTitle)}`
-    : pathname
   const { toast } = useToast()
   const [filter, setFilter] = useState<MatchPostFilter>('all')
   const [showApplyDialog, setShowApplyDialog] = useState(false)
@@ -65,7 +61,9 @@ export const MatchContainer = ({ movieTitle }: MatchContainerProps) => {
   // 매치 신청
   const handleApply = (matchId: string) => {
     if (status === 'unauthenticated') {
-      router.push(`/login?callbackUrl=${encodeURIComponent(callbackUrl)}`)
+      router.push(
+        `/login?callbackUrl=${encodeURIComponent(`/match/${matchId}?intent=apply`)}`,
+      )
       return
     }
     const match = matchPosts.find((m) => m.id === matchId)
