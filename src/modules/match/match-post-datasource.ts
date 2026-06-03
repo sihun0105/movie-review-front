@@ -5,6 +5,12 @@ import type {
   CreateMatchPostRequest,
 } from './match.entity'
 
+interface MatchPostQuery {
+  movieTitle?: string
+  filter?: string
+  userno?: number
+}
+
 export class MatchPostDataSource {
   private token?: string
 
@@ -23,12 +29,17 @@ export class MatchPostDataSource {
   async getMatchPosts(
     page: number = 1,
     pageSize: number = 10,
-    movieTitle?: string,
+    query: MatchPostQuery = {},
   ): Promise<MatchPostResponse> {
     try {
       const url = AppBackEndApiEndpoint.getMatchPosts(page, pageSize)
+      const params = new URLSearchParams()
+      if (query.movieTitle) params.set('movieTitle', query.movieTitle)
+      if (query.filter) params.set('filter', query.filter)
+      if (query.userno) params.set('userno', String(query.userno))
+      const filterQuery = params.toString()
       const response = await fetch(
-        movieTitle ? `${url}&movieTitle=${encodeURIComponent(movieTitle)}` : url,
+        filterQuery ? `${url}&${filterQuery}` : url,
         {
           method: 'GET',
           headers: this.getAuthHeaders(),

@@ -5,6 +5,7 @@ import { useSession } from 'next-auth/react'
 import { usePathname, useRouter } from 'next/navigation'
 import { useToast } from '@/hooks/use-toast'
 import { useMatchPosts } from '../hooks'
+import type { MatchPostFilter } from '../hooks'
 import { MatchHeaderSection } from '../sections/match-header-section'
 import { MatchListSection } from '../sections/match-list-section'
 
@@ -13,13 +14,15 @@ interface MatchContainerProps {
 }
 
 export const MatchContainer = ({ movieTitle }: MatchContainerProps) => {
-  const { status } = useSession()
+  const { data: session, status } = useSession()
+  const userId = session?.user?.id ? Number(session.user.id) : null
   const router = useRouter()
   const pathname = usePathname() ?? '/match'
   const callbackUrl = movieTitle
     ? `${pathname}?movieTitle=${encodeURIComponent(movieTitle)}`
     : pathname
   const { toast } = useToast()
+  const [filter, setFilter] = useState<MatchPostFilter>('all')
   const [showApplyDialog, setShowApplyDialog] = useState(false)
   const [selectedMatch, setSelectedMatch] = useState<any>(null)
 
@@ -29,7 +32,7 @@ export const MatchContainer = ({ movieTitle }: MatchContainerProps) => {
     hasMore,
     loadMore,
     isLoading: isLoadingPosts,
-  } = useMatchPosts(10, movieTitle)
+  } = useMatchPosts(10, { movieTitle, filter, userno: userId })
   // 매치 신청 함수
   const handleApplyToMatch = async (matchId: string, message: string) => {
     try {
@@ -99,6 +102,8 @@ export const MatchContainer = ({ movieTitle }: MatchContainerProps) => {
         isLoading={isLoadingPosts}
         hasMore={hasMore}
         loadMore={loadMore}
+        filter={filter}
+        onFilterChange={setFilter}
         selectedMatch={selectedMatch}
         showApplyDialog={showApplyDialog}
         onApply={handleApply}
