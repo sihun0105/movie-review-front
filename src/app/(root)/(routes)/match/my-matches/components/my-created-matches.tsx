@@ -16,7 +16,7 @@ const MyCreatedMatches: FunctionComponent<MyCreatedMatchesProps> = ({
   if (matches.length === 0)
     return (
       <div className="py-12 text-center font-mono text-[12px] text-muted-foreground">
-        작성한 매칭이 없습니다.
+        만든 매칭이 없습니다.
       </div>
     )
 

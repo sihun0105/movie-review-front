@@ -36,8 +36,7 @@ function MenuRow({ item, isLast }: { item: MenuItem; isLast: boolean }) {
 
 const AccountSection: FunctionComponent = () => {
   const items: MenuItem[] = [
-    { label: '내가 쓴 매칭', href: '/match/my-matches' },
-    { label: '내가 신청한 매칭', href: '/match/my-matches?tab=applied' },
+    { label: '내 매칭', href: '/match/my-matches' },
     { label: '알림 설정', href: AppPath.settings() },
     { label: '로그아웃', onClick: () => signOut({ callbackUrl: '/' }), destructive: true },
   ]
