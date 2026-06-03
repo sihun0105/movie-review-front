@@ -10,8 +10,8 @@ import {
 import { MatchPost } from '@/lib/type'
 import { useSession } from 'next-auth/react'
 import Link from 'next/link'
-import { useRouter } from 'next/navigation'
-import { useState } from 'react'
+import { useRouter, useSearchParams } from 'next/navigation'
+import { useEffect, useRef, useState } from 'react'
 import { useMyApplication } from '../../hooks/use-my-application'
 
 interface MatchViewerViewProps {
@@ -41,9 +41,11 @@ function ApplicationStatusBadge({ status }: { status: string }) {
 
 const MatchViewerView = ({ matchPost, onApply }: MatchViewerViewProps) => {
   const router = useRouter()
+  const searchParams = useSearchParams()
   const { status } = useSession()
   const [showApplyDialog, setShowApplyDialog] = useState(false)
-  const { application: myApplication } = useMyApplication(
+  const handledApplyIntentRef = useRef(false)
+  const { application: myApplication, isLoading: isMyApplicationLoading } = useMyApplication(
     status === 'authenticated' ? matchPost.id : '',
   )
   const handleApplySubmit = async (message: string) => {
@@ -52,13 +54,34 @@ const MatchViewerView = ({ matchPost, onApply }: MatchViewerViewProps) => {
   }
   const handleApplyClick = () => {
     if (status === 'unauthenticated') {
-      router.push(`/login?callbackUrl=${encodeURIComponent(`/match/${matchPost.id}`)}`)
+      router.push(
+        `/login?callbackUrl=${encodeURIComponent(`/match/${matchPost.id}?intent=apply`)}`,
+      )
       return
     }
     setShowApplyDialog(true)
   }
   const palette = paletteForMovie(matchPost.id, matchPost.movieTitle)
   const isFull = matchPost.currentParticipants >= matchPost.maxParticipants
+
+  useEffect(() => {
+    if (handledApplyIntentRef.current) return
+    if (searchParams?.get('intent') !== 'apply') return
+    if (status !== 'authenticated' || isMyApplicationLoading) return
+    if (isFull || myApplication) return
+
+    handledApplyIntentRef.current = true
+    setShowApplyDialog(true)
+    router.replace(`/match/${matchPost.id}`)
+  }, [
+    isFull,
+    isMyApplicationLoading,
+    matchPost.id,
+    myApplication,
+    router,
+    searchParams,
+    status,
+  ])
 
   return (
     <div className="relative min-h-page bg-background pb-[140px] lg:pb-6 text-foreground">
