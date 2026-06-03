@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import { useSession } from 'next-auth/react'
-import { useRouter } from 'next/navigation'
+import { usePathname, useRouter } from 'next/navigation'
 import { useToast } from '@/hooks/use-toast'
 import { useMatchPosts } from '../hooks'
 import { MatchHeaderSection } from '../sections/match-header-section'
@@ -11,6 +11,7 @@ import { MatchListSection } from '../sections/match-list-section'
 export const MatchContainer = () => {
   const { status } = useSession()
   const router = useRouter()
+  const pathname = usePathname() ?? '/match'
   const { toast } = useToast()
   const [showApplyDialog, setShowApplyDialog] = useState(false)
   const [selectedMatch, setSelectedMatch] = useState<any>(null)
@@ -43,7 +44,6 @@ export const MatchContainer = () => {
     }
   }
 
-  // 인증 체크
   if (status === 'loading') {
     return (
       <div className="py-8 text-center">
@@ -52,13 +52,12 @@ export const MatchContainer = () => {
     )
   }
 
-  if (status === 'unauthenticated') {
-    router.push('/login')
-    return null
-  }
-
   // 매치 신청
   const handleApply = (matchId: string) => {
+    if (status === 'unauthenticated') {
+      router.push(`/login?callbackUrl=${encodeURIComponent(pathname)}`)
+      return
+    }
     const match = matchPosts.find((m) => m.id === matchId)
     setSelectedMatch(match)
     setShowApplyDialog(true)

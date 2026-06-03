@@ -8,6 +8,7 @@ import {
   SectionHead,
 } from '@/components/dm'
 import { MatchPost } from '@/lib/type'
+import { useSession } from 'next-auth/react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
@@ -40,11 +41,21 @@ function ApplicationStatusBadge({ status }: { status: string }) {
 
 const MatchViewerView = ({ matchPost, onApply }: MatchViewerViewProps) => {
   const router = useRouter()
+  const { status } = useSession()
   const [showApplyDialog, setShowApplyDialog] = useState(false)
-  const { application: myApplication } = useMyApplication(matchPost.id)
+  const { application: myApplication } = useMyApplication(
+    status === 'authenticated' ? matchPost.id : '',
+  )
   const handleApplySubmit = async (message: string) => {
     await onApply(message)
     setShowApplyDialog(false)
+  }
+  const handleApplyClick = () => {
+    if (status === 'unauthenticated') {
+      router.push(`/login?callbackUrl=${encodeURIComponent(`/match/${matchPost.id}`)}`)
+      return
+    }
+    setShowApplyDialog(true)
   }
   const palette = paletteForMovie(matchPost.id, matchPost.movieTitle)
   const isFull = matchPost.currentParticipants >= matchPost.maxParticipants
@@ -128,7 +139,7 @@ const MatchViewerView = ({ matchPost, onApply }: MatchViewerViewProps) => {
         ) : (
           <button
             type="button"
-            onClick={() => setShowApplyDialog(true)}
+            onClick={handleApplyClick}
             disabled={isFull}
             className="w-full rounded-md bg-primary py-3.5 text-[15px] font-bold tracking-[-0.01em] text-primary-foreground disabled:bg-secondary disabled:text-muted-foreground disabled:shadow-none"
           >
