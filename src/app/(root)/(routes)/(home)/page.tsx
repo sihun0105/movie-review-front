@@ -51,14 +51,23 @@ export async function generateMetadata(): Promise<Metadata> {
   }
 }
 
-const TODAY_LABEL = (() => {
-  const d = new Date()
-  const days = ['일', '월', '화', '수', '목', '금', '토']
-  return `${days[d.getDay()]} · ${String(d.getMonth() + 1).padStart(2, '0')}.${String(d.getDate()).padStart(2, '0')}`
-})()
+const getKstTodayLabel = () => {
+  const parts = new Intl.DateTimeFormat('ko-KR', {
+    timeZone: 'Asia/Seoul',
+    weekday: 'short',
+    month: '2-digit',
+    day: '2-digit',
+  }).formatToParts(new Date())
+
+  const getPart = (type: Intl.DateTimeFormatPartTypes) =>
+    parts.find((part) => part.type === type)?.value ?? ''
+
+  return `${getPart('weekday')} · ${getPart('month')}.${getPart('day')}`
+}
 
 const Page: FunctionComponent = async () => {
   const [data, liveCount] = await Promise.all([getMovieList(), getMatchLiveCount()])
+  const todayLabel = getKstTodayLabel()
 
   if (!data || data.length === 0) {
     return <AppSkeleton className="container min-h-[364px] p-6" />
@@ -69,7 +78,7 @@ const Page: FunctionComponent = async () => {
 
   return (
     <main className="pb-5">
-      <MatchHeroBanner todayLabel={TODAY_LABEL} liveCount={liveCount || undefined} />
+      <MatchHeroBanner todayLabel={todayLabel} liveCount={liveCount || undefined} />
 
       <div className="flex items-center gap-2 px-4 pb-3 pt-5">
         <h2 className="text-[16px] font-semibold text-foreground">박스오피스</h2>
