@@ -21,7 +21,7 @@ export function DmAppBar() {
   return (
     <header className="sticky top-0 z-30 flex items-center border-b border-border bg-background/95 px-4 py-3 backdrop-blur-md">
       <Link href="/" className="text-[17px] font-bold tracking-[-0.02em] text-foreground">
-        drunken<span className="text-primary">movie</span>
+        볼래
       </Link>
 
       <div className="ml-auto flex items-center gap-1">

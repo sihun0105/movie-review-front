@@ -65,7 +65,7 @@ export function DmDesktopLeftNav() {
     <aside className="hidden lg:sticky lg:top-0 lg:flex lg:h-screen lg:w-[240px] lg:shrink-0 lg:flex-col lg:overflow-y-auto lg:border-r lg:border-border">
       <div className="px-4 pb-4 pt-5">
         <Link href="/" className="text-[18px] font-bold tracking-[-0.02em] text-foreground">
-          drunken<span className="text-primary">movie</span>
+          볼래
         </Link>
       </div>
 
