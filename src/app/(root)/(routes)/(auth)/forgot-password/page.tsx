@@ -39,7 +39,7 @@ export default function ForgotPasswordPage() {
     return (
       <main className="flex min-h-page flex-col px-6 py-10">
         <div className="mb-8 text-[22px] font-bold tracking-tight text-foreground">
-          drunken<span className="text-primary">movie</span>
+          볼래
         </div>
         <div className="rounded-lg border border-border bg-card p-5">
           <div className="mb-2 text-[15px] font-semibold text-foreground">이메일을 확인하세요</div>
@@ -60,7 +60,7 @@ export default function ForgotPasswordPage() {
   return (
     <main className="flex min-h-page flex-col px-6 py-10">
       <div className="mb-8 text-[22px] font-bold tracking-tight text-foreground">
-        drunken<span className="text-primary">movie</span>
+        볼래
       </div>
 
       <h2 className="mb-1.5 text-[22px] font-semibold tracking-tight text-foreground">비밀번호 찾기</h2>
