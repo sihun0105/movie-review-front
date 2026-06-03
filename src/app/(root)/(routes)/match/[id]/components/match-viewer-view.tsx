@@ -112,7 +112,7 @@ const MatchViewerView = ({ matchPost, onApply }: MatchViewerViewProps) => {
         )}
       </div>
 
-      <div className="fixed bottom-[72px] lg:bottom-0 left-1/2 z-25 w-full max-w-[460px] -translate-x-1/2 border-t border-border bg-background/95 px-3 py-3 backdrop-blur-md">
+      <div className="fixed bottom-[calc(4rem+env(safe-area-inset-bottom)+0.5rem)] left-1/2 z-25 w-full max-w-[460px] -translate-x-1/2 border-t border-border bg-background/95 px-3 py-3 backdrop-blur-md lg:bottom-0">
         {myApplication ? (
           <div className="flex flex-col items-center gap-2">
             <ApplicationStatusBadge status={myApplication.status} />

@@ -62,7 +62,7 @@ export function DmBottomNav() {
   const active = activeKey(pathname)
 
   return (
-    <nav className="sticky bottom-0 z-20 grid h-16 grid-cols-5 border-t border-border bg-background">
+    <nav className="z-20 grid h-[calc(4rem+env(safe-area-inset-bottom))] shrink-0 grid-cols-5 border-t border-border bg-background pb-[env(safe-area-inset-bottom)]">
       {ITEMS.map((it) => {
         const isActive = active === it.key
         return (
