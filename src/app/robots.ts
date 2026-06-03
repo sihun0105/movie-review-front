@@ -9,6 +9,6 @@ export default function robots(): MetadataRoute.Robots {
         disallow: ['/account/', '/api/'],
       },
     ],
-    sitemap: 'https://drunkenmovie.shop/sitemap.xml',
+    sitemap: 'https://bollae.kr/sitemap.xml',
   }
 }

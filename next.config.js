@@ -10,7 +10,7 @@ const nextConfig = {
       'image.tmdb.org',
     ],
     remotePatterns: [
-      { protocol: 'https', hostname: '*.drunkenmovie.shop' },
+      { protocol: 'https', hostname: '*.bollae.kr' },
       { protocol: 'http', hostname: '58.79.17.11' },
     ],
     formats: ['image/avif', 'image/webp'],

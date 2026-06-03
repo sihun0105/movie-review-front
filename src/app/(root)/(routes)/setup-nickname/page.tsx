@@ -44,7 +44,7 @@ export default function SetupNicknamePage() {
     <main className="flex min-h-page flex-col px-6 py-10">
       <div className="mb-8">
         <div className="text-[22px] font-bold tracking-tight text-foreground">
-          drunken<span className="text-primary">movie</span>
+          볼래
         </div>
       </div>
 
@@ -52,7 +52,7 @@ export default function SetupNicknamePage() {
         닉네임을 설정해주세요
       </h2>
       <p className="mb-6 text-[13px] text-muted-foreground">
-        drunkenmovie에서 사용할 이름이에요. 나중에 계정 설정에서 변경할 수 있어요.
+        볼래에서 사용할 이름이에요. 나중에 계정 설정에서 변경할 수 있어요.
       </p>
 
       <form onSubmit={handleSubmit} className="space-y-4">

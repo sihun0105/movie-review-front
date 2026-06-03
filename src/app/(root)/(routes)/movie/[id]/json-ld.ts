@@ -2,7 +2,7 @@ import { Reply } from '@/lib/type'
 import { AverageMovieScore, Movie } from '@/modules/movie/movie.entity'
 import { hasValidScore } from './data'
 
-const BASE = 'https://drunkenmovie.shop'
+const BASE = 'https://bollae.kr'
 
 export function buildMovieJsonLd(
   id: string,
@@ -40,7 +40,7 @@ export function buildMovieJsonLd(
     },
     publisher: {
       '@type': 'Organization',
-      name: 'DrunkenMovie',
+      name: '볼래',
       url: BASE,
     },
   }
