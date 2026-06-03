@@ -12,9 +12,15 @@ interface DmMovieDetailProps {
   movie: Movie & { rank?: number }
   averageScore?: number | null
   scoreCount?: number | null
+  onVodClick?: () => void
 }
 
-export function DmMovieDetail({ movie, averageScore, scoreCount }: DmMovieDetailProps) {
+export function DmMovieDetail({
+  movie,
+  averageScore,
+  scoreCount,
+  onVodClick,
+}: DmMovieDetailProps) {
   const palette = paletteForMovie(movie.id, movie.title)
   const { h, c, lt, lb } = palette
   const rating = averageScore ?? movie.averageScore ?? 0
@@ -70,9 +76,15 @@ export function DmMovieDetail({ movie, averageScore, scoreCount }: DmMovieDetail
 
         {/* CTA 버튼 */}
         <div className="mt-3 flex gap-2">
-          <button className="flex-1 rounded-md border border-border py-2.5 text-[13px] font-medium text-foreground hover:bg-accent">
-            ▶ VOD 보기
-          </button>
+          {onVodClick && (
+            <button
+              type="button"
+              onClick={onVodClick}
+              className="flex-1 rounded-md border border-border py-2.5 text-[13px] font-medium text-foreground hover:bg-accent"
+            >
+              ▶ VOD 보기
+            </button>
+          )}
           <Link
             href="/match"
             className="flex flex-1 items-center justify-center rounded-md bg-primary py-2.5 text-[13px] font-medium text-primary-foreground"
