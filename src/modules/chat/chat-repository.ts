@@ -46,7 +46,9 @@ export class ChatRepository {
   async getChatRoom(params: GetChatRoomParams): Promise<ChatRoomEntity> {
     try {
       const result = await this.datasource.getChatRoom(params)
-      const convertedRoom = convertApiResponseToChatRoomEntity(result)
+      // 백엔드(gRPC GetChatRoomResponse)는 { chatRoom: {...} } 로 반환 → unwrap
+      const raw = (result as any)?.chatRoom ?? result
+      const convertedRoom = convertApiResponseToChatRoomEntity(raw)
       assertChatRoomEntity(convertedRoom)
       return convertedRoom
     } catch (error) {
