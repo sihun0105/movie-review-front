@@ -12,10 +12,10 @@ export function DmAppFooter({ className }: DmAppFooterProps) {
       <div className="flex items-start justify-between gap-4">
         <div>
           <div className="font-dm-display text-[15px] italic font-bold text-muted-foreground">
-            drunken<span className="text-primary">movie</span>
+            볼래
           </div>
           <p className="mt-2 text-[11px] leading-[1.6]">
-            영화 뭐함? 영화뭐함에서 찾으세요.
+            오늘 밤 같이 볼 사람을 찾으세요.
             <br />
             최신 영화 추천·리뷰·평점·매칭.
           </p>
@@ -29,7 +29,7 @@ export function DmAppFooter({ className }: DmAppFooterProps) {
         </a>
       </div>
       <div className="mt-6 font-mono text-[10px] tracking-[0.5px] text-muted-foreground">
-        © 2026 영화뭐함 · DrunkenMovie
+        © 2026 볼래 · bollae
       </div>
     </footer>
   )

@@ -1,13 +1,18 @@
 import type { Metadata } from 'next'
 
+const SITE_URL = 'https://bollae.kr'
+
 export const siteMetadata: Metadata = {
-  metadataBase: new URL('https://drunkenmovie.shop'),
-  title: '영화 뭐함 - 영화뭐함 | 최신 영화 리뷰와 추천',
+  metadataBase: new URL(SITE_URL),
+  title: '볼래 | 같이 볼 사람을 찾는 영화 매칭',
   description:
-    '영화 뭐함? 영화뭐함에서 최신 영화 리뷰, 평점, 추천을 확인하세요! 어떤 영화를 볼지 고민될 때 영화 뭐함 사이트에서 완벽한 답을 찾으세요.',
+    '볼래에서 오늘 같이 볼 사람을 찾고, 최신 영화 리뷰와 평점을 확인하세요.',
   keywords: [
-    '영화 뭐함',
-    '영화뭐함',
+    '볼래',
+    'bollae',
+    '영화 매칭',
+    '같이 볼래',
+    '영화 약속',
     '영화 추천',
     '영화 리뷰',
     '영화 평점',
@@ -21,32 +26,29 @@ export const siteMetadata: Metadata = {
     '영화 선택',
     '영화 찾기',
     '볼만한 영화',
-    'DrunkenMovie',
-    'drunkenmovie',
   ],
-  authors: [{ name: '영화뭐함 - DrunkenMovie' }],
+  authors: [{ name: '볼래' }],
   openGraph: {
     type: 'website',
     locale: 'ko_KR',
-    url: 'https://drunkenmovie.shop',
-    siteName: '영화 뭐함 - 영화뭐함',
-    title: '영화 뭐함? 영화뭐함에서 찾는 완벽한 영화 추천',
+    url: SITE_URL,
+    siteName: '볼래',
+    title: '볼래 | 같이 볼 사람을 찾는 영화 매칭',
     description:
-      '영화 뭐함? 영화뭐함에서 최신 영화 리뷰, 평점, 추천을 확인하세요! 어떤 영화를 볼지 고민될 때 완벽한 답을 찾으세요.',
+      '볼래에서 오늘 같이 볼 사람을 찾고, 최신 영화 리뷰와 평점을 확인하세요.',
     images: [
       {
         url: '/images/og-image.png',
         width: 1200,
         height: 630,
-        alt: '영화 뭐함 - 영화뭐함 OG 이미지',
+        alt: '볼래 OG 이미지',
       },
     ],
   },
   twitter: {
     card: 'summary_large_image',
-    title: '영화 뭐함? 영화뭐함에서 찾는 완벽한 영화 추천',
-    description:
-      '영화 뭐함? 영화뭐함에서 최신 영화 리뷰, 평점, 추천을 확인하세요!',
+    title: '볼래 | 같이 볼 사람을 찾는 영화 매칭',
+    description: '볼래에서 오늘 같이 볼 사람을 찾고, 최신 영화 리뷰와 평점을 확인하세요.',
     images: ['/images/og-image.png'],
   },
   viewport: {
@@ -55,33 +57,32 @@ export const siteMetadata: Metadata = {
     maximumScale: 1,
   },
   alternates: {
-    canonical: 'https://drunkenmovie.shop',
+    canonical: SITE_URL,
   },
 }
 
 export const siteJsonLd = {
   '@context': 'https://schema.org',
   '@type': 'WebSite',
-  name: '영화 뭐함 - 영화뭐함',
-  alternateName: ['영화뭐함', '영화 뭐함', 'DrunkenMovie'],
-  url: 'https://drunkenmovie.shop',
-  description:
-    '영화 뭐함? 영화뭐함에서 최신 영화 리뷰, 평점, 추천을 확인하세요!',
+  name: '볼래',
+  alternateName: ['bollae', '같이 볼래'],
+  url: SITE_URL,
+  description: '볼래에서 오늘 같이 볼 사람을 찾고, 최신 영화 리뷰와 평점을 확인하세요.',
   potentialAction: {
     '@type': 'SearchAction',
     target: {
       '@type': 'EntryPoint',
-      urlTemplate: 'https://drunkenmovie.shop/search?q={search_term_string}',
+      urlTemplate: `${SITE_URL}/search?q={search_term_string}`,
     },
     'query-input': 'required name=search_term_string',
   },
   mainEntity: {
     '@type': 'Organization',
-    name: '영화뭐함',
-    sameAs: ['https://drunkenmovie.shop'],
+    name: '볼래',
+    sameAs: [SITE_URL],
     logo: {
       '@type': 'ImageObject',
-      url: 'https://drunkenmovie.shop/images/og-image.png',
+      url: `${SITE_URL}/images/og-image.png`,
     },
   },
 }

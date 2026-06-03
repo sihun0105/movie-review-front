@@ -6,6 +6,8 @@ import { getServerSideSitemap } from 'next-sitemap'
 
 export const dynamic = 'force-dynamic'
 
+const SITE_URL = 'https://bollae.kr'
+
 export async function GET(): Promise<ReturnType<typeof getServerSideSitemap>> {
   const movies = await new MovieRepository().getMovie().catch(() => [])
 
@@ -23,7 +25,7 @@ export async function GET(): Promise<ReturnType<typeof getServerSideSitemap>> {
   if (movies && Array.isArray(movies)) {
     fields.push(
       ...movies.map((movie) => ({
-        loc: `https://drunkenmovie.shop/movie/${movie.id}`,
+        loc: `${SITE_URL}/movie/${movie.id}`,
         lastmod: movie.updatedAt?.toISOString?.() || new Date().toISOString(),
         changefreq: 'daily' as const,
         priority: 0.8,
@@ -35,7 +37,7 @@ export async function GET(): Promise<ReturnType<typeof getServerSideSitemap>> {
   if (articles && Array.isArray(articles)) {
     fields.push(
       ...articles.map((article) => ({
-        loc: `https://drunkenmovie.shop/articles/${article.id}`,
+        loc: `${SITE_URL}/articles/${article.id}`,
         lastmod: article.updatedAt
           ? new Date(article.updatedAt).toISOString()
           : new Date().toISOString(),
@@ -49,7 +51,7 @@ export async function GET(): Promise<ReturnType<typeof getServerSideSitemap>> {
   if (matches && Array.isArray(matches)) {
     fields.push(
       ...matches.map((match) => ({
-        loc: `https://drunkenmovie.shop/match/${match.id}`,
+        loc: `${SITE_URL}/match/${match.id}`,
         lastmod: match.updatedAt
           ? new Date(match.updatedAt).toISOString()
           : new Date().toISOString(),
@@ -62,25 +64,25 @@ export async function GET(): Promise<ReturnType<typeof getServerSideSitemap>> {
   // 주요 루트 경로
   fields.push(
     {
-      loc: 'https://drunkenmovie.shop/',
+      loc: `${SITE_URL}/`,
       lastmod: new Date().toISOString(),
       changefreq: 'daily' as const,
       priority: 1.0,
     },
     {
-      loc: 'https://drunkenmovie.shop/articles',
+      loc: `${SITE_URL}/articles`,
       lastmod: new Date().toISOString(),
       changefreq: 'daily' as const,
       priority: 0.9,
     },
     {
-      loc: 'https://drunkenmovie.shop/account',
+      loc: `${SITE_URL}/account`,
       lastmod: new Date().toISOString(),
       changefreq: 'daily' as const,
       priority: 0.5,
     },
     {
-      loc: 'https://drunkenmovie.shop/match',
+      loc: `${SITE_URL}/match`,
       lastmod: new Date().toISOString(),
       changefreq: 'daily' as const,
       priority: 0.7,

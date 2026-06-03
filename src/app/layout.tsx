@@ -132,16 +132,16 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
             <MessageModalContextProvider>
               {/* mobile: single column max-w-[460px] centered
                   desktop lg+: 3-column [240px | 1fr | 320px] max-w-[1400px] */}
-              <div className="mx-auto flex min-h-screen w-full max-w-[460px] flex-col lg:max-w-[1400px] lg:flex-row lg:items-start">
+              <div className="mx-auto flex h-[100dvh] w-full max-w-[460px] flex-col overflow-hidden lg:h-auto lg:min-h-screen lg:max-w-[1400px] lg:flex-row lg:items-start lg:overflow-visible">
                 <DmDesktopLeftNav />
 
-                <div className="flex w-full min-w-0 flex-1 flex-col lg:border-x lg:border-border">
+                <div className="flex min-h-0 w-full min-w-0 flex-1 flex-col lg:min-h-screen lg:border-x lg:border-border">
                   <div className="lg:hidden">
                     <DmAppBar />
                   </div>
-                  <main className="flex min-h-page flex-1 flex-col">
+                  <main className="flex min-h-0 flex-1 flex-col overflow-y-auto overscroll-contain lg:min-h-page lg:overflow-visible">
                     {children}
-                    <DmAppFooter className="mt-auto pb-[88px] lg:pb-4 lg:pb-8" />
+                    <DmAppFooter className="mt-auto pb-4 lg:pb-8" />
                   </main>
                   <div className="lg:hidden">
                     <DmBottomNav />

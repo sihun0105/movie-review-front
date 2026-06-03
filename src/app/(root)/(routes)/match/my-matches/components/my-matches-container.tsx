@@ -10,13 +10,16 @@ import { MyCreatedMatches } from './my-created-matches'
 
 type Tab = 'applied' | 'created'
 
+const getInitialTab = (tab: string | null): Tab =>
+  tab === 'applied' || tab === 'created' ? tab : 'created'
+
 const MyMatchesContainer = () => {
   const { status } = useSession()
   const router = useRouter()
   const searchParams = useSearchParams()
   const { showToast } = useAppToast()
 
-  const initialTab = (searchParams?.get('tab') as Tab) ?? 'applied'
+  const initialTab = getInitialTab(searchParams?.get('tab') ?? null)
   const [activeTab, setActiveTab] = useState<Tab>(initialTab)
 
   const { applications, isLoading: loadingApplied, refetch } = useMyApplications()
@@ -65,7 +68,7 @@ const MyMatchesContainer = () => {
                 : 'text-muted-foreground hover:text-foreground'
             }`}
           >
-            {tab === 'applied' ? '신청한 매칭' : '내가 만든 매칭'}
+            {tab === 'applied' ? '신청한 매칭' : '만든 매칭'}
           </button>
         ))}
       </div>

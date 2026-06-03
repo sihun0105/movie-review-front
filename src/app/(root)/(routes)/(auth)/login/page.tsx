@@ -23,7 +23,7 @@ const Page: FunctionComponent = () => {
     <main className="flex min-h-page flex-col px-6 py-10">
       <div className="mb-8">
         <div className="text-[22px] font-bold tracking-tight text-foreground">
-          drunken<span className="text-primary">movie</span>
+          볼래
         </div>
         <p className="mt-1 text-[13px] text-muted-foreground">오늘 밤, 같이 볼 사람을 찾아보세요</p>
       </div>

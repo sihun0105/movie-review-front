@@ -10,11 +10,11 @@ export function DmLoginMarquee() {
         NOW PLAYING
       </div>
       <h1 className="mt-2.5 font-dm-display text-[32px] italic leading-[1.1] text-foreground">
-        영화에
+        오늘 밤,
         <br />
-        취하는 시간,
+        같이
         <br />
-        <span className="text-primary">drunkenmovie</span>.
+        <span className="text-primary">볼래</span>?
       </h1>
       <p className="mt-4 text-[13px] leading-[1.6] text-muted-foreground">
         리뷰를 쓰고, 별점을 남기고,

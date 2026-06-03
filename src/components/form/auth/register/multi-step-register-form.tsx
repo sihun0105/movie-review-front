@@ -3,13 +3,14 @@
 import { Form } from '@/components/ui/form'
 import { useAppToast } from '@/hooks/use-app-toast'
 import { useRouter } from 'next/navigation'
-import { FunctionComponent, useRef, useMemo, useState } from 'react'
+import { FunctionComponent, useMemo, useState } from 'react'
 import { useRegister } from './hook/use-register'
 import { useRegisterFormContext } from './hook/register-form-context'
 import { IdInputField } from './fields/id-input-field'
 import { NicknameInputField } from './fields/nickname-input-field'
 import { PasswordInputField } from './fields/password-input-field'
 import { ProfileStep } from './fields/profile-step'
+import { VerificationStep } from './verification-step'
 
 const TOTAL = 5
 
@@ -38,138 +39,6 @@ const StepDots = ({ step }: { step: number }) => (
     </span>
   </div>
 )
-
-// ─── 이메일 인증 코드 입력 ───────────────────────────────────────────
-function VerificationStep({
-  email,
-  onVerified,
-}: {
-  email: string
-  onVerified: () => void
-}) {
-  const [codes, setCodes] = useState(['', '', '', '', '', ''])
-  const [error, setError] = useState<string | null>(null)
-  const [loading, setLoading] = useState(false)
-  const [resending, setResending] = useState(false)
-  const inputRefs = useRef<(HTMLInputElement | null)[]>([])
-
-  const handleChange = (index: number, value: string) => {
-    if (!/^\d*$/.test(value)) return
-    const next = [...codes]
-    next[index] = value.slice(-1)
-    setCodes(next)
-    if (value && index < 5) inputRefs.current[index + 1]?.focus()
-  }
-
-  const handleKeyDown = (index: number, e: React.KeyboardEvent) => {
-    if (e.key === 'Backspace' && !codes[index] && index > 0) {
-      inputRefs.current[index - 1]?.focus()
-    }
-  }
-
-  const handlePaste = (e: React.ClipboardEvent) => {
-    e.preventDefault()
-    const digits = e.clipboardData.getData('text').replace(/\D/g, '').slice(0, 6)
-    if (!digits) return
-    const next = [...codes]
-    digits.split('').forEach((d, i) => { next[i] = d })
-    setCodes(next)
-    const focusIdx = Math.min(digits.length, 5)
-    inputRefs.current[focusIdx]?.focus()
-  }
-
-  const handleVerify = async () => {
-    const code = codes.join('')
-    if (code.length < 6) return
-    setLoading(true)
-    setError(null)
-    try {
-      const res = await fetch('/api/auth/verify-code', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, code }),
-      })
-      const data = await res.json()
-      if (data.isAvailable) {
-        onVerified()
-      } else {
-        setError(data.message || '인증에 실패했습니다.')
-        setCodes(['', '', '', '', '', ''])
-        inputRefs.current[0]?.focus()
-      }
-    } catch {
-      setError('오류가 발생했습니다.')
-    } finally {
-      setLoading(false)
-    }
-  }
-
-  const handleResend = async () => {
-    setResending(true)
-    setError(null)
-    try {
-      await fetch('/api/auth/send-verification', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email }),
-      })
-      setCodes(['', '', '', '', '', ''])
-      inputRefs.current[0]?.focus()
-    } finally {
-      setResending(false)
-    }
-  }
-
-  const isFull = codes.every((c) => c !== '')
-
-  return (
-    <div className="space-y-4">
-      <div className="rounded-lg border border-border bg-card p-3 text-[13px] text-muted-foreground">
-        <span className="font-medium text-foreground">{email}</span>으로 인증 코드를 보냈습니다
-      </div>
-
-      <div className="flex gap-2">
-        {codes.map((c, i) => (
-          <input
-            key={i}
-            ref={(el) => { inputRefs.current[i] = el }}
-            type="text"
-            inputMode="numeric"
-            autoComplete="one-time-code"
-            maxLength={1}
-            value={c}
-            onChange={(e) => handleChange(i, e.target.value)}
-            onKeyDown={(e) => handleKeyDown(i, e)}
-            onPaste={handlePaste}
-            className="h-12 w-0 min-w-0 flex-1 rounded-md border border-input bg-transparent text-center font-mono text-[18px] font-bold text-foreground focus:border-ring focus:outline-none"
-          />
-        ))}
-      </div>
-
-      {error && <p className="text-[12px] text-destructive">{error}</p>}
-
-      <button
-        type="button"
-        onClick={handleVerify}
-        disabled={!isFull || loading}
-        className="h-11 w-full rounded-md bg-primary text-[14px] font-medium text-primary-foreground disabled:opacity-50"
-      >
-        {loading ? '확인 중...' : '인증 완료'}
-      </button>
-
-      <div className="text-center">
-        <button
-          type="button"
-          onClick={handleResend}
-          disabled={resending}
-          className="text-[12px] text-muted-foreground hover:text-foreground disabled:opacity-50"
-        >
-          {resending ? '발송 중...' : '코드 다시 받기'}
-        </button>
-      </div>
-    </div>
-  )
-}
 
 const MultiStepRegisterForm: FunctionComponent = () => {
   const { showToast } = useAppToast()
@@ -307,7 +176,7 @@ const MultiStepRegisterForm: FunctionComponent = () => {
             disabled={!isStepValid || isRegisting}
             className="h-11 w-full rounded-md bg-primary text-[14px] font-medium text-primary-foreground disabled:opacity-50"
           >
-            {step < TOTAL ? '다음' : isRegisting ? '가입 중...' : 'drunkenmovie 시작하기'}
+            {step < TOTAL ? '다음' : isRegisting ? '가입 중...' : '볼래 시작하기'}
           </button>
         </div>
       )}

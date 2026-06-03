@@ -13,10 +13,11 @@ export class MatchPostDataSource {
   }
 
   private getAuthHeaders(): HeadersInit {
-    return {
+    const headers: HeadersInit = {
       'Content-Type': 'application/json',
-      Authorization: `Bearer ${this.token}`,
     }
+    if (this.token) headers.Authorization = `Bearer ${this.token}`
+    return headers
   }
 
   async getMatchPosts(
