@@ -62,7 +62,7 @@ export default function ResetPasswordPage() {
   return (
     <main className="flex min-h-page flex-col px-6 py-10">
       <div className="mb-8 text-[22px] font-bold tracking-tight text-foreground">
-        drunken<span className="text-primary">movie</span>
+        볼래
       </div>
 
       <h2 className="mb-1.5 text-[22px] font-semibold tracking-tight text-foreground">새 비밀번호 설정</h2>
