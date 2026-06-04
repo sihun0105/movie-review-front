@@ -32,14 +32,7 @@ const Page: FunctionComponent = () => {
   }
 
   return (
-    <main className="flex min-h-page flex-col px-6 pb-[calc(5rem+env(safe-area-inset-bottom))] pt-10 lg:pb-10">
-      <div className="mb-8">
-        <div className="text-[22px] font-bold tracking-tight text-foreground">
-          볼래
-        </div>
-        <p className="mt-1 text-[13px] text-muted-foreground">오늘 밤, 같이 볼 사람을 찾아보세요</p>
-      </div>
-
+    <main className="flex flex-col px-6 pb-[calc(5rem+env(safe-area-inset-bottom))] pt-10 lg:min-h-page lg:pb-10">
       <h2 className="mb-1.5 text-[22px] font-semibold tracking-tight text-foreground">로그인</h2>
       <p className="mb-6 text-[13px] text-muted-foreground">이메일과 비밀번호를 입력하세요</p>
 
