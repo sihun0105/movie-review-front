@@ -1,6 +1,28 @@
+import { Metadata } from 'next'
 import { FunctionComponent } from 'react'
 import Link from 'next/link'
 import ArticleSection from './components/article-section'
+
+export const metadata: Metadata = {
+  title: '커뮤니티 | 볼래',
+  description:
+    '볼래 커뮤니티에서 영화 후기, 추천, 같이 보고 싶은 영화 이야기를 나눠보세요.',
+  alternates: {
+    canonical: 'https://bollae.kr/articles',
+  },
+  openGraph: {
+    title: '커뮤니티 | 볼래',
+    description:
+      '볼래 커뮤니티에서 영화 후기, 추천, 같이 보고 싶은 영화 이야기를 나눠보세요.',
+    url: 'https://bollae.kr/articles',
+    type: 'website',
+  },
+  twitter: {
+    title: '커뮤니티 | 볼래',
+    description:
+      '볼래 커뮤니티에서 영화 후기, 추천, 같이 보고 싶은 영화 이야기를 나눠보세요.',
+  },
+}
 
 const Page: FunctionComponent = () => {
   return (
