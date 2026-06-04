@@ -6,7 +6,17 @@ export default function robots(): MetadataRoute.Robots {
       {
         userAgent: '*',
         allow: '/',
-        disallow: ['/account/', '/api/'],
+        disallow: [
+          '/account/',
+          '/api/',
+          '/articles/new',
+          '/chat/',
+          '/match/my-matches',
+          '/match/new',
+          '/notifications',
+          '/settings',
+          '/setup-nickname',
+        ],
       },
     ],
     sitemap: 'https://bollae.kr/sitemap.xml',
