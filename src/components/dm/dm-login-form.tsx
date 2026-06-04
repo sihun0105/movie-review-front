@@ -24,23 +24,29 @@ export function DmLoginForm() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    if (!userId.trim() || !password) return
+    if (isSubmitting || !userId.trim() || !password) return
     setIsSubmitting(true)
     setError(null)
-    const res = await signIn('credentials', {
-      userId,
-      password,
-      redirect: false,
-      callbackUrl,
-    })
-    if (res?.error) {
+
+    try {
+      const res = await signIn('credentials', {
+        userId,
+        password,
+        redirect: false,
+        callbackUrl,
+      })
+      if (res?.error) {
+        setIsSubmitting(false)
+        setError('이메일 또는 비밀번호가 올바르지 않습니다.')
+        return
+      }
+      // router.push는 클라이언트 사이드 네비게이션이라 방금 설정된 세션 쿠키가
+      // 미들웨어에 전파되기 전에 실행될 수 있음 → 풀 페이지 로드로 강제
+      window.location.href = res?.url ? toRelativePath(res.url) : callbackUrl
+    } catch {
       setIsSubmitting(false)
-      setError('이메일 또는 비밀번호가 올바르지 않습니다.')
-      return
+      setError('로그인 중 오류가 발생했습니다. 잠시 후 다시 시도해주세요.')
     }
-    // router.push는 클라이언트 사이드 네비게이션이라 방금 설정된 세션 쿠키가
-    // 미들웨어에 전파되기 전에 실행될 수 있음 → 풀 페이지 로드로 강제
-    window.location.href = callbackUrl
   }
 
   return (
@@ -82,7 +88,7 @@ export function DmLoginForm() {
       <button
         type="submit"
         disabled={isSubmitting || !userId || !password}
-        className="h-11 w-full rounded-md bg-primary text-[14px] font-medium text-primary-foreground disabled:opacity-50"
+        className="h-11 w-full rounded-md bg-primary text-[14px] font-medium text-primary-foreground disabled:cursor-not-allowed disabled:opacity-50"
       >
         {isSubmitting ? '로그인 중...' : '로그인'}
       </button>
