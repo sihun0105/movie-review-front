@@ -45,6 +45,20 @@ const Page: FunctionComponent = () => {
 
       <DmLoginForm />
 
+      <div className="relative z-30 mt-5 space-y-2 text-center">
+        <div>
+          <Link href={AppPath.forgotPassword()} className="text-[13px] text-muted-foreground hover:text-foreground">
+            비밀번호 찾기
+          </Link>
+        </div>
+        <div>
+          <span className="text-[13px] text-muted-foreground">아직 계정이 없으신가요? </span>
+          <Link href={AppPath.register()} className="text-[13px] font-medium text-foreground hover:underline">
+            회원가입
+          </Link>
+        </div>
+      </div>
+
       <div className="my-5 flex items-center gap-3">
         <span className="h-px flex-1 bg-border" />
         <span className="font-mono text-[11px] uppercase tracking-wider text-muted-foreground">or</span>
@@ -65,20 +79,6 @@ const Page: FunctionComponent = () => {
         </svg>
         {isGoogleSubmitting ? 'Google로 이동 중...' : 'Google로 계속하기'}
       </button>
-
-      <div className="mt-8 space-y-2 text-center">
-        <div>
-          <Link href={AppPath.forgotPassword()} className="text-[13px] text-muted-foreground hover:text-foreground">
-            비밀번호 찾기
-          </Link>
-        </div>
-        <div>
-          <span className="text-[13px] text-muted-foreground">아직 계정이 없으신가요? </span>
-          <Link href={AppPath.register()} className="text-[13px] font-medium text-foreground hover:underline">
-            회원가입
-          </Link>
-        </div>
-      </div>
     </main>
   )
 }
