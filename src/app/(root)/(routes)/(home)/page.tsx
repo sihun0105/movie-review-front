@@ -85,7 +85,7 @@ const Page: FunctionComponent = async () => {
         <span className="font-mono text-[10px] text-muted-foreground">KOFIC · TOP 10</span>
       </div>
 
-      <div className="flex flex-col gap-2 px-4">
+      <div className="grid gap-3 px-4 lg:grid-cols-2">
         {top10.map((movie) => (
           <MovieListCard key={movie.id} movie={movie} />
         ))}
