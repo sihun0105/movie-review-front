@@ -2,7 +2,6 @@
 
 import { DmMovieDetail } from '@/components/dm'
 import { FunctionComponent } from 'react'
-import MovieCarousel from '../components/movie-carousel'
 import MovieVodModal from '../components/movie-vod-modal'
 import { useGetMovieDetail } from '../hooks/use-get-movie-detail'
 import { useVodModalContext } from '../hooks/use-vod-modal-context'
@@ -37,7 +36,6 @@ const DescriptionSection: FunctionComponent<DescriptionSectionProps> = ({
     <>
       <MovieVodModal />
       <DmMovieDetail movie={data} onVodClick={handleVodClick} />
-      {data.vods && <MovieCarousel data={data.vods} title={data.title} />}
     </>
   )
 }
