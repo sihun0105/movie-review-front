@@ -5,7 +5,6 @@ import { AppPath } from '@/config/app-path'
 import * as jose from 'jose'
 import { AppEnv } from '@/config/app-env'
 import GoogleProvider from 'next-auth/providers/google'
-import { assertProviderType } from '@/lib/utils/auth'
 
 export const authOptions: AuthOptions = {
   providers: [
@@ -76,14 +75,20 @@ export const authOptions: AuthOptions = {
       const repo = new UsersRepository()
       try {
         if (account && account?.provider !== 'credentials') {
-          const result = await repo.signInWithProvider({ id: user.id })
-          user.id = result.id ?? user.id
+          if (!user.email) {
+            return false
+          }
+
+          const result = await repo.signInWithProvider({ providerId: user.email })
+          user.id = result.id
+          user.email = result.email ?? user.email
           user.nickname = result.nickname ?? user.nickname
           user.image = result.image || user.image
           return true
         }
       } catch (error) {
         console.log(error)
+        return false
       }
 
       return true
