@@ -29,8 +29,8 @@ export class UsersRepository {
     return await this.datasource.signUp({ userId, password, nickname, gender })
   }
 
-  async signInWithProvider(params: { id: string }) {
-    const result = await this.datasource.signInWithProvider({ id: params.id })
+  async signInWithProvider(params: { providerId: string }) {
+    const result = await this.datasource.signInWithProvider({ providerId: params.providerId })
     return this.convertToUserEntity(result)
   }
 
