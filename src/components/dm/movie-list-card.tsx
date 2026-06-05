@@ -63,7 +63,7 @@ export function MovieListCard({ movie }: MovieListCardProps) {
             <span className="rounded-md bg-background/70 px-2 py-1.5">
               <span className="block font-mono text-[9px] uppercase">평점</span>
               <span className="font-semibold text-foreground">
-                {hasRating ? `★ ${rating.toFixed(1)}` : '평점 준비 중'}
+                {hasRating ? `★ ${rating.toFixed(1)}` : '첫 평점 남기기'}
               </span>
             </span>
             {audience > 0 && (
