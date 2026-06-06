@@ -9,7 +9,12 @@ export interface UserEntity {
 }
 
 export function isUserEntity(arg: any): arg is UserEntity {
-  return arg && arg.id && arg.provider && arg.nickname
+  return (
+    arg &&
+    Number.isInteger(Number(arg.id)) &&
+    typeof arg.provider === 'string' &&
+    typeof arg.nickname === 'string'
+  )
 }
 
 export function assertUserEntity(arg: any): asserts arg is UserEntity {
