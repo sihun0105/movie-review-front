@@ -10,19 +10,13 @@ export async function PATCH(req: NextRequest) {
       return NextResponse.json({ success: false, message: '닉네임을 입력해주세요.' }, { status: 400 })
     }
 
-    const sessionToken = await getToken({
-      req,
-      secret: AppEnv.nextAuthSecret,
-    })
     const token = await getToken({
       req,
       secret: AppEnv.nextAuthSecret,
       raw: true,
     })
-    const decodedToken = sessionToken as { userId?: unknown; userid?: unknown } | null
-    const userId = Number(decodedToken?.userId ?? decodedToken?.userid)
 
-    if (!token || !Number.isInteger(userId) || userId <= 0 || userId > 2147483647) {
+    if (!token) {
       return NextResponse.json({ success: false, message: '로그인이 필요합니다.' }, { status: 401 })
     }
 
