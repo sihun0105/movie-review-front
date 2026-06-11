@@ -65,7 +65,7 @@ const MatchViewerView = ({ matchPost, onApply }: MatchViewerViewProps) => {
   const palette = paletteForMovie(matchPost.id, matchPost.movieTitle)
   const isFull = matchPost.currentParticipants >= matchPost.maxParticipants
   const isPast = getMatchScheduleStatus(matchPost.showTime).isPast
-  const ctaLabel = isPast ? '지난 일정' : isFull ? '모집 완료' : '신청하기'
+  const canApply = !isPast && !isFull
 
   useEffect(() => {
     if (handledApplyIntentRef.current) return
@@ -144,30 +144,32 @@ const MatchViewerView = ({ matchPost, onApply }: MatchViewerViewProps) => {
         )}
       </div>
 
-      <div className="sticky bottom-0 z-40 mt-4 border-t border-border bg-background/95 px-4 pb-4 pt-3 backdrop-blur-md">
-        {myApplication ? (
-          <div className="flex flex-col items-center gap-2">
-            <ApplicationStatusBadge status={myApplication.status} />
-            {myApplication.status === 'accepted' && (
-              <Link
-                href={`/match/${matchPost.id}/chat/${matchPost.userno}`}
-                className="block w-full bg-primary py-3.5 text-center text-[15px] font-bold tracking-[-0.01em] text-white"
-              >
-                작성자와 채팅하기
-              </Link>
-            )}
-          </div>
-        ) : (
-          <button
-            type="button"
-            onClick={handleApplyClick}
-            disabled={isFull || isPast}
-            className="w-full rounded-md bg-primary py-3.5 text-[15px] font-bold text-primary-foreground shadow-sm disabled:bg-secondary disabled:text-muted-foreground disabled:shadow-none"
-          >
-            {ctaLabel}
-          </button>
-        )}
-      </div>
+      {(myApplication || canApply) && (
+        <div className="sticky bottom-0 z-40 mt-4 border-t border-border bg-background/95 px-4 pb-4 pt-3 backdrop-blur-md">
+          {myApplication ? (
+            <div className="flex flex-col items-center gap-2">
+              <ApplicationStatusBadge status={myApplication.status} />
+              {myApplication.status === 'accepted' && (
+                <Link
+                  href={`/match/${matchPost.id}/chat/${matchPost.userno}`}
+                  className="block w-full bg-primary py-3.5 text-center text-[15px] font-bold tracking-[-0.01em] text-white"
+                >
+                  작성자와 채팅하기
+                </Link>
+              )}
+            </div>
+          ) : (
+            <button
+              type="button"
+              onClick={handleApplyClick}
+              disabled={!canApply}
+              className="w-full rounded-md bg-primary py-3.5 text-[15px] font-bold text-primary-foreground shadow-sm disabled:bg-secondary disabled:text-muted-foreground disabled:shadow-none"
+            >
+              신청하기
+            </button>
+          )}
+        </div>
+      )}
 
       <MatchApplyDialog
         isOpen={showApplyDialog}
