@@ -65,6 +65,7 @@ const MatchViewerView = ({ matchPost, onApply }: MatchViewerViewProps) => {
   const palette = paletteForMovie(matchPost.id, matchPost.movieTitle)
   const isFull = matchPost.currentParticipants >= matchPost.maxParticipants
   const isPast = getMatchScheduleStatus(matchPost.showTime).isPast
+  const ctaLabel = isPast ? '지난 일정' : isFull ? '모집 완료' : '신청하기'
 
   useEffect(() => {
     if (handledApplyIntentRef.current) return
@@ -87,20 +88,19 @@ const MatchViewerView = ({ matchPost, onApply }: MatchViewerViewProps) => {
   ])
 
   return (
-    <div className="relative min-h-page bg-background pb-[140px] lg:pb-6 text-foreground">
-      {/* 상단 컬러 그라디언트 */}
+    <div className="relative min-h-page bg-background pb-[140px] text-foreground lg:pb-6">
       <div
-        className="h-[80px] w-full"
+        className="h-[112px] w-full"
         style={{
           background: `linear-gradient(160deg, oklch(${palette.lt} ${palette.c} ${palette.h}) 0%, oklch(${palette.lb} ${palette.c * 0.5} ${palette.h}) 100%)`,
-          opacity: 0.6,
+          opacity: 0.7,
         }}
       />
-      <div className="flex items-center border-b border-border px-4 py-3.5 -mt-[80px] relative bg-background/70 backdrop-blur-sm">
+      <div className="relative -mt-[112px] flex items-center px-4 py-3.5">
         <button
           aria-label="뒤로"
           onClick={() => router.back()}
-          className="flex h-[34px] w-[34px] items-center justify-center rounded-full bg-white/[0.06] text-foreground"
+          className="flex h-9 w-9 items-center justify-center rounded-full bg-background/80 text-foreground shadow-sm backdrop-blur"
         >
           <svg width="8" height="14" viewBox="0 0 8 14">
             <path
@@ -113,43 +113,45 @@ const MatchViewerView = ({ matchPost, onApply }: MatchViewerViewProps) => {
             />
           </svg>
         </button>
-        <div className="flex-1 text-center font-dm-display text-[17px] italic font-bold text-foreground">
+        <div className="flex-1 text-center text-[15px] font-semibold text-foreground">
           매칭 상세
         </div>
         <div className="w-[34px]" aria-hidden />
       </div>
 
-      <div className="flex gap-2.5 border-b border-border px-4 py-4">
-        <div className="w-[60px] flex-shrink-0">
-          <Poster title={matchPost.movieTitle} palette={palette} />
+      <section className="mx-4 mt-3 rounded-lg border border-border bg-card p-3.5 shadow-sm">
+        <div className="flex gap-3">
+          <div className="w-[72px] flex-shrink-0">
+            <Poster title={matchPost.movieTitle} palette={palette} rounded="md" />
+          </div>
+          <div className="min-w-0 flex-1">
+            <div className="text-[12px] font-medium text-muted-foreground">
+              관람 예정 작품
+            </div>
+            <div className="mt-1 break-keep text-[20px] font-semibold leading-tight text-foreground">
+              {matchPost.movieTitle}
+            </div>
+            <div className="mt-2 break-keep text-[13px] leading-snug text-muted-foreground">
+              {matchPost.title}
+            </div>
+          </div>
         </div>
-        <div className="min-w-0">
-          <div className="font-mono text-[10px] uppercase tracking-[0.5px] text-muted-foreground">
-            관람 예정 작품
-          </div>
-          <div className="mt-0.5 font-dm-display text-[18px] italic text-foreground">
-            {matchPost.movieTitle}
-          </div>
-          <div className="mt-1 break-keep text-[11px] text-muted-foreground">
-            {matchPost.title}
-          </div>
-        </div>
-      </div>
+      </section>
 
-      <div className="px-4 pt-4">
+      <div className="px-4 pt-3">
         <DmMatchDetailCard match={matchPost} />
 
         {matchPost.content && (
           <div className="mt-4">
-            <SectionHead>호스트의 인사</SectionHead>
-            <div className="break-keep border border-border bg-secondary p-3.5 font-dm-display text-[14px] italic leading-[1.6] text-foreground">
-              &ldquo;{matchPost.content}&rdquo;
+            <SectionHead className="mt-0">호스트의 인사</SectionHead>
+            <div className="break-keep rounded-lg border border-border bg-card p-4 text-[14px] leading-[1.7] text-foreground">
+              {matchPost.content}
             </div>
           </div>
         )}
       </div>
 
-      <div className="fixed bottom-[calc(4rem+env(safe-area-inset-bottom)+0.5rem)] left-1/2 z-25 w-full max-w-[460px] -translate-x-1/2 border-t border-border bg-background/95 px-3 py-3 backdrop-blur-md lg:bottom-0">
+      <div className="fixed bottom-[calc(4rem+env(safe-area-inset-bottom)+0.5rem)] left-1/2 z-25 w-full max-w-[460px] -translate-x-1/2 border-t border-border bg-background/95 px-4 py-3 backdrop-blur-md lg:bottom-0">
         {myApplication ? (
           <div className="flex flex-col items-center gap-2">
             <ApplicationStatusBadge status={myApplication.status} />
@@ -167,9 +169,9 @@ const MatchViewerView = ({ matchPost, onApply }: MatchViewerViewProps) => {
             type="button"
             onClick={handleApplyClick}
             disabled={isFull || isPast}
-            className="w-full rounded-md bg-primary py-3.5 text-[15px] font-bold tracking-[-0.01em] text-primary-foreground disabled:bg-secondary disabled:text-muted-foreground disabled:shadow-none"
+            className="w-full rounded-md bg-primary py-3.5 text-[15px] font-bold text-primary-foreground shadow-sm disabled:bg-secondary disabled:text-muted-foreground disabled:shadow-none"
           >
-            {isPast ? '지난 일정' : isFull ? '모집 완료' : '🎟  신청하기'}
+            {ctaLabel}
           </button>
         )}
       </div>
