@@ -1,11 +1,9 @@
+import { getMatchScheduleStatus } from '@/lib/utils'
+
 interface DmChatTicketPinProps {
   movieTitle: string
   showTime: string | Date
   venue?: string
-}
-
-function dDay(target: Date): number {
-  return Math.ceil((target.getTime() - Date.now()) / (1000 * 60 * 60 * 24))
 }
 
 export function DmChatTicketPin({
@@ -22,7 +20,7 @@ export function DmChatTicketPin({
     minute: '2-digit',
     hour12: false,
   })
-  const dd = dDay(date)
+  const schedule = getMatchScheduleStatus(date)
   const venueShort = venue?.split(' ')[0]
 
   return (
@@ -46,7 +44,7 @@ export function DmChatTicketPin({
         </div>
       </div>
       <span className="font-mono text-[14px] font-bold leading-none text-primary">
-        D-{dd >= 0 ? dd : 0}
+        {schedule.label}
       </span>
     </div>
   )
