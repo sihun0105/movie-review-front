@@ -1,6 +1,8 @@
 'use client'
 
-import { useSession } from 'next-auth/react'
+import { Button } from '@/components/ui/button'
+import { X } from 'lucide-react'
+import { signOut, useSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 
@@ -10,6 +12,10 @@ export default function SetupNicknamePage() {
   const [nickname, setNickname] = useState('')
   const [error, setError] = useState<string | null>(null)
   const [isLoading, setIsLoading] = useState(false)
+
+  const handleSignOut = () => {
+    signOut({ callbackUrl: '/login' })
+  }
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -42,10 +48,21 @@ export default function SetupNicknamePage() {
 
   return (
     <main className="flex min-h-page flex-col px-6 py-10">
-      <div className="mb-8">
+      <div className="mb-8 flex items-start justify-between gap-4">
         <div className="text-[22px] font-bold tracking-tight text-foreground">
           볼래
         </div>
+        <Button
+          type="button"
+          variant="ghost"
+          size="icon"
+          aria-label="로그아웃"
+          title="로그아웃"
+          onClick={handleSignOut}
+          className="-mr-2 -mt-2 text-muted-foreground hover:text-foreground"
+        >
+          <X className="h-4 w-4" />
+        </Button>
       </div>
 
       <h2 className="mb-1.5 text-[22px] font-semibold tracking-tight text-foreground">
