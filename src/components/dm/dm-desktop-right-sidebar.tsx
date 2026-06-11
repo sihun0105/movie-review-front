@@ -1,20 +1,14 @@
 'use client'
 
 import { MatchPost } from '@/lib/type'
+import { getMatchScheduleStatus } from '@/lib/utils'
 import Link from 'next/link'
 import useSWR from 'swr'
 
 const fetcher = (url: string) => fetch(url).then((r) => r.json())
 
-function dDay(showTime: string) {
-  const diff = Math.ceil(
-    (new Date(showTime).getTime() - Date.now()) / (1000 * 60 * 60 * 24),
-  )
-  return diff >= 0 ? `D-${diff}` : '마감'
-}
-
 function MatchCard({ match }: { match: MatchPost }) {
-  const dd = dDay(match.showTime)
+  const schedule = getMatchScheduleStatus(match.showTime)
   const dateStr = new Date(match.showTime).toLocaleDateString('ko-KR', {
     month: 'numeric',
     day: 'numeric',
@@ -23,14 +17,14 @@ function MatchCard({ match }: { match: MatchPost }) {
   return (
     <Link
       href={`/match/${match.id}`}
-      className="block border-b border-border px-4 py-3 hover:bg-accent"
+      className={`block border-b border-border px-4 py-3 hover:bg-accent ${schedule.isPast ? 'opacity-70' : ''}`}
     >
       <div className="flex items-baseline gap-1.5">
         <span className="text-[14px] font-semibold text-foreground">
           {dateStr}
         </span>
-        <span className="ml-auto font-mono text-[10px] text-primary">
-          {dd}
+        <span className={`ml-auto font-mono text-[10px] ${schedule.isPast ? 'text-muted-foreground' : 'text-primary'}`}>
+          {schedule.label}
         </span>
       </div>
       <div className="mt-0.5 truncate text-[13px] font-semibold text-foreground">

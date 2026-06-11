@@ -8,6 +8,7 @@ import {
   SectionHead,
 } from '@/components/dm'
 import { MatchPost } from '@/lib/type'
+import { getMatchScheduleStatus } from '@/lib/utils'
 import { useSession } from 'next-auth/react'
 import Link from 'next/link'
 import { useRouter, useSearchParams } from 'next/navigation'
@@ -63,18 +64,20 @@ const MatchViewerView = ({ matchPost, onApply }: MatchViewerViewProps) => {
   }
   const palette = paletteForMovie(matchPost.id, matchPost.movieTitle)
   const isFull = matchPost.currentParticipants >= matchPost.maxParticipants
+  const isPast = getMatchScheduleStatus(matchPost.showTime).isPast
 
   useEffect(() => {
     if (handledApplyIntentRef.current) return
     if (searchParams?.get('intent') !== 'apply') return
     if (status !== 'authenticated' || isMyApplicationLoading) return
-    if (isFull || myApplication) return
+    if (isFull || isPast || myApplication) return
 
     handledApplyIntentRef.current = true
     setShowApplyDialog(true)
     router.replace(`/match/${matchPost.id}`)
   }, [
     isFull,
+    isPast,
     isMyApplicationLoading,
     matchPost.id,
     myApplication,
@@ -163,10 +166,10 @@ const MatchViewerView = ({ matchPost, onApply }: MatchViewerViewProps) => {
           <button
             type="button"
             onClick={handleApplyClick}
-            disabled={isFull}
+            disabled={isFull || isPast}
             className="w-full rounded-md bg-primary py-3.5 text-[15px] font-bold tracking-[-0.01em] text-primary-foreground disabled:bg-secondary disabled:text-muted-foreground disabled:shadow-none"
           >
-            {isFull ? '모집 완료' : '🎟  신청하기'}
+            {isPast ? '지난 일정' : isFull ? '모집 완료' : '🎟  신청하기'}
           </button>
         )}
       </div>

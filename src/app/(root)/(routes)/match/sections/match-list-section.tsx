@@ -3,7 +3,7 @@
 import { FunctionComponent, useEffect, useRef, useCallback } from 'react'
 import { DmMatchTicket } from '@/components/dm'
 import { MatchApplyDialog } from '@/components/app/match-apply-dialog'
-import { cn } from '@/lib/utils'
+import { cn, getMatchScheduleStatus } from '@/lib/utils'
 import type { MatchPostFilter } from '../hooks'
 
 interface MatchListSectionProps {
@@ -77,6 +77,14 @@ const MatchListSection: FunctionComponent<MatchListSectionProps> = ({
   }
 
   const { title: emptyTitle, sub: emptySub } = emptyMessages[filter]
+  const getApplyState = (match: any) => {
+    const isPast = getMatchScheduleStatus(match.showTime).isPast
+    const isFull = match.currentParticipants >= match.maxParticipants
+    return {
+      disabled: isPast || isFull,
+      label: isPast ? '지난 일정' : isFull ? '모집완료' : '신청하기',
+    }
+  }
 
   return (
     <>
@@ -107,19 +115,22 @@ const MatchListSection: FunctionComponent<MatchListSectionProps> = ({
         </div>
       ) : (
         <div className="flex flex-col gap-3 px-4 py-2">
-          {list.map((match) => (
-            <div key={match.id}>
-              <DmMatchTicket match={match} />
-              <button
-                type="button"
-                onClick={() => onApply(match.id)}
-                disabled={match.currentParticipants >= match.maxParticipants}
-                className="mt-2 h-9 w-full rounded-md border border-border text-[13px] font-medium text-foreground transition-colors hover:bg-accent disabled:cursor-not-allowed disabled:opacity-50"
-              >
-                {match.currentParticipants >= match.maxParticipants ? '모집완료' : '신청하기'}
-              </button>
-            </div>
-          ))}
+          {list.map((match) => {
+            const applyState = getApplyState(match)
+            return (
+              <div key={match.id}>
+                <DmMatchTicket match={match} />
+                <button
+                  type="button"
+                  onClick={() => onApply(match.id)}
+                  disabled={applyState.disabled}
+                  className="mt-2 h-9 w-full rounded-md border border-border text-[13px] font-medium text-foreground transition-colors hover:bg-accent disabled:cursor-not-allowed disabled:opacity-50"
+                >
+                  {applyState.label}
+                </button>
+              </div>
+            )
+          })}
         </div>
       )}
 

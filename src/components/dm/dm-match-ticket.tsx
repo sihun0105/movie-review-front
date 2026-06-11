@@ -1,6 +1,7 @@
 'use client'
 
 import { MatchPost } from '@/lib/type'
+import { cn, getMatchScheduleStatus } from '@/lib/utils'
 import { useRouter } from 'next/navigation'
 import { Poster } from './poster'
 import { paletteForMovie } from './poster-palette'
@@ -10,12 +11,6 @@ interface DmMatchTicketProps {
 }
 
 const DOW = ['일', '월', '화', '수', '목', '금', '토']
-
-function dDay(showTime: string): number {
-  const target = new Date(showTime).getTime()
-  const now = Date.now()
-  return Math.ceil((target - now) / (1000 * 60 * 60 * 24))
-}
 
 export function DmMatchTicket({ match }: DmMatchTicketProps) {
   const router = useRouter()
@@ -28,7 +23,7 @@ export function DmMatchTicket({ match }: DmMatchTicketProps) {
     minute: '2-digit',
     hour12: false,
   })
-  const dd = dDay(match.showTime)
+  const schedule = getMatchScheduleStatus(match.showTime)
   const initial = match.author?.trim().charAt(0).toUpperCase() ?? '?'
   const isFull = match.currentParticipants >= match.maxParticipants
   const palette = paletteForMovie(match.id, match.movieTitle)
@@ -37,7 +32,10 @@ export function DmMatchTicket({ match }: DmMatchTicketProps) {
     <button
       type="button"
       onClick={() => router.push(`/match/${match.id}`)}
-      className="w-full cursor-pointer rounded-lg border border-border bg-card p-3 text-left transition-colors hover:bg-accent"
+      className={cn(
+        'w-full cursor-pointer rounded-lg border border-border bg-card p-3 text-left transition-colors hover:bg-accent',
+        schedule.isPast && 'opacity-70',
+      )}
     >
       <div className="flex gap-3">
         {/* movie poster */}
@@ -47,13 +45,18 @@ export function DmMatchTicket({ match }: DmMatchTicketProps) {
 
         {/* body */}
         <div className="min-w-0 flex-1">
-          {/* date + time + D-day */}
+          {/* date + time + schedule status */}
           <div className="flex items-center gap-1.5">
             <span className="font-mono text-[11px] text-muted-foreground">
               {month}.{day}({dow}) {time}
             </span>
-            <span className={`ml-auto shrink-0 rounded-full px-2 py-0.5 font-mono text-[10px] font-medium ${isFull ? 'bg-muted text-muted-foreground' : 'border border-border text-muted-foreground'}`}>
-              {dd <= 0 ? 'D-day' : `D-${dd}`}
+            <span className={cn(
+              'ml-auto shrink-0 rounded-full px-2 py-0.5 font-mono text-[10px] font-medium',
+              schedule.isPast || isFull
+                ? 'bg-muted text-muted-foreground'
+                : 'border border-primary/30 text-primary',
+            )}>
+              {schedule.label}
             </span>
           </div>
 
