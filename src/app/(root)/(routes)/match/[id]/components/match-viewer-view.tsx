@@ -88,19 +88,12 @@ const MatchViewerView = ({ matchPost, onApply }: MatchViewerViewProps) => {
   ])
 
   return (
-    <div className="relative min-h-page bg-background pb-[140px] text-foreground lg:pb-6">
-      <div
-        className="h-[112px] w-full"
-        style={{
-          background: `linear-gradient(160deg, oklch(${palette.lt} ${palette.c} ${palette.h}) 0%, oklch(${palette.lb} ${palette.c * 0.5} ${palette.h}) 100%)`,
-          opacity: 0.7,
-        }}
-      />
-      <div className="relative -mt-[112px] flex items-center px-4 py-3.5">
+    <div className="relative min-h-page bg-background pb-6 text-foreground">
+      <div className="sticky top-0 z-30 flex items-center border-b border-border bg-background/95 px-4 py-3.5 backdrop-blur-md">
         <button
           aria-label="뒤로"
           onClick={() => router.back()}
-          className="flex h-9 w-9 items-center justify-center rounded-full bg-background/80 text-foreground shadow-sm backdrop-blur"
+          className="flex h-9 w-9 items-center justify-center rounded-full border border-border bg-card text-foreground"
         >
           <svg width="8" height="14" viewBox="0 0 8 14">
             <path
@@ -119,7 +112,7 @@ const MatchViewerView = ({ matchPost, onApply }: MatchViewerViewProps) => {
         <div className="w-[34px]" aria-hidden />
       </div>
 
-      <section className="mx-4 mt-3 rounded-lg border border-border bg-card p-3.5 shadow-sm">
+      <section className="mx-4 mt-4 rounded-lg border border-border bg-card p-3.5 shadow-sm">
         <div className="flex gap-3">
           <div className="w-[72px] flex-shrink-0">
             <Poster title={matchPost.movieTitle} palette={palette} rounded="md" />
@@ -138,7 +131,7 @@ const MatchViewerView = ({ matchPost, onApply }: MatchViewerViewProps) => {
         </div>
       </section>
 
-      <div className="px-4 pt-3">
+      <div className="px-4 pb-6 pt-3">
         <DmMatchDetailCard match={matchPost} />
 
         {matchPost.content && (
@@ -151,7 +144,7 @@ const MatchViewerView = ({ matchPost, onApply }: MatchViewerViewProps) => {
         )}
       </div>
 
-      <div className="fixed bottom-[calc(4rem+env(safe-area-inset-bottom)+0.5rem)] left-1/2 z-25 w-full max-w-[460px] -translate-x-1/2 border-t border-border bg-background/95 px-4 py-3 backdrop-blur-md lg:bottom-0">
+      <div className="sticky bottom-0 z-40 mt-4 border-t border-border bg-background/95 px-4 pb-4 pt-3 backdrop-blur-md">
         {myApplication ? (
           <div className="flex flex-col items-center gap-2">
             <ApplicationStatusBadge status={myApplication.status} />
