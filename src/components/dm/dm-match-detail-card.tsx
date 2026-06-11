@@ -1,4 +1,5 @@
 import { MatchPost } from '@/lib/type'
+import { getMatchScheduleStatus } from '@/lib/utils'
 import { Pill } from './pill'
 
 interface DmMatchDetailCardProps {
@@ -6,11 +7,6 @@ interface DmMatchDetailCardProps {
 }
 
 const DOW = ['일', '월', '화', '수', '목', '금', '토']
-
-function dDay(showTime: string): number {
-  const target = new Date(showTime).getTime()
-  return Math.ceil((target - Date.now()) / (1000 * 60 * 60 * 24))
-}
 
 function FilmStrip({ position }: { position: 'top' | 'bottom' }) {
   return (
@@ -56,7 +52,7 @@ export function DmMatchDetailCard({ match }: DmMatchDetailCardProps) {
     minute: '2-digit',
     hour12: false,
   })
-  const dd = dDay(match.showTime)
+  const schedule = getMatchScheduleStatus(match.showTime)
   const tags: string[] = []
   if (match.gender === 'male') tags.push('남성만')
   else if (match.gender === 'female') tags.push('여성만')
@@ -75,7 +71,7 @@ export function DmMatchDetailCard({ match }: DmMatchDetailCardProps) {
       <div className="mt-0.5 font-mono text-[14px] text-primary">
         {time}{' '}
         <span className="text-[11px] text-muted-foreground">
-          · D-{dd >= 0 ? dd : 0}
+          · {schedule.label}
         </span>
       </div>
 
