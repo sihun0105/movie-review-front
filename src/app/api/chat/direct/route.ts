@@ -1,11 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { getTokenFromCookie } from '@/lib/utils/getToken'
+import { getAuthTokenFromRequest } from '@/lib/utils/getToken'
 import { ChatRepository } from '@/modules/chat/chat-repository'
 
 // POST /api/chat/direct - 1:1 채팅방 찾기 또는 생성
 export async function POST(request: NextRequest) {
   try {
-    const token = getTokenFromCookie()
+    const token = await getAuthTokenFromRequest(request)
     if (!token) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }

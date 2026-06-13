@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { getTokenFromCookie } from '@/lib/utils/getToken'
+import { getAuthTokenFromRequest } from '@/lib/utils/getToken'
 import { ChatRepository } from '@/modules/chat/chat-repository'
 import { MatchPostRepository } from '@/modules/match/match-post-repository'
 import type { ChatRoomsResponseEntity } from '@/modules/chat/chat.entity'
@@ -42,7 +42,7 @@ async function addMatchTitles(
 // POST /api/chat/rooms - 채팅방 생성
 export async function POST(request: NextRequest) {
   try {
-    const token = getTokenFromCookie()
+    const token = await getAuthTokenFromRequest(request)
     if (!token) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
@@ -64,7 +64,7 @@ export async function POST(request: NextRequest) {
 // GET /api/chat/rooms - 채팅방 목록 조회
 export async function GET(request: NextRequest) {
   try {
-    const token = getTokenFromCookie()
+    const token = await getAuthTokenFromRequest(request)
     if (!token) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
