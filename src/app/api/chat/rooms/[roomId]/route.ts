@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { getTokenFromCookie } from '@/lib/utils/getToken'
+import { getAuthTokenFromRequest } from '@/lib/utils/getToken'
 import { ChatRepository } from '@/modules/chat/chat-repository'
 
 // GET /api/chat/rooms/[roomId] - 특정 채팅방 조회
@@ -8,7 +8,7 @@ export async function GET(
   { params }: { params: { roomId: string } },
 ) {
   try {
-    const token = getTokenFromCookie()
+    const token = await getAuthTokenFromRequest(request)
     if (!token) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
