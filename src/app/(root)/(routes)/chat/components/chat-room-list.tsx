@@ -8,6 +8,19 @@ import useSWR from 'swr'
 
 const fetcher = (url: string) => fetch(url).then((r) => r.json())
 
+function formatRoomTime(value?: string) {
+  if (!value) return ''
+
+  const date = new Date(value)
+  if (Number.isNaN(date.getTime())) return ''
+
+  const now = new Date()
+  const isToday = date.toDateString() === now.toDateString()
+  return isToday
+    ? date.toLocaleTimeString('ko-KR', { hour: '2-digit', minute: '2-digit' })
+    : date.toLocaleDateString('ko-KR', { month: 'numeric', day: 'numeric' })
+}
+
 function parseRoom(room: ChatRoomEntity, currentUserId: number) {
   // 우선순위: matchPostId 필드(신규) → roomName 파싱(레거시)
   let matchId: string | null = room.matchPostId ?? null
@@ -15,13 +28,14 @@ function parseRoom(room: ChatRoomEntity, currentUserId: number) {
     matchId = room.roomName.replace('Match Chat - ', '')
   }
   const targetUserId = room.memberIds.find((id) => id !== currentUserId) ?? null
-  const date = new Date(room.updatedAt)
-  const now = new Date()
-  const isToday = date.toDateString() === now.toDateString()
-  const timeStr = isToday
-    ? date.toLocaleTimeString('ko-KR', { hour: '2-digit', minute: '2-digit' })
-    : date.toLocaleDateString('ko-KR', { month: 'numeric', day: 'numeric' })
-  return { matchId, targetUserId, timeStr }
+  const targetProfile = room.memberProfiles?.find(
+    (profile) => profile.userId !== currentUserId,
+  )
+  const timeStr = formatRoomTime(room.lastMessageAt || room.updatedAt)
+  const title = room.matchTitle || (matchId ? '매칭 채팅' : room.roomName)
+  const preview = room.lastMessage || '아직 주고받은 메시지가 없어요'
+
+  return { matchId, targetUserId, targetProfile, timeStr, title, preview }
 }
 
 function RoomRow({
@@ -31,41 +45,53 @@ function RoomRow({
   room: ChatRoomEntity
   currentUserId: number
 }) {
-  const { matchId, targetUserId, timeStr } = parseRoom(room, currentUserId)
+  const { matchId, targetUserId, targetProfile, timeStr, title, preview } =
+    parseRoom(room, currentUserId)
   // matchId가 있으면 매치 컨텍스트가 있는 채팅 페이지로,
   // 없으면(레거시 룸) chatRoomId 직접 진입 페이지로 폴백
   const href = matchId && targetUserId
     ? `/match/${matchId}/chat/${targetUserId}`
     : `/chat/${room.chatRoomId}`
-  const initial = (targetUserId ? `${targetUserId}` : room.roomName)
-    .charAt(0)
-    .toUpperCase()
+  const avatarLabel = targetProfile?.nickname || title || room.roomName
+  const initial = avatarLabel.charAt(0).toUpperCase()
+  const avatarStyle = targetProfile?.image
+    ? {
+        backgroundImage: `url("${targetProfile.image}")`,
+        backgroundPosition: 'center',
+        backgroundSize: 'cover',
+      }
+    : undefined
 
   return (
     <Link
       href={href}
       className="flex items-center gap-3 border-b border-border px-4 py-3.5 hover:bg-secondary"
     >
-      <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full border border-border bg-secondary text-[17px] font-bold text-foreground">
-        {initial}
+      <div
+        className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full border border-border bg-secondary text-[17px] font-bold text-foreground"
+        style={avatarStyle}
+        aria-label={avatarLabel}
+      >
+        {!targetProfile?.image && initial}
       </div>
 
       <div className="min-w-0 flex-1">
         <div className="flex items-center gap-2">
           <span className="truncate text-[14px] font-semibold text-foreground">
-            {targetUserId ? `상대방 #${targetUserId}` : room.roomName}
+            {title}
           </span>
-          <span className="ml-auto shrink-0 font-mono text-[10px] text-muted-foreground">
-            {timeStr}
-          </span>
+          {timeStr && (
+            <span className="ml-auto shrink-0 text-[11px] text-muted-foreground">
+              마지막 {timeStr}
+            </span>
+          )}
         </div>
-        {matchId && (
-          <div className="mt-0.5 font-mono text-[9px] tracking-[0.5px] text-primary">
-            🎟 {matchId}
-          </div>
-        )}
-        <div className="mt-0.5 text-[12px] text-muted-foreground">
-          채팅방 열기 →
+        <div className="mt-0.5 flex items-center gap-1.5 text-[12px] text-muted-foreground">
+          {targetProfile?.nickname && (
+            <span className="max-w-[34%] truncate">{targetProfile.nickname}</span>
+          )}
+          {targetProfile?.nickname && <span aria-hidden="true">·</span>}
+          <span className="truncate">{preview}</span>
         </div>
       </div>
     </Link>
