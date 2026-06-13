@@ -1,4 +1,10 @@
 // 채팅방 엔티티
+export interface ChatRoomMemberProfileEntity {
+  userId: number
+  nickname: string
+  image: string
+}
+
 export interface ChatRoomEntity {
   chatRoomId: string
   roomName: string
@@ -7,6 +13,10 @@ export interface ChatRoomEntity {
   createdAt: string
   updatedAt: string
   matchPostId?: string
+  matchTitle?: string
+  memberProfiles?: ChatRoomMemberProfileEntity[]
+  lastMessage?: string
+  lastMessageAt?: string
 }
 
 // 채팅 메시지 엔티티
