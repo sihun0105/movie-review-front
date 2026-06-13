@@ -43,7 +43,13 @@ export function DmDesktopRightSidebar() {
     fetcher,
     { refreshInterval: 60_000 },
   )
-  const posts = data?.matchPosts?.slice(0, 5) ?? []
+  const posts = data?.matchPosts
+    ?.filter(
+      (match) =>
+        match.currentParticipants < match.maxParticipants &&
+        !getMatchScheduleStatus(match.showTime).isPast,
+    )
+    ?.slice(0, 5) ?? []
 
   return (
     <aside className="hidden lg:sticky lg:top-0 lg:flex lg:h-screen lg:w-[320px] lg:shrink-0 lg:flex-col lg:overflow-y-auto lg:border-l lg:border-border lg:bg-background">

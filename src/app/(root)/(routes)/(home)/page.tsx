@@ -4,6 +4,7 @@ import { MatchHeroBanner, MovieListCard } from '@/components/dm'
 import { Movie } from '@/modules/movie/movie.entity'
 import { MovieRepository } from '@/modules/movie/movie-repository'
 import { MatchPostRepository } from '@/modules/match/match-post-repository'
+import { getMatchScheduleStatus } from '@/lib/utils'
 import { Metadata } from 'next'
 import { FunctionComponent } from 'react'
 
@@ -23,7 +24,9 @@ const getMatchLiveCount = async (): Promise<number> => {
     const repo = new MatchPostRepository()
     const data = await repo.getMatchPosts(1, 100)
     return data.matchPosts.filter(
-      (m) => m.currentParticipants < m.maxParticipants,
+      (m) =>
+        m.currentParticipants < m.maxParticipants &&
+        !getMatchScheduleStatus(m.showTime).isPast,
     ).length
   } catch {
     return 0
