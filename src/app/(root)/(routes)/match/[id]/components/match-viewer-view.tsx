@@ -88,7 +88,7 @@ const MatchViewerView = ({ matchPost, onApply }: MatchViewerViewProps) => {
   ])
 
   return (
-    <div className="relative min-h-page bg-background pb-6 text-foreground">
+    <div className="relative shrink-0 bg-background pb-6 text-foreground">
       <div className="sticky top-0 z-30 flex items-center border-b border-border bg-background/95 px-4 py-3.5 backdrop-blur-md">
         <button
           aria-label="뒤로"
