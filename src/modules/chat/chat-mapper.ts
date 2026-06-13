@@ -11,6 +11,10 @@ export function convertApiResponseToChatRoomEntity(
     createdAt: apiResponse.createdAt,
     updatedAt: apiResponse.updatedAt,
     matchPostId: apiResponse.matchPostId || undefined,
+    matchTitle: apiResponse.matchTitle || undefined,
+    memberProfiles: apiResponse.memberProfiles || undefined,
+    lastMessage: apiResponse.lastMessage || undefined,
+    lastMessageAt: apiResponse.lastMessageAt || undefined,
   }
 }
 

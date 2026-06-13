@@ -1,6 +1,43 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { getTokenFromCookie } from '@/lib/utils/getToken'
 import { ChatRepository } from '@/modules/chat/chat-repository'
+import { MatchPostRepository } from '@/modules/match/match-post-repository'
+import type { ChatRoomsResponseEntity } from '@/modules/chat/chat.entity'
+
+async function addMatchTitles(
+  data: ChatRoomsResponseEntity,
+  token: string,
+): Promise<ChatRoomsResponseEntity> {
+  const matchIds = Array.from(
+    new Set(data.chatRooms.map((room) => room.matchPostId).filter(Boolean)),
+  ) as string[]
+
+  if (matchIds.length === 0) return data
+
+  const matchRepository = new MatchPostRepository(token)
+  const entries = await Promise.all(
+    matchIds.map(async (matchId) => {
+      try {
+        const match = await matchRepository.getMatchPost(matchId)
+        return [matchId, match.title || match.movieTitle] as const
+      } catch (error) {
+        console.warn(`Match title fetch skipped (${matchId}):`, error)
+        return [matchId, ''] as const
+      }
+    }),
+  )
+  const titleMap = new Map(entries.filter(([, title]) => Boolean(title)))
+
+  return {
+    ...data,
+    chatRooms: data.chatRooms.map((room) => ({
+      ...room,
+      matchTitle: room.matchPostId
+        ? titleMap.get(room.matchPostId) || room.matchTitle
+        : room.matchTitle,
+    })),
+  }
+}
 
 // POST /api/chat/rooms - 채팅방 생성
 export async function POST(request: NextRequest) {
@@ -48,7 +85,7 @@ export async function GET(request: NextRequest) {
       page,
       pageSize,
     })
-    return NextResponse.json(data)
+    return NextResponse.json(await addMatchTitles(data, token))
   } catch (error) {
     console.error('Chat rooms list API error:', error)
     return NextResponse.json(
