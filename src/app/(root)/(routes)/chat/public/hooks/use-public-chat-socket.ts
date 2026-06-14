@@ -12,6 +12,7 @@ export interface PublicChatMessage {
 }
 
 interface ServerPublicChatMessage {
+  id?: string
   clientId?: string
   nickName?: string
   nickname?: string
@@ -36,7 +37,7 @@ function normalizeMessage(
   if (!message) return null
 
   return {
-    id: data.clientId || createMessageId(),
+    id: data.id || data.clientId || createMessageId(),
     nickName: data.nickName || data.nickname || '익명',
     message,
     createdAt: data.createdAt || new Date().toISOString(),
@@ -62,6 +63,13 @@ export function usePublicChatSocket(nickName: string) {
     socketRef.current = socket
     socket.on('connect', () => setIsConnected(true))
     socket.on('disconnect', () => setIsConnected(false))
+    socket.on('history', (history: ServerPublicChatMessage[]) => {
+      const nextMessages = history
+        .map((message) => normalizeMessage(message))
+        .filter((message): message is PublicChatMessage => Boolean(message))
+
+      setMessages(nextMessages)
+    })
     socket.on('message', (data: ServerPublicChatMessage) => {
       const isMine = Boolean(
         data.clientId && sentIdsRef.current.has(data.clientId),
