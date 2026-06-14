@@ -21,12 +21,25 @@ interface ServerPublicChatMessage {
   createdAt?: string
 }
 
+const PUBLIC_CHAT_CLIENT_ID_KEY = 'bollae-public-chat-client-id'
+
 function createMessageId() {
   if (typeof crypto !== 'undefined' && 'randomUUID' in crypto) {
     return crypto.randomUUID()
   }
 
   return `${Date.now()}-${Math.random().toString(16).slice(2)}`
+}
+
+function getPublicChatClientId() {
+  if (typeof window === 'undefined') return createMessageId()
+
+  const savedClientId = window.localStorage.getItem(PUBLIC_CHAT_CLIENT_ID_KEY)
+  if (savedClientId) return savedClientId
+
+  const nextClientId = createMessageId()
+  window.localStorage.setItem(PUBLIC_CHAT_CLIENT_ID_KEY, nextClientId)
+  return nextClientId
 }
 
 function normalizeMessage(
@@ -47,11 +60,13 @@ function normalizeMessage(
 
 export function usePublicChatSocket(nickName: string) {
   const socketRef = useRef<Socket | null>(null)
-  const sentIdsRef = useRef(new Set<string>())
+  const clientIdRef = useRef<string | null>(null)
   const [messages, setMessages] = useState<PublicChatMessage[]>([])
   const [isConnected, setIsConnected] = useState(false)
 
   useEffect(() => {
+    const clientId = getPublicChatClientId()
+    clientIdRef.current = clientId
     const base =
       typeof window !== 'undefined' && window.location.origin
         ? window.location.origin
@@ -65,15 +80,15 @@ export function usePublicChatSocket(nickName: string) {
     socket.on('disconnect', () => setIsConnected(false))
     socket.on('history', (history: ServerPublicChatMessage[]) => {
       const nextMessages = history
-        .map((message) => normalizeMessage(message))
+        .map((message) =>
+          normalizeMessage(message, message.clientId === clientId),
+        )
         .filter((message): message is PublicChatMessage => Boolean(message))
 
       setMessages(nextMessages)
     })
     socket.on('message', (data: ServerPublicChatMessage) => {
-      const isMine = Boolean(
-        data.clientId && sentIdsRef.current.has(data.clientId),
-      )
+      const isMine = data.clientId === clientId
       const nextMessage = normalizeMessage(data, isMine)
       if (!nextMessage) return
 
@@ -95,10 +110,8 @@ export function usePublicChatSocket(nickName: string) {
       const content = message.trim()
       if (!content || !socketRef.current) return
 
-      const clientId = createMessageId()
-      sentIdsRef.current.add(clientId)
       socketRef.current.emit('message', {
-        clientId,
+        clientId: clientIdRef.current || getPublicChatClientId(),
         nickName: nickName.trim() || '익명',
         message: content,
         createdAt: new Date().toISOString(),
