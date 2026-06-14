@@ -2,7 +2,6 @@
 
 import { ChatRoomEntity } from '@/modules/chat'
 import Link from 'next/link'
-import { useRouter } from 'next/navigation'
 import { useSession } from 'next-auth/react'
 import useSWR from 'swr'
 
@@ -49,9 +48,10 @@ function RoomRow({
     parseRoom(room, currentUserId)
   // matchId가 있으면 매치 컨텍스트가 있는 채팅 페이지로,
   // 없으면(레거시 룸) chatRoomId 직접 진입 페이지로 폴백
-  const href = matchId && targetUserId
-    ? `/match/${matchId}/chat/${targetUserId}`
-    : `/chat/${room.chatRoomId}`
+  const href =
+    matchId && targetUserId
+      ? `/match/${matchId}/chat/${targetUserId}`
+      : `/chat/${room.chatRoomId}`
   const avatarLabel = targetProfile?.nickname || title || room.roomName
   const initial = avatarLabel.charAt(0).toUpperCase()
   const avatarStyle = targetProfile?.image
@@ -88,7 +88,9 @@ function RoomRow({
         </div>
         <div className="mt-0.5 flex items-center gap-1.5 text-[12px] text-muted-foreground">
           {targetProfile?.nickname && (
-            <span className="max-w-[34%] truncate">{targetProfile.nickname}</span>
+            <span className="max-w-[34%] truncate">
+              {targetProfile.nickname}
+            </span>
           )}
           {targetProfile?.nickname && <span aria-hidden="true">·</span>}
           <span className="truncate">{preview}</span>
@@ -100,7 +102,6 @@ function RoomRow({
 
 export function ChatRoomList() {
   const { data: session, status } = useSession()
-  const router = useRouter()
   const userId = session?.user?.id ? Number(session.user.id) : null
 
   const { data, isLoading } = useSWR(
@@ -117,8 +118,19 @@ export function ChatRoomList() {
     )
 
   if (status === 'unauthenticated') {
-    router.push('/login')
-    return null
+    return (
+      <div className="mx-4 mt-4 rounded-md border border-border px-4 py-5 text-center">
+        <div className="text-[14px] font-semibold text-foreground">
+          로그인하면 매칭 채팅을 볼 수 있어요
+        </div>
+        <Link
+          href="/login?callbackUrl=%2Fchat"
+          className="mt-3 inline-flex rounded-md border border-border px-4 py-2 text-[12px] text-muted-foreground hover:bg-accent hover:text-foreground"
+        >
+          로그인
+        </Link>
+      </div>
+    )
   }
 
   const rooms: ChatRoomEntity[] = data?.chatRooms ?? []
