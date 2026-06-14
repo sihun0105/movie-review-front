@@ -140,7 +140,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
                     <DmAppBar />
                   </div>
                   <main className="flex min-h-0 flex-1 flex-col overflow-y-auto overscroll-contain lg:min-h-page lg:overflow-visible">
-                    {children}
+                    <div className="shrink-0">{children}</div>
                     <DmAppFooter className="mt-auto pb-[calc(5rem+env(safe-area-inset-bottom))] lg:pb-8" />
                   </main>
                   <div className="lg:hidden">
