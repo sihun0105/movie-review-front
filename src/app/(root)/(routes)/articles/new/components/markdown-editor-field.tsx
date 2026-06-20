@@ -3,18 +3,15 @@
 import { FormControl, FormField, FormItem } from '@/components/ui/form'
 import { MarkdownContent } from '@/components/app/markdown-content'
 import { useAppToast } from '@/hooks/use-app-toast'
-import { Bold, Eye, ImagePlus, Italic, List, Pencil } from 'lucide-react'
+import { Bold, ImagePlus, Italic, List } from 'lucide-react'
 import { useRef, useState } from 'react'
 import { useCreateArticleFormContext } from '../hooks/create-article-form-context'
-
-type Mode = 'write' | 'preview'
 
 export function MarkdownEditorField() {
   const { form } = useCreateArticleFormContext()
   const { showToast } = useAppToast()
   const textareaRef = useRef<HTMLTextAreaElement | null>(null)
   const fileInputRef = useRef<HTMLInputElement | null>(null)
-  const [mode, setMode] = useState<Mode>('write')
   const [uploading, setUploading] = useState(false)
 
   const insertText = (text: string) => {
@@ -47,23 +44,6 @@ export function MarkdownEditorField() {
         <FormItem className="w-full">
           <div className="rounded-md border border-border bg-secondary">
             <div className="flex items-center gap-1 border-b border-border p-2">
-              <button
-                type="button"
-                title="작성"
-                onClick={() => setMode('write')}
-                className={toolClass(mode === 'write')}
-              >
-                <Pencil className="h-4 w-4" />
-              </button>
-              <button
-                type="button"
-                title="미리보기"
-                onClick={() => setMode('preview')}
-                className={toolClass(mode === 'preview')}
-              >
-                <Eye className="h-4 w-4" />
-              </button>
-              <span className="mx-1 h-5 w-px bg-border" />
               <button
                 type="button"
                 title="굵게"
@@ -119,7 +99,7 @@ export function MarkdownEditorField() {
               />
             </div>
             <FormControl>
-              {mode === 'write' ? (
+              <div className="grid min-h-[520px] grid-rows-[minmax(260px,1fr)_minmax(220px,0.8fr)] lg:min-h-[440px] lg:grid-cols-2 lg:grid-rows-1">
                 <textarea
                   {...field}
                   ref={(element) => {
@@ -128,13 +108,20 @@ export function MarkdownEditorField() {
                   }}
                   rows={14}
                   placeholder="내용을 입력해주세요."
-                  className="min-h-[360px] w-full resize-none bg-transparent px-3.5 py-3 text-[14px] text-foreground placeholder:text-muted-foreground focus:outline-none"
+                  className="min-h-[260px] w-full resize-none bg-transparent px-3.5 py-3 text-[14px] leading-6 text-foreground placeholder:text-muted-foreground focus:outline-none lg:min-h-[440px]"
                 />
-              ) : (
-                <div className="min-h-[360px] px-3.5 py-3">
-                  <MarkdownContent content={field.value || ''} />
+                <div className="border-t border-border bg-background px-3.5 py-3 lg:border-l lg:border-t-0">
+                  <div className="h-full min-h-[220px] overflow-y-auto">
+                    {field.value ? (
+                      <MarkdownContent content={field.value} />
+                    ) : (
+                      <p className="text-[13px] text-muted-foreground">
+                        작성한 내용이 여기에 미리 표시됩니다.
+                      </p>
+                    )}
+                  </div>
                 </div>
-              )}
+              </div>
             </FormControl>
           </div>
         </FormItem>
