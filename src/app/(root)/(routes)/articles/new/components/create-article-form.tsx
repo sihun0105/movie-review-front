@@ -7,7 +7,7 @@ import { FunctionComponent } from 'react'
 import { Form } from '@/components/ui/form'
 import { useCreateArticleFormContext } from '../hooks/create-article-form-context'
 import { useCreateArticle } from '../hooks/use-create-article'
-import { ContentInputField } from './content-input-field'
+import { MarkdownEditorField } from './markdown-editor-field'
 import { TitleInputField } from './title-input-field'
 
 const CreateArticleForm: FunctionComponent = () => {
@@ -49,7 +49,7 @@ const CreateArticleForm: FunctionComponent = () => {
     <Form {...form}>
       <form onSubmit={handleSubmit} className="space-y-3">
         <TitleInputField />
-        <ContentInputField />
+        <MarkdownEditorField />
         <button
           type="submit"
           disabled={isCreating}
