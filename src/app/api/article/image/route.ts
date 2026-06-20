@@ -1,4 +1,4 @@
-import { getTokenFromCookie } from '@/lib/utils/getToken'
+import { getAuthTokenFromRequest } from '@/lib/utils/getToken'
 import { NextRequest } from 'next/server'
 
 const base =
@@ -7,7 +7,7 @@ const base =
   'http://127.0.0.1:3030'
 
 export const POST = async (req: NextRequest) => {
-  const token = await getTokenFromCookie()
+  const token = await getAuthTokenFromRequest(req)
   if (!token) return new Response(null, { status: 401 })
 
   const form = await req.formData()
