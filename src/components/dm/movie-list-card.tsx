@@ -14,6 +14,7 @@ export function MovieListCard({ movie }: MovieListCardProps) {
   const rankInten = movie.rankInten ?? 0
   const audience = movie.audience ?? 0
   const genres = movie.genre?.split(/[,/·]/).map((g) => g.trim()).filter(Boolean) ?? []
+  const director = movie.director?.trim()
 
   const intenColor =
     rankInten > 0 ? 'text-green-400' : rankInten < 0 ? 'text-primary' : 'text-muted-foreground'
@@ -57,6 +58,11 @@ export function MovieListCard({ movie }: MovieListCardProps) {
             <h3 className="mt-2 line-clamp-2 break-keep text-[19px] font-bold leading-tight text-foreground group-hover:text-primary sm:text-[21px]">
               {movie.title}
             </h3>
+            {director && (
+              <p className="mt-1 truncate text-[12px] font-medium text-muted-foreground">
+                감독 {director}
+              </p>
+            )}
           </div>
 
           <div className="mt-3 grid grid-cols-2 gap-2 text-[11px] text-muted-foreground">
