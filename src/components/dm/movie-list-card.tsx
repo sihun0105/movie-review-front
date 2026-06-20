@@ -13,11 +13,20 @@ export function MovieListCard({ movie }: MovieListCardProps) {
   const hasRating = rating > 0
   const rankInten = movie.rankInten ?? 0
   const audience = movie.audience ?? 0
-  const genres = movie.genre?.split(/[,/·]/).map((g) => g.trim()).filter(Boolean) ?? []
+  const genres =
+    movie.genre
+      ?.split(/[,/·]/)
+      .map((g) => g.trim())
+      .filter(Boolean) ?? []
   const director = movie.director?.trim()
+  const contentRating = movie.ratting?.trim()
 
   const intenColor =
-    rankInten > 0 ? 'text-green-400' : rankInten < 0 ? 'text-primary' : 'text-muted-foreground'
+    rankInten > 0
+      ? 'text-green-400'
+      : rankInten < 0
+        ? 'text-primary'
+        : 'text-muted-foreground'
   const intenLabel =
     rankInten > 0 ? `▲${rankInten}` : rankInten < 0 ? `▼${-rankInten}` : '—'
 
@@ -32,7 +41,7 @@ export function MovieListCard({ movie }: MovieListCardProps) {
             className="shadow-[0_12px_32px_rgba(0,0,0,0.28)]"
             rounded="md"
           />
-          <span className="absolute left-2 top-2 inline-flex h-7 min-w-7 items-center justify-center rounded-full bg-primary px-2 font-mono text-[11px] font-semibold text-primary-foreground shadow">
+          <span className="min-w-7 absolute left-2 top-2 inline-flex h-7 items-center justify-center rounded-full bg-primary px-2 font-mono text-[11px] font-semibold text-primary-foreground shadow">
             {movie.rank}
           </span>
         </div>
@@ -51,6 +60,11 @@ export function MovieListCard({ movie }: MovieListCardProps) {
               {movie.rankOldAndNew === 'NEW' && (
                 <span className="rounded-full bg-foreground px-2 py-0.5 font-mono text-[10px] text-background">
                   NEW
+                </span>
+              )}
+              {contentRating && (
+                <span className="rounded-full border border-border px-2 py-0.5 font-mono text-[10px] text-muted-foreground">
+                  {contentRating}
                 </span>
               )}
             </div>
@@ -74,7 +88,9 @@ export function MovieListCard({ movie }: MovieListCardProps) {
             </span>
             {audience > 0 && (
               <span className="rounded-md bg-background/70 px-2 py-1.5">
-                <span className="block font-mono text-[9px] uppercase">관객</span>
+                <span className="block font-mono text-[9px] uppercase">
+                  관객
+                </span>
                 <span className="font-semibold text-foreground">
                   {(audience / 10000).toFixed(0)}만명
                 </span>
