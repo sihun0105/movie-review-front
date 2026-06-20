@@ -2,6 +2,7 @@
 
 import { Article } from '@/lib/type'
 import { useAppToast } from '@/hooks/use-app-toast'
+import { MarkdownContent } from '@/components/app/markdown-content'
 import { useSession } from 'next-auth/react'
 import { FunctionComponent } from 'react'
 import { Pencil, Trash2 } from 'lucide-react'
@@ -78,8 +79,8 @@ const ArticleDataSection: FunctionComponent<ArticleDataSectionProps> = ({
         <span>{dateStr}</span>
       </div>
 
-      <div className="mt-5 border-t border-border pt-5 text-[14px] leading-relaxed text-muted-foreground whitespace-pre-wrap">
-        {data.content}
+      <div className="mt-5 border-t border-border pt-5">
+        <MarkdownContent content={data.content} />
       </div>
     </section>
   )
