@@ -4,14 +4,15 @@ import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import * as z from 'zod'
 import { Article } from '@/lib/type'
+import { ArticleMarkdownEditor } from '@/components/app/article-markdown-editor'
 import { useModifyArticle } from '../../new/hooks/use-modify-article'
 import { useModifyArticleModalContext } from '../hooks/use-modify-article-context'
 import { Button } from '@/components/ui/button'
 import {
   Form,
+  FormControl,
   FormField,
   FormItem,
-  FormControl,
   FormMessage,
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
@@ -51,8 +52,8 @@ const ModifyArticleForm: FunctionComponent<ModifyArticleFormProps> = ({
         onSuccess: () => {
           setOpen(false)
           showToast('게시글 수정에 성공했습니다!')
-          form.reset()
-          window.location.reload() // 또는 router.push('/articles') 등
+          form.reset(data)
+          window.location.reload()
         },
         onError: () => {
           // 에러 토스트 등 처리 필요시 추가
@@ -77,18 +78,7 @@ const ModifyArticleForm: FunctionComponent<ModifyArticleFormProps> = ({
             </FormItem>
           )}
         />
-        <FormField
-          control={form.control}
-          name="content"
-          render={({ field }) => (
-            <FormItem>
-              <FormControl>
-                <Input {...field} placeholder="내용을 입력해주세요." />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+        <ArticleMarkdownEditor form={form} />
         <Button type="submit" className="w-full" disabled={isModifying}>
           수정하기
         </Button>

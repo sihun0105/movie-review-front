@@ -18,6 +18,7 @@ const ModifyArticleModal: FunctionComponent<ModifyArticleModalProps> = ({}) => {
       }
       open={open}
       setOpen={setOpen}
+      className="max-h-[92dvh] w-[calc(100vw-2rem)] max-w-[960px] overflow-y-auto"
       render={article ? <ModifyArticleForm article={article} /> : null}
     />
   )

@@ -1,4 +1,4 @@
-import { getTokenFromCookie } from '@/lib/utils/getToken'
+import { getAuthTokenFromRequest } from '@/lib/utils/getToken'
 import { ArticleRepository } from '@/modules/article/article-repository'
 import { NextRequest } from 'next/server'
 
@@ -46,7 +46,7 @@ export const PATCH = async (
   const content = form.get('content') as string
 
   try {
-    const token = await getTokenFromCookie()
+    const token = await getAuthTokenFromRequest(req)
     if (!token) return new Response(null, { status: 401 })
 
     const repo = new ArticleRepository(token)
@@ -65,13 +65,13 @@ export const PATCH = async (
 
 // 게시글 삭제
 export const DELETE = async (
-  _req: NextRequest,
+  req: NextRequest,
   context: { params: { id: string } },
 ) => {
   const { id } = context.params
 
   try {
-    const token = await getTokenFromCookie()
+    const token = await getAuthTokenFromRequest(req)
     if (!token) return new Response(null, { status: 401 })
 
     const repo = new ArticleRepository(token)
