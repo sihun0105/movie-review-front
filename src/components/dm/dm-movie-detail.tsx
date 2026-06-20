@@ -26,8 +26,17 @@ export function DmMovieDetail({
   const rating = averageScore ?? movie.averageScore ?? 0
   const reviews = scoreCount ?? movie.scoreCount ?? 0
   const matchHref = `/match?movieTitle=${encodeURIComponent(movie.title)}`
-  const genres = movie.genre?.split(/[,/·]/).map((g) => g.trim()).filter(Boolean) ?? []
-  const releaseYear = movie.openedAt ? new Date(movie.openedAt).getFullYear() : undefined
+  const genres =
+    movie.genre
+      ?.split(/[,/·]/)
+      .map((g) => g.trim())
+      .filter(Boolean) ?? []
+  const releaseYear = movie.openedAt
+    ? new Date(movie.openedAt).getFullYear()
+    : undefined
+  const metadata = [...genres.slice(0, 2), movie.ratting?.trim(), releaseYear]
+    .filter(Boolean)
+    .join(' · ')
 
   return (
     <div className="pb-5">
@@ -42,7 +51,11 @@ export function DmMovieDetail({
       <div className="relative -mt-[70px] px-4">
         <div className="flex items-end gap-3.5">
           <div className="w-[106px] shrink-0">
-            <Poster title={movie.title} palette={palette} imageUrl={movie.poster} />
+            <Poster
+              title={movie.title}
+              palette={palette}
+              imageUrl={movie.poster}
+            />
           </div>
           <div className="pb-1">
             {movie.rank && (
@@ -54,8 +67,7 @@ export function DmMovieDetail({
               {movie.title}
             </h1>
             <div className="mt-1 font-mono text-[11px] text-muted-foreground">
-              {genres.slice(0, 2).join(' · ')}
-              {releaseYear && ` · ${releaseYear}`}
+              {metadata}
             </div>
           </div>
         </div>
@@ -63,7 +75,9 @@ export function DmMovieDetail({
         {/* 평점 */}
         <div className="mt-4 flex items-center gap-3 rounded-lg border border-border bg-card p-3">
           <div className="text-center">
-            <div className="text-[32px] font-bold text-foreground">{rating.toFixed(1)}</div>
+            <div className="text-[32px] font-bold text-foreground">
+              {rating.toFixed(1)}
+            </div>
             <Stars value={rating} size={10} />
             <div className="mt-0.5 font-mono text-[10px] text-muted-foreground">
               {reviews.toLocaleString()}명
