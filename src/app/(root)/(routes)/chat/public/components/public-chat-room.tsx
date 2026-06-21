@@ -9,8 +9,6 @@ function createGuestName() {
   return `익명${Math.floor(1000 + Math.random() * 9000)}`
 }
 
-const MOBILE_CHROME_OFFSET = 126
-
 function formatDateTime(value: string) {
   const date = new Date(value)
   if (Number.isNaN(date.getTime())) return ''
@@ -25,33 +23,41 @@ function formatDateTime(value: string) {
   })
 }
 
-function useVisibleViewportHeight() {
-  const [height, setHeight] = useState<number | null>(null)
+function useMobileViewport() {
+  const [viewport, setViewport] = useState<{
+    height: number
+    top: number
+  } | null>(null)
 
   useEffect(() => {
-    const updateHeight = () => {
+    const updateViewport = () => {
       if (!window.matchMedia('(max-width: 1023px)').matches) {
-        setHeight(null)
+        setViewport(null)
         return
       }
 
-      const visualHeight = window.visualViewport?.height || window.innerHeight
-      setHeight(Math.round(visualHeight))
+      const visual = window.visualViewport
+      setViewport({
+        height: Math.round(visual?.height || window.innerHeight),
+        top: Math.round(visual?.offsetTop || 0),
+      })
     }
 
-    updateHeight()
-    window.visualViewport?.addEventListener('resize', updateHeight)
-    window.visualViewport?.addEventListener('scroll', updateHeight)
-    window.addEventListener('resize', updateHeight)
+    updateViewport()
+    window.visualViewport?.addEventListener('resize', updateViewport)
+    window.visualViewport?.addEventListener('scroll', updateViewport)
+    window.addEventListener('resize', updateViewport)
+    window.addEventListener('orientationchange', updateViewport)
 
     return () => {
-      window.visualViewport?.removeEventListener('resize', updateHeight)
-      window.visualViewport?.removeEventListener('scroll', updateHeight)
-      window.removeEventListener('resize', updateHeight)
+      window.visualViewport?.removeEventListener('resize', updateViewport)
+      window.visualViewport?.removeEventListener('scroll', updateViewport)
+      window.removeEventListener('resize', updateViewport)
+      window.removeEventListener('orientationchange', updateViewport)
     }
   }, [])
 
-  return height
+  return viewport
 }
 
 export function PublicChatRoom() {
@@ -59,7 +65,7 @@ export function PublicChatRoom() {
   const [input, setInput] = useState('')
   const [guestName, setGuestName] = useState('')
   const bottomRef = useRef<HTMLDivElement>(null)
-  const viewportHeight = useVisibleViewportHeight()
+  const viewport = useMobileViewport()
 
   useEffect(() => {
     const stored = window.localStorage.getItem('bollae.public-chat.nickname')
@@ -74,9 +80,12 @@ export function PublicChatRoom() {
   )
   const { isConnected, messages, sendMessage } = usePublicChatSocket(nickName)
 
-  useEffect(() => {
+  const scrollToBottom = () => {
     bottomRef.current?.scrollIntoView({ block: 'end' })
-  }, [messages])
+  }
+
+  useEffect(scrollToBottom, [messages])
+  useEffect(scrollToBottom, [viewport])
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
@@ -84,14 +93,17 @@ export function PublicChatRoom() {
     setInput('')
   }
 
-  const mobileHeight = viewportHeight
-    ? `${Math.max(viewportHeight - MOBILE_CHROME_OFFSET, 360)}px`
+  const mobileStyle = viewport
+    ? {
+        height: `${viewport.height}px`,
+        top: `${viewport.top}px`,
+      }
     : undefined
 
   return (
     <div
-      className="flex min-h-0 flex-col bg-background text-foreground lg:min-h-[calc(100vh-9rem)]"
-      style={mobileHeight ? { height: mobileHeight } : undefined}
+      className="fixed left-1/2 z-50 flex h-[100dvh] w-full max-w-[460px] -translate-x-1/2 flex-col bg-background text-foreground lg:static lg:min-h-[calc(100vh-9rem)] lg:max-w-none lg:translate-x-0"
+      style={mobileStyle}
     >
       <div className="border-b border-border px-4 py-3">
         <div className="flex items-center justify-between gap-3">
@@ -148,6 +160,7 @@ export function PublicChatRoom() {
         <input
           value={input}
           onChange={(event) => setInput(event.target.value)}
+          onFocus={() => setTimeout(scrollToBottom, 80)}
           placeholder="메시지 입력"
           className="min-w-0 flex-1 rounded-md border border-border bg-background px-3 py-3 text-[14px] outline-none focus:border-primary"
         />
