@@ -9,14 +9,49 @@ function createGuestName() {
   return `익명${Math.floor(1000 + Math.random() * 9000)}`
 }
 
-function formatTime(value: string) {
+const MOBILE_CHROME_OFFSET = 126
+
+function formatDateTime(value: string) {
   const date = new Date(value)
   if (Number.isNaN(date.getTime())) return ''
 
-  return date.toLocaleTimeString('ko-KR', {
+  return date.toLocaleString('ko-KR', {
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
     hour: '2-digit',
     minute: '2-digit',
+    hour12: false,
   })
+}
+
+function useVisibleViewportHeight() {
+  const [height, setHeight] = useState<number | null>(null)
+
+  useEffect(() => {
+    const updateHeight = () => {
+      if (!window.matchMedia('(max-width: 1023px)').matches) {
+        setHeight(null)
+        return
+      }
+
+      const visualHeight = window.visualViewport?.height || window.innerHeight
+      setHeight(Math.round(visualHeight))
+    }
+
+    updateHeight()
+    window.visualViewport?.addEventListener('resize', updateHeight)
+    window.visualViewport?.addEventListener('scroll', updateHeight)
+    window.addEventListener('resize', updateHeight)
+
+    return () => {
+      window.visualViewport?.removeEventListener('resize', updateHeight)
+      window.visualViewport?.removeEventListener('scroll', updateHeight)
+      window.removeEventListener('resize', updateHeight)
+    }
+  }, [])
+
+  return height
 }
 
 export function PublicChatRoom() {
@@ -24,6 +59,7 @@ export function PublicChatRoom() {
   const [input, setInput] = useState('')
   const [guestName, setGuestName] = useState('')
   const bottomRef = useRef<HTMLDivElement>(null)
+  const viewportHeight = useVisibleViewportHeight()
 
   useEffect(() => {
     const stored = window.localStorage.getItem('bollae.public-chat.nickname')
@@ -48,8 +84,15 @@ export function PublicChatRoom() {
     setInput('')
   }
 
+  const mobileHeight = viewportHeight
+    ? `${Math.max(viewportHeight - MOBILE_CHROME_OFFSET, 360)}px`
+    : undefined
+
   return (
-    <div className="flex min-h-[calc(100vh-9rem)] flex-col bg-background text-foreground">
+    <div
+      className="flex min-h-0 flex-col bg-background text-foreground lg:min-h-[calc(100vh-9rem)]"
+      style={mobileHeight ? { height: mobileHeight } : undefined}
+    >
       <div className="border-b border-border px-4 py-3">
         <div className="flex items-center justify-between gap-3">
           <div className="min-w-0">
@@ -87,7 +130,7 @@ export function PublicChatRoom() {
                 <span className="max-w-[8rem] truncate">
                   {message.nickName}
                 </span>
-                <span>{formatTime(message.createdAt)}</span>
+                <span className="shrink-0">{formatDateTime(message.createdAt)}</span>
               </div>
               <p className="whitespace-pre-wrap break-words text-[14px] leading-5">
                 {message.message}

@@ -2,6 +2,7 @@
 
 import { Form } from '@/components/ui/form'
 import { useAppToast } from '@/hooks/use-app-toast'
+import { signIn } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
 import { FunctionComponent, useMemo, useState } from 'react'
 import { useRegister } from './hook/use-register'
@@ -107,10 +108,22 @@ const MultiStepRegisterForm: FunctionComponent = () => {
     const data = form.getValues()
     await onSubmit(
       data,
-      () => {
+      async () => {
         showToast('회원가입이 완료되었습니다!', 3000)
+        const result = await signIn('credentials', {
+          userId: data.userId,
+          password: data.password,
+          redirect: false,
+          callbackUrl: '/',
+        })
+
+        if (result?.error) {
+          router.push('/login')
+          return
+        }
+
         form.reset()
-        setTimeout(() => router.push('/login'), 1200)
+        window.location.href = result?.url || '/'
       },
       (err: string) => showToast(err, 3000),
     )
