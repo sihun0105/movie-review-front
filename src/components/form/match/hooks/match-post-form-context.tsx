@@ -6,18 +6,16 @@ import { createContext, useContext } from 'react'
 import * as z from 'zod'
 
 const formSchema = z.object({
-  title: z.string().min(2, {
+  title: z.string().min(1, {
     message: '제목은 최소 2자 이상 입력해주세요.',
   }),
-  content: z.string().min(5, {
+  content: z.string().min(1, {
     message: '내용은 최소 5자 이상 입력해주세요.',
   }),
   movieTitle: z.string().min(1, {
     message: '영화 제목을 입력해주세요.',
   }),
-  theaterName: z.string().min(1, {
-    message: '영화관 이름을 입력해주세요.',
-  }),
+  theaterName: z.string().min(1),
   showTime: z.string().min(1, {
     message: '상영 시간을 선택해주세요.',
   }),
@@ -39,10 +37,10 @@ const useMatchPostForm = () => {
     resolver: zodResolver(formSchema),
     mode: 'onTouched',
     defaultValues: {
-      title: '',
-      content: '',
+      title: '자동 생성',
+      content: '자동 생성',
       movieTitle: '',
-      theaterName: '',
+      theaterName: '상영관 미정',
       showTime: '',
       maxParticipants: 1,
       location: '',
