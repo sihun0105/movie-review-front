@@ -65,7 +65,7 @@ const useRegisterForm = () => {
 
   const onSubmit = async (
     values: z.infer<typeof formSchema>,
-    onSuccess: () => void,
+    onSuccess: () => void | Promise<void>,
     onError: (error: string) => void,
   ) => {
     try {
@@ -79,7 +79,7 @@ const useRegisterForm = () => {
       })
 
       if (result.success) {
-        onSuccess()
+        await onSuccess()
       } else {
         onError(result.message || '회원가입에 실패했습니다.')
       }
