@@ -1,5 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { getTokenFromCookie } from '@/lib/utils/getToken'
+import {
+  getAuthTokenFromRequest,
+  getTokenFromCookie,
+} from '@/lib/utils/getToken'
 import { MatchPostRepository } from '@/modules/match/match-post-repository'
 
 // GET /api/match - match 목록 조회
@@ -33,7 +36,7 @@ export async function GET(request: NextRequest) {
 // POST /api/match - match 생성
 export async function POST(request: NextRequest) {
   try {
-    const token = getTokenFromCookie()
+    const token = await getAuthTokenFromRequest(request)
     if (!token) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }

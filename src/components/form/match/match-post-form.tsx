@@ -6,6 +6,7 @@ import { ArrowLeft, ArrowRight, Check } from 'lucide-react'
 import { FunctionComponent, useEffect, useMemo, useState } from 'react'
 import { useMatchPostFormContext } from './hooks/match-post-form-context'
 import { buildMatchPayload, formatMatchDateTime } from './match-post-form-utils'
+import { MovieSuggestionChips } from './movie-suggestion-chips'
 
 interface MatchPostFormProps {
   onSubmit: (_data: CreateMatchPostRequest) => Promise<void>
@@ -184,6 +185,14 @@ function renderStep(field: (typeof steps)[number]['field'], form: any, summary: 
       <p className="mt-3 text-[13px] text-destructive">
         {form.formState.errors[field]?.message as string}
       </p>
+      {field === 'movieTitle' && (
+        <MovieSuggestionChips
+          selectedTitle={form.watch('movieTitle') as string}
+          onSelect={(title) =>
+            form.setValue('movieTitle', title, { shouldValidate: true })
+          }
+        />
+      )}
     </div>
   )
 }
