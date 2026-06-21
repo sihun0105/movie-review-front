@@ -63,4 +63,8 @@ export class UsersRepository {
   async updateImage({ file }: { file: File }) {
     return await this.datasource.updateImage({ file })
   }
+
+  async deleteAccount() {
+    return await this.datasource.deleteAccount()
+  }
 }

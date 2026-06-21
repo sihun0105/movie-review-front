@@ -1,5 +1,10 @@
 import { AppBackEndApiEndpoint } from '@/config/app-backend-api-endpoint'
 
+const serverApi =
+  process.env.SERVER_API ||
+  process.env.NEXT_PUBLIC_SERVER_API ||
+  'http://127.0.0.1:3030'
+
 export class UsersDatasource {
   private token?: string
   constructor(token?: string) {
@@ -110,6 +115,20 @@ export class UsersDatasource {
     const res = await fetch(AppBackEndApiEndpoint.updateProfileImage(), {
       method: 'PATCH',
       body: formData,
+      headers: {
+        Authorization: `Bearer ${this.token}`,
+      },
+      cache: 'no-cache',
+    })
+    if (!res.ok) {
+      throw new Error(`[${res.status}] ${res.statusText}`)
+    }
+    return res.json()
+  }
+
+  async deleteAccount() {
+    const res = await fetch(`${serverApi}/user`, {
+      method: 'DELETE',
       headers: {
         Authorization: `Bearer ${this.token}`,
       },
