@@ -23,49 +23,11 @@ function formatDateTime(value: string) {
   })
 }
 
-function useMobileViewport() {
-  const [viewport, setViewport] = useState<{
-    height: number
-    top: number
-  } | null>(null)
-
-  useEffect(() => {
-    const updateViewport = () => {
-      if (!window.matchMedia('(max-width: 1023px)').matches) {
-        setViewport(null)
-        return
-      }
-
-      const visual = window.visualViewport
-      setViewport({
-        height: Math.round(visual?.height || window.innerHeight),
-        top: Math.round(visual?.offsetTop || 0),
-      })
-    }
-
-    updateViewport()
-    window.visualViewport?.addEventListener('resize', updateViewport)
-    window.visualViewport?.addEventListener('scroll', updateViewport)
-    window.addEventListener('resize', updateViewport)
-    window.addEventListener('orientationchange', updateViewport)
-
-    return () => {
-      window.visualViewport?.removeEventListener('resize', updateViewport)
-      window.visualViewport?.removeEventListener('scroll', updateViewport)
-      window.removeEventListener('resize', updateViewport)
-      window.removeEventListener('orientationchange', updateViewport)
-    }
-  }, [])
-
-  return viewport
-}
-
 export function PublicChatRoom() {
   const { data: session } = useSession()
   const [input, setInput] = useState('')
   const [guestName, setGuestName] = useState('')
   const bottomRef = useRef<HTMLDivElement>(null)
-  const viewport = useMobileViewport()
 
   useEffect(() => {
     const stored = window.localStorage.getItem('bollae.public-chat.nickname')
@@ -85,7 +47,6 @@ export function PublicChatRoom() {
   }
 
   useEffect(scrollToBottom, [messages])
-  useEffect(scrollToBottom, [viewport])
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
@@ -93,18 +54,8 @@ export function PublicChatRoom() {
     setInput('')
   }
 
-  const mobileStyle = viewport
-    ? {
-        height: `${viewport.height}px`,
-        top: `${viewport.top}px`,
-      }
-    : undefined
-
   return (
-    <div
-      className="fixed left-1/2 z-50 flex h-[100dvh] w-full max-w-[460px] -translate-x-1/2 flex-col bg-background text-foreground lg:static lg:min-h-[calc(100vh-9rem)] lg:max-w-none lg:translate-x-0"
-      style={mobileStyle}
-    >
+    <div className="flex h-[calc(100dvh-8rem-env(safe-area-inset-bottom))] min-h-[22rem] w-full flex-col overflow-hidden bg-background text-foreground lg:min-h-[calc(100vh-9rem)]">
       <div className="border-b border-border px-4 py-3">
         <div className="flex items-center justify-between gap-3">
           <div className="min-w-0">
@@ -155,7 +106,7 @@ export function PublicChatRoom() {
 
       <form
         onSubmit={handleSubmit}
-        className="sticky bottom-0 flex gap-2 border-t border-border bg-background/95 p-3 backdrop-blur"
+        className="flex shrink-0 gap-2 border-t border-border bg-background/95 p-3 backdrop-blur"
       >
         <input
           value={input}
