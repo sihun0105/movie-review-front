@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { getTokenFromCookie } from '@/lib/utils/getToken'
+import { getAuthTokenFromRequest } from '@/lib/utils/getToken'
 import { MatchApplicationRepository } from '@/modules/match/match-application-repository'
 
 // PUT /api/match/[id]/applications/[applicationId] - 신청 상태 변경 (승인/거절)
@@ -8,7 +8,7 @@ export async function PUT(
   { params }: { params: { id: string; applicationId: string } },
 ) {
   try {
-    const token = getTokenFromCookie()
+    const token = await getAuthTokenFromRequest(request)
     if (!token) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }

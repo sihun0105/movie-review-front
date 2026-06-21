@@ -1,10 +1,12 @@
-import { NextResponse } from 'next/server'
-import { getTokenFromCookie } from '@/lib/utils/getToken'
+import { NextRequest, NextResponse } from 'next/server'
+import { getAuthTokenFromRequest } from '@/lib/utils/getToken'
 import { MatchPostRepository } from '@/modules/match/match-post-repository'
 
-export async function GET() {
+export const dynamic = 'force-dynamic'
+
+export async function GET(request: NextRequest) {
   try {
-    const token = getTokenFromCookie()
+    const token = await getAuthTokenFromRequest(request)
     if (!token) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }

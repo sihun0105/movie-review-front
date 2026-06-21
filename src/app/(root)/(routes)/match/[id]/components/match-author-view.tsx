@@ -1,19 +1,22 @@
 'use client'
 
 import { DmMatchDetailCard } from '@/components/dm'
-import { MatchApplication, MatchPost } from '@/lib/type'
+import { CreateMatchPostRequest, MatchApplication, MatchPost } from '@/lib/type'
 import { useRouter } from 'next/navigation'
-import { FunctionComponent } from 'react'
+import { FunctionComponent, useState } from 'react'
+import { MatchFormSection } from '../../sections/match-form-section'
 import { MatchApplicationRow } from './match-application-row'
 
 interface MatchAuthorViewProps {
   matchPost: MatchPost
   applications: MatchApplication[]
   isDeleting: boolean
+  isUpdating: boolean
+  onUpdate: (_data: CreateMatchPostRequest) => Promise<void>
   onDelete: () => Promise<void>
   onApplicationStatusChange: (
-    applicationId: string,
-    status: 'accepted' | 'rejected',
+    _applicationId: string,
+    _status: 'accepted' | 'rejected',
   ) => Promise<void>
   mutateApplications: () => void
 }
@@ -22,14 +25,32 @@ const MatchAuthorView: FunctionComponent<MatchAuthorViewProps> = ({
   matchPost,
   applications,
   isDeleting,
+  isUpdating,
+  onUpdate,
   onDelete,
   onApplicationStatusChange,
 }) => {
   const router = useRouter()
+  const [isEditing, setIsEditing] = useState(false)
 
   const handleDelete = async () => {
     if (!window.confirm('정말로 이 매치를 삭제하시겠습니까?')) return
     await onDelete()
+  }
+
+  const handleUpdate = async (data: CreateMatchPostRequest) => {
+    await onUpdate(data)
+    setIsEditing(false)
+  }
+
+  const initialData = {
+    title: matchPost.title,
+    content: matchPost.content,
+    movieTitle: matchPost.movieTitle,
+    theaterName: matchPost.theaterName,
+    showTime: toDatetimeLocalValue(matchPost.showTime),
+    maxParticipants: matchPost.maxParticipants,
+    location: matchPost.location,
   }
 
   return (
@@ -45,15 +66,32 @@ const MatchAuthorView: FunctionComponent<MatchAuthorViewProps> = ({
           HOST VIEW
         </span>
         <button
+          onClick={() => setIsEditing((prev) => !prev)}
+          disabled={isUpdating}
+          className="ml-auto border border-border px-2.5 py-1 font-mono text-[11px] text-muted-foreground hover:border-primary hover:text-primary disabled:opacity-50"
+        >
+          {isEditing ? '닫기' : '수정'}
+        </button>
+        <button
           onClick={handleDelete}
           disabled={isDeleting}
-          className="ml-auto border border-primary/50 px-2.5 py-1 font-mono text-[11px] text-primary hover:bg-primary/10 disabled:opacity-50"
+          className="border border-primary/50 px-2.5 py-1 font-mono text-[11px] text-primary hover:bg-primary/10 disabled:opacity-50"
         >
           {isDeleting ? '삭제 중...' : '삭제'}
         </button>
       </div>
 
-      <DmMatchDetailCard match={matchPost} />
+      {isEditing ? (
+        <div className="px-4 py-5">
+          <MatchFormSection
+            initialData={initialData}
+            onSubmit={handleUpdate}
+            onCancel={() => setIsEditing(false)}
+          />
+        </div>
+      ) : (
+        <DmMatchDetailCard match={matchPost} />
+      )}
 
       <div className="mt-4 border-t border-border">
         <div className="flex items-center justify-between px-5 py-3.5">
@@ -87,6 +125,13 @@ const MatchAuthorView: FunctionComponent<MatchAuthorViewProps> = ({
       </div>
     </div>
   )
+}
+
+function toDatetimeLocalValue(value: string) {
+  const date = new Date(value)
+  if (Number.isNaN(date.getTime())) return value
+  const offset = date.getTimezoneOffset() * 60000
+  return new Date(date.getTime() - offset).toISOString().slice(0, 16)
 }
 
 export { MatchAuthorView }
