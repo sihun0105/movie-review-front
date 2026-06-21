@@ -1,10 +1,16 @@
+'use client'
+
 import { Mail } from 'lucide-react'
+import { usePathname } from 'next/navigation'
 
 interface DmAppFooterProps {
   className?: string
 }
 
 export function DmAppFooter({ className }: DmAppFooterProps) {
+  const pathname = usePathname()
+  if (pathname === '/chat/public') return null
+
   return (
     <footer
       className={`mt-10 border-t border-border bg-background-deep px-6 py-8 text-muted-foreground ${className ?? ''}`}
