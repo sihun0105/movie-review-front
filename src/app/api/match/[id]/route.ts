@@ -1,5 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { getTokenFromCookie } from '@/lib/utils/getToken'
+import {
+  getAuthTokenFromRequest,
+} from '@/lib/utils/getToken'
 import { MatchPostRepository } from '@/modules/match/match-post-repository'
 
 // GET /api/match/[id] - match 상세 조회
@@ -9,7 +11,7 @@ export async function GET(
 ) {
   try {
     const { id } = params
-    const token = getTokenFromCookie()
+    const token = await getAuthTokenFromRequest(request)
     const matchRepository = new MatchPostRepository(token)
 
     const data = await matchRepository.getMatchPost(id)
@@ -29,7 +31,7 @@ export async function PUT(
   { params }: { params: { id: string } },
 ) {
   try {
-    const token = getTokenFromCookie()
+    const token = await getAuthTokenFromRequest(request)
     if (!token) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
@@ -55,7 +57,7 @@ export async function DELETE(
   { params }: { params: { id: string } },
 ) {
   try {
-    const token = getTokenFromCookie()
+    const token = await getAuthTokenFromRequest(request)
     if (!token) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }

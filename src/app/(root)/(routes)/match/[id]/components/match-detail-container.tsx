@@ -1,6 +1,7 @@
 'use client'
 
 import { useAppToast } from '@/hooks/use-app-toast'
+import { CreateMatchPostRequest } from '@/lib/type'
 import { useSession } from 'next-auth/react'
 import { useParams, useRouter } from 'next/navigation'
 import {
@@ -8,6 +9,7 @@ import {
   useDeleteMatch,
   useMatchApplications,
   useMatchPost,
+  useUpdateMatch,
 } from '../../hooks'
 import { MatchAuthorView } from './match-author-view'
 import { MatchViewerView } from './match-viewer-view'
@@ -19,10 +21,18 @@ const MatchDetailContainer = () => {
   const { showToast } = useAppToast()
   const matchId = params?.id as string
 
-  const { matchPost, isLoading: isMatchLoading, error: matchError } = useMatchPost(matchId)
+  const {
+    matchPost,
+    isLoading: isMatchLoading,
+    error: matchError,
+    mutate: mutateMatch,
+  } = useMatchPost(matchId)
   const { applyToMatch } = useApplyMatch(matchId)
   const { deleteMatch, isDeleting } = useDeleteMatch(matchId)
-  const isAuthor = matchPost?.userno === session?.user?.id
+  const { updateMatch, isUpdating } = useUpdateMatch(matchId)
+  const sessionUserId = session?.user?.id ? Number(session.user.id) : null
+  const isAuthor =
+    !!matchPost && !!sessionUserId && matchPost.userno === sessionUserId
   const { applications, mutate: mutateApplications } = useMatchApplications(
     isAuthor ? matchId : '',
   )
@@ -71,6 +81,17 @@ const MatchDetailContainer = () => {
     }
   }
 
+  const handleUpdate = async (data: CreateMatchPostRequest) => {
+    try {
+      await updateMatch(data)
+      await mutateMatch()
+      showToast('매치가 수정되었습니다.')
+    } catch {
+      showToast('매치 수정에 실패했습니다.')
+      throw new Error('Failed to update match')
+    }
+  }
+
   if (status === 'loading' || isMatchLoading)
     return (
       <div className="flex min-h-page items-center justify-center bg-background font-mono text-[12px] text-muted-foreground">
@@ -98,6 +119,8 @@ const MatchDetailContainer = () => {
         matchPost={matchPost}
         applications={applications}
         isDeleting={isDeleting}
+        isUpdating={isUpdating}
+        onUpdate={handleUpdate}
         onDelete={handleDelete}
         onApplicationStatusChange={handleApplicationStatus}
         mutateApplications={mutateApplications}
