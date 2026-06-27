@@ -12,7 +12,8 @@ import { PublicChatAvatar } from './public-chat-avatar'
 interface PublicChatProfileMenuProps {
   image?: string
   nickName: string
-  disabled?: boolean
+  canOpenDirectChat: boolean
+  canViewProfile: boolean
   onDirectChat: () => void
   onProfileView: () => void
 }
@@ -20,7 +21,8 @@ interface PublicChatProfileMenuProps {
 export function PublicChatProfileMenu({
   image,
   nickName,
-  disabled,
+  canOpenDirectChat,
+  canViewProfile,
   onDirectChat,
   onProfileView,
 }: PublicChatProfileMenuProps) {
@@ -42,7 +44,6 @@ export function PublicChatProfileMenu({
         <PublicChatAvatar
           image={image}
           nickName={nickName}
-          disabled={disabled}
         />
       </PopoverTrigger>
       <PopoverContent
@@ -57,7 +58,8 @@ export function PublicChatProfileMenu({
         <button
           type="button"
           onClick={handleDirectChat}
-          className="flex w-full items-center gap-2 rounded px-2 py-2 text-left text-[13px] hover:bg-secondary"
+          disabled={!canOpenDirectChat}
+          className="flex w-full items-center gap-2 rounded px-2 py-2 text-left text-[13px] hover:bg-secondary disabled:cursor-not-allowed disabled:opacity-45"
         >
           <MessageCircle className="h-4 w-4" />
           1:1 채팅하기
@@ -65,7 +67,8 @@ export function PublicChatProfileMenu({
         <button
           type="button"
           onClick={handleProfileView}
-          className="flex w-full items-center gap-2 rounded px-2 py-2 text-left text-[13px] hover:bg-secondary"
+          disabled={!canViewProfile}
+          className="flex w-full items-center gap-2 rounded px-2 py-2 text-left text-[13px] hover:bg-secondary disabled:cursor-not-allowed disabled:opacity-45"
         >
           <UserRound className="h-4 w-4" />
           프로필 보기
