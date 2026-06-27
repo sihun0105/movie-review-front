@@ -6,7 +6,7 @@ interface PublicChatAvatarProps {
   image?: string
   nickName: string
   disabled?: boolean
-  onClick: () => void
+  onClick?: () => void
 }
 
 export function PublicChatAvatar({
@@ -20,7 +20,7 @@ export function PublicChatAvatar({
   return (
     <button
       type="button"
-      aria-label={`${nickName}에게 1:1 채팅 보내기`}
+      aria-label={`${nickName} 프로필 메뉴 열기`}
       disabled={disabled}
       onClick={onClick}
       className="mt-1 flex h-9 w-9 shrink-0 items-center justify-center overflow-hidden rounded-full border border-border bg-background text-[13px] font-semibold text-muted-foreground disabled:cursor-default disabled:opacity-70"

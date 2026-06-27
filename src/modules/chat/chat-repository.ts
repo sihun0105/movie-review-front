@@ -31,7 +31,8 @@ export class ChatRepository {
   ): Promise<ChatRoomEntity> {
     try {
       const result = await this.datasource.createChatRoom(request)
-      const convertedRoom = convertApiResponseToChatRoomEntity(result)
+      const raw = (result as any)?.chatRoom ?? result
+      const convertedRoom = convertApiResponseToChatRoomEntity(raw)
       assertChatRoomEntity(convertedRoom)
       return convertedRoom
     } catch (error) {
@@ -151,7 +152,7 @@ export class ChatRepository {
         ? `${targetUserName}과의 채팅`
         : '1:1 채팅'
       return await this.createChatRoom({
-        memberIds: [currentUserId, targetUserId],
+        memberIds: [targetUserId],
         roomName,
         type: 'direct',
       })
