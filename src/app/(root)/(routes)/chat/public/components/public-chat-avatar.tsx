@@ -1,26 +1,37 @@
 'use client'
 
+import { forwardRef } from 'react'
+import type { ButtonHTMLAttributes } from 'react'
 import { UserRound } from 'lucide-react'
+import { cn } from '@/lib/utils'
 
-interface PublicChatAvatarProps {
+interface PublicChatAvatarProps
+  extends ButtonHTMLAttributes<HTMLButtonElement> {
   image?: string
   nickName: string
-  onClick?: () => void
 }
 
-export function PublicChatAvatar({
+export const PublicChatAvatar = forwardRef<
+  HTMLButtonElement,
+  PublicChatAvatarProps
+>(function PublicChatAvatar({
   image,
   nickName,
-  onClick,
-}: PublicChatAvatarProps) {
+  className,
+  ...props
+}, ref) {
   const initial = nickName.trim().charAt(0).toUpperCase()
 
   return (
     <button
+      ref={ref}
       type="button"
       aria-label={`${nickName} 프로필 메뉴 열기`}
-      onClick={onClick}
-      className="mt-1 flex h-9 w-9 shrink-0 items-center justify-center overflow-hidden rounded-full border border-border bg-background text-[13px] font-semibold text-muted-foreground"
+      className={cn(
+        'mt-1 flex h-9 w-9 shrink-0 items-center justify-center overflow-hidden rounded-full border border-border bg-background text-[13px] font-semibold text-muted-foreground',
+        className
+      )}
+      {...props}
     >
       {image ? (
         // eslint-disable-next-line @next/next/no-img-element
@@ -32,4 +43,4 @@ export function PublicChatAvatar({
       )}
     </button>
   )
-}
+})
