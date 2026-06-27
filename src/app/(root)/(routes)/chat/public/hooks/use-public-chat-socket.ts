@@ -5,7 +5,9 @@ import { io, Socket } from 'socket.io-client'
 
 export interface PublicChatMessage {
   id: string
+  userId?: number
   nickName: string
+  image?: string
   message: string
   createdAt: string
   mine?: boolean
@@ -14,11 +16,19 @@ export interface PublicChatMessage {
 interface ServerPublicChatMessage {
   id?: string
   clientId?: string
+  userId?: number
   nickName?: string
   nickname?: string
+  image?: string
   message?: string
   content?: string
   createdAt?: string
+}
+
+interface PublicChatUser {
+  nickName: string
+  userId?: number
+  image?: string
 }
 
 const PUBLIC_CHAT_CLIENT_ID_KEY = 'bollae-public-chat-client-id'
@@ -51,18 +61,21 @@ function normalizeMessage(
 
   return {
     id: data.id || data.clientId || createMessageId(),
+    userId: data.userId,
     nickName: data.nickName || data.nickname || '익명',
+    image: data.image,
     message,
     createdAt: data.createdAt || new Date().toISOString(),
     mine,
   }
 }
 
-export function usePublicChatSocket(nickName: string) {
+export function usePublicChatSocket(user: PublicChatUser) {
   const socketRef = useRef<Socket | null>(null)
   const clientIdRef = useRef<string | null>(null)
   const [messages, setMessages] = useState<PublicChatMessage[]>([])
   const [isConnected, setIsConnected] = useState(false)
+  const [onlineCount, setOnlineCount] = useState(0)
 
   useEffect(() => {
     const clientId = getPublicChatClientId()
@@ -77,7 +90,13 @@ export function usePublicChatSocket(nickName: string) {
 
     socketRef.current = socket
     socket.on('connect', () => setIsConnected(true))
-    socket.on('disconnect', () => setIsConnected(false))
+    socket.on('disconnect', () => {
+      setIsConnected(false)
+      setOnlineCount(0)
+    })
+    socket.on('onlineCount', (count: number) => {
+      setOnlineCount(Number.isFinite(Number(count)) ? Number(count) : 0)
+    })
     socket.on('history', (history: ServerPublicChatMessage[]) => {
       const nextMessages = history
         .map((message) =>
@@ -102,6 +121,7 @@ export function usePublicChatSocket(nickName: string) {
       socket.disconnect()
       socketRef.current = null
       setIsConnected(false)
+      setOnlineCount(0)
     }
   }, [])
 
@@ -112,13 +132,15 @@ export function usePublicChatSocket(nickName: string) {
 
       socketRef.current.emit('message', {
         clientId: clientIdRef.current || getPublicChatClientId(),
-        nickName: nickName.trim() || '익명',
+        userId: user.userId,
+        nickName: user.nickName.trim() || '익명',
+        image: user.image,
         message: content,
         createdAt: new Date().toISOString(),
       })
     },
-    [nickName],
+    [user.image, user.nickName, user.userId],
   )
 
-  return { isConnected, messages, sendMessage }
+  return { isConnected, messages, onlineCount, sendMessage }
 }
