@@ -3,6 +3,10 @@
 import { FormEvent, useEffect, useMemo, useRef, useState } from 'react'
 import { Send } from 'lucide-react'
 import { useSession } from 'next-auth/react'
+import { useRouter } from 'next/navigation'
+import { useAppToast } from '@/hooks/use-app-toast'
+import { PublicChatAvatar } from './public-chat-avatar'
+import type { PublicChatMessage } from '../hooks/use-public-chat-socket'
 import { usePublicChatSocket } from '../hooks/use-public-chat-socket'
 
 function createGuestName() {
@@ -25,6 +29,8 @@ function formatDateTime(value: string) {
 
 export function PublicChatRoom() {
   const { data: session } = useSession()
+  const router = useRouter()
+  const { showToast } = useAppToast()
   const [input, setInput] = useState('')
   const [guestName, setGuestName] = useState('')
   const bottomRef = useRef<HTMLDivElement>(null)
@@ -40,7 +46,13 @@ export function PublicChatRoom() {
     () => session?.user?.nickname || session?.user?.name || guestName || '익명',
     [guestName, session?.user?.name, session?.user?.nickname],
   )
-  const { isConnected, messages, sendMessage } = usePublicChatSocket(nickName)
+  const currentUserId = session?.user?.id ? Number(session.user.id) : undefined
+  const { isConnected, messages, onlineCount, sendMessage } =
+    usePublicChatSocket({
+      nickName,
+      userId: currentUserId,
+      image: session?.user?.image,
+    })
 
   const scrollToBottom = () => {
     bottomRef.current?.scrollIntoView({ block: 'end' })
@@ -54,6 +66,32 @@ export function PublicChatRoom() {
     setInput('')
   }
 
+  const startDirectChat = async (message: PublicChatMessage) => {
+    if (!currentUserId) {
+      router.push('/login?callbackUrl=/chat/public')
+      return
+    }
+    if (!message.userId || message.userId === currentUserId) return
+
+    try {
+      const response = await fetch('/api/chat/direct', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          currentUserId,
+          targetUserId: message.userId,
+          targetUserName: message.nickName,
+        }),
+      })
+      const data = await response.json()
+      const chatRoomId = data?.chatRoom?.chatRoomId
+      if (!response.ok || !chatRoomId) throw new Error()
+      router.push(`/chat/${chatRoomId}`)
+    } catch {
+      showToast('1:1 채팅방을 열지 못했어요.')
+    }
+  }
+
   return (
     <div className="flex h-[calc(100dvh-8rem-env(safe-area-inset-bottom))] min-h-[22rem] w-full flex-col overflow-hidden bg-background text-foreground lg:min-h-[calc(100vh-9rem)]">
       <div className="border-b border-border px-4 py-3">
@@ -65,7 +103,7 @@ export function PublicChatRoom() {
             </p>
           </div>
           <span className="shrink-0 rounded-full border border-border px-3 py-1 text-[11px] text-muted-foreground">
-            {isConnected ? '접속 중' : '연결 중'}
+            {isConnected ? `${onlineCount}명 접속 중` : '연결 중'}
           </span>
         </div>
       </div>
@@ -80,8 +118,16 @@ export function PublicChatRoom() {
         {messages.map((message) => (
           <div
             key={message.id}
-            className={`flex ${message.mine ? 'justify-end' : 'justify-start'}`}
+            className={`flex items-start gap-2 ${message.mine ? 'justify-end' : 'justify-start'}`}
           >
+            {!message.mine && (
+              <PublicChatAvatar
+                image={message.image}
+                nickName={message.nickName}
+                disabled={!message.userId}
+                onClick={() => startDirectChat(message)}
+              />
+            )}
             <div
               className={`max-w-[82%] rounded-md border px-3 py-2 ${
                 message.mine
