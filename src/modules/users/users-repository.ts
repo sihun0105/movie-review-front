@@ -64,6 +64,11 @@ export class UsersRepository {
     return await this.datasource.updateImage({ file })
   }
 
+  async getUser(id: number) {
+    const result = await this.datasource.getUser(id)
+    return this.convertToUserEntity(result)
+  }
+
   async deleteAccount() {
     return await this.datasource.deleteAccount()
   }

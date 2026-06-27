@@ -126,6 +126,16 @@ export class UsersDatasource {
     return res.json()
   }
 
+  async getUser(id: number) {
+    const res = await fetch(`${serverApi}/user/${id}`, {
+      cache: 'no-cache',
+    })
+    if (!res.ok) {
+      throw new Error(`[${res.status}] ${res.statusText}`)
+    }
+    return res.json()
+  }
+
   async deleteAccount() {
     const res = await fetch(`${serverApi}/user`, {
       method: 'DELETE',
