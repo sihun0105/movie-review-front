@@ -5,7 +5,7 @@ import { Send } from 'lucide-react'
 import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
 import { useAppToast } from '@/hooks/use-app-toast'
-import { PublicChatAvatar } from './public-chat-avatar'
+import { PublicChatProfileMenu } from './public-chat-profile-menu'
 import type { PublicChatMessage } from '../hooks/use-public-chat-socket'
 import { usePublicChatSocket } from '../hooks/use-public-chat-socket'
 
@@ -92,6 +92,10 @@ export function PublicChatRoom() {
     }
   }
 
+  const showProfile = (message: PublicChatMessage) => {
+    showToast(`${message.nickName} 프로필`)
+  }
+
   return (
     <div className="flex h-[calc(100dvh-8rem-env(safe-area-inset-bottom))] min-h-[22rem] w-full flex-col overflow-hidden bg-background text-foreground lg:min-h-[calc(100vh-9rem)]">
       <div className="border-b border-border px-4 py-3">
@@ -121,11 +125,12 @@ export function PublicChatRoom() {
             className={`flex items-start gap-2 ${message.mine ? 'justify-end' : 'justify-start'}`}
           >
             {!message.mine && (
-              <PublicChatAvatar
+              <PublicChatProfileMenu
                 image={message.image}
                 nickName={message.nickName}
                 disabled={!message.userId}
-                onClick={() => startDirectChat(message)}
+                onDirectChat={() => startDirectChat(message)}
+                onProfileView={() => showProfile(message)}
               />
             )}
             <div
