@@ -3,10 +3,13 @@
 import { useState } from 'react'
 import { MessageCircle, UserRound } from 'lucide-react'
 import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from '@/components/ui/popover'
+  ContextMenu,
+  ContextMenuContent,
+  ContextMenuItem,
+  ContextMenuLabel,
+  ContextMenuSeparator,
+  ContextMenuTrigger,
+} from '@/components/ui/context-menu'
 import { PublicChatAvatar } from './public-chat-avatar'
 
 interface PublicChatProfileMenuProps {
@@ -39,41 +42,38 @@ export function PublicChatProfileMenu({
   }
 
   return (
-    <Popover open={open} onOpenChange={setOpen}>
-      <PopoverTrigger asChild>
+    <ContextMenu open={open} onOpenChange={setOpen}>
+      <ContextMenuTrigger asChild>
         <PublicChatAvatar
           image={image}
           nickName={nickName}
         />
-      </PopoverTrigger>
-      <PopoverContent
+      </ContextMenuTrigger>
+      <ContextMenuContent
         side="right"
         align="start"
-        className="w-44 p-2"
+        className="w-44"
         sideOffset={8}
       >
-        <div className="mb-1 truncate px-2 py-1 text-[12px] font-semibold">
+        <ContextMenuLabel className="truncate text-[12px]">
           {nickName}
-        </div>
-        <button
-          type="button"
-          onClick={handleDirectChat}
+        </ContextMenuLabel>
+        <ContextMenuSeparator />
+        <ContextMenuItem
+          onSelect={handleDirectChat}
           disabled={!canOpenDirectChat}
-          className="flex w-full items-center gap-2 rounded px-2 py-2 text-left text-[13px] hover:bg-secondary disabled:cursor-not-allowed disabled:opacity-45"
         >
-          <MessageCircle className="h-4 w-4" />
+          <MessageCircle className="mr-2 h-4 w-4" />
           1:1 채팅하기
-        </button>
-        <button
-          type="button"
-          onClick={handleProfileView}
+        </ContextMenuItem>
+        <ContextMenuItem
+          onSelect={handleProfileView}
           disabled={!canViewProfile}
-          className="flex w-full items-center gap-2 rounded px-2 py-2 text-left text-[13px] hover:bg-secondary disabled:cursor-not-allowed disabled:opacity-45"
         >
-          <UserRound className="h-4 w-4" />
+          <UserRound className="mr-2 h-4 w-4" />
           프로필 보기
-        </button>
-      </PopoverContent>
-    </Popover>
+        </ContextMenuItem>
+      </ContextMenuContent>
+    </ContextMenu>
   )
 }
