@@ -88,6 +88,9 @@ const AppBackEndApiEndpoint = {
   updateProfileImage: () => {
     return `${_base}/user/image`
   },
+  getUserByNickname: (nickname: string) => {
+    return `${_base}/user/nickname/${encodeURIComponent(nickname)}`
+  },
   updateScore: (id: number) => {
     return `${_base}/movie/score/${id}`
   },

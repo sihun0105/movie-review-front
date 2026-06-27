@@ -3,7 +3,7 @@ import { notFound } from 'next/navigation'
 import { UsersRepository } from '@/modules/users/users-repository'
 
 interface ProfilePageProps {
-  params: { id: string }
+  params: { nickname: string }
 }
 
 interface PublicProfile {
@@ -12,12 +12,12 @@ interface PublicProfile {
   image?: string
 }
 
-async function getProfile(id: string): Promise<PublicProfile | null> {
-  const userId = Number(id)
-  if (!Number.isInteger(userId) || userId <= 0) return null
+async function getProfile(nickname: string): Promise<PublicProfile | null> {
+  const decodedNickname = decodeURIComponent(nickname).trim()
+  if (!decodedNickname) return null
 
   try {
-    const user = await new UsersRepository().getUser(userId)
+    const user = await new UsersRepository().getUserByNickname(decodedNickname)
     return {
       id: user.id,
       nickname: user.nickname,
@@ -29,7 +29,7 @@ async function getProfile(id: string): Promise<PublicProfile | null> {
 }
 
 export default async function ProfilePage({ params }: ProfilePageProps) {
-  const profile = await getProfile(params.id)
+  const profile = await getProfile(params.nickname)
   if (!profile) notFound()
 
   const initial = profile.nickname.trim().charAt(0).toUpperCase()

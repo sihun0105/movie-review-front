@@ -12,8 +12,15 @@ export async function POST(request: NextRequest) {
 
     const body = await request.json()
     const { currentUserId, targetUserId, targetUserName } = body
+    const currentId = Number(currentUserId)
+    const targetId = Number(targetUserId)
 
-    if (!currentUserId || !targetUserId) {
+    if (
+      !Number.isInteger(currentId) ||
+      !Number.isInteger(targetId) ||
+      currentId <= 0 ||
+      targetId <= 0
+    ) {
       return NextResponse.json(
         { error: 'currentUserId and targetUserId are required' },
         { status: 400 },
@@ -23,8 +30,8 @@ export async function POST(request: NextRequest) {
     const chatRepository = new ChatRepository(token)
 
     const data = await chatRepository.findOrCreateDirectChatRoom(
-      currentUserId,
-      targetUserId,
+      currentId,
+      targetId,
       targetUserName,
     )
     return NextResponse.json({ chatRoom: data })
