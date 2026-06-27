@@ -69,6 +69,11 @@ export class UsersRepository {
     return this.convertToUserEntity(result)
   }
 
+  async getUserByNickname(nickname: string) {
+    const result = await this.datasource.getUserByNickname(nickname)
+    return this.convertToUserEntity(result)
+  }
+
   async deleteAccount() {
     return await this.datasource.deleteAccount()
   }

@@ -67,15 +67,16 @@ export function PublicChatRoom() {
   }
 
   const startDirectChat = async (message: PublicChatMessage) => {
-    if (!message.userId) {
+    const targetUserId = Number(message.userId)
+    if (!Number.isInteger(targetUserId) || targetUserId <= 0) {
       showToast('회원 프로필이 있는 메시지만 1:1 채팅을 열 수 있어요.')
       return
     }
-    if (!currentUserId) {
+    if (!currentUserId || !Number.isInteger(currentUserId)) {
       router.push('/login?callbackUrl=/chat/public')
       return
     }
-    if (message.userId === currentUserId) return
+    if (targetUserId === currentUserId) return
 
     try {
       const response = await fetch('/api/chat/direct', {
@@ -83,7 +84,7 @@ export function PublicChatRoom() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           currentUserId,
-          targetUserId: message.userId,
+          targetUserId,
           targetUserName: message.nickName,
         }),
       })
@@ -97,11 +98,12 @@ export function PublicChatRoom() {
   }
 
   const showProfile = (message: PublicChatMessage) => {
-    if (!message.userId) {
+    const nickname = message.nickName.trim()
+    if (!nickname || nickname === '익명') {
       showToast('회원 프로필이 없는 메시지예요.')
       return
     }
-    router.push(`/profile/${message.userId}`)
+    router.push(`/profile/${encodeURIComponent(nickname)}`)
   }
 
   return (

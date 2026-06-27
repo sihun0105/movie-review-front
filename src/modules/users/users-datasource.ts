@@ -136,6 +136,16 @@ export class UsersDatasource {
     return res.json()
   }
 
+  async getUserByNickname(nickname: string) {
+    const res = await fetch(AppBackEndApiEndpoint.getUserByNickname(nickname), {
+      cache: 'no-cache',
+    })
+    if (!res.ok) {
+      throw new Error(`[${res.status}] ${res.statusText}`)
+    }
+    return res.json()
+  }
+
   async deleteAccount() {
     const res = await fetch(`${serverApi}/user`, {
       method: 'DELETE',
