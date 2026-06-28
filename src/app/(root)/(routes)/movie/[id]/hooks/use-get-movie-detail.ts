@@ -1,4 +1,4 @@
-import { AppClientApiEndpoint } from '@/config/app-client-api-endpoint'
+import { MovieClientApiEndpoint } from '@/config/movie-api-endpoint'
 import useSWR from 'swr'
 
 const fetcher = async (url: string) => {
@@ -16,7 +16,7 @@ const fetcher = async (url: string) => {
 }
 
 const getKey = (movieCd: string) => {
-  return AppClientApiEndpoint.getMovieDetail(movieCd)
+  return MovieClientApiEndpoint.getMovieDetail(movieCd)
 }
 
 export const useGetMovieDetail = (movieCd: string) => {

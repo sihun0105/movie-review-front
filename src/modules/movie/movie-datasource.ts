@@ -1,4 +1,4 @@
-import { AppBackEndApiEndpoint } from '@/config/app-backend-api-endpoint'
+import { MovieBackEndApiEndpoint } from '@/config/movie-api-endpoint'
 
 export class MovieDatasource {
   private token?: string
@@ -6,7 +6,7 @@ export class MovieDatasource {
     this.token = token
   }
   async getMovie() {
-    const res = await fetch(AppBackEndApiEndpoint.getMovie(), {
+    const res = await fetch(MovieBackEndApiEndpoint.getMovie(), {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -21,7 +21,7 @@ export class MovieDatasource {
   }
 
   async getMovieDetail(movieCd: string) {
-    const res = await fetch(AppBackEndApiEndpoint.getMovieDetail(movieCd), {
+    const res = await fetch(MovieBackEndApiEndpoint.getMovieDetail(movieCd), {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -34,8 +34,30 @@ export class MovieDatasource {
     }
     return res.json()
   }
+
+  async getMoviesByDirector(
+    name: string,
+    excludeMovieCd: number,
+    limit: number,
+  ) {
+    const res = await fetch(
+      MovieBackEndApiEndpoint.getMoviesByDirector(name, excludeMovieCd, limit),
+      {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `${this.token}`,
+        },
+        cache: 'no-cache',
+      },
+    )
+    if (res.status !== 200) {
+      throw new Error('감독 필모그래피를 받아 올 수 없습니다.')
+    }
+    return res.json()
+  }
   async updateScore(id: number, score: number) {
-    const res = await fetch(AppBackEndApiEndpoint.updateScore(id), {
+    const res = await fetch(MovieBackEndApiEndpoint.updateScore(id), {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -53,7 +75,7 @@ export class MovieDatasource {
   }
 
   async getScore(id: string) {
-    const res = await fetch(AppBackEndApiEndpoint.getScore(id), {
+    const res = await fetch(MovieBackEndApiEndpoint.getScore(id), {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -67,7 +89,7 @@ export class MovieDatasource {
     return res.json()
   }
   async getAverageScore(id: string) {
-    const res = await fetch(AppBackEndApiEndpoint.getAverageScore(id), {
+    const res = await fetch(MovieBackEndApiEndpoint.getAverageScore(id), {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -82,7 +104,7 @@ export class MovieDatasource {
   }
 
   async getMovieTheaterList() {
-    const res = await fetch(AppBackEndApiEndpoint.getMovieTheaterList(), {
+    const res = await fetch(MovieBackEndApiEndpoint.getMovieTheaterList(), {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -97,7 +119,7 @@ export class MovieDatasource {
   }
 
   async getMovieTheaterDetail(id: number) {
-    const res = await fetch(AppBackEndApiEndpoint.getMovieTheaterDetail(id), {
+    const res = await fetch(MovieBackEndApiEndpoint.getMovieTheaterDetail(id), {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -113,7 +135,7 @@ export class MovieDatasource {
 
   async getMoviesByTheaterId(theaterId: number) {
     const res = await fetch(
-      AppBackEndApiEndpoint.getMoviesByTheaterId(theaterId),
+      MovieBackEndApiEndpoint.getMoviesByTheaterId(theaterId),
       {
         method: 'GET',
         headers: {
@@ -131,7 +153,7 @@ export class MovieDatasource {
 
   async getMovieDetailByTheater(movieCd: string) {
     const res = await fetch(
-      AppBackEndApiEndpoint.getMovieDetailByTheater(movieCd),
+      MovieBackEndApiEndpoint.getMovieDetailByTheater(movieCd),
       {
         method: 'GET',
         headers: {
