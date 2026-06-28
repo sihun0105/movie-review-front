@@ -5,6 +5,7 @@ import { FunctionComponent } from 'react'
 import MovieVodModal from '../components/movie-vod-modal'
 import { useGetMovieDetail } from '../hooks/use-get-movie-detail'
 import { useVodModalContext } from '../hooks/use-vod-modal-context'
+import { DirectorFilmographySection } from './director-filmography-section'
 
 interface DescriptionSectionProps {
   id: string
@@ -36,6 +37,7 @@ const DescriptionSection: FunctionComponent<DescriptionSectionProps> = ({
     <>
       <MovieVodModal />
       <DmMovieDetail movie={data} onVodClick={handleVodClick} />
+      <DirectorFilmographySection movie={data} />
     </>
   )
 }

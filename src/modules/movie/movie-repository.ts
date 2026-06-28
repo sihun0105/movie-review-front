@@ -30,6 +30,21 @@ export class MovieRepository {
     return this.convertUnkownToMovie(data)
   }
 
+  async getMoviesByDirector(
+    name: string,
+    excludeMovieCd: number,
+    limit = 12,
+  ): Promise<Movie[]> {
+    const data = await this.datasource.getMoviesByDirector(
+      name,
+      excludeMovieCd,
+      limit,
+    )
+    return data.MovieData?.map((item: any) => {
+      return this.convertUnkownToMovie(item)
+    })
+  }
+
   private convertUnkownToMovie(unknown: any): Movie {
     const result = {
       id: unknown.movieCd,
