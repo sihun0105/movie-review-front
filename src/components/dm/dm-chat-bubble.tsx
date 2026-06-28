@@ -7,6 +7,7 @@ interface DmChatBubbleProps {
   createdAt?: string | Date
   showAvatar?: boolean
   avatarInitial?: string
+  avatarImage?: string
 }
 
 function formatTime(input?: string | Date): string {
@@ -27,6 +28,7 @@ export function DmChatBubble({
   createdAt,
   showAvatar = true,
   avatarInitial,
+  avatarImage,
 }: DmChatBubbleProps) {
   const time = formatTime(createdAt)
   return (
@@ -44,7 +46,16 @@ export function DmChatBubble({
             !showAvatar && 'opacity-0',
           )}
         >
-          {avatarInitial ?? senderName?.charAt(0).toUpperCase() ?? '?'}
+          {avatarImage && showAvatar ? (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img
+              src={avatarImage}
+              alt=""
+              className="h-full w-full object-cover"
+            />
+          ) : (
+            avatarInitial ?? senderName?.charAt(0).toUpperCase() ?? '?'
+          )}
         </span>
       )}
       <div className="flex max-w-[72%] flex-col gap-0.5">

@@ -27,7 +27,9 @@ export default function ChatRoomPage({ params: { chatRoomId } }: PageProps) {
     fetcher,
   )
   const { data: messageData, isLoading: msgLoading, mutate } = useSWR(
-    myUserId ? `/api/chat/rooms/${chatRoomId}/messages?userId=${myUserId}&pageSize=200` : null,
+    myUserId
+      ? `/api/chat/rooms/${chatRoomId}/messages?userId=${myUserId}&pageSize=200`
+      : null,
     fetcher,
   )
 
@@ -42,7 +44,9 @@ export default function ChatRoomPage({ params: { chatRoomId } }: PageProps) {
     }),
   )
   const messages = [...serverMessages, ...localMessages]
-  const targetUserId = room?.memberIds.find((id: number) => id !== myUserId) ?? null
+  const targetProfile = room?.memberProfiles?.find(
+    (profile: { userId: number }) => profile.userId !== myUserId,
+  )
 
   const { sendMessage, isConnected } = useChatSocket({
     namespace: 'ws-home',
@@ -91,7 +95,8 @@ export default function ChatRoomPage({ params: { chatRoomId } }: PageProps) {
     )
   }
 
-  const targetName = targetUserId ? `상대방 #${targetUserId}` : room.name
+  const targetName = targetProfile?.nickname || room.name
+  const targetImage = targetProfile?.image || ''
   const initial = targetName.charAt(0).toUpperCase()
 
   return (
@@ -102,16 +107,39 @@ export default function ChatRoomPage({ params: { chatRoomId } }: PageProps) {
           onClick={() => router.push('/chat')}
           className="flex h-[34px] w-[34px] items-center justify-center rounded-full bg-white/[0.06] text-foreground"
         >
-          <svg width="8" height="14" viewBox="0 0 8 14">
-            <path d="M7 1L1 7l6 6" stroke="currentColor" strokeWidth="1.8" fill="none" strokeLinecap="round" strokeLinejoin="round"/>
+          <svg width="8" height="14" viewBox="0 0 8 14" aria-hidden>
+            <path
+              d="M7 1L1 7l6 6"
+              stroke="currentColor"
+              strokeWidth="1.8"
+              fill="none"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
           </svg>
         </button>
-        <span aria-hidden className="flex h-9 w-9 items-center justify-center rounded-full border border-border bg-secondary text-[14px] font-bold text-foreground">
-          {initial}
+        <span
+          aria-hidden
+          className="flex h-9 w-9 items-center justify-center overflow-hidden rounded-full border border-border bg-secondary text-[14px] font-bold text-foreground"
+        >
+          {targetImage ? (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img
+              src={targetImage}
+              alt=""
+              className="h-full w-full object-cover"
+            />
+          ) : (
+            initial
+          )}
         </span>
         <div className="min-w-0 flex-1">
           <div className="text-[14px] font-semibold text-foreground">{targetName}</div>
-          <div className={`text-[10px] ${isConnected ? 'text-[#6fc96f]' : 'text-muted-foreground'}`}>
+          <div
+            className={`text-[10px] ${
+              isConnected ? 'text-[#6fc96f]' : 'text-muted-foreground'
+            }`}
+          >
             ● {isConnected ? 'online' : '연결 중...'}
           </div>
         </div>
@@ -136,6 +164,7 @@ export default function ChatRoomPage({ params: { chatRoomId } }: PageProps) {
                 createdAt={message.createdAt}
                 showAvatar={showAvatar}
                 avatarInitial={initial}
+                avatarImage={targetImage}
               />
             )
           })
