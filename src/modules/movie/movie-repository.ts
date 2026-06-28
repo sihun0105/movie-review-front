@@ -40,7 +40,8 @@ export class MovieRepository {
       excludeMovieCd,
       limit,
     )
-    return data.MovieData?.map((item: any) => {
+    const movies = Array.isArray(data.MovieData) ? data.MovieData : []
+    return movies.map((item: any) => {
       return this.convertUnkownToMovie(item)
     })
   }

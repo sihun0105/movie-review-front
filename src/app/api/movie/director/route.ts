@@ -20,7 +20,7 @@ export async function GET(request: NextRequest) {
       Number.isFinite(limit) ? limit : 12,
     )
 
-    return NextResponse.json({ movies })
+    return NextResponse.json({ movies: movies ?? [] })
   } catch (error) {
     console.error('Director filmography API error:', error)
     return NextResponse.json(
