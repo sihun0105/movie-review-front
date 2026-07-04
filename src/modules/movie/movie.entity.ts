@@ -6,6 +6,7 @@ export interface Movie {
   updatedAt: Date
   poster: string
   rank: number
+  isRanked: boolean
   rankInten: number
   plot: string
   rankOldAndNew: string
@@ -37,6 +38,8 @@ export function isMovie(arg: any): arg is Movie {
     typeof arg.audience === 'number' &&
     typeof arg.title === 'string' &&
     typeof arg.poster === 'string' &&
+    typeof arg.rank === 'number' &&
+    typeof arg.isRanked === 'boolean' &&
     arg.createdAt instanceof Date &&
     arg.updatedAt instanceof Date &&
     typeof arg.genre === 'string' &&

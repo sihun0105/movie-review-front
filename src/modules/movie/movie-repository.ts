@@ -47,6 +47,7 @@ export class MovieRepository {
   }
 
   private convertUnkownToMovie(unknown: any): Movie {
+    const rank = Number(unknown.rank) || 0
     const result = {
       id: unknown.movieCd,
       audience: unknown.audience,
@@ -54,7 +55,9 @@ export class MovieRepository {
       createdAt: new Date(unknown.createdAt),
       updatedAt: new Date(unknown.updatedAt),
       poster: unknown.poster,
-      rank: Number(unknown.rank) || 0,
+      rank,
+      isRanked:
+        typeof unknown.isRanked === 'boolean' ? unknown.isRanked : rank > 0,
       rankInten: unknown.rankInten,
       plot: unknown.plot,
       rankOldAndNew: unknown.rankOldAndNew,

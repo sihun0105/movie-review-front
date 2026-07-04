@@ -9,7 +9,7 @@ import { SectionHead } from './section-head'
 import { Stars } from './stars'
 
 interface DmMovieDetailProps {
-  movie: Movie & { rank?: number }
+  movie: Movie
   averageScore?: number | null
   scoreCount?: number | null
   onVodClick?: () => void
@@ -26,6 +26,7 @@ export function DmMovieDetail({
   const rating = averageScore ?? movie.averageScore ?? 0
   const reviews = scoreCount ?? movie.scoreCount ?? 0
   const matchHref = `/match?movieTitle=${encodeURIComponent(movie.title)}`
+  const shouldShowRank = movie.isRanked && movie.rank > 0
   const genres =
     movie.genre
       ?.split(/[,/·]/)
@@ -58,7 +59,7 @@ export function DmMovieDetail({
             />
           </div>
           <div className="pb-1">
-            {movie.rank && (
+            {shouldShowRank && (
               <span className="inline-flex items-center rounded-full border border-border px-2 py-0.5 font-mono text-[10px] text-muted-foreground">
                 #{movie.rank} 박스오피스
               </span>
