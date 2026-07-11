@@ -4,6 +4,7 @@ import { Movie } from '@/modules/movie/movie.entity'
 import Link from 'next/link'
 import { Poster } from './poster'
 import { paletteForMovie } from './poster-palette'
+import { PosterPreviewDialog } from './poster-preview-dialog'
 import { RatingInput } from './rating-input'
 import { SectionHead } from './section-head'
 import { Stars } from './stars'
@@ -27,6 +28,7 @@ export function DmMovieDetail({
   const reviews = scoreCount ?? movie.scoreCount ?? 0
   const matchHref = `/match?movieTitle=${encodeURIComponent(movie.title)}`
   const shouldShowRank = movie.isRanked && movie.rank > 0
+  const director = movie.director?.trim()
   const genres =
     movie.genre
       ?.split(/[,/·]/)
@@ -52,11 +54,16 @@ export function DmMovieDetail({
       <div className="relative -mt-[70px] px-4">
         <div className="flex items-end gap-3.5">
           <div className="w-[106px] shrink-0">
-            <Poster
+            <PosterPreviewDialog
               title={movie.title}
-              palette={palette}
               imageUrl={movie.poster}
-            />
+            >
+              <Poster
+                title={movie.title}
+                palette={palette}
+                imageUrl={movie.poster}
+              />
+            </PosterPreviewDialog>
           </div>
           <div className="pb-1">
             {shouldShowRank && (
@@ -70,6 +77,12 @@ export function DmMovieDetail({
             <div className="mt-1 font-mono text-[11px] text-muted-foreground">
               {metadata}
             </div>
+            {director && (
+              <div className="mt-1.5 text-[12px] text-muted-foreground">
+                <span className="mr-1.5 font-medium text-foreground">감독</span>
+                {director}
+              </div>
+            )}
           </div>
         </div>
 

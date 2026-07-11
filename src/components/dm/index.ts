@@ -1,6 +1,7 @@
 export * from './pill'
 export * from './stars'
 export * from './poster'
+export * from './poster-preview-dialog'
 export * from './poster-palette'
 export * from './app-header'
 export * from './bottom-nav'
