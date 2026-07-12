@@ -226,6 +226,9 @@ const AppClientApiEndpoint = {
   updateApplicationStatus: (matchId: string, applicationId: string) => {
     return `/api/match/${matchId}/applications/${applicationId}`
   },
+  getAnalyticsSummary: () => {
+    return '/api/analytics/summary'
+  },
 }
 
 export { AppClientApiEndpoint }
