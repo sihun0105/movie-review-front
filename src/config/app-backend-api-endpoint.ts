@@ -238,6 +238,9 @@ const AppBackEndApiEndpoint = {
   markAllNotificationsRead: () => {
     return `${_base}/notifications/read-all`
   },
+  getAnalyticsSummary: () => {
+    return `${_base}/analytics/summary`
+  },
 }
 
 export { AppBackEndApiEndpoint }
