@@ -1,9 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { getTokenFromCookie } from '@/lib/utils/getToken'
+import { getAuthTokenFromRequest } from '@/lib/utils/getToken'
 import { AnalyticsRepository } from '@/modules/analytics'
 
-export async function GET(_request: NextRequest) {
-  const token = getTokenFromCookie()
+export async function GET(request: NextRequest) {
+  const token = await getAuthTokenFromRequest(request)
   if (!token) {
     return NextResponse.json(
       { message: '로그인이 필요합니다.' },
