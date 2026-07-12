@@ -52,16 +52,18 @@ export function DmMovieDetail({
                 imageUrl={movie.poster}
               />
             </PosterPreviewDialog>
-            {shouldShowRank && (
-              <span className="bg-black/85 pointer-events-none absolute left-2 top-2 z-10 px-2 py-1 font-mono text-[9px] font-semibold text-white shadow-sm">
-                박스오피스 {movie.rank}위
-              </span>
-            )}
           </div>
-          <div className="pb-1">
-            <h1 className="text-[24px] font-bold leading-tight tracking-tight text-foreground">
-              {movie.title}
-            </h1>
+          <div className="min-w-0 pb-1">
+            <div className="flex flex-wrap items-center gap-x-2 gap-y-1">
+              <h1 className="text-[24px] font-bold leading-tight tracking-tight text-foreground">
+                {movie.title}
+              </h1>
+              {shouldShowRank && (
+                <span className="whitespace-nowrap rounded-sm bg-foreground px-2 py-1 font-mono text-[10px] font-semibold text-background">
+                  박스오피스 {movie.rank}위
+                </span>
+              )}
+            </div>
             <div className="mt-1 font-mono text-[11px] text-muted-foreground">
               {metadata}
             </div>
