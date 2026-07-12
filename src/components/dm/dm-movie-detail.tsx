@@ -42,9 +42,7 @@ export function DmMovieDetail({
 
   return (
     <div className="pb-5">
-      <div className="h-[140px] w-full border-b border-border bg-muted/40" />
-
-      <div className="relative -mt-[70px] px-4">
+      <div className="px-4 pt-6">
         <div className="flex items-end gap-3.5">
           <div className="relative w-[106px] shrink-0">
             <PosterPreviewDialog title={movie.title} imageUrl={movie.poster}>
