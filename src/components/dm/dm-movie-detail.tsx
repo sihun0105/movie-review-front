@@ -23,7 +23,6 @@ export function DmMovieDetail({
   onVodClick,
 }: DmMovieDetailProps) {
   const palette = paletteForMovie(movie.id, movie.title)
-  const { h, c, lt, lb } = palette
   const rating = averageScore ?? movie.averageScore ?? 0
   const reviews = scoreCount ?? movie.scoreCount ?? 0
   const matchHref = `/match?movieTitle=${encodeURIComponent(movie.title)}`
@@ -43,21 +42,12 @@ export function DmMovieDetail({
 
   return (
     <div className="pb-5">
-      {/* 포스터 배경 그라디언트 */}
-      <div
-        className="h-[140px] w-full"
-        style={{
-          background: `linear-gradient(160deg, oklch(${lt} ${c} ${h}) 0%, oklch(${lb} ${c * 0.6} ${h}) 100%)`,
-        }}
-      />
+      <div className="h-[140px] w-full border-b border-border bg-muted/40" />
 
       <div className="relative -mt-[70px] px-4">
         <div className="flex items-end gap-3.5">
           <div className="relative w-[106px] shrink-0">
-            <PosterPreviewDialog
-              title={movie.title}
-              imageUrl={movie.poster}
-            >
+            <PosterPreviewDialog title={movie.title} imageUrl={movie.poster}>
               <Poster
                 title={movie.title}
                 palette={palette}
@@ -65,7 +55,7 @@ export function DmMovieDetail({
               />
             </PosterPreviewDialog>
             {shouldShowRank && (
-              <span className="pointer-events-none absolute left-2 top-2 z-10 bg-black/85 px-2 py-1 font-mono text-[9px] font-semibold text-white shadow-sm">
+              <span className="bg-black/85 pointer-events-none absolute left-2 top-2 z-10 px-2 py-1 font-mono text-[9px] font-semibold text-white shadow-sm">
                 박스오피스 {movie.rank}위
               </span>
             )}
