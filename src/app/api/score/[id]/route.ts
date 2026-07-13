@@ -1,4 +1,4 @@
-import { getTokenFromCookie } from '@/lib/utils/getToken'
+import { getAuthTokenFromRequest } from '@/lib/utils/getToken'
 import { MovieRepository } from '@/modules/movie/movie-repository'
 import { NextRequest } from 'next/server'
 
@@ -22,7 +22,13 @@ export const POST = async (
   { params }: { params: { id: number } },
 ) => {
   const { id } = params
-  const token = await getTokenFromCookie()
+  const token = await getAuthTokenFromRequest(req)
+  if (!token) {
+    return new Response(JSON.stringify({ message: '로그인이 필요합니다.' }), {
+      status: 401,
+      headers: { 'Content-Type': 'application/json' },
+    })
+  }
   const { score } = await req.json()
   const repository = new MovieRepository(token)
   try {
@@ -64,7 +70,7 @@ export const GET = async (
   { params }: { params: { id: string } },
 ) => {
   const { id } = params
-  const token = await getTokenFromCookie()
+  const token = await getAuthTokenFromRequest(req)
 
   if (!token) {
     return scoreResponse(createEmptyScore(id))
