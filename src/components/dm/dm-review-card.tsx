@@ -1,8 +1,9 @@
 'use client'
 
 import { Reply } from '@/lib/type'
-import { MessageCircle, Pencil, X } from 'lucide-react'
+import { MessageCircle, Pencil, ThumbsDown, ThumbsUp, X } from 'lucide-react'
 import { cn } from '@/lib/utils'
+import type { ReactNode } from 'react'
 import { DmUserAvatar } from './dm-user-avatar'
 
 interface DmReviewCardProps {
@@ -11,6 +12,7 @@ interface DmReviewCardProps {
   onModify?: (_reply: Reply) => void
   onDelete?: (_reply: Reply) => void
   onReply?: (_reply: Reply) => void
+  onReact?: (_reaction: 'like' | 'dislike') => void
   nested?: boolean
 }
 
@@ -34,10 +36,23 @@ export function DmReviewCard({
   onModify,
   onDelete,
   onReply,
+  onReact,
   nested = false,
 }: DmReviewCardProps) {
   if (!reply) return null
   const isOwner = userId !== undefined && +userId === reply.userno
+
+  if (reply.isDeleted) {
+    return (
+      <article
+        className={cn('border-b border-border py-3', nested && 'border-l pl-3')}
+      >
+        <p className="text-[13px] text-muted-foreground">
+          삭제된 댓글입니다.
+        </p>
+      </article>
+    )
+  }
 
   return (
     <article
@@ -54,6 +69,7 @@ export function DmReviewCard({
         </span>
         <span className="ml-auto font-mono text-[11px] text-muted-foreground">
           {formatWhen(reply.updatedAt)}
+          {reply.isEdited && ' · 수정됨'}
         </span>
         {isOwner && (
           <span className="flex gap-2">
@@ -83,6 +99,24 @@ export function DmReviewCard({
       <p className="mt-1.5 break-keep text-[13px] leading-relaxed text-foreground">
         {reply.content}
       </p>
+      {onReact && (
+        <div className="mt-2 flex items-center gap-1">
+          <ReactionButton
+            label="좋아요"
+            active={reply.userReaction === 'like'}
+            count={reply.likeCount ?? 0}
+            onClick={() => onReact('like')}
+            icon={<ThumbsUp className="h-3.5 w-3.5" />}
+          />
+          <ReactionButton
+            label="싫어요"
+            active={reply.userReaction === 'dislike'}
+            count={reply.dislikeCount ?? 0}
+            onClick={() => onReact('dislike')}
+            icon={<ThumbsDown className="h-3.5 w-3.5" />}
+          />
+        </div>
+      )}
       {onReply && !nested && (
         <button
           type="button"
@@ -94,5 +128,36 @@ export function DmReviewCard({
         </button>
       )}
     </article>
+  )
+}
+
+function ReactionButton({
+  label,
+  active,
+  count,
+  onClick,
+  icon,
+}: {
+  label: string
+  active: boolean
+  count: number
+  onClick: () => void
+  icon: ReactNode
+}) {
+  return (
+    <button
+      type="button"
+      title={label}
+      aria-label={label}
+      aria-pressed={active}
+      onClick={onClick}
+      className={cn(
+        'inline-flex h-7 min-w-[44px] items-center justify-center gap-1 px-2 text-[11px] text-muted-foreground transition hover:text-foreground',
+        active && 'text-primary',
+      )}
+    >
+      {icon}
+      <span>{count}</span>
+    </button>
   )
 }

@@ -8,6 +8,11 @@ export type Reply = {
   avatar?: string
   parentId?: number
   replies?: Reply[]
+  likeCount?: number
+  dislikeCount?: number
+  userReaction?: 'like' | 'dislike'
+  isEdited?: boolean
+  isDeleted?: boolean
 }
 export interface ArticleRepliesResponse {
   comments: Reply[]

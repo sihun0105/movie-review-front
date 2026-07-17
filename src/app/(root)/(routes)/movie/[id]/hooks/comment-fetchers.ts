@@ -12,6 +12,10 @@ export interface ModifyCommentArgs extends DeleteCommentArgs {
   comment: string
 }
 
+export interface ReactCommentArgs extends DeleteCommentArgs {
+  reaction: 'like' | 'dislike'
+}
+
 export const createCommentFetcher = async (
   url: string,
   { arg }: { arg: CreateCommentArgs },
@@ -58,4 +62,17 @@ export const modifyCommentFetcher = async (
   const result = await res.json()
   if (!res.ok) throw new Error(result.message || '댓글 수정에 실패했습니다.')
   return result
+}
+
+export const reactCommentFetcher = async (
+  url: string,
+  { arg }: { arg: ReactCommentArgs },
+) => {
+  const formData = new FormData()
+  formData.append('commentId', String(arg.commentId))
+  formData.append('reaction', arg.reaction)
+  const res = await fetch(url, { method: 'PATCH', body: formData })
+  const result = await res.json()
+  if (!res.ok) throw new Error(result.message || '반응 저장에 실패했습니다.')
+  return result.data
 }

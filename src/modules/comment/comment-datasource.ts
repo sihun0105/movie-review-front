@@ -1,4 +1,5 @@
 import { AppBackEndApiEndpoint } from '@/config/app-backend-api-endpoint'
+import { CommentApiEndpoint } from '@/config/comment-api-endpoint'
 
 export class CommentDatasource {
   private token?: string
@@ -70,6 +71,18 @@ export class CommentDatasource {
     if (!res.ok) {
       throw new Error('댓글을 수정할 수 없습니다.')
     }
+    return res.json()
+  }
+  async reactComment(id: number, reaction: 'like' | 'dislike') {
+    const res = await fetch(CommentApiEndpoint.serverReaction(id), {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${this.token}`,
+      },
+      body: JSON.stringify({ reaction }),
+    })
+    if (!res.ok) throw new Error('댓글 반응을 저장할 수 없습니다.')
     return res.json()
   }
 }
