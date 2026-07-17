@@ -3,10 +3,11 @@
 import { DmReviewCard, SectionHead } from '@/components/dm'
 import { Reply } from '@/lib/type'
 import { useSession } from 'next-auth/react'
-import { FunctionComponent } from 'react'
+import { FunctionComponent, useState } from 'react'
 import InfiniteScroll from 'react-infinite-scroll-component'
 import { CommentForm } from '../components/comment-form'
 import { ModifyCommentModal } from '../components/modify-comment-modal'
+import { ReplyCommentForm } from '../components/reply-comment-form'
 import { CommentFormProvider } from '../hooks/comment-form-context'
 import { ModifyCommentFormProvider } from '../hooks/modify-comment-context'
 import { useComments } from '../hooks/use-comments'
@@ -22,6 +23,7 @@ const CommentSection: FunctionComponent<CommentSectionProps> = ({ id }) => {
   const userId = session.data?.user?.id
   const { deleteComment } = useComments()
   const { setOpen, setComment, setReplyId } = useModifyCommentModalContext()
+  const [replyingTo, setReplyingTo] = useState<number | null>(null)
 
   const handleModifyComment = (reply: Reply) => {
     setReplyId(reply.id)
@@ -30,7 +32,15 @@ const CommentSection: FunctionComponent<CommentSectionProps> = ({ id }) => {
   }
 
   const totalCount = data
-    ? data.reduce((acc, page) => acc + (page?.comments?.length ?? 0), 0)
+    ? data.reduce(
+        (acc, page) =>
+          acc +
+          (page?.comments?.reduce(
+            (count, comment) => count + 1 + (comment.replies?.length ?? 0),
+            0,
+          ) ?? 0),
+        0,
+      )
     : 0
 
   return (
@@ -61,20 +71,33 @@ const CommentSection: FunctionComponent<CommentSectionProps> = ({ id }) => {
           <div>
             {data?.map((page) =>
               page?.comments?.map((comment: Reply) => (
-                <DmReviewCard
-                  key={comment.id}
-                  reply={{
-                    id: comment.id,
-                    content: comment.content,
-                    userno: comment.userno,
-                    nickname: comment.nickname,
-                    updatedAt: new Date(comment.updatedAt),
-                    createdAt: new Date(comment.createdAt),
-                  }}
-                  onDelete={() => deleteComment({ commentId: comment.id })}
-                  onModify={handleModifyComment}
-                  userId={userId}
-                />
+                <div key={comment.id}>
+                  <DmReviewCard
+                    reply={comment}
+                    onDelete={() => deleteComment({ commentId: comment.id })}
+                    onModify={handleModifyComment}
+                    onReply={() => setReplyingTo(comment.id)}
+                    userId={userId}
+                  />
+                  {replyingTo === comment.id && (
+                    <ReplyCommentForm
+                      movieId={id}
+                      parent={comment}
+                      onClose={() => setReplyingTo(null)}
+                    />
+                  )}
+                  {comment.replies?.map((child) => (
+                    <div key={child.id} className="ml-7">
+                      <DmReviewCard
+                        reply={child}
+                        nested
+                        onDelete={() => deleteComment({ commentId: child.id })}
+                        onModify={handleModifyComment}
+                        userId={userId}
+                      />
+                    </div>
+                  ))}
+                </div>
               )),
             )}
           </div>

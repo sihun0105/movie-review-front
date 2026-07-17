@@ -1,13 +1,17 @@
 'use client'
 
 import { Reply } from '@/lib/type'
-import { Pencil, X } from 'lucide-react'
+import { MessageCircle, Pencil, X } from 'lucide-react'
+import { cn } from '@/lib/utils'
+import { DmUserAvatar } from './dm-user-avatar'
 
 interface DmReviewCardProps {
   reply: Reply
   userId?: number | string
-  onModify?: (reply: Reply) => void
-  onDelete?: (reply: Reply) => void
+  onModify?: (_reply: Reply) => void
+  onDelete?: (_reply: Reply) => void
+  onReply?: (_reply: Reply) => void
+  nested?: boolean
 }
 
 function formatWhen(input: Date | string | undefined): string {
@@ -24,21 +28,30 @@ function formatWhen(input: Date | string | undefined): string {
   return d.toLocaleDateString('ko-KR')
 }
 
-export function DmReviewCard({ reply, userId, onModify, onDelete }: DmReviewCardProps) {
+export function DmReviewCard({
+  reply,
+  userId,
+  onModify,
+  onDelete,
+  onReply,
+  nested = false,
+}: DmReviewCardProps) {
   if (!reply) return null
-  const initial = reply.nickname?.trim().charAt(0).toUpperCase() ?? '?'
   const isOwner = userId !== undefined && +userId === reply.userno
 
   return (
-    <article className="border-b border-border py-3">
+    <article
+      className={cn('border-b border-border py-3', nested && 'border-l pl-3')}
+    >
       <header className="flex items-center gap-2">
-        <span
-          aria-hidden
-          className="flex h-7 w-7 items-center justify-center rounded-full bg-secondary text-[11px] font-bold text-foreground"
-        >
-          {initial}
+        <DmUserAvatar
+          name={reply.nickname}
+          image={reply.avatar}
+          className="h-7 w-7"
+        />
+        <span className="text-[13px] font-medium text-foreground">
+          {reply.nickname}
         </span>
-        <span className="text-[13px] font-medium text-foreground">{reply.nickname}</span>
         <span className="ml-auto font-mono text-[11px] text-muted-foreground">
           {formatWhen(reply.updatedAt)}
         </span>
@@ -70,6 +83,16 @@ export function DmReviewCard({ reply, userId, onModify, onDelete }: DmReviewCard
       <p className="mt-1.5 break-keep text-[13px] leading-relaxed text-foreground">
         {reply.content}
       </p>
+      {onReply && !nested && (
+        <button
+          type="button"
+          onClick={() => onReply(reply)}
+          className="mt-2 inline-flex items-center gap-1 text-[11px] text-muted-foreground hover:text-foreground"
+        >
+          <MessageCircle className="h-3.5 w-3.5" />
+          답글
+        </button>
+      )}
     </article>
   )
 }

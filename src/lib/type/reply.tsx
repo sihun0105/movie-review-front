@@ -6,6 +6,8 @@ export type Reply = {
   updatedAt: Date
   createdAt: Date
   avatar?: string
+  parentId?: number
+  replies?: Reply[]
 }
 export interface ArticleRepliesResponse {
   comments: Reply[]

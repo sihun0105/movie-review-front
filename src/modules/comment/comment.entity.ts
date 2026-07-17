@@ -8,6 +8,10 @@ export function isComment(arg: any): arg is Reply {
     typeof arg.userno === 'number' &&
     typeof arg.nickname === 'string' &&
     typeof arg.content === 'string' &&
+    (typeof arg.avatar === 'string' || arg.avatar === undefined) &&
+    (typeof arg.parentId === 'number' || arg.parentId === undefined) &&
+    (arg.replies === undefined ||
+      (Array.isArray(arg.replies) && arg.replies.every(isComment))) &&
     arg.createdAt instanceof Date &&
     arg.updatedAt instanceof Date
   )

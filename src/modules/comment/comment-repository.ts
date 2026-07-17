@@ -28,8 +28,12 @@ export class CommentRepository {
     return { comments, hasNext }
   }
 
-  async createComment(id: string, comment: string): Promise<Reply> {
-    const data = await this.datasource.createComment(id, comment)
+  async createComment(
+    id: string,
+    comment: string,
+    parentId?: number,
+  ): Promise<Reply> {
+    const data = await this.datasource.createComment(id, comment, parentId)
     return data
   }
 
@@ -47,6 +51,11 @@ export class CommentRepository {
       userno: unknown.userId,
       nickname: unknown.nickname,
       content: unknown.comment,
+      avatar: unknown.avatar || undefined,
+      parentId: unknown.parentId || undefined,
+      replies: unknown.replies?.map((reply: any) =>
+        this.convertUnkownToComment(reply),
+      ),
       createdAt: new Date(unknown.createdAt),
       updatedAt: new Date(unknown.updatedAt),
     } as Reply

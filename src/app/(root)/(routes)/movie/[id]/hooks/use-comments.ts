@@ -7,20 +7,14 @@ import { RepliesResponse } from '@/lib/type'
 import { useParams } from 'next/navigation'
 import useSWRInfinite from 'swr/infinite'
 import useSWRMutation from 'swr/mutation'
-
-interface CreateCommentArgs {
-  movieId: string
-  comment: string
-}
-
-interface DeleteCommentArgs {
-  commentId: number
-}
-
-interface ModifyCommentArgs {
-  commentId: number
-  comment: string
-}
+import {
+  CreateCommentArgs,
+  createCommentFetcher,
+  deleteCommentFetcher,
+  DeleteCommentArgs,
+  modifyCommentFetcher,
+  ModifyCommentArgs,
+} from './comment-fetchers'
 
 /** 댓글 목록 key */
 const getKey =
@@ -37,84 +31,11 @@ const fetcher = async (url: string): Promise<RepliesResponse> => {
   return result.data
 }
 
-/** 댓글 생성 */
-const createCommentFetcher = async (
-  url: string,
-  { arg }: { arg: CreateCommentArgs },
-) => {
-  const formData = new FormData()
-  formData.append('movieId', arg.movieId)
-  formData.append('comment', arg.comment)
-
-  const res = await fetch(url, {
-    method: 'POST',
-    body: formData,
-    cache: 'no-cache',
-  })
-
-  const result = await res.json()
-
-  if (!res.ok) {
-    console.error(`[useComments/create] ${url}, error: ${res.status}`)
-    throw new Error(result.message || '댓글 등록에 실패했습니다.')
-  }
-
-  return result
-}
-
-/** 댓글 삭제 */
-const deleteCommentFetcher = async (
-  url: string,
-  { arg }: { arg: DeleteCommentArgs },
-) => {
-  const formData = new FormData()
-  formData.append('commentId', arg.commentId + '')
-
-  const res = await fetch(url, {
-    method: 'DELETE',
-    body: formData,
-  })
-
-  const result = await res.json()
-
-  if (!res.ok) {
-    throw new Error(result.message || '댓글 삭제에 실패했습니다.')
-  }
-
-  return result
-}
-
-/** 댓글 수정 */
-const modifyCommentFetcher = async (
-  url: string,
-  { arg }: { arg: ModifyCommentArgs },
-) => {
-  const formData = new FormData()
-  formData.append('commentId', arg.commentId + '')
-  formData.append('comment', arg.comment)
-
-  const res = await fetch(url, {
-    method: 'PUT',
-    body: formData,
-    cache: 'no-cache',
-  })
-
-  const result = await res.json()
-
-  if (!res.ok) {
-    console.error(`[useComments/modify] ${url}, error: ${res.status}`)
-    throw new Error(result.message || '댓글 수정에 실패했습니다.')
-  }
-
-  return result
-}
-
 export const useComments = () => {
   const { showToast } = useAppToast()
   const { requireAuthentication } = useAuthenticationCheck()
   const params = useParams()
   const movieId = params?.id
-  const commentId = params?.commentId
   if (!movieId) {
     throw new Error('movieId is required')
   }

@@ -1,7 +1,7 @@
 'use client'
 
 import useChatSocket from '@/app/(root)/(routes)/(home)/hooks/use-chat-socket'
-import { DmChatBubble } from '@/components/dm'
+import { DmChatBubble, DmUserAvatar } from '@/components/dm'
 import { ChatMessageEntity } from '@/modules/chat'
 import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
@@ -26,7 +26,11 @@ export default function ChatRoomPage({ params: { chatRoomId } }: PageProps) {
     myUserId ? `/api/chat/rooms/${chatRoomId}?userId=${myUserId}` : null,
     fetcher,
   )
-  const { data: messageData, isLoading: msgLoading, mutate } = useSWR(
+  const {
+    data: messageData,
+    isLoading: msgLoading,
+    mutate,
+  } = useSWR(
     myUserId
       ? `/api/chat/rooms/${chatRoomId}/messages?userId=${myUserId}&pageSize=200`
       : null,
@@ -69,7 +73,7 @@ export default function ChatRoomPage({ params: { chatRoomId } }: PageProps) {
       setLocalMessages([])
       mutate()
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [messageData])
 
   const handleSend = () => {
@@ -118,23 +122,16 @@ export default function ChatRoomPage({ params: { chatRoomId } }: PageProps) {
             />
           </svg>
         </button>
-        <span
-          aria-hidden
-          className="flex h-9 w-9 items-center justify-center overflow-hidden rounded-full border border-border bg-secondary text-[14px] font-bold text-foreground"
-        >
-          {targetImage ? (
-            // eslint-disable-next-line @next/next/no-img-element
-            <img
-              src={targetImage}
-              alt=""
-              className="h-full w-full object-cover"
-            />
-          ) : (
-            initial
-          )}
-        </span>
+        <DmUserAvatar
+          name={targetName}
+          image={targetImage}
+          className="h-9 w-9"
+          fallbackClassName="text-[14px]"
+        />
         <div className="min-w-0 flex-1">
-          <div className="text-[14px] font-semibold text-foreground">{targetName}</div>
+          <div className="text-[14px] font-semibold text-foreground">
+            {targetName}
+          </div>
           <div
             className={`text-[10px] ${
               isConnected ? 'text-[#6fc96f]' : 'text-muted-foreground'
@@ -154,7 +151,8 @@ export default function ChatRoomPage({ params: { chatRoomId } }: PageProps) {
           messages.map((message, index) => {
             const isMine = message.senderId === myUserId
             const prev = messages[index - 1]
-            const showAvatar = !isMine && (!prev || prev.senderId !== message.senderId)
+            const showAvatar =
+              !isMine && (!prev || prev.senderId !== message.senderId)
             return (
               <DmChatBubble
                 key={message.messageId ?? index}
