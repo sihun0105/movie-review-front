@@ -85,7 +85,7 @@ const Page: FunctionComponent = async () => {
 
       <div className="flex items-center gap-2 px-4 pb-3 pt-5">
         <h2 className="text-[16px] font-semibold text-foreground">박스오피스</h2>
-        <span className="font-mono text-[10px] text-muted-foreground">KOFIC · TOP 10</span>
+        <span className="font-mono text-[10px] text-muted-foreground">TOP 10</span>
       </div>
 
       <div className="grid gap-3 px-4 lg:grid-cols-2">
