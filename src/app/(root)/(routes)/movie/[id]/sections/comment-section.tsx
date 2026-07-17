@@ -6,6 +6,8 @@ import { useSession } from 'next-auth/react'
 import { FunctionComponent, useState } from 'react'
 import InfiniteScroll from 'react-infinite-scroll-component'
 import { CommentForm } from '../components/comment-form'
+import { confirmCommentDeletion } from '../components/comment-delete-confirmation'
+import { DeleteCommentDialog } from '../components/delete-comment-dialog'
 import { ModifyCommentModal } from '../components/modify-comment-modal'
 import { ReplyCommentForm } from '../components/reply-comment-form'
 import { CommentFormProvider } from '../hooks/comment-form-context'
@@ -19,18 +21,34 @@ interface CommentSectionProps {
 }
 
 const CommentSection: FunctionComponent<CommentSectionProps> = ({ id }) => {
-  const { data, next, hasMore, isLoading, error, deleteComment, refresh } =
-    useComments()
+  const {
+    data,
+    next,
+    hasMore,
+    isLoading,
+    error,
+    deleteComment,
+    isDeletingComment,
+    refresh,
+  } = useComments()
   const session = useSession()
   const userId = session.data?.user?.id
   const { reactComment } = useCommentReaction(() => refresh())
   const { setOpen, setComment, setReplyId } = useModifyCommentModalContext()
   const [replyingTo, setReplyingTo] = useState<number | null>(null)
+  const [deletingComment, setDeletingComment] = useState<Reply | null>(null)
 
   const handleModifyComment = (reply: Reply) => {
     setReplyId(reply.id)
     setComment(reply.content)
     setOpen(true)
+  }
+
+  const handleConfirmDelete = () => {
+    if (!deletingComment) return
+    confirmCommentDeletion(deletingComment.id, deleteComment, () =>
+      setDeletingComment(null),
+    )
   }
 
   const totalCount = data
@@ -76,7 +94,7 @@ const CommentSection: FunctionComponent<CommentSectionProps> = ({ id }) => {
                 <div key={comment.id}>
                   <DmReviewCard
                     reply={comment}
-                    onDelete={() => deleteComment({ commentId: comment.id })}
+                    onDelete={setDeletingComment}
                     onModify={handleModifyComment}
                     onReply={() => setReplyingTo(comment.id)}
                     onReact={(reaction) =>
@@ -96,7 +114,7 @@ const CommentSection: FunctionComponent<CommentSectionProps> = ({ id }) => {
                       <DmReviewCard
                         reply={child}
                         nested
-                        onDelete={() => deleteComment({ commentId: child.id })}
+                        onDelete={setDeletingComment}
                         onModify={handleModifyComment}
                         onReact={(reaction) =>
                           reactComment({ commentId: child.id, reaction })
@@ -115,6 +133,16 @@ const CommentSection: FunctionComponent<CommentSectionProps> = ({ id }) => {
       <ModifyCommentFormProvider>
         <ModifyCommentModal />
       </ModifyCommentFormProvider>
+
+      <DeleteCommentDialog
+        open={Boolean(deletingComment)}
+        hasReplies={Boolean(deletingComment?.replies?.length)}
+        isDeleting={isDeletingComment}
+        onOpenChange={(open) => {
+          if (!open && !isDeletingComment) setDeletingComment(null)
+        }}
+        onConfirm={handleConfirmDelete}
+      />
 
       {error && (
         <div className="py-4 text-center font-mono text-[11px] text-destructive">
