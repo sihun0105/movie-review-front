@@ -2,7 +2,10 @@
 import { useState, useEffect } from 'react'
 import { useSession } from 'next-auth/react'
 import { AppClientApiEndpoint } from '@/config/app-client-api-endpoint'
-import { ChatRoomEntity, ChatMessageEntity } from '@/modules/chat'
+import type {
+  ChatMessageEntity,
+  ChatRoomEntity,
+} from '@/modules/chat/chat.entity'
 import useSWR from 'swr'
 
 const fetcher = async (url: string) => {

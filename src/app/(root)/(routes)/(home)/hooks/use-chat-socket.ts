@@ -2,7 +2,7 @@
 import { useEffect, useRef, useCallback, useState } from 'react'
 import { io, Socket } from 'socket.io-client'
 import { useSession } from 'next-auth/react'
-import { ChatMessageEntity } from '@/modules/chat'
+import type { ChatMessageEntity } from '@/modules/chat/chat.entity'
 
 interface UseChatSocketProps {
   namespace?: string
