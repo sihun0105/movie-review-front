@@ -1,11 +1,11 @@
 import { getAuthTokenFromRequest } from '@/lib/utils/getToken'
 import { ArticleRepository } from '@/modules/article/article-repository'
-import { CommentRepository } from '@/modules/comment/comment-repository'
 import { NextRequest } from 'next/server'
 export const POST = async (req: NextRequest) => {
   const form = await req.formData()
   const ArticleId = form.get('articleId') as string
   const comment = form.get('comment') as string
+  const parentId = Number(form.get('parentId')) || undefined
 
   try {
     const token = await getAuthTokenFromRequest(req)
@@ -13,7 +13,7 @@ export const POST = async (req: NextRequest) => {
       return new Response(null, { status: 401 })
     }
     const repo = new ArticleRepository(token)
-    const data = await repo.createComment(ArticleId, comment)
+    const data = await repo.createComment(ArticleId, comment, parentId)
     return new Response(
       JSON.stringify({
         data,
@@ -125,6 +125,27 @@ export const DELETE = async (req: NextRequest) => {
       headers: {
         'Content-Type': 'application/json',
       },
+    })
+  }
+}
+
+export const PATCH = async (req: NextRequest) => {
+  const form = await req.formData()
+  const commentId = Number(form.get('commentId'))
+  const reaction = form.get('reaction') as 'like' | 'dislike'
+  try {
+    const token = await getAuthTokenFromRequest(req)
+    if (!token) return new Response(null, { status: 401 })
+    const repo = new ArticleRepository(token)
+    const data = await repo.reactComment(commentId, reaction)
+    return new Response(JSON.stringify({ data }), {
+      status: 200,
+      headers: { 'Content-Type': 'application/json' },
+    })
+  } catch (error) {
+    return new Response(JSON.stringify({ message: 'An error occurred' }), {
+      status: 500,
+      headers: { 'Content-Type': 'application/json' },
     })
   }
 }
