@@ -1,8 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import {
-  getAuthTokenFromRequest,
-  getTokenFromCookie,
-} from '@/lib/utils/getToken'
+import { getAuthTokenFromRequest } from '@/lib/utils/getToken'
 import { MatchPostRepository } from '@/modules/match/match-post-repository'
 
 // GET /api/match - match 목록 조회
@@ -15,7 +12,7 @@ export async function GET(request: NextRequest) {
     const filter = searchParams.get('filter')?.trim()
     const userno = Number(searchParams.get('userno')) || undefined
 
-    const token = getTokenFromCookie()
+    const token = await getAuthTokenFromRequest(request)
     const matchRepository = new MatchPostRepository(token)
 
     const data = await matchRepository.getMatchPosts(page, limit, {

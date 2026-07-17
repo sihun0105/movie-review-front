@@ -1,9 +1,12 @@
-import { NextResponse } from 'next/server'
-import { getTokenFromCookie } from '@/lib/utils/getToken'
+import { NextRequest, NextResponse } from 'next/server'
+import { getAuthTokenFromRequest } from '@/lib/utils/getToken'
 import { NotificationRepository } from '@/modules/notification'
 
-export async function PATCH(_: Request, { params }: { params: { id: string } }) {
-  const token = getTokenFromCookie()
+export async function PATCH(
+  request: NextRequest,
+  { params }: { params: { id: string } },
+) {
+  const token = await getAuthTokenFromRequest(request)
   if (!token) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
 
   try {
