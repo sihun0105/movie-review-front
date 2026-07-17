@@ -2,7 +2,8 @@
 
 import useChatSocket from '@/app/(root)/(routes)/(home)/hooks/use-chat-socket'
 import { DmChatBubble, DmUserAvatar } from '@/components/dm'
-import { ChatMessageEntity, findChatMemberProfile } from '@/modules/chat'
+import { findChatMemberProfile } from '@/modules/chat/chat-profile'
+import type { ChatMessageEntity } from '@/modules/chat/chat.entity'
 import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
 import { useEffect, useRef, useState } from 'react'

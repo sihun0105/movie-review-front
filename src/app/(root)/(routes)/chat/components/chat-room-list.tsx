@@ -1,6 +1,6 @@
 'use client'
 
-import { ChatRoomEntity } from '@/modules/chat'
+import type { ChatRoomEntity } from '@/modules/chat/chat.entity'
 import Link from 'next/link'
 import { useSession } from 'next-auth/react'
 import useSWR from 'swr'
