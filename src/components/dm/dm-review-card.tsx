@@ -47,9 +47,7 @@ export function DmReviewCard({
       <article
         className={cn('border-b border-border py-3', nested && 'border-l pl-3')}
       >
-        <p className="text-[13px] text-muted-foreground">
-          삭제된 댓글입니다.
-        </p>
+        <p className="text-[13px] text-muted-foreground">삭제된 댓글입니다.</p>
       </article>
     )
   }
@@ -99,33 +97,37 @@ export function DmReviewCard({
       <p className="mt-1.5 break-keep text-[13px] leading-relaxed text-foreground">
         {reply.content}
       </p>
-      {onReact && (
+      {(onReact || (onReply && !nested)) && (
         <div className="mt-2 flex items-center gap-1">
-          <ReactionButton
-            label="좋아요"
-            active={reply.userReaction === 'like'}
-            count={reply.likeCount ?? 0}
-            onClick={() => onReact('like')}
-            icon={<ThumbsUp className="h-3.5 w-3.5" />}
-          />
-          <ReactionButton
-            label="싫어요"
-            active={reply.userReaction === 'dislike'}
-            count={reply.dislikeCount ?? 0}
-            onClick={() => onReact('dislike')}
-            icon={<ThumbsDown className="h-3.5 w-3.5" />}
-          />
+          {onReact && (
+            <>
+              <ReactionButton
+                label="좋아요"
+                active={reply.userReaction === 'like'}
+                count={reply.likeCount ?? 0}
+                onClick={() => onReact('like')}
+                icon={<ThumbsUp className="h-3.5 w-3.5" />}
+              />
+              <ReactionButton
+                label="싫어요"
+                active={reply.userReaction === 'dislike'}
+                count={reply.dislikeCount ?? 0}
+                onClick={() => onReact('dislike')}
+                icon={<ThumbsDown className="h-3.5 w-3.5" />}
+              />
+            </>
+          )}
+          {onReply && !nested && (
+            <button
+              type="button"
+              onClick={() => onReply(reply)}
+              className="inline-flex h-7 items-center gap-1 px-2 text-[11px] text-muted-foreground hover:text-foreground"
+            >
+              <MessageCircle className="h-3.5 w-3.5" />
+              답글
+            </button>
+          )}
         </div>
-      )}
-      {onReply && !nested && (
-        <button
-          type="button"
-          onClick={() => onReply(reply)}
-          className="mt-2 inline-flex items-center gap-1 text-[11px] text-muted-foreground hover:text-foreground"
-        >
-          <MessageCircle className="h-3.5 w-3.5" />
-          답글
-        </button>
       )}
     </article>
   )

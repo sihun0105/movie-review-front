@@ -1,4 +1,5 @@
 import { AppBackEndApiEndpoint } from '@/config/app-backend-api-endpoint'
+import { ArticleCommentApiEndpoint } from '@/config/article-comment-api-endpoint'
 import { Article, LikeState } from '@/lib/type'
 
 export class ArticleDatasource {
@@ -123,7 +124,7 @@ export class ArticleDatasource {
     }
     return res.json()
   }
-  async createComment(id: string, comment: string) {
+  async createComment(id: string, comment: string, parentId?: number) {
     const res = await fetch(AppBackEndApiEndpoint.createArticleComment(+id), {
       method: 'POST',
       headers: {
@@ -133,6 +134,7 @@ export class ArticleDatasource {
       cache: 'no-cache',
       body: JSON.stringify({
         content: comment,
+        parentId,
       }),
     })
     if (!res.ok) {
@@ -171,6 +173,19 @@ export class ArticleDatasource {
     if (!res.ok) {
       throw new Error('댓글을 수정할 수 없습니다.')
     }
+    return res.json()
+  }
+
+  async reactComment(id: number, reaction: 'like' | 'dislike') {
+    const res = await fetch(ArticleCommentApiEndpoint.backendReaction(id), {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${this.token}`,
+      },
+      body: JSON.stringify({ reaction }),
+    })
+    if (!res.ok) throw new Error('댓글 반응을 저장할 수 없습니다.')
     return res.json()
   }
 }

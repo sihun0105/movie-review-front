@@ -9,6 +9,7 @@ import useSWRMutation from 'swr/mutation'
 interface CreateArticleCommentArgs {
   articleId: string
   comment: string
+  parentId?: number
 }
 
 const createCommentFetcher = async (
@@ -18,6 +19,7 @@ const createCommentFetcher = async (
   const formData = new FormData()
   formData.append('articleId', arg.articleId)
   formData.append('comment', arg.comment)
+  if (arg.parentId) formData.append('parentId', String(arg.parentId))
 
   const res = await fetch(url, {
     method: 'POST',

@@ -105,8 +105,16 @@ export class ArticleRepository {
       dislikes: data.dislikes,
     }
   }
-  async createComment(articleId: string, comment: string): Promise<Reply> {
-    const data = await this.datasource.createComment(articleId, comment)
+  async createComment(
+    articleId: string,
+    comment: string,
+    parentId?: number,
+  ): Promise<Reply> {
+    const data = await this.datasource.createComment(
+      articleId,
+      comment,
+      parentId,
+    )
     return this.convertUnknownToComment(data)
   }
   private convertUnknownToComment(unknown: any): Reply {
@@ -118,6 +126,15 @@ export class ArticleRepository {
       avatar: unknown.avatar,
       createdAt: new Date(unknown.createdAt),
       updatedAt: new Date(unknown.updatedAt),
+      parentId: unknown.parentId || undefined,
+      replies: unknown.replies?.map((reply: unknown) =>
+        this.convertUnknownToComment(reply),
+      ),
+      likeCount: unknown.likeCount ?? 0,
+      dislikeCount: unknown.dislikeCount ?? 0,
+      userReaction: unknown.userReaction || undefined,
+      isEdited: unknown.isEdited ?? false,
+      isDeleted: unknown.isDeleted ?? false,
     }
     assertArticleComment(result)
     return result
@@ -142,5 +159,8 @@ export class ArticleRepository {
   async modifyComment(id: string, comment: string): Promise<Reply> {
     const data = await this.datasource.modifyComment(id, comment)
     return data
+  }
+  async reactComment(id: number, reaction: 'like' | 'dislike') {
+    return this.datasource.reactComment(id, reaction)
   }
 }
