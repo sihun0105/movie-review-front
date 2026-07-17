@@ -11,6 +11,7 @@ import { ReplyCommentForm } from '../components/reply-comment-form'
 import { CommentFormProvider } from '../hooks/comment-form-context'
 import { ModifyCommentFormProvider } from '../hooks/modify-comment-context'
 import { useComments } from '../hooks/use-comments'
+import { useCommentReaction } from '../hooks/use-comment-reaction'
 import { useModifyCommentModalContext } from '../hooks/use-modify-comment-context'
 
 interface CommentSectionProps {
@@ -18,10 +19,11 @@ interface CommentSectionProps {
 }
 
 const CommentSection: FunctionComponent<CommentSectionProps> = ({ id }) => {
-  const { data, next, hasMore, isLoading, error } = useComments()
+  const { data, next, hasMore, isLoading, error, deleteComment, refresh } =
+    useComments()
   const session = useSession()
   const userId = session.data?.user?.id
-  const { deleteComment } = useComments()
+  const { reactComment } = useCommentReaction(() => refresh())
   const { setOpen, setComment, setReplyId } = useModifyCommentModalContext()
   const [replyingTo, setReplyingTo] = useState<number | null>(null)
 
@@ -77,6 +79,9 @@ const CommentSection: FunctionComponent<CommentSectionProps> = ({ id }) => {
                     onDelete={() => deleteComment({ commentId: comment.id })}
                     onModify={handleModifyComment}
                     onReply={() => setReplyingTo(comment.id)}
+                    onReact={(reaction) =>
+                      reactComment({ commentId: comment.id, reaction })
+                    }
                     userId={userId}
                   />
                   {replyingTo === comment.id && (
@@ -93,6 +98,9 @@ const CommentSection: FunctionComponent<CommentSectionProps> = ({ id }) => {
                         nested
                         onDelete={() => deleteComment({ commentId: child.id })}
                         onModify={handleModifyComment}
+                        onReact={(reaction) =>
+                          reactComment({ commentId: child.id, reaction })
+                        }
                         userId={userId}
                       />
                     </div>

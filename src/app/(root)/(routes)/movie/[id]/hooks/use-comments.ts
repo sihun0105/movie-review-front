@@ -155,5 +155,6 @@ export const useComments = () => {
     modifyComment,
     isModifyingComment,
     modifyCommentError,
+    refresh: mutate,
   }
 }

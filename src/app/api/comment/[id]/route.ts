@@ -65,6 +65,26 @@ export const GET = async (req: NextRequest) => {
     })
   }
 }
+export const PATCH = async (req: NextRequest) => {
+  const form = await req.formData()
+  const commentId = Number(form.get('commentId'))
+  const reaction = form.get('reaction') as 'like' | 'dislike'
+  try {
+    const token = await getAuthTokenFromRequest(req)
+    if (!token) return new Response(null, { status: 401 })
+    const repo = new CommentRepository(token)
+    const data = await repo.reactComment(commentId, reaction)
+    return new Response(JSON.stringify({ data }), {
+      status: 200,
+      headers: { 'Content-Type': 'application/json' },
+    })
+  } catch (error) {
+    return new Response(JSON.stringify({ message: 'An error occurred' }), {
+      status: 500,
+      headers: { 'Content-Type': 'application/json' },
+    })
+  }
+}
 export const PUT = async (req: NextRequest) => {
   const form = await req.formData()
   const commentId = form.get('commentId') as string

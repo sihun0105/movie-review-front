@@ -45,6 +45,9 @@ export class CommentRepository {
     const data = await this.datasource.modifyComment(id, comment)
     return data
   }
+  async reactComment(id: number, reaction: 'like' | 'dislike') {
+    return this.datasource.reactComment(id, reaction)
+  }
   private convertUnkownToComment(unknown: any): Reply {
     const result = {
       id: unknown.replyId,
@@ -56,6 +59,11 @@ export class CommentRepository {
       replies: unknown.replies?.map((reply: any) =>
         this.convertUnkownToComment(reply),
       ),
+      likeCount: unknown.likeCount ?? 0,
+      dislikeCount: unknown.dislikeCount ?? 0,
+      userReaction: unknown.userReaction || undefined,
+      isEdited: unknown.isEdited ?? false,
+      isDeleted: unknown.isDeleted ?? false,
       createdAt: new Date(unknown.createdAt),
       updatedAt: new Date(unknown.updatedAt),
     } as Reply
