@@ -5,6 +5,7 @@ import { AppPath } from '@/config/app-path'
 import * as jose from 'jose'
 import { AppEnv } from '@/config/app-env'
 import GoogleProvider from 'next-auth/providers/google'
+import { syncSessionUser } from '@/lib/utils/session-user'
 
 export const authOptions: AuthOptions = {
   providers: [
@@ -114,13 +115,9 @@ export const authOptions: AuthOptions = {
     },
 
     async session({ session, token }) {
-      if (token) {
-        session.user.id = token.userId ?? ''
-        session.user.nickname = token.nickname ?? ''
-        session.user.provider = token.provider ?? ''
-        session.user.image = token.image ?? ''
-      }
-      return session
+      if (!token) return session
+      const repo = new UsersRepository()
+      return syncSessionUser(session, token, (id) => repo.getUser(id))
     },
   },
 }
