@@ -6,13 +6,15 @@ export const POST = async (req: NextRequest) => {
   const form = await req.formData()
   const movieId = form.get('movieId') as string
   const comment = form.get('comment') as string
+  const parentIdValue = form.get('parentId') as string | null
+  const parentId = parentIdValue ? Number(parentIdValue) : undefined
   try {
     const token = await getAuthTokenFromRequest(req)
     if (!token) {
       return new Response(null, { status: 401 })
     }
     const repo = new CommentRepository(token)
-    const data = await repo.createComment(movieId, comment)
+    const data = await repo.createComment(movieId, comment, parentId)
     return new Response(
       JSON.stringify({
         data,

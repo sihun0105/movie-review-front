@@ -19,7 +19,7 @@ export class CommentDatasource {
     }
     return res.json()
   }
-  async createComment(id: string, comment: string) {
+  async createComment(id: string, comment: string, parentId?: number) {
     const res = await fetch(AppBackEndApiEndpoint.createNewComment(), {
       method: 'POST',
       headers: {
@@ -30,6 +30,7 @@ export class CommentDatasource {
       body: JSON.stringify({
         comment,
         movieId: +id,
+        parentId,
       }),
     })
     if (!res.ok) {

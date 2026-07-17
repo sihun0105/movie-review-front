@@ -4,6 +4,7 @@ import { ChatRoomEntity } from '@/modules/chat'
 import Link from 'next/link'
 import { useSession } from 'next-auth/react'
 import useSWR from 'swr'
+import { DmUserAvatar } from '@/components/dm'
 
 const fetcher = (url: string) => fetch(url).then((r) => r.json())
 
@@ -53,27 +54,18 @@ function RoomRow({
       ? `/match/${matchId}/chat/${targetUserId}`
       : `/chat/${room.chatRoomId}`
   const avatarLabel = targetProfile?.nickname || title || room.roomName
-  const initial = avatarLabel.charAt(0).toUpperCase()
-  const avatarStyle = targetProfile?.image
-    ? {
-        backgroundImage: `url("${targetProfile.image}")`,
-        backgroundPosition: 'center',
-        backgroundSize: 'cover',
-      }
-    : undefined
 
   return (
     <Link
       href={href}
       className="flex items-center gap-3 border-b border-border px-4 py-3.5 hover:bg-secondary"
     >
-      <div
-        className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full border border-border bg-secondary text-[17px] font-bold text-foreground"
-        style={avatarStyle}
-        aria-label={avatarLabel}
-      >
-        {!targetProfile?.image && initial}
-      </div>
+      <DmUserAvatar
+        name={avatarLabel}
+        image={targetProfile?.image}
+        className="h-12 w-12"
+        fallbackClassName="text-[17px]"
+      />
 
       <div className="min-w-0 flex-1">
         <div className="flex items-center gap-2">

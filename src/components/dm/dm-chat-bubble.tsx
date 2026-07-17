@@ -1,4 +1,5 @@
 import { cn } from '@/lib/utils'
+import { DmUserAvatar } from './dm-user-avatar'
 
 interface DmChatBubbleProps {
   content: string
@@ -39,24 +40,12 @@ export function DmChatBubble({
       )}
     >
       {!isMine && (
-        <span
-          aria-hidden
-          className={cn(
-            'flex h-6 w-6 shrink-0 items-center justify-center self-end rounded-full border border-border bg-secondary text-[10px] font-bold text-foreground',
-            !showAvatar && 'opacity-0',
-          )}
-        >
-          {avatarImage && showAvatar ? (
-            // eslint-disable-next-line @next/next/no-img-element
-            <img
-              src={avatarImage}
-              alt=""
-              className="h-full w-full object-cover"
-            />
-          ) : (
-            avatarInitial ?? senderName?.charAt(0).toUpperCase() ?? '?'
-          )}
-        </span>
+        <DmUserAvatar
+          name={avatarInitial || senderName}
+          image={showAvatar ? avatarImage : undefined}
+          className={cn('h-6 w-6 self-end', !showAvatar && 'opacity-0')}
+          fallbackClassName="text-[10px]"
+        />
       )}
       <div className="flex max-w-[72%] flex-col gap-0.5">
         {!isMine && senderName && showAvatar && (
