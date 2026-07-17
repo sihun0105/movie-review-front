@@ -1,7 +1,4 @@
-import {
-  getAuthTokenFromRequest,
-  getTokenFromCookie,
-} from '@/lib/utils/getToken'
+import { getAuthTokenFromRequest } from '@/lib/utils/getToken'
 import { ArticleRepository } from '@/modules/article/article-repository'
 import { NextRequest } from 'next/server'
 
@@ -35,7 +32,7 @@ export const GET = async (req: NextRequest) => {
   const page = Number(searchParams.get('page') ?? '1')
   const pageSize = Number(searchParams.get('pageSize') ?? '10')
   try {
-    const token = await getTokenFromCookie()
+    const token = await getAuthTokenFromRequest(req)
     const repo = new ArticleRepository(token)
     const data = await repo.listArticles(page, pageSize)
     return new Response(JSON.stringify({ data }), {

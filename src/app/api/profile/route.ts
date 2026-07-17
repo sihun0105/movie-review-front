@@ -1,11 +1,12 @@
-import { getTokenFromCookie } from '@/lib/utils/getToken'
+import { getAuthTokenFromRequest } from '@/lib/utils/getToken'
 import { UsersRepository } from '@/modules/users/users-repository'
 import { NextRequest } from 'next/server'
 
 export const POST = async (req: NextRequest) => {
   const form = await req.formData()
   const nickname = form.get('nickname') as string
-  const token = await getTokenFromCookie()
+  const token = await getAuthTokenFromRequest(req)
+  if (!token) return new Response(null, { status: 401 })
   try {
     const repo = new UsersRepository(token)
     const data = await repo.updateProfile({ nickname })

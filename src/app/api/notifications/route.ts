@@ -1,9 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { getTokenFromCookie } from '@/lib/utils/getToken'
+import { getAuthTokenFromRequest } from '@/lib/utils/getToken'
 import { NotificationRepository } from '@/modules/notification'
 
 export async function GET(request: NextRequest) {
-  const token = getTokenFromCookie()
+  const token = await getAuthTokenFromRequest(request)
   if (!token) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
 
   const { searchParams } = new URL(request.url)

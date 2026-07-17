@@ -1,4 +1,4 @@
-import { getTokenFromCookie } from '@/lib/utils/getToken'
+import { getAuthTokenFromRequest } from '@/lib/utils/getToken'
 import { ArticleRepository } from '@/modules/article/article-repository'
 import { CommentRepository } from '@/modules/comment/comment-repository'
 import { NextRequest } from 'next/server'
@@ -8,7 +8,7 @@ export const POST = async (req: NextRequest) => {
   const comment = form.get('comment') as string
 
   try {
-    const token = await getTokenFromCookie()
+    const token = await getAuthTokenFromRequest(req)
     if (!token) {
       return new Response(null, { status: 401 })
     }
@@ -40,7 +40,7 @@ export const GET = async (req: NextRequest) => {
   const page = searchParams.get('page') ?? '0'
   const parsedPage = Number(page) + 1
   const articleId = searchParams.get('articleId')
-  const token = await getTokenFromCookie()
+  const token = await getAuthTokenFromRequest(req)
   const repository = new ArticleRepository(token ?? undefined)
   try {
     const data = await repository.getCommentList(articleId + '', parsedPage)
@@ -70,7 +70,7 @@ export const PUT = async (req: NextRequest) => {
   const commentId = form.get('commentId') as string
   const comment = form.get('comment') as string
   try {
-    const token = await getTokenFromCookie()
+    const token = await getAuthTokenFromRequest(req)
     if (!token) {
       return new Response(null, { status: 401 })
     }
@@ -102,7 +102,7 @@ export const DELETE = async (req: NextRequest) => {
   const form = await req.formData()
   const commentId = form.get('commentId') as string
   try {
-    const token = await getTokenFromCookie()
+    const token = await getAuthTokenFromRequest(req)
     if (!token) {
       return new Response(null, { status: 401 })
     }

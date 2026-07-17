@@ -1,5 +1,5 @@
 import { LikeState } from '@/lib/type'
-import { getTokenFromCookie } from '@/lib/utils/getToken'
+import { getAuthTokenFromRequest } from '@/lib/utils/getToken'
 import { ArticleRepository } from '@/modules/article/article-repository'
 import { NextRequest } from 'next/server'
 
@@ -40,7 +40,7 @@ export const POST = async (
   }
 
   try {
-    const token = await getTokenFromCookie()
+    const token = await getAuthTokenFromRequest(req)
     if (!token) return new Response(null, { status: 401 })
 
     const repo = new ArticleRepository(token)
