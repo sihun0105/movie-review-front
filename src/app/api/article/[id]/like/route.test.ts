@@ -20,25 +20,28 @@ describe('article like authentication', () => {
     vi.clearAllMocks()
   })
 
-  it('uses the current NextAuth token to update a like', async () => {
-    const updateArticleLike = vi
-      .fn()
-      .mockResolvedValue({ likes: 2, dislikes: 0 })
-    mockAuthToken.mockResolvedValue('oauth-token')
-    MockArticleRepository.mockImplementation(
-      () => ({ updateArticleLike } as unknown as ArticleRepository),
-    )
-    const request = new NextRequest(
-      'http://localhost/api/article/4/like?state=like',
-      { method: 'POST' },
-    )
+  it.each(['like', 'dislike'] as const)(
+    'uses the current NextAuth token to update a %s',
+    async (state) => {
+      const updateArticleLike = vi
+        .fn()
+        .mockResolvedValue({ likes: 2, dislikes: 0 })
+      mockAuthToken.mockResolvedValue('oauth-token')
+      MockArticleRepository.mockImplementation(
+        () => ({ updateArticleLike } as unknown as ArticleRepository),
+      )
+      const request = new NextRequest(
+        `http://localhost/api/article/4/like?state=${state}`,
+        { method: 'POST' },
+      )
 
-    const response = await POST(request, { params: { id: '4' } })
+      const response = await POST(request, { params: { id: '4' } })
 
-    expect(MockArticleRepository).toHaveBeenCalledWith('oauth-token')
-    expect(updateArticleLike).toHaveBeenCalledWith('4', 'like')
-    expect(response.status).toBe(200)
-  })
+      expect(MockArticleRepository).toHaveBeenCalledWith('oauth-token')
+      expect(updateArticleLike).toHaveBeenCalledWith('4', state)
+      expect(response.status).toBe(200)
+    },
+  )
 
   it('returns 401 when no session token exists', async () => {
     mockAuthToken.mockResolvedValue(undefined)
