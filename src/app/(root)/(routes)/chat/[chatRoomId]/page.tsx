@@ -2,7 +2,7 @@
 
 import useChatSocket from '@/app/(root)/(routes)/(home)/hooks/use-chat-socket'
 import { DmChatBubble, DmUserAvatar } from '@/components/dm'
-import { ChatMessageEntity } from '@/modules/chat'
+import { ChatMessageEntity, findChatMemberProfile } from '@/modules/chat'
 import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
 import { useEffect, useRef, useState } from 'react'
@@ -48,9 +48,8 @@ export default function ChatRoomPage({ params: { chatRoomId } }: PageProps) {
     }),
   )
   const messages = [...serverMessages, ...localMessages]
-  const targetProfile = room?.memberProfiles?.find(
-    (profile: { userId: number }) => profile.userId !== myUserId,
-  )
+  const targetUserId = room?.memberIds?.find((id: number) => id !== myUserId)
+  const targetProfile = findChatMemberProfile(room, targetUserId ?? 0)
 
   const { sendMessage, isConnected } = useChatSocket({
     namespace: 'ws-home',

@@ -3,8 +3,8 @@
 import useChatSocket from '@/app/(root)/(routes)/(home)/hooks/use-chat-socket'
 import { useChatRoom } from '@/app/(root)/(routes)/match/hooks/use-chat-room'
 import { useMatchPost } from '@/app/(root)/(routes)/match/hooks/use-match-post'
-import { DmChatBubble, DmChatTicketPin } from '@/components/dm'
-import { ChatMessageEntity } from '@/modules/chat'
+import { DmChatBubble, DmChatTicketPin, DmUserAvatar } from '@/components/dm'
+import { ChatMessageEntity, findChatMemberProfile } from '@/modules/chat'
 import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
 import { useEffect, useRef, useState } from 'react'
@@ -82,10 +82,13 @@ const ChatContainer = ({ matchId, targetUserId }: ChatContainerProps) => {
     return <ChatStatus>채팅방을 준비하고 있습니다...</ChatStatus>
   }
 
+  const targetProfile = findChatMemberProfile(chatRoom, Number(targetUserId))
   const targetName =
-    matchPost.userno.toString() === targetUserId
+    targetProfile?.nickname ||
+    (matchPost.userno.toString() === targetUserId
       ? matchPost.author
-      : `사용자 ${targetUserId}`
+      : `사용자 ${targetUserId}`)
+  const targetImage = targetProfile?.image
   const myUserId = parseInt(session?.user?.id || '0')
   const initial = targetName.charAt(0).toUpperCase()
 
@@ -108,12 +111,12 @@ const ChatContainer = ({ matchId, targetUserId }: ChatContainerProps) => {
             />
           </svg>
         </button>
-        <span
-          aria-hidden
-          className="flex h-9 w-9 items-center justify-center rounded-full border border-border bg-secondary text-[14px] font-bold text-foreground"
-        >
-          {initial}
-        </span>
+        <DmUserAvatar
+          name={targetName}
+          image={targetImage}
+          className="h-9 w-9"
+          fallbackClassName="text-[14px]"
+        />
         <div className="min-w-0 flex-1">
           <div className="text-[14px] font-semibold text-foreground">
             {targetName}
@@ -149,11 +152,12 @@ const ChatContainer = ({ matchId, targetUserId }: ChatContainerProps) => {
                 content={message.content}
                 isMine={isMine}
                 senderName={
-                  isMine ? undefined : message.senderName ?? targetName
+                  isMine ? undefined : (message.senderName ?? targetName)
                 }
                 createdAt={message.createdAt}
                 showAvatar={showAvatar}
                 avatarInitial={initial}
+                avatarImage={targetImage}
               />
             )
           })
