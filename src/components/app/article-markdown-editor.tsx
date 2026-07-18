@@ -13,6 +13,10 @@ import { Bold, ImagePlus, Italic, List } from 'lucide-react'
 import { useId, useRef, useState } from 'react'
 import { UseFormReturn } from 'react-hook-form'
 import { EditorButton, ModeButton } from './article-markdown-editor-controls'
+import {
+  getArticleImageUploadError,
+  prepareArticleImage,
+} from './article-image-file'
 import { insertMarkdownText } from './article-markdown-editor-utils'
 
 interface ArticleMarkdownEditorProps {
@@ -47,12 +51,15 @@ export function ArticleMarkdownEditor({
   }
 
   const uploadImage = async (file: File) => {
+    const uploadFile = await prepareArticleImage(file)
     const body = new FormData()
-    body.append('file', file)
+    body.append('file', uploadFile)
     const res = await fetch('/api/article/image', { method: 'POST', body })
     const data = await res.json().catch(() => null)
-    if (!res.ok || !data?.url) throw new Error('이미지 업로드 실패')
-    insertText(`\n\n![${file.name}](${data.url})\n`)
+    if (!res.ok || !data?.url) {
+      throw new Error(getArticleImageUploadError(res.status, data?.message))
+    }
+    insertText(`\n\n![${uploadFile.name}](${data.url})\n`)
   }
 
   return (
@@ -87,7 +94,7 @@ export function ArticleMarkdownEditor({
                 <input
                   id={fileInputId}
                   type="file"
-                  accept="image/*"
+                  accept="image/jpeg,image/png,image/gif,image/webp,image/avif,image/heic,image/heif,.jpg,.jpeg,.png,.gif,.webp,.avif,.heic,.heif"
                   disabled={uploading}
                   aria-label="이미지 추가"
                   className="absolute inset-0 h-full w-full cursor-pointer opacity-0"
@@ -99,8 +106,12 @@ export function ArticleMarkdownEditor({
                       setUploading(true)
                       await uploadImage(file)
                       showToast('이미지를 추가했습니다.')
-                    } catch {
-                      showToast('이미지 업로드에 실패했습니다.')
+                    } catch (error) {
+                      showToast(
+                        error instanceof Error
+                          ? error.message
+                          : '이미지 업로드에 실패했어요.',
+                      )
                     } finally {
                       setUploading(false)
                     }
