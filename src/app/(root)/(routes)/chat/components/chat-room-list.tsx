@@ -1,6 +1,10 @@
 'use client'
 
 import type { ChatRoomEntity } from '@/modules/chat/chat.entity'
+import {
+  findChatCounterpart,
+  getChatRoomDisplayName,
+} from '@/modules/chat/chat-profile'
 import Link from 'next/link'
 import { useSession } from 'next-auth/react'
 import useSWR from 'swr'
@@ -27,13 +31,21 @@ function parseRoom(room: ChatRoomEntity, currentUserId: number) {
   if (!matchId && room.roomName.startsWith('Match Chat - ')) {
     matchId = room.roomName.replace('Match Chat - ', '')
   }
-  const targetUserId = room.memberIds.find((id) => id !== currentUserId) ?? null
-  const targetProfile = room.memberProfiles?.find(
-    (profile) => profile.userId !== currentUserId,
-  )
+  const counterpart =
+    room.type === 'direct'
+      ? findChatCounterpart(room, currentUserId)
+      : undefined
+  const targetUserId = counterpart?.userId ?? null
+  const targetProfile = counterpart?.profile
   const timeStr = formatRoomTime(room.lastMessageAt || room.updatedAt)
-  const title = room.matchTitle || (matchId ? '매칭 채팅' : room.roomName)
-  const preview = room.lastMessage || '아직 주고받은 메시지가 없어요'
+  const contextTitle =
+    room.matchTitle || (matchId ? '매칭 채팅' : room.roomName)
+  const title = getChatRoomDisplayName(room, currentUserId) || contextTitle
+  const lastMessage = room.lastMessage || '아직 주고받은 메시지가 없어요'
+  const preview =
+    room.type === 'direct' && room.matchTitle
+      ? `${room.matchTitle} · ${lastMessage}`
+      : lastMessage
 
   return { matchId, targetUserId, targetProfile, timeStr, title, preview }
 }
@@ -78,13 +90,7 @@ function RoomRow({
             </span>
           )}
         </div>
-        <div className="mt-0.5 flex items-center gap-1.5 text-[12px] text-muted-foreground">
-          {targetProfile?.nickname && (
-            <span className="max-w-[34%] truncate">
-              {targetProfile.nickname}
-            </span>
-          )}
-          {targetProfile?.nickname && <span aria-hidden="true">·</span>}
+        <div className="mt-0.5 flex items-center text-[12px] text-muted-foreground">
           <span className="truncate">{preview}</span>
         </div>
       </div>

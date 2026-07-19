@@ -3,16 +3,26 @@ import type { ChatRoomEntity, ChatMessageEntity } from './chat.entity'
 export function convertApiResponseToChatRoomEntity(
   apiResponse: any,
 ): ChatRoomEntity {
+  const memberIds = Array.isArray(apiResponse.memberIds)
+    ? apiResponse.memberIds.map(Number).filter(Number.isInteger)
+    : []
+  const memberProfiles = Array.isArray(apiResponse.memberProfiles)
+    ? apiResponse.memberProfiles.map((profile: any) => ({
+        ...profile,
+        userId: Number(profile.userId),
+      }))
+    : undefined
+
   return {
     chatRoomId: apiResponse.id,
     roomName: apiResponse.name,
     type: apiResponse.type,
-    memberIds: apiResponse.memberIds,
+    memberIds,
     createdAt: apiResponse.createdAt,
     updatedAt: apiResponse.updatedAt,
     matchPostId: apiResponse.matchPostId || undefined,
     matchTitle: apiResponse.matchTitle || undefined,
-    memberProfiles: apiResponse.memberProfiles || undefined,
+    memberProfiles,
     lastMessage: apiResponse.lastMessage || undefined,
     lastMessageAt: apiResponse.lastMessageAt || undefined,
   }
