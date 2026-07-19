@@ -6,10 +6,12 @@ export function buildMatchPayload(
   const movie = data.movieTitle.trim()
   const place = data.location.trim()
   const people = data.maxParticipants
+  const description = data.content.trim()
   return {
     ...data,
     title: `${movie} 같이 볼 사람 구해요`,
-    content: `${place}에서 ${people}명이 함께 볼 영화 약속입니다.`,
+    content:
+      description || `${place}에서 ${people}명이 함께 볼 영화 약속입니다.`,
     theaterName: place,
   }
 }

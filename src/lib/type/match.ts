@@ -13,6 +13,7 @@ export interface MatchPost {
   gender: Gender
   content: string
   movieTitle: string
+  moviePoster?: string
   theaterName: string
   showTime: string
   maxParticipants: number

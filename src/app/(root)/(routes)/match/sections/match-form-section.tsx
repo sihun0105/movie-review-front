@@ -15,12 +15,8 @@ const MatchFormSection: FunctionComponent<MatchFormSectionProps> = ({
   initialData,
 }) => {
   return (
-    <MatchPostFormProvider>
-      <MatchPostForm
-        onSubmit={onSubmit}
-        onCancel={onCancel}
-        initialData={initialData}
-      />
+    <MatchPostFormProvider initialData={initialData}>
+      <MatchPostForm onSubmit={onSubmit} onCancel={onCancel} />
     </MatchPostFormProvider>
   )
 }
