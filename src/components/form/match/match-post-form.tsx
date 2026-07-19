@@ -3,7 +3,7 @@
 import { Form } from '@/components/ui/form'
 import { CreateMatchPostRequest } from '@/lib/type'
 import { ArrowLeft, ArrowRight, Check } from 'lucide-react'
-import { FunctionComponent, useMemo, useState } from 'react'
+import { FormEvent, FunctionComponent, useMemo, useState } from 'react'
 import { useMatchPostFormContext } from './hooks/match-post-form-context'
 import { buildMatchPayload, formatMatchDateTime } from './match-post-form-utils'
 import { MatchPostFormStep } from './match-post-form-step'
@@ -18,7 +18,7 @@ const steps = [
   { field: 'showTime', label: '일정', title: '언제 볼까요?' },
   { field: 'location', label: '장소', title: '어디서 만날까요?' },
   { field: 'maxParticipants', label: '인원', title: '몇 명이 함께 볼까요?' },
-  { field: 'confirm', label: '확인', title: '이대로 매치를 만들까요?' },
+  { field: 'confirm', label: '설명', title: '더 전하고 싶은 말이 있나요?' },
 ] as const
 
 const MatchPostForm: FunctionComponent<MatchPostFormProps> = ({
@@ -59,10 +59,19 @@ const MatchPostForm: FunctionComponent<MatchPostFormProps> = ({
     }
   })
 
+  const handleFormSubmit = (event: FormEvent<HTMLFormElement>) => {
+    if (!isLast) {
+      event.preventDefault()
+      void goNext()
+      return
+    }
+    void submit(event)
+  }
+
   return (
     <Form {...form}>
       <form
-        onSubmit={submit}
+        onSubmit={handleFormSubmit}
         className="mx-auto flex min-h-[calc(100dvh-220px)] max-w-[520px] flex-col"
       >
         <div className="mb-8 h-1.5 overflow-hidden rounded-full bg-secondary">
