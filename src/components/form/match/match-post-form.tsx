@@ -3,15 +3,14 @@
 import { Form } from '@/components/ui/form'
 import { CreateMatchPostRequest } from '@/lib/type'
 import { ArrowLeft, ArrowRight, Check } from 'lucide-react'
-import { FunctionComponent, useEffect, useMemo, useState } from 'react'
+import { FunctionComponent, useMemo, useState } from 'react'
 import { useMatchPostFormContext } from './hooks/match-post-form-context'
 import { buildMatchPayload, formatMatchDateTime } from './match-post-form-utils'
-import { MovieSuggestionChips } from './movie-suggestion-chips'
+import { MatchPostFormStep } from './match-post-form-step'
 
 interface MatchPostFormProps {
   onSubmit: (_data: CreateMatchPostRequest) => Promise<void>
   onCancel: () => void
-  initialData?: Partial<CreateMatchPostRequest>
 }
 
 const steps = [
@@ -22,26 +21,13 @@ const steps = [
   { field: 'confirm', label: '확인', title: '이대로 매치를 만들까요?' },
 ] as const
 
-const inputCls =
-  'w-full rounded-xl border border-border bg-secondary px-4 py-4 text-[18px] font-semibold text-foreground placeholder:text-muted-foreground focus:border-primary focus:outline-none'
-
 const MatchPostForm: FunctionComponent<MatchPostFormProps> = ({
   onSubmit,
   onCancel,
-  initialData,
 }) => {
   const { form } = useMatchPostFormContext()
   const [step, setStep] = useState(0)
   const [isLoading, setIsLoading] = useState(false)
-
-  useEffect(() => {
-    if (!initialData) return
-    Object.entries(initialData).forEach(([key, value]) => {
-      if (value !== undefined) {
-        form.setValue(key as keyof CreateMatchPostRequest, value as any)
-      }
-    })
-  }, [form, initialData])
 
   const values = form.watch()
   const current = steps[step]
@@ -93,7 +79,13 @@ const MatchPostForm: FunctionComponent<MatchPostFormProps> = ({
           {current.title}
         </h2>
 
-        <div className="flex-1">{renderStep(current.field, form, summary)}</div>
+        <div className="flex-1">
+          <MatchPostFormStep
+            field={current.field}
+            form={form}
+            summary={summary}
+          />
+        </div>
 
         <div className="sticky bottom-0 flex gap-2 border-t border-border bg-background/95 py-3 backdrop-blur">
           <button
@@ -124,76 +116,6 @@ const MatchPostForm: FunctionComponent<MatchPostFormProps> = ({
         </div>
       </form>
     </Form>
-  )
-}
-
-function renderStep(field: (typeof steps)[number]['field'], form: any, summary: string[][]) {
-  if (field === 'confirm') {
-    return (
-      <div className="space-y-3">
-        {summary.map(([label, value]) => (
-          <div
-            key={label}
-            className="flex items-center justify-between rounded-xl bg-secondary px-4 py-4"
-          >
-            <span className="text-[13px] text-muted-foreground">{label}</span>
-            <span className="text-right text-[15px] font-bold text-foreground">{value}</span>
-          </div>
-        ))}
-      </div>
-    )
-  }
-
-  if (field === 'maxParticipants') {
-    return (
-      <div className="grid grid-cols-2 gap-3">
-        {[1, 2, 3, 4, 5, 6].map((count) => {
-          const selected = form.watch('maxParticipants') === count
-          return (
-            <button
-              key={count}
-              type="button"
-              onClick={() =>
-                form.setValue('maxParticipants', count, { shouldValidate: true })
-              }
-              className={`rounded-xl border px-4 py-5 text-[18px] font-bold ${
-                selected
-                  ? 'border-primary bg-primary text-white'
-                  : 'border-border bg-secondary text-foreground'
-              }`}
-            >
-              {count}명
-            </button>
-          )
-        })}
-      </div>
-    )
-  }
-
-  const type = field === 'showTime' ? 'datetime-local' : 'text'
-  const placeholder = field === 'movieTitle' ? '영화 제목' : '예: 강남, 홍대, 잠실'
-
-  return (
-    <div>
-      <input
-        type={type}
-        value={form.watch(field) as string}
-        onChange={(event) => form.setValue(field, event.target.value, { shouldValidate: true })}
-        placeholder={placeholder}
-        className={`${inputCls} ${field === 'showTime' ? '[color-scheme:dark]' : ''}`}
-      />
-      <p className="mt-3 text-[13px] text-destructive">
-        {form.formState.errors[field]?.message as string}
-      </p>
-      {field === 'movieTitle' && (
-        <MovieSuggestionChips
-          selectedTitle={form.watch('movieTitle') as string}
-          onSelect={(title) =>
-            form.setValue('movieTitle', title, { shouldValidate: true })
-          }
-        />
-      )}
-    </div>
   )
 }
 

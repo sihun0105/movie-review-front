@@ -40,7 +40,12 @@ export function DmMatchTicket({ match }: DmMatchTicketProps) {
       <div className="flex gap-3">
         {/* movie poster */}
         <div className="w-[50px] shrink-0">
-          <Poster title={match.movieTitle} palette={palette} rounded="md" />
+          <Poster
+            title={match.movieTitle}
+            palette={palette}
+            imageUrl={match.moviePoster}
+            rounded="md"
+          />
         </div>
 
         {/* body */}
@@ -50,12 +55,14 @@ export function DmMatchTicket({ match }: DmMatchTicketProps) {
             <span className="font-mono text-[11px] text-muted-foreground">
               {month}.{day}({dow}) {time}
             </span>
-            <span className={cn(
-              'ml-auto shrink-0 rounded-full px-2 py-0.5 font-mono text-[10px] font-medium',
-              schedule.isPast || isFull
-                ? 'bg-muted text-muted-foreground'
-                : 'border border-primary/30 text-primary',
-            )}>
+            <span
+              className={cn(
+                'ml-auto shrink-0 rounded-full px-2 py-0.5 font-mono text-[10px] font-medium',
+                schedule.isPast || isFull
+                  ? 'bg-muted text-muted-foreground'
+                  : 'border border-primary/30 text-primary',
+              )}
+            >
               {schedule.label}
             </span>
           </div>
@@ -75,11 +82,20 @@ export function DmMatchTicket({ match }: DmMatchTicketProps) {
             <div className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-secondary text-[10px] font-bold text-foreground">
               {initial}
             </div>
-            <span className="text-[11px] text-muted-foreground">{match.author}</span>
+            <span className="text-[11px] text-muted-foreground">
+              {match.author}
+            </span>
             <span className="ml-auto font-mono text-[11px] text-muted-foreground">
-              <span className={isFull ? 'text-muted-foreground' : 'text-foreground font-medium'}>
+              <span
+                className={
+                  isFull
+                    ? 'text-muted-foreground'
+                    : 'font-medium text-foreground'
+                }
+              >
                 {match.currentParticipants}
-              </span>/{match.maxParticipants}명
+              </span>
+              /{match.maxParticipants}명
             </span>
           </div>
         </div>

@@ -4,13 +4,15 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
 import { createContext, useContext } from 'react'
 import * as z from 'zod'
+import { CreateMatchPostRequest } from '@/lib/type'
+import { getMatchPostFormDefaults } from '../match-post-form-defaults'
 
 const formSchema = z.object({
   title: z.string().min(1, {
     message: '제목은 최소 2자 이상 입력해주세요.',
   }),
-  content: z.string().min(1, {
-    message: '내용은 최소 5자 이상 입력해주세요.',
+  content: z.string().max(500, {
+    message: '설명은 최대 500자까지 입력할 수 있어요.',
   }),
   movieTitle: z.string().min(1, {
     message: '영화 제목을 입력해주세요.',
@@ -32,19 +34,11 @@ const formSchema = z.object({
   }),
 })
 
-const useMatchPostForm = () => {
+const useMatchPostForm = (initialData?: Partial<CreateMatchPostRequest>) => {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     mode: 'onTouched',
-    defaultValues: {
-      title: '자동 생성',
-      content: '자동 생성',
-      movieTitle: '',
-      theaterName: '상영관 미정',
-      showTime: '',
-      maxParticipants: 1,
-      location: '',
-    },
+    defaultValues: getMatchPostFormDefaults(initialData),
   })
 
   return {
@@ -66,10 +60,12 @@ export const useMatchPostFormContext = () => {
 
 export const MatchPostFormProvider = ({
   children,
+  initialData,
 }: {
   children: React.ReactNode
+  initialData?: Partial<CreateMatchPostRequest>
 }) => {
-  const { form } = useMatchPostForm()
+  const { form } = useMatchPostForm(initialData)
   return (
     <MatchPostFormContext.Provider
       value={{
