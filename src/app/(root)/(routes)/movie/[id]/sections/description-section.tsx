@@ -14,7 +14,8 @@ interface DescriptionSectionProps {
 const DescriptionSection: FunctionComponent<DescriptionSectionProps> = ({
   id,
 }) => {
-  const { data, isLoading, error } = useGetMovieDetail(id)
+  const { data, isLoading, error, mutate: refreshMovie } =
+    useGetMovieDetail(id)
   const { setOpen, setSrc, setTitle } = useVodModalContext()
 
   if (isLoading)
@@ -36,7 +37,11 @@ const DescriptionSection: FunctionComponent<DescriptionSectionProps> = ({
   return (
     <>
       <MovieVodModal />
-      <DmMovieDetail movie={data} onVodClick={handleVodClick} />
+      <DmMovieDetail
+        movie={data}
+        onVodClick={handleVodClick}
+        onScoreSaved={refreshMovie}
+      />
       <DirectorFilmographySection movie={data} />
     </>
   )

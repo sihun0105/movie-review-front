@@ -2,12 +2,14 @@
 
 import { useGetScore } from '@/app/(root)/(routes)/movie/[id]/hooks/use-get-score'
 import { useRouter } from 'next/navigation'
+import { refreshScoreViews } from './rating-input-refresh'
 
 interface RatingInputProps {
   movieCd: number
+  onScoreSaved?: () => unknown | Promise<unknown>
 }
 
-export function RatingInput({ movieCd }: RatingInputProps) {
+export function RatingInput({ movieCd, onScoreSaved }: RatingInputProps) {
   const { data, isAuthenticated, mutate } = useGetScore(movieCd)
   const router = useRouter()
   const myScore = data?.score ?? 0
@@ -28,7 +30,7 @@ export function RatingInput({ movieCd }: RatingInputProps) {
         body: JSON.stringify({ score }),
       })
       if (!res.ok) throw new Error('업데이트 실패')
-      mutate()
+      await refreshScoreViews(mutate, onScoreSaved)
     } catch {
       mutate()
     }

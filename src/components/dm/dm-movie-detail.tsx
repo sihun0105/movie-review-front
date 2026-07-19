@@ -14,6 +14,7 @@ interface DmMovieDetailProps {
   averageScore?: number | null
   scoreCount?: number | null
   onVodClick?: () => void
+  onScoreSaved?: () => unknown | Promise<unknown>
 }
 
 export function DmMovieDetail({
@@ -21,6 +22,7 @@ export function DmMovieDetail({
   averageScore,
   scoreCount,
   onVodClick,
+  onScoreSaved,
 }: DmMovieDetailProps) {
   const palette = paletteForMovie(movie.id, movie.title)
   const rating = averageScore ?? movie.averageScore ?? 0
@@ -89,7 +91,10 @@ export function DmMovieDetail({
           </div>
           <div className="h-full w-px self-stretch bg-border" aria-hidden />
           <div className="flex-1">
-            <RatingInput movieCd={Number(movie.id)} />
+            <RatingInput
+              movieCd={Number(movie.id)}
+              onScoreSaved={onScoreSaved}
+            />
           </div>
         </div>
 
