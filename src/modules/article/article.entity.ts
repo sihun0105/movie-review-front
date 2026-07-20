@@ -1,4 +1,16 @@
 import { Article, Reply } from '@/lib/type'
+
+export interface ArticleViewResult {
+  viewCount: number
+  counted: boolean
+}
+
+export const isArticleViewResult = (value: any): value is ArticleViewResult =>
+  value !== null &&
+  typeof value === 'object' &&
+  typeof value.viewCount === 'number' &&
+  typeof value.counted === 'boolean'
+
 export function isArticle(arg: any): arg is Article {
   return (
     arg !== null &&
@@ -10,7 +22,8 @@ export function isArticle(arg: any): arg is Article {
     typeof arg.userno === 'number' &&
     typeof arg.likeCount === 'number' &&
     typeof arg.dislikeCount === 'number' &&
-    typeof arg.commentCount === 'number'
+    typeof arg.commentCount === 'number' &&
+    typeof arg.viewCount === 'number'
   )
 }
 

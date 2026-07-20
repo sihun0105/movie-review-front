@@ -9,6 +9,7 @@ import { Pencil, Trash2 } from 'lucide-react'
 import { useDeleteArticle } from '../../new/hooks/use-delete-article'
 import { ModifyArticleModal } from '../components/modify-article-modal'
 import { useModifyArticleModalContext } from '../hooks/use-modify-article-context'
+import { ArticleViewCount } from '../components/article-view-count'
 
 interface ArticleDataSectionProps {
   data: Article
@@ -77,6 +78,8 @@ const ArticleDataSection: FunctionComponent<ArticleDataSectionProps> = ({
         <span>{data.author}</span>
         <span>·</span>
         <span>{dateStr}</span>
+        <span>·</span>
+        <ArticleViewCount articleId={data.id} initialCount={data.viewCount} />
       </div>
 
       <div className="mt-5 border-t border-border pt-5">

@@ -44,6 +44,7 @@ export class ArticleRepository {
       | 'likeCount'
       | 'dislikeCount'
       | 'commentCount'
+      | 'viewCount'
       | 'author'
       | 'userno'
       | 'createdAt'
@@ -74,6 +75,7 @@ export class ArticleRepository {
       likeCount: unknown.likeCount,
       dislikeCount: unknown.dislikeCount,
       commentCount: unknown.commentCount,
+      viewCount: unknown.viewCount,
       createdAt: unknown.createdAt,
       updatedAt: unknown.updatedAt,
       deletedAt: unknown.deletedAt,

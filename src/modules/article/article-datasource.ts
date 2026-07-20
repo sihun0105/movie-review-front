@@ -46,6 +46,7 @@ export class ArticleDatasource {
       | 'likeCount'
       | 'dislikeCount'
       | 'commentCount'
+      | 'viewCount'
       | 'author'
       | 'userno'
       | 'createdAt'
