@@ -3,6 +3,18 @@ import { NextRequest } from 'next/server'
 import { middleware } from './middleware'
 
 describe('article viewer middleware', () => {
+  it.each(['/articles', '/articles/new'])(
+    'keeps the public article route %s accessible',
+    (pathname) => {
+      const request = new NextRequest(`https://bollae.kr${pathname}`)
+
+      const response = middleware(request)
+
+      expect(response.status).toBe(200)
+      expect(response.headers.get('location')).toBeNull()
+    },
+  )
+
   it('sets the anonymous viewer cookie before rendering an article detail', () => {
     const request = new NextRequest('https://bollae.kr/articles/4')
 
