@@ -6,9 +6,10 @@ import {
 } from './lib/article-viewer-cookie'
 
 export function middleware(req: NextRequest) {
-  if (/^\/articles\/\d+$/.test(req.nextUrl.pathname)) {
+  if (req.nextUrl.pathname.startsWith('/articles')) {
     const response = NextResponse.next()
-    if (!req.cookies.has(ARTICLE_VIEWER_COOKIE)) {
+    const isArticleDetail = /^\/articles\/\d+$/.test(req.nextUrl.pathname)
+    if (isArticleDetail && !req.cookies.has(ARTICLE_VIEWER_COOKIE)) {
       response.cookies.set(
         ARTICLE_VIEWER_COOKIE,
         globalThis.crypto.randomUUID(),
