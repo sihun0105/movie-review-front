@@ -7,6 +7,7 @@ export interface Article {
   likeCount: number
   dislikeCount: number
   commentCount: number
+  viewCount: number
   createdAt: string
   updatedAt?: string
   deletedAt?: string

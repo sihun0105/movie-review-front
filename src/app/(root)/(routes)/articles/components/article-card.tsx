@@ -1,7 +1,7 @@
 'use client'
 
 import { Article } from '@/lib/type'
-import { MessageCircle, ThumbsDown, ThumbsUp } from 'lucide-react'
+import { Eye, MessageCircle, ThumbsDown, ThumbsUp } from 'lucide-react'
 import Link from 'next/link'
 import { FunctionComponent } from 'react'
 import { useArticleRead } from '../hooks/use-article-read'
@@ -35,10 +35,18 @@ const ArticleCard: FunctionComponent<ArticleCardProps> = ({ article }) => {
       </p>
 
       <div className="mt-2 flex items-center gap-3 font-mono text-[11px] text-muted-foreground">
-        <span>{article.author}</span>
-        <span>·</span>
-        <span>{new Date(article.createdAt).toLocaleDateString()}</span>
-        <div className="ml-auto flex items-center gap-3">
+        <div className="flex min-w-0 items-center gap-2 overflow-hidden">
+          <span className="truncate">{article.author}</span>
+          <span>·</span>
+          <span className="shrink-0">
+            {new Date(article.createdAt).toLocaleDateString()}
+          </span>
+        </div>
+        <div className="ml-auto flex shrink-0 items-center gap-2.5">
+          <span className="flex items-center gap-1">
+            <Eye className="h-3 w-3" />
+            {article.viewCount}
+          </span>
           <span className="flex items-center gap-1">
             <ThumbsUp className="h-3 w-3" />
             {article.likeCount}

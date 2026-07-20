@@ -1,7 +1,29 @@
 import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
+import {
+  ARTICLE_VIEWER_COOKIE,
+  ARTICLE_VIEWER_COOKIE_MAX_AGE,
+} from './lib/article-viewer-cookie'
 
 export function middleware(req: NextRequest) {
+  if (/^\/articles\/\d+$/.test(req.nextUrl.pathname)) {
+    const response = NextResponse.next()
+    if (!req.cookies.has(ARTICLE_VIEWER_COOKIE)) {
+      response.cookies.set(
+        ARTICLE_VIEWER_COOKIE,
+        globalThis.crypto.randomUUID(),
+        {
+          httpOnly: true,
+          maxAge: ARTICLE_VIEWER_COOKIE_MAX_AGE,
+          path: '/',
+          sameSite: 'lax',
+          secure: req.nextUrl.protocol === 'https:',
+        },
+      )
+    }
+    return response
+  }
+
   // NextAuth 세션 쿠키 존재만 확인 (JWT 검증은 API 레벨에서 이미 수행됨)
   // HTTP/HTTPS 양쪽 쿠키 이름 모두 체크
   const token =
@@ -22,5 +44,5 @@ export function middleware(req: NextRequest) {
 }
 
 export const config = {
-  matcher: ['/account/:path*', '/analytics', '/match/new'],
+  matcher: ['/account/:path*', '/analytics', '/match/new', '/articles/:path*'],
 }

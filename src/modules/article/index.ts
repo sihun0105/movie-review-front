@@ -1,3 +1,5 @@
 export * from './article.entity'
 export * from './article-datasource'
 export * from './article-repository'
+export * from './article-view-datasource'
+export * from './article-view-repository'
