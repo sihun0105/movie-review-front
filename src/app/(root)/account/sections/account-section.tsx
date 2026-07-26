@@ -11,7 +11,6 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from '@/components/ui/alert-dialog'
-import { AppPath } from '@/config/app-path'
 import { signOut } from 'next-auth/react'
 import Link from 'next/link'
 import { FunctionComponent, useState } from 'react'
@@ -28,29 +27,48 @@ function MenuRow({ item, isLast }: { item: MenuItem; isLast: boolean }) {
     <div
       className={`flex w-full items-center px-4 py-3.5 text-left transition-colors hover:bg-accent ${!isLast ? 'border-b border-border' : ''}`}
     >
-      <span className={`text-[14px] ${item.destructive ? 'text-destructive' : 'text-foreground'}`}>
+      <span
+        className={`text-[14px] ${item.destructive ? 'text-destructive' : 'text-foreground'}`}
+      >
         {item.label}
       </span>
       {!item.destructive && (
         <svg
-          width="7" height="12" viewBox="0 0 8 14"
-          aria-hidden className="ml-auto text-muted-foreground"
+          width="7"
+          height="12"
+          viewBox="0 0 8 14"
+          aria-hidden
+          className="ml-auto text-muted-foreground"
         >
-          <path d="M1 1l6 6-6 6" stroke="currentColor" strokeWidth="1.5" fill="none" strokeLinecap="round" strokeLinejoin="round" />
+          <path
+            d="M1 1l6 6-6 6"
+            stroke="currentColor"
+            strokeWidth="1.5"
+            fill="none"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
         </svg>
       )}
     </div>
   )
   if (item.href) return <Link href={item.href}>{inner}</Link>
-  return <button type="button" onClick={item.onClick} className="block w-full">{inner}</button>
+  return (
+    <button type="button" onClick={item.onClick} className="block w-full">
+      {inner}
+    </button>
+  )
 }
 
 const AccountSection: FunctionComponent = () => {
   const [isDeleting, setIsDeleting] = useState(false)
   const items: MenuItem[] = [
     { label: '내 매칭', href: '/match/my-matches' },
-    { label: '알림 설정', href: AppPath.settings() },
-    { label: '로그아웃', onClick: () => signOut({ callbackUrl: '/' }), destructive: true },
+    {
+      label: '로그아웃',
+      onClick: () => signOut({ callbackUrl: '/' }),
+      destructive: true,
+    },
   ]
 
   const handleDeleteAccount = async () => {
@@ -74,12 +92,16 @@ const AccountSection: FunctionComponent = () => {
   return (
     <section>
       <div className="flex items-center border-b border-border px-4 py-3.5">
-        <h1 className="text-[18px] font-bold tracking-tight text-foreground">계정</h1>
+        <h1 className="text-[18px] font-bold tracking-tight text-foreground">
+          계정
+        </h1>
       </div>
 
       <div className="px-4 pt-4">
-        <p className="mb-2 font-mono text-[11px] uppercase tracking-wider text-muted-foreground">활동</p>
-        <div className="rounded-lg border border-border bg-card overflow-hidden">
+        <p className="mb-2 font-mono text-[11px] uppercase tracking-wider text-muted-foreground">
+          활동
+        </p>
+        <div className="overflow-hidden rounded-lg border border-border bg-card">
           {items.map((it, i) => (
             <MenuRow key={it.label} item={it} isLast={i === items.length - 1} />
           ))}
@@ -87,8 +109,10 @@ const AccountSection: FunctionComponent = () => {
       </div>
 
       <div className="px-4 pt-4">
-        <p className="mb-2 font-mono text-[11px] uppercase tracking-wider text-muted-foreground">계정 관리</p>
-        <div className="rounded-lg border border-border bg-card overflow-hidden">
+        <p className="mb-2 font-mono text-[11px] uppercase tracking-wider text-muted-foreground">
+          계정 관리
+        </p>
+        <div className="overflow-hidden rounded-lg border border-border bg-card">
           <AlertDialog>
             <AlertDialogTrigger asChild>
               <button
@@ -106,7 +130,9 @@ const AccountSection: FunctionComponent = () => {
                 </AlertDialogDescription>
               </AlertDialogHeader>
               <AlertDialogFooter>
-                <AlertDialogCancel disabled={isDeleting}>취소</AlertDialogCancel>
+                <AlertDialogCancel disabled={isDeleting}>
+                  취소
+                </AlertDialogCancel>
                 <AlertDialogAction
                   disabled={isDeleting}
                   onClick={(event) => {
