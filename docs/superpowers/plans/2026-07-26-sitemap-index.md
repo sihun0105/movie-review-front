@@ -97,4 +97,3 @@ wait for the deployment workflow.
 
 Confirm the root response is a sitemap index and every listed child sitemap
 returns valid XML containing expected production URLs.
-

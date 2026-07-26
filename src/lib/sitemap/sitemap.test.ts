@@ -102,4 +102,3 @@ describe('sitemap helpers', () => {
     expect(parseSitemapPage('abc')).toBeNull()
   })
 })
-

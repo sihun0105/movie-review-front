@@ -43,4 +43,3 @@ plain numeric final segment.
 - Verify article, match, movie, and static URL field mapping.
 - Verify the sitemap index contains every discovered child page.
 - Run the full test suite, lint, production build, and 200-line checks.
-

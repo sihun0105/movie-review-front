@@ -25,4 +25,3 @@ export async function GET(_request: Request, { params }: RouteContext) {
     'Cache-Control': 'public, s-maxage=3600, stale-while-revalidate=86400',
   })
 }
-
