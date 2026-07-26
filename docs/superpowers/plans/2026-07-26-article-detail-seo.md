@@ -83,49 +83,26 @@ git commit -m "✨ 아티클 상세 SEO 빌더 추가"
 
 **Files:**
 - Modify: `src/app/(root)/(routes)/articles/[id]/page.tsx`
-- Create: `src/app/(root)/(routes)/articles/[id]/page-seo.test.ts`
 
 **Interfaces:**
 - Consumes: the three SEO builder exports from Task 1
 - Produces: Next.js `generateMetadata` and two JSON-LD script elements
 
-- [ ] **Step 1: Write a failing integration contract test**
-
-Assert the page source contains:
-
-```ts
-expect(source).toContain('export async function generateMetadata')
-expect(source).toContain('application/ld+json')
-expect(source).toContain('buildArticleJsonLd')
-```
-
-- [ ] **Step 2: Run the integration test and verify RED**
-
-Run:
-
-```bash
-pnpm exec vitest run 'src/app/(root)/(routes)/articles/[id]/page-seo.test.ts'
-```
-
-Expected: FAIL because the page does not export dynamic metadata or JSON-LD.
-
-- [ ] **Step 3: Integrate metadata and JSON-LD**
+- [ ] **Step 1: Integrate metadata and JSON-LD**
 
 Wrap the repository lookup with React `cache()`. Export `generateMetadata`, keep
 `notFound()` for missing article rendering, and render both `BlogPosting` and
 `BreadcrumbList` objects through escaped JSON-LD script elements.
 
-- [ ] **Step 4: Run all article SEO tests**
+- [ ] **Step 2: Run the article SEO tests**
 
 ```bash
-pnpm exec vitest run \
-  'src/app/(root)/(routes)/articles/[id]/seo.test.ts' \
-  'src/app/(root)/(routes)/articles/[id]/page-seo.test.ts'
+pnpm exec vitest run 'src/app/(root)/(routes)/articles/[id]/seo.test.ts'
 ```
 
 Expected: all tests pass.
 
-- [ ] **Step 5: Run project verification**
+- [ ] **Step 3: Run project verification**
 
 ```bash
 pnpm lint
@@ -134,17 +111,16 @@ NEXTAUTH_SECRET=test \
 GOOGLE_CLIENT_ID=test \
 GOOGLE_CLIENT_SECRET=test \
 pnpm build
-wc -l src/app/\(root\)/\(routes\)/articles/\[id\]/{page.tsx,seo.ts,seo.test.ts,page-seo.test.ts}
+wc -l src/app/\(root\)/\(routes\)/articles/\[id\]/{page.tsx,seo.ts,seo.test.ts}
 git diff --check
 ```
 
 Expected: tests, lint, and build exit 0; all listed files are at most 200 lines.
 
-- [ ] **Step 6: Commit**
+- [ ] **Step 4: Commit**
 
 ```bash
-git add src/app/\(root\)/\(routes\)/articles/\[id\]/page.tsx \
-  src/app/\(root\)/\(routes\)/articles/\[id\]/page-seo.test.ts
+git add src/app/\(root\)/\(routes\)/articles/\[id\]/page.tsx
 git commit -m "✨ 아티클 상세 동적 SEO 적용"
 ```
 
