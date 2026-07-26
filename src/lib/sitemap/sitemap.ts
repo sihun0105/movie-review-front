@@ -91,6 +91,11 @@ export function buildStaticFields(): ISitemapField[] {
       changefreq: 'daily',
       priority: 0.7,
     },
+    {
+      loc: `${SITE_URL}/chat/public`,
+      changefreq: 'daily',
+      priority: 0.6,
+    },
   ]
 }
 
