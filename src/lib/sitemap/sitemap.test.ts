@@ -95,6 +95,7 @@ describe('sitemap helpers', () => {
       'https://bollae.kr/',
       'https://bollae.kr/articles',
       'https://bollae.kr/match',
+      'https://bollae.kr/chat/public',
     ])
     expect(parseSitemapPage('2')).toBe(2)
     expect(parseSitemapPage('0')).toBeNull()
