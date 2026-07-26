@@ -23,3 +23,14 @@ describe('article view count UI', () => {
     expect(detail).toContain('initialCount={data.viewCount}')
   })
 })
+
+describe('article comment layout', () => {
+  it('keeps the comment form in the document flow', () => {
+    const activeSection = read('./[id]/sections/active-section.tsx')
+    const detailPage = read('./[id]/page.tsx')
+
+    expect(activeSection).not.toContain("'fixed bottom-")
+    expect(activeSection).toContain("'mt-4 border-t")
+    expect(detailPage).not.toContain('pb-[140px]')
+  })
+})

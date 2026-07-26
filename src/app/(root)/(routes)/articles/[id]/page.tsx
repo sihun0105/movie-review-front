@@ -51,7 +51,7 @@ const Page: FunctionComponent<PageProps> = async ({ params: { id } }) => {
           dangerouslySetInnerHTML={{ __html: serializeJsonLd(value) }}
         />
       ))}
-      <div className="relative flex flex-col bg-background pb-[140px] lg:pb-6 text-foreground">
+      <div className="relative flex flex-col bg-background pb-6 text-foreground">
         <ModifyCommentModalContextProvider>
           <ModifyArticleModalContextProvider>
             <ArticleDataSection data={data} />
