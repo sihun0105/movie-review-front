@@ -17,13 +17,15 @@ describe('account community summary', () => {
     expect(section).toContain('받은 좋아요')
   })
 
-  it('uses a one-line four-column activity navigation without a heading', () => {
+  it('uses a one-line tab navigation with a restrained active state', () => {
     const section = read('./sections/community-summary-section.tsx')
     const navigation = read('./components/activity/activity-summary-nav.tsx')
 
     expect(section).not.toContain('나의 커뮤니티')
     expect(navigation).toContain('grid-cols-4')
     expect(navigation).toContain('aria-pressed')
+    expect(navigation).toContain('border-b-2')
+    expect(navigation).not.toContain('bg-foreground text-background')
   })
 
   it('renders linked activity rows and delete controls', () => {
@@ -32,9 +34,23 @@ describe('account community summary', () => {
 
     expect(item).toContain('/articles/${item.articleId}')
     expect(item).toContain('/movie/${item.movieCd}')
+    expect(item).toContain("item.targetType === 'movie'")
+    expect(item).toContain('targetTitle')
+    expect(item).toContain('Poster')
+    expect(item).not.toContain("from 'next/image'")
+    expect(item).toContain('좋아요 {item.likeCount}')
+    expect(item).toContain('rounded-full')
     expect(item).toContain('삭제')
     expect(panel).toContain('ActivityDeleteDialog')
     expect(panel).toContain('더 보기')
+  })
+
+  it('uses a responsive profile rail and activity workspace', () => {
+    const page = read('./page.tsx')
+
+    expect(page).toContain('xl:grid-cols-[200px_minmax(0,1fr)]')
+    expect(page).toContain('<aside')
+    expect(page).toContain('<section')
   })
 
   it('loads the summary through an authenticated BFF route', () => {

@@ -10,8 +10,9 @@ export type UserActivityType = 'comments' | 'ratings' | 'articles' | 'likes'
 export interface CommentActivity {
   type: 'comment'
   id: number
-  articleId: number
-  articleTitle: string
+  targetType: 'movie' | 'article'
+  targetId: number
+  targetTitle: string
   content: string
   createdAt: string
 }

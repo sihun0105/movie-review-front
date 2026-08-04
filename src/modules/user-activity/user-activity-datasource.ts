@@ -33,7 +33,7 @@ export class UserActivityDatasource {
   async deleteItem(item: DeletableActivityItem): Promise<void> {
     if (item.type === 'rating') return this.deleteRating(item.movieCd)
     if (item.type === 'article') return this.deleteArticle(item.articleId)
-    return this.deleteComment(item.id)
+    return this.deleteComment(item.id, item.targetType)
   }
 
   async deleteRating(movieCd: number): Promise<void> {
@@ -52,11 +52,16 @@ export class UserActivityDatasource {
     if (!response.ok) throw new UserActivityRequestError(response.status)
   }
 
-  private async deleteComment(commentId: number): Promise<void> {
+  private async deleteComment(
+    commentId: number,
+    targetType: 'movie' | 'article',
+  ): Promise<void> {
     const form = new FormData()
     form.set('commentId', String(commentId))
     const response = await fetch(
-      UserActivityClientApiEndpoint.deleteComment(commentId),
+      targetType === 'movie'
+        ? UserActivityClientApiEndpoint.deleteMovieComment(commentId)
+        : UserActivityClientApiEndpoint.deleteComment(commentId),
       { method: 'DELETE', body: form },
     )
     if (!response.ok) throw new UserActivityRequestError(response.status)

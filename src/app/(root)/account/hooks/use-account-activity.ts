@@ -33,6 +33,7 @@ export function useAccountActivity(
 
   const items = data?.flatMap((page) => page.items) ?? []
   const hasNext = data?.[data.length - 1]?.hasNext ?? false
+  const totalCount = data?.[0]?.totalCount ?? 0
   const isLoadingMore = isLoading || (size > 0 && !data?.[size - 1])
 
   const deleteItem = async () => {
@@ -57,6 +58,7 @@ export function useAccountActivity(
     isLoading,
     isLoadingMore,
     hasNext,
+    totalCount,
     deleteTarget,
     deleteError,
     isDeleting,
