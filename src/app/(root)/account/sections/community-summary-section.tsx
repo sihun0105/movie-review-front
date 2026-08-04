@@ -15,7 +15,7 @@ import ActivitySummaryNav from '../components/activity/activity-summary-nav'
 const repository = new UserActivityRepository()
 
 export default function CommunitySummarySection() {
-  const [selected, setSelected] = useState<UserActivityType | null>(null)
+  const [selected, setSelected] = useState<UserActivityType>('comments')
   const { data, error, isLoading, mutate } = useSWR(
     'account-community-summary',
     () => repository.getSummary(),
@@ -25,12 +25,17 @@ export default function CommunitySummarySection() {
     error instanceof UserActivityRequestError && error.status === 401
 
   return (
-    <section className="py-5">
+    <div className="bg-background xl:overflow-hidden xl:rounded-lg xl:border xl:border-border">
+      <div className="border-b border-border px-4 py-4 sm:px-5">
+        <h1 className="text-[20px] font-bold tracking-tight text-foreground">
+          활동 기록
+        </h1>
+      </div>
       <ActivitySummaryNav
         summary={error ? undefined : data}
         selected={selected}
         isLoading={isLoading}
-        onSelect={(type) => setSelected(selected === type ? null : type)}
+        onSelect={setSelected}
       />
       {error && (
         <div
@@ -62,9 +67,7 @@ export default function CommunitySummarySection() {
           )}
         </div>
       )}
-      {selected && (
-        <ActivityListPanel type={selected} onDeleted={() => mutate()} />
-      )}
-    </section>
+      <ActivityListPanel type={selected} onDeleted={() => mutate()} />
+    </div>
   )
 }

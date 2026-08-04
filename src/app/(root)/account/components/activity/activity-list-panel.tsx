@@ -15,6 +15,13 @@ const emptyMessages: Record<UserActivityType, string> = {
   likes: '아직 받은 좋아요가 없어요.',
 }
 
+const titles: Record<UserActivityType, string> = {
+  comments: '내가 쓴 댓글',
+  ratings: '내 영화 평가',
+  articles: '내 게시글',
+  likes: '좋아요 받은 게시글',
+}
+
 interface Props {
   type: UserActivityType
   onDeleted: () => void
@@ -24,7 +31,15 @@ export default function ActivityListPanel({ type, onDeleted }: Props) {
   const activity = useAccountActivity(type, onDeleted)
 
   return (
-    <div className="border-b border-border bg-card">
+    <div className="bg-background">
+      <div className="flex items-end justify-between border-b border-border px-4 py-4 sm:px-5">
+        <h2 className="text-[17px] font-bold text-foreground">
+          {titles[type]}
+        </h2>
+        <span className="font-mono text-[12px] text-muted-foreground">
+          {activity.totalCount.toLocaleString('ko-KR')}개
+        </span>
+      </div>
       {activity.isLoading ? (
         <div className="space-y-3 px-4 py-4">
           {[0, 1, 2].map((item) => (
@@ -51,12 +66,12 @@ export default function ActivityListPanel({ type, onDeleted }: Props) {
           {emptyMessages[type]}
         </p>
       ) : (
-        <div>
+        <div className="px-4 sm:px-5">
           {activity.items.map((item) => (
             <ActivityListItem
               key={
                 item.type === 'comment'
-                  ? `comment-${item.id}`
+                  ? `comment-${item.targetType}-${item.id}`
                   : item.type === 'rating'
                     ? `rating-${item.movieCd}`
                     : `${item.type}-${item.articleId}`

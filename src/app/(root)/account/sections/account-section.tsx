@@ -14,41 +14,32 @@ import {
 import { signOut } from 'next-auth/react'
 import Link from 'next/link'
 import { FunctionComponent, useState } from 'react'
+import { ChevronRight, Clapperboard, LogOut } from 'lucide-react'
 
 interface MenuItem {
   label: string
   href?: string
   onClick?: () => void
   destructive?: boolean
+  icon: typeof Clapperboard
 }
 
 function MenuRow({ item, isLast }: { item: MenuItem; isLast: boolean }) {
+  const Icon = item.icon
   const inner = (
     <div
       className={`flex w-full items-center px-4 py-3.5 text-left transition-colors hover:bg-accent ${!isLast ? 'border-b border-border' : ''}`}
     >
+      <Icon
+        className={`mr-3 h-4 w-4 ${item.destructive ? 'text-destructive' : 'text-muted-foreground'}`}
+      />
       <span
         className={`text-[14px] ${item.destructive ? 'text-destructive' : 'text-foreground'}`}
       >
         {item.label}
       </span>
       {!item.destructive && (
-        <svg
-          width="7"
-          height="12"
-          viewBox="0 0 8 14"
-          aria-hidden
-          className="ml-auto text-muted-foreground"
-        >
-          <path
-            d="M1 1l6 6-6 6"
-            stroke="currentColor"
-            strokeWidth="1.5"
-            fill="none"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          />
-        </svg>
+        <ChevronRight className="ml-auto h-4 w-4 text-muted-foreground" />
       )}
     </div>
   )
@@ -63,11 +54,12 @@ function MenuRow({ item, isLast }: { item: MenuItem; isLast: boolean }) {
 const AccountSection: FunctionComponent = () => {
   const [isDeleting, setIsDeleting] = useState(false)
   const items: MenuItem[] = [
-    { label: '내 매칭', href: '/match/my-matches' },
+    { label: '내 매칭', href: '/match/my-matches', icon: Clapperboard },
     {
       label: '로그아웃',
       onClick: () => signOut({ callbackUrl: '/' }),
       destructive: true,
+      icon: LogOut,
     },
   ]
 
@@ -90,29 +82,23 @@ const AccountSection: FunctionComponent = () => {
   }
 
   return (
-    <section>
-      <div className="flex items-center border-b border-border px-4 py-3.5">
-        <h1 className="text-[18px] font-bold tracking-tight text-foreground">
-          계정
-        </h1>
-      </div>
-
-      <div className="px-4 pt-4">
+    <section className="border-t border-border px-4 py-5 xl:mt-6 xl:px-0">
+      <div>
         <p className="mb-2 font-mono text-[11px] uppercase tracking-wider text-muted-foreground">
-          활동
+          바로가기
         </p>
-        <div className="overflow-hidden rounded-lg border border-border bg-card">
+        <div className="overflow-hidden border-y border-border bg-background">
           {items.map((it, i) => (
             <MenuRow key={it.label} item={it} isLast={i === items.length - 1} />
           ))}
         </div>
       </div>
 
-      <div className="px-4 pt-4">
+      <div className="pt-5">
         <p className="mb-2 font-mono text-[11px] uppercase tracking-wider text-muted-foreground">
           계정 관리
         </p>
-        <div className="overflow-hidden rounded-lg border border-border bg-card">
+        <div className="overflow-hidden border-y border-border bg-background">
           <AlertDialog>
             <AlertDialogTrigger asChild>
               <button

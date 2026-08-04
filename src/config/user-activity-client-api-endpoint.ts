@@ -3,6 +3,7 @@ export const UserActivityClientApiEndpoint = {
   getActivity: (type: string, page: number, pageSize = 10) =>
     `/api/user/activity/${type}?page=${page}&pageSize=${pageSize}`,
   deleteRating: (movieCd: number) => `/api/user/activity/ratings/${movieCd}`,
+  deleteMovieComment: (commentId: number) => `/api/comment/${commentId}`,
   deleteComment: (commentId: number) => `/api/article/comment/${commentId}`,
   deleteArticle: (articleId: number) => `/api/article/${articleId}`,
 }
