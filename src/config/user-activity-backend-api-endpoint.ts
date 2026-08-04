@@ -5,4 +5,7 @@ const base =
 
 export const UserActivityBackEndApiEndpoint = {
   getSummary: () => `${base}/user/activity-summary`,
+  getActivity: (type: string, page: string, pageSize: string) =>
+    `${base}/user/activity/${type}?page=${page}&pageSize=${pageSize}`,
+  deleteRating: (movieCd: string) => `${base}/user/activity/ratings/${movieCd}`,
 }

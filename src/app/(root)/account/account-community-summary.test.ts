@@ -8,13 +8,33 @@ const read = (relativePath: string) =>
 describe('account community summary', () => {
   it('shows the four useful community activity metrics', () => {
     const page = read('./page.tsx')
-    const section = read('./sections/community-summary-section.tsx')
+    const section = read('./components/activity/activity-summary-nav.tsx')
 
     expect(page).toContain('<CommunitySummarySection />')
     expect(section).toContain('작성 댓글')
     expect(section).toContain('영화 평가')
     expect(section).toContain('작성 게시글')
     expect(section).toContain('받은 좋아요')
+  })
+
+  it('uses a one-line four-column activity navigation without a heading', () => {
+    const section = read('./sections/community-summary-section.tsx')
+    const navigation = read('./components/activity/activity-summary-nav.tsx')
+
+    expect(section).not.toContain('나의 커뮤니티')
+    expect(navigation).toContain('grid-cols-4')
+    expect(navigation).toContain('aria-pressed')
+  })
+
+  it('renders linked activity rows and delete controls', () => {
+    const item = read('./components/activity/activity-list-item.tsx')
+    const panel = read('./components/activity/activity-list-panel.tsx')
+
+    expect(item).toContain('/articles/${item.articleId}')
+    expect(item).toContain('/movie/${item.movieCd}')
+    expect(item).toContain('삭제')
+    expect(panel).toContain('ActivityDeleteDialog')
+    expect(panel).toContain('더 보기')
   })
 
   it('loads the summary through an authenticated BFF route', () => {
