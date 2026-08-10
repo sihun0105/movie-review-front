@@ -1,5 +1,5 @@
 import type { Article, MatchPost } from '@/lib/type'
-import type { Movie } from '@/modules/movie/movie.entity'
+import type { MovieSitemapEntry } from '@/modules/movie/movie-sitemap-datasource'
 import type { ISitemapField } from 'next-sitemap'
 
 export const SITE_URL = 'https://bollae.kr'
@@ -40,9 +40,7 @@ export function buildIndexUrls(
   return [
     `${SITE_URL}/sitemaps/static.xml`,
     `${SITE_URL}/sitemaps/movies.xml`,
-    ...articlePages.map(
-      (page) => `${SITE_URL}/sitemaps/articles/${page}`,
-    ),
+    ...articlePages.map((page) => `${SITE_URL}/sitemaps/articles/${page}`),
     ...matchPages.map((page) => `${SITE_URL}/sitemaps/matches/${page}`),
   ]
 }
@@ -65,10 +63,10 @@ export function buildMatchFields(matches: MatchPost[]): ISitemapField[] {
   }))
 }
 
-export function buildMovieFields(movies: Movie[]): ISitemapField[] {
+export function buildMovieFields(movies: MovieSitemapEntry[]): ISitemapField[] {
   return movies.map((movie) => ({
-    loc: `${SITE_URL}/movie/${movie.id}`,
-    lastmod: movie.updatedAt.toISOString(),
+    loc: `${SITE_URL}/movie/${movie.movieCd}`,
+    lastmod: movie.updatedAt,
     changefreq: 'daily',
     priority: 0.8,
   }))

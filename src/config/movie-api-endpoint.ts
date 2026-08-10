@@ -7,12 +7,9 @@ const serverBase =
 
 export const MovieBackEndApiEndpoint = {
   getMovie: () => `${serverBase}/movie`,
+  getMovieSitemapEntries: () => `${serverBase}/movie/sitemap`,
   getMovieDetail: (movieCd: string) => `${serverBase}/movie/${movieCd}`,
-  getMoviesByDirector: (
-    name: string,
-    excludeMovieCd: number,
-    limit: number,
-  ) =>
+  getMoviesByDirector: (name: string, excludeMovieCd: number, limit: number) =>
     queryString.stringifyUrl(
       {
         url: `${serverBase}/movie/director`,
@@ -40,11 +37,7 @@ export const MovieClientApiEndpoint = {
       },
       { skipEmptyString: true, skipNull: true },
     ),
-  getMoviesByDirector: (
-    name: string,
-    excludeMovieCd: number,
-    limit: number,
-  ) =>
+  getMoviesByDirector: (name: string, excludeMovieCd: number, limit: number) =>
     queryString.stringifyUrl(
       {
         url: '/api/movie/director',
