@@ -45,9 +45,11 @@ const getKey =
 export const useMatchPosts = (
   pageSize: number = 10,
   query: MatchPostQuery = {},
+  initialPage: number = 1,
 ) => {
   const { data, setSize, mutate, error, isLoading, isValidating } =
     useSWRInfinite<MatchPostResponse>(getKey(pageSize, query), fetcher, {
+      initialSize: initialPage,
       refreshInterval: 30000, // 30초마다 새로고침
       revalidateOnFocus: true,
     })
