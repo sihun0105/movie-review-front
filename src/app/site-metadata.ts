@@ -48,7 +48,8 @@ export const siteMetadata: Metadata = {
   twitter: {
     card: 'summary_large_image',
     title: '볼래 | 같이 볼 사람을 찾는 영화 매칭',
-    description: '볼래에서 오늘 같이 볼 사람을 찾고, 최신 영화 리뷰와 평점을 확인하세요.',
+    description:
+      '볼래에서 오늘 같이 볼 사람을 찾고, 최신 영화 리뷰와 평점을 확인하세요.',
     images: ['/images/og-image.png'],
   },
   viewport: {
@@ -67,15 +68,8 @@ export const siteJsonLd = {
   name: '볼래',
   alternateName: ['bollae', '같이 볼래'],
   url: SITE_URL,
-  description: '볼래에서 오늘 같이 볼 사람을 찾고, 최신 영화 리뷰와 평점을 확인하세요.',
-  potentialAction: {
-    '@type': 'SearchAction',
-    target: {
-      '@type': 'EntryPoint',
-      urlTemplate: `${SITE_URL}/search?q={search_term_string}`,
-    },
-    'query-input': 'required name=search_term_string',
-  },
+  description:
+    '볼래에서 오늘 같이 볼 사람을 찾고, 최신 영화 리뷰와 평점을 확인하세요.',
   mainEntity: {
     '@type': 'Organization',
     name: '볼래',
