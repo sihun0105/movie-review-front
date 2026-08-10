@@ -2,12 +2,16 @@
 
 import { useState } from 'react'
 import { useSession } from 'next-auth/react'
-import { useRouter } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation'
 import { useToast } from '@/hooks/use-toast'
 import { useMatchPosts } from '../hooks'
 import type { MatchPostFilter } from '../hooks'
 import { MatchHeaderSection } from '../sections/match-header-section'
 import { MatchListSection } from '../sections/match-list-section'
+import {
+  buildMatchFilterHref,
+  getMatchPostFilter,
+} from '../match-filter-url'
 
 interface MatchContainerProps {
   movieTitle?: string
@@ -17,8 +21,9 @@ export const MatchContainer = ({ movieTitle }: MatchContainerProps) => {
   const { data: session, status } = useSession()
   const userId = session?.user?.id ? Number(session.user.id) : null
   const router = useRouter()
+  const searchParams = useSearchParams()
   const { toast } = useToast()
-  const [filter, setFilter] = useState<MatchPostFilter>('all')
+  const filter = getMatchPostFilter(searchParams?.get('filter') ?? null)
   const [showApplyDialog, setShowApplyDialog] = useState(false)
   const [selectedMatch, setSelectedMatch] = useState<any>(null)
 
@@ -91,6 +96,11 @@ export const MatchContainer = ({ movieTitle }: MatchContainerProps) => {
     }
   }
 
+  const handleFilterChange = (nextFilter: MatchPostFilter) => {
+    const params = new URLSearchParams(searchParams?.toString() ?? '')
+    router.push(buildMatchFilterHref(params, nextFilter), { scroll: false })
+  }
+
   return (
     <>
       <MatchHeaderSection movieTitle={movieTitle} />
@@ -101,7 +111,7 @@ export const MatchContainer = ({ movieTitle }: MatchContainerProps) => {
         hasMore={hasMore}
         loadMore={loadMore}
         filter={filter}
-        onFilterChange={setFilter}
+        onFilterChange={handleFilterChange}
         selectedMatch={selectedMatch}
         showApplyDialog={showApplyDialog}
         onApply={handleApply}
