@@ -69,6 +69,15 @@ export class MovieRepository {
       commentCount: unknown.commentCount,
       scoreCount: unknown.scoreCount,
       averageScore: unknown.averageScore,
+      actors: Array.isArray(unknown.actors)
+        ? unknown.actors.map((actor: any) => ({
+            id: Number(actor.id),
+            name: String(actor.name ?? ''),
+            character: String(actor.character ?? ''),
+            profileUrl: String(actor.profileUrl ?? ''),
+            sortOrder: Number(actor.sortOrder) || 0,
+          }))
+        : [],
     } as Movie
     assertMovie(result)
     return result
