@@ -1,12 +1,15 @@
 'use client'
 
 import { FunctionComponent, useEffect, useRef, useCallback } from 'react'
+import Link from 'next/link'
 import { DmMatchTicket } from '@/components/dm'
 import { MatchApplyDialog } from '@/components/app/match-apply-dialog'
 import { cn, getMatchScheduleStatus } from '@/lib/utils'
 import type { MatchPostFilter } from '../hooks'
+import { buildNewMatchHref } from '../match-navigation'
 
 interface MatchListSectionProps {
+  movieTitle?: string
   matchPosts: any[]
   isLoading: boolean
   hasMore: boolean
@@ -28,6 +31,7 @@ const FILTERS: { key: MatchPostFilter; label: string }[] = [
 ]
 
 const MatchListSection: FunctionComponent<MatchListSectionProps> = ({
+  movieTitle,
   matchPosts,
   isLoading,
   hasMore,
@@ -112,6 +116,12 @@ const MatchListSection: FunctionComponent<MatchListSectionProps> = ({
         <div className="py-12 text-center text-muted-foreground">
           <p className="text-[14px]">{emptyTitle}</p>
           <p className="mt-1 text-[12px]">{emptySub}</p>
+          <Link
+            href={buildNewMatchHref(movieTitle)}
+            className="mt-5 inline-flex h-10 items-center rounded-md bg-primary px-5 text-[13px] font-medium text-primary-foreground"
+          >
+            매치 만들기
+          </Link>
         </div>
       ) : (
         <div className="flex flex-col gap-3 px-4 py-2">

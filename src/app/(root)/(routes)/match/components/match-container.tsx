@@ -106,6 +106,7 @@ export const MatchContainer = ({ movieTitle }: MatchContainerProps) => {
       <MatchHeaderSection movieTitle={movieTitle} />
 
       <MatchListSection
+        movieTitle={movieTitle}
         matchPosts={matchPosts}
         isLoading={isLoadingPosts}
         hasMore={hasMore}
