@@ -82,7 +82,7 @@ const AccountSection: FunctionComponent = () => {
   }
 
   return (
-    <section className="border-t border-border px-4 py-5 xl:mt-6 xl:px-0">
+    <section className="grid gap-5 border-t border-border px-4 py-5 xl:grid-cols-2 xl:px-0 xl:pt-6">
       <div>
         <p className="mb-2 font-mono text-[11px] uppercase tracking-wider text-muted-foreground">
           바로가기
@@ -94,7 +94,7 @@ const AccountSection: FunctionComponent = () => {
         </div>
       </div>
 
-      <div className="pt-5">
+      <div>
         <p className="mb-2 font-mono text-[11px] uppercase tracking-wider text-muted-foreground">
           계정 관리
         </p>
