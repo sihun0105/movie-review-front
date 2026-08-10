@@ -76,10 +76,10 @@ describe('sitemap helpers', () => {
     expect(
       buildMovieFields([
         {
-          id: 20259946,
-          updatedAt: new Date('2026-07-04T00:00:00.000Z'),
+          movieCd: 20259946,
+          updatedAt: '2026-07-04T00:00:00.000Z',
         },
-      ] as any),
+      ]),
     ).toEqual([
       {
         loc: 'https://bollae.kr/movie/20259946',
