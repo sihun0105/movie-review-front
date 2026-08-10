@@ -18,6 +18,14 @@ export interface Movie {
   commentCount?: number
   scoreCount?: number
   averageScore?: number
+  actors: MovieActor[]
+}
+export type MovieActor = {
+  id: number
+  name: string
+  character: string
+  profileUrl: string
+  sortOrder: number
 }
 export type MovieVod = {
   id: number
@@ -45,6 +53,7 @@ export function isMovie(arg: any): arg is Movie {
     typeof arg.genre === 'string' &&
     typeof arg.director === 'string' &&
     typeof arg.ratting === 'string' &&
+    Array.isArray(arg.actors) &&
     (typeof arg.commentCount === 'number' || arg.commentCount === undefined) &&
     (typeof arg.scoreCount === 'number' || arg.scoreCount === undefined) &&
     (typeof arg.averageScore === 'number' || arg.averageScore === undefined)

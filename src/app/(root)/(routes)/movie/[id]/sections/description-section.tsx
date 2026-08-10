@@ -6,6 +6,7 @@ import MovieVodModal from '../components/movie-vod-modal'
 import { useGetMovieDetail } from '../hooks/use-get-movie-detail'
 import { useVodModalContext } from '../hooks/use-vod-modal-context'
 import { DirectorFilmographySection } from './director-filmography-section'
+import { MovieCastSection } from './movie-cast-section'
 
 interface DescriptionSectionProps {
   id: string
@@ -42,6 +43,7 @@ const DescriptionSection: FunctionComponent<DescriptionSectionProps> = ({
         onVodClick={handleVodClick}
         onScoreSaved={refreshMovie}
       />
+      <MovieCastSection actors={data.actors} />
       <DirectorFilmographySection movie={data} />
     </>
   )
