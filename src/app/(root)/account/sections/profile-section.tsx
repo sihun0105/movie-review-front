@@ -13,9 +13,9 @@ const ProfileSection: FunctionComponent = () => {
   const user = data?.user
 
   return (
-    <section className="border-b border-border px-4 py-6 xl:border-0 xl:px-0 xl:py-0">
+    <section className="border-b border-border px-4 py-6 xl:px-0 xl:py-5">
       <UpdateProfileModal />
-      <div className="relative flex items-center gap-4 xl:flex-col xl:items-start">
+      <div className="flex min-w-0 items-center gap-4">
         <DmUserAvatar
           name={user?.nickname}
           image={user?.image}
@@ -35,7 +35,7 @@ const ProfileSection: FunctionComponent = () => {
           onClick={() => setOpen(true)}
           aria-label="프로필 편집"
           title="프로필 편집"
-          className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-border text-muted-foreground hover:bg-accent hover:text-foreground xl:absolute xl:right-0 xl:top-0"
+          className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-border text-muted-foreground hover:bg-accent hover:text-foreground"
         >
           <Pencil className="h-4 w-4" />
         </button>

@@ -45,12 +45,17 @@ describe('account community summary', () => {
     expect(panel).toContain('더 보기')
   })
 
-  it('uses a responsive profile rail and activity workspace', () => {
+  it('uses the full center pane without a nested desktop rail', () => {
     const page = read('./page.tsx')
+    const profile = read('./sections/profile-section.tsx')
+    const account = read('./sections/account-section.tsx')
 
-    expect(page).toContain('xl:grid-cols-[200px_minmax(0,1fr)]')
-    expect(page).toContain('<aside')
-    expect(page).toContain('<section')
+    expect(page).toContain('min-w-0')
+    expect(page).toContain('w-full')
+    expect(page).not.toContain('xl:grid-cols-[200px_minmax(0,1fr)]')
+    expect(page).not.toContain('<aside')
+    expect(profile).not.toContain('xl:flex-col')
+    expect(account).not.toContain('xl:mt-6 xl:px-0')
   })
 
   it('loads the summary through an authenticated BFF route', () => {
