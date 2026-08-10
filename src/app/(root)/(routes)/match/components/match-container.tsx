@@ -10,6 +10,8 @@ import { MatchHeaderSection } from '../sections/match-header-section'
 import { MatchListSection } from '../sections/match-list-section'
 import {
   buildMatchFilterHref,
+  buildMatchPageHref,
+  getMatchPage,
   getMatchPostFilter,
 } from '../match-filter-url'
 
@@ -24,6 +26,7 @@ export const MatchContainer = ({ movieTitle }: MatchContainerProps) => {
   const searchParams = useSearchParams()
   const { toast } = useToast()
   const filter = getMatchPostFilter(searchParams?.get('filter') ?? null)
+  const page = getMatchPage(searchParams?.get('page') ?? null)
   const [showApplyDialog, setShowApplyDialog] = useState(false)
   const [selectedMatch, setSelectedMatch] = useState<any>(null)
 
@@ -33,7 +36,7 @@ export const MatchContainer = ({ movieTitle }: MatchContainerProps) => {
     hasMore,
     loadMore,
     isLoading: isLoadingPosts,
-  } = useMatchPosts(10, { movieTitle, filter, userno: userId })
+  } = useMatchPosts(10, { movieTitle, filter, userno: userId }, page)
   // 매치 신청 함수
   const handleApplyToMatch = async (matchId: string, message: string) => {
     try {
@@ -101,6 +104,12 @@ export const MatchContainer = ({ movieTitle }: MatchContainerProps) => {
     router.push(buildMatchFilterHref(params, nextFilter), { scroll: false })
   }
 
+  const handleLoadMore = () => {
+    loadMore()
+    const params = new URLSearchParams(searchParams?.toString() ?? '')
+    router.replace(buildMatchPageHref(params, page + 1), { scroll: false })
+  }
+
   return (
     <>
       <MatchHeaderSection movieTitle={movieTitle} />
@@ -110,7 +119,7 @@ export const MatchContainer = ({ movieTitle }: MatchContainerProps) => {
         matchPosts={matchPosts}
         isLoading={isLoadingPosts}
         hasMore={hasMore}
-        loadMore={loadMore}
+        loadMore={handleLoadMore}
         filter={filter}
         onFilterChange={handleFilterChange}
         selectedMatch={selectedMatch}
