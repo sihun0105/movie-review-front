@@ -3,7 +3,8 @@
 import { AppPath } from '@/config/app-path'
 import Link from 'next/link'
 import { useSearchParams, useRouter } from 'next/navigation'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
+import { isExpiredResetResponse } from './reset-password-state'
 
 export default function ResetPasswordPage() {
   const searchParams = useSearchParams()
@@ -14,13 +15,42 @@ export default function ResetPasswordPage() {
   const [confirm, setConfirm] = useState('')
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  const [tokenState, setTokenState] = useState<'checking' | 'valid' | 'invalid'>('checking')
 
-  if (!token) {
+  useEffect(() => {
+    if (!token) {
+      setTokenState('invalid')
+      return
+    }
+    const controller = new AbortController()
+    fetch('/api/auth/validate-reset-token', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ token }),
+      signal: controller.signal,
+    })
+      .then((response) => response.json())
+      .then((data) => setTokenState(data.isAvailable ? 'valid' : 'invalid'))
+      .catch((requestError) => {
+        if (requestError.name !== 'AbortError') setTokenState('invalid')
+      })
+    return () => controller.abort()
+  }, [token])
+
+  if (tokenState === 'checking') {
     return (
       <main className="flex min-h-page flex-col items-center justify-center px-6">
-        <p className="text-[14px] text-muted-foreground">유효하지 않은 링크입니다.</p>
-        <Link href={AppPath.login()} className="mt-4 text-[13px] font-medium text-foreground hover:underline">
-          로그인으로 돌아가기
+        <div className="h-5 w-40 animate-pulse rounded bg-muted" />
+      </main>
+    )
+  }
+
+  if (tokenState === 'invalid') {
+    return (
+      <main className="flex min-h-page flex-col items-center justify-center px-6">
+        <p className="text-[14px] text-muted-foreground">유효하지 않거나 만료된 링크입니다.</p>
+        <Link href={AppPath.forgotPassword()} className="mt-4 text-[13px] font-medium text-foreground hover:underline">
+          재설정 메일 다시 받기
         </Link>
       </main>
     )
@@ -49,6 +79,8 @@ export default function ResetPasswordPage() {
       const data = await res.json()
       if (data.success) {
         router.push(`${AppPath.login()}?reset=1`)
+      } else if (isExpiredResetResponse(data)) {
+        setTokenState('invalid')
       } else {
         setError(data.message || '오류가 발생했습니다.')
       }
