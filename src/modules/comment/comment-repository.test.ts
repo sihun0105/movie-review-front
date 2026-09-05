@@ -21,6 +21,7 @@ describe('CommentRepository', () => {
           userReaction: 'like',
           isEdited: true,
           isDeleted: false,
+          rating: 4.5,
           replies: [
             {
               replyId: 11,
@@ -48,11 +49,13 @@ describe('CommentRepository', () => {
       userReaction: 'like',
       isEdited: true,
       isDeleted: false,
+      rating: 4.5,
     })
     expect(result.comments[0].replies?.[0]).toMatchObject({
       parentId: 10,
       avatar: 'https://cdn.bollae.kr/replier.png',
     })
+    expect(result.comments[0].replies?.[0].rating).toBeUndefined()
   })
 
   it('forwards a comment reaction through the datasource', async () => {

@@ -6,6 +6,7 @@ export type Reply = {
   updatedAt: Date
   createdAt: Date
   avatar?: string
+  rating?: number
   parentId?: number
   replies?: Reply[]
   likeCount?: number

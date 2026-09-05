@@ -3,6 +3,9 @@
 import { useGetScore } from '@/app/(root)/(routes)/movie/[id]/hooks/use-get-score'
 import { useRouter } from 'next/navigation'
 import { refreshScoreViews } from './rating-input-refresh'
+import { useSWRConfig } from 'swr'
+import { unstable_serialize } from 'swr/infinite'
+import { AppClientApiEndpoint } from '@/config/app-client-api-endpoint'
 
 interface RatingInputProps {
   movieCd: number
@@ -12,6 +15,7 @@ interface RatingInputProps {
 export function RatingInput({ movieCd, onScoreSaved }: RatingInputProps) {
   const { data, isAuthenticated, mutate } = useGetScore(movieCd)
   const router = useRouter()
+  const { mutate: refreshCache } = useSWRConfig()
   const myScore = data?.score ?? 0
 
   const handle = async (score: number) => {
@@ -31,6 +35,9 @@ export function RatingInput({ movieCd, onScoreSaved }: RatingInputProps) {
       })
       if (!res.ok) throw new Error('업데이트 실패')
       await refreshScoreViews(mutate, onScoreSaved)
+      await refreshCache(unstable_serialize((page: number) =>
+        AppClientApiEndpoint.getComments(movieCd, page),
+      ))
     } catch {
       mutate()
     }
