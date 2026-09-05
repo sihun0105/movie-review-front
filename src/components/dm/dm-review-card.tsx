@@ -1,9 +1,9 @@
 'use client'
 
 import { Reply } from '@/lib/type'
-import { MessageCircle, Pencil, ThumbsDown, ThumbsUp, X } from 'lucide-react'
+import { MessageCircle, Pencil, Star, ThumbsDown, ThumbsUp, X } from 'lucide-react'
 import { cn } from '@/lib/utils'
-import type { ReactNode } from 'react'
+import React, { type ReactNode } from 'react'
 import { DmUserAvatar } from './dm-user-avatar'
 
 interface DmReviewCardProps {
@@ -56,15 +56,24 @@ export function DmReviewCard({
     <article
       className={cn('border-b border-border py-3', nested && 'border-l pl-3')}
     >
-      <header className="flex items-center gap-2">
+      <header className="flex flex-wrap items-center gap-2">
         <DmUserAvatar
           name={reply.nickname}
           image={reply.avatar}
           className="h-7 w-7"
         />
-        <span className="text-[13px] font-medium text-foreground">
+        <span className="min-w-0 break-all text-[13px] font-medium text-foreground">
           {reply.nickname}
         </span>
+        {typeof reply.rating === 'number' && Number.isFinite(reply.rating) && (
+          <span
+            aria-label={`이 영화에 준 평점 ${reply.rating.toFixed(1)}점`}
+            className="inline-flex shrink-0 items-center gap-1 text-[12px] font-medium text-foreground"
+          >
+            <Star aria-hidden="true" className="h-3.5 w-3.5 fill-amber-500 text-amber-500" />
+            {reply.rating.toFixed(1)}
+          </span>
+        )}
         <span className="ml-auto font-mono text-[11px] text-muted-foreground">
           {formatWhen(reply.updatedAt)}
           {reply.isEdited && ' · 수정됨'}

@@ -55,6 +55,7 @@ export class CommentRepository {
       nickname: unknown.nickname,
       content: unknown.comment,
       avatar: unknown.avatar || undefined,
+      rating: typeof unknown.rating === 'number' ? unknown.rating : undefined,
       parentId: unknown.parentId || undefined,
       replies: unknown.replies?.map((reply: any) =>
         this.convertUnkownToComment(reply),
