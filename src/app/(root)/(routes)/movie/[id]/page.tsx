@@ -1,6 +1,6 @@
 import { Metadata } from 'next'
 import { FunctionComponent } from 'react'
-import { getMovieDetail, getReviews, getScore } from './data'
+import { getMovieDetail, getCommentPage, getScore } from './data'
 import { ModifyCommentModalContextProvider } from './hooks/use-modify-comment-context'
 import { VodModalContextProvider } from './hooks/use-vod-modal-context'
 import { buildBreadcrumbJsonLd, buildMovieJsonLd } from './json-ld'
@@ -19,9 +19,12 @@ export async function generateMetadata({
 }
 
 const Page: FunctionComponent<PageProps> = async ({ params: { id } }) => {
-  const movie = await getMovieDetail(id)
-  const reviews = await getReviews(id)
-  const score = await getScore(id)
+  const [movie, commentPage, score] = await Promise.all([
+    getMovieDetail(id),
+    getCommentPage(id),
+    getScore(id),
+  ])
+  const reviews = commentPage?.comments ?? []
 
   const movieJsonLd = buildMovieJsonLd(id, movie, reviews, score)
   const breadcrumbJsonLd = buildBreadcrumbJsonLd(id, movie.title)
@@ -30,12 +33,14 @@ const Page: FunctionComponent<PageProps> = async ({ params: { id } }) => {
     <>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(movieJsonLd) }}
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(movieJsonLd).replace(/</g, '\\u003c'),
+        }}
       />
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
-          __html: JSON.stringify(breadcrumbJsonLd),
+          __html: JSON.stringify(breadcrumbJsonLd).replace(/</g, '\\u003c'),
         }}
       />
       <div
@@ -44,8 +49,8 @@ const Page: FunctionComponent<PageProps> = async ({ params: { id } }) => {
       >
         <ModifyCommentModalContextProvider>
           <VodModalContextProvider>
-            <DescriptionSection id={id} />
-            <CommentSection id={id} />
+            <DescriptionSection id={id} initialMovie={movie} />
+            <CommentSection id={id} initialData={commentPage} />
           </VodModalContextProvider>
         </ModifyCommentModalContextProvider>
       </div>

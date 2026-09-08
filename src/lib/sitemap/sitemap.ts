@@ -1,6 +1,7 @@
 import type { Article, MatchPost } from '@/lib/type'
 import type { MovieSitemapEntry } from '@/modules/movie/movie-sitemap-datasource'
 import type { ISitemapField } from 'next-sitemap'
+import { sitemapModifiedDate } from '../seo/public-discovery'
 
 export const SITE_URL = 'https://bollae.kr'
 export const SITEMAP_PAGE_SIZE = 100
@@ -66,7 +67,7 @@ export function buildMatchFields(matches: MatchPost[]): ISitemapField[] {
 export function buildMovieFields(movies: MovieSitemapEntry[]): ISitemapField[] {
   return movies.map((movie) => ({
     loc: `${SITE_URL}/movie/${movie.movieCd}`,
-    lastmod: movie.updatedAt,
+    lastmod: sitemapModifiedDate(movie.updatedAt),
     changefreq: 'daily',
     priority: 0.8,
   }))

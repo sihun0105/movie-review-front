@@ -34,7 +34,9 @@ export class MatchPostRepository {
     return await this.dataSource.getMatchPosts(page, pageSize, query)
   }
 
-  async getMatchPost(matchId: string): Promise<MatchPost> {
+  async getMatchPost(
+    matchId: string,
+  ): Promise<{ matchPost?: MatchPost | null }> {
     if (!matchId || matchId.trim() === '') {
       throw new Error('매치 ID가 필요합니다.')
     }

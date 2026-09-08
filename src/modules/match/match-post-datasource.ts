@@ -58,7 +58,9 @@ export class MatchPostDataSource {
     }
   }
 
-  async getMatchPost(matchId: string): Promise<MatchPost> {
+  async getMatchPost(
+    matchId: string,
+  ): Promise<{ matchPost?: MatchPost | null }> {
     try {
       const response = await fetch(
         AppBackEndApiEndpoint.getMatchPost(matchId),

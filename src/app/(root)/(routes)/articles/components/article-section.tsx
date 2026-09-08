@@ -1,13 +1,19 @@
 'use client'
 
 import { Article } from '@/lib/type'
-import { FunctionComponent } from 'react'
+import React, { FunctionComponent } from 'react'
 import InfiniteScroll from 'react-infinite-scroll-component'
 import ArticleCard from './article-card'
-import { useGetArticles } from '../hooks/use-get-articles'
+import { ArticlePageData, useGetArticles } from '../hooks/use-get-articles'
 
-const ArticleSection: FunctionComponent = () => {
-  const { data, next, hasMore, isLoading, error } = useGetArticles()
+const ArticleSection: FunctionComponent<{
+  initialData?: ArticlePageData
+  startPage?: number
+}> = ({ initialData, startPage }) => {
+  const { data, next, hasMore, isLoading, error } = useGetArticles(
+    initialData,
+    startPage,
+  )
 
   if (isLoading && data.length === 0)
     return (

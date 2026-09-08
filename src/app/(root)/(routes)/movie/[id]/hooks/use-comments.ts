@@ -31,7 +31,7 @@ const fetcher = async (url: string): Promise<RepliesResponse> => {
   return result.data
 }
 
-export const useComments = () => {
+export const useComments = (initialData?: RepliesResponse) => {
   const { showToast } = useAppToast()
   const { requireAuthentication } = useAuthenticationCheck()
   const params = useParams()
@@ -42,7 +42,9 @@ export const useComments = () => {
 
   // 댓글 목록 불러오기
   const { data, setSize, mutate, error, isLoading, isValidating } =
-    useSWRInfinite<RepliesResponse>(getKey(+movieId), fetcher)
+    useSWRInfinite<RepliesResponse>(getKey(+movieId), fetcher, {
+      fallbackData: initialData ? [initialData] : undefined,
+    })
 
   const hasMore =
     Array.isArray(data) && data.length > 0
