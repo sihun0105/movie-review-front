@@ -1,10 +1,18 @@
 import useSWRInfinite from 'swr/infinite'
 import { AppClientApiEndpoint } from '@/config/app-client-api-endpoint'
+import type { Article } from '@/lib/type'
 
-const getKey = (pageIndex: number, previousPageData: any | null) => {
-  if (previousPageData && !previousPageData.hasNext) return null
-  return AppClientApiEndpoint.listArticles(pageIndex + 1)
+export interface ArticlePageData {
+  articles: Article[]
+  hasNext: boolean
 }
+
+const getKey =
+  (startPage: number) =>
+  (pageIndex: number, previousPageData: ArticlePageData | null) => {
+    if (previousPageData && !previousPageData.hasNext) return null
+    return AppClientApiEndpoint.listArticles(startPage + pageIndex)
+  }
 
 const fetcher = async (url: string) => {
   const res = await fetch(url)
@@ -13,11 +21,14 @@ const fetcher = async (url: string) => {
   return result.data
 }
 
-export const useGetArticles = () => {
-  const { data, setSize, error, isLoading, isValidating } = useSWRInfinite(
-    getKey,
-    fetcher,
-  )
+export const useGetArticles = (
+  initialData?: ArticlePageData,
+  startPage = 1,
+) => {
+  const { data, setSize, error, isLoading, isValidating } =
+    useSWRInfinite<ArticlePageData>(getKey(startPage), fetcher, {
+      fallbackData: initialData ? [initialData] : undefined,
+    })
 
   const isEmpty = data?.[0]?.articles?.length === 0
   const isReachingEnd = isEmpty || (data && !data[data.length - 1]?.hasNext)

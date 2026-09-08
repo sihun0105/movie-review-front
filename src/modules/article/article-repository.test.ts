@@ -4,6 +4,18 @@ import { ArticleRepository } from './article-repository'
 vi.mock('./article-datasource', () => ({ ArticleDatasource: class {} }))
 
 describe('ArticleRepository comments', () => {
+  it('distinguishes missing articles from temporary backend failures', async () => {
+    const getArticle = vi.fn().mockResolvedValue({})
+    const repository = new ArticleRepository(undefined, { getArticle } as never)
+    await expect(repository.getArticle('999')).rejects.toMatchObject({
+      status: 404,
+    })
+
+    const failure = new Error('Backend unavailable')
+    getArticle.mockRejectedValueOnce(failure)
+    await expect(repository.getArticle('5')).rejects.toBe(failure)
+  })
+
   it('keeps nested replies, reactions, and edit state', async () => {
     const getCommentList = vi.fn().mockResolvedValue({
       comments: [

@@ -12,7 +12,12 @@ export function buildMovieJsonLd(
 ) {
   const validReviews = reviews.filter(
     (r) =>
-      r && r.content && r.content.trim() && r.nickname && r.nickname.trim(),
+      r &&
+      !r.isDeleted &&
+      r.content &&
+      r.content.trim() &&
+      r.nickname &&
+      r.nickname.trim(),
   )
   const validScore = hasValidScore(score)
 

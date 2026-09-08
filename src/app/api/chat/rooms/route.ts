@@ -18,8 +18,8 @@ async function addMatchTitles(
   const entries = await Promise.all(
     matchIds.map(async (matchId) => {
       try {
-        const match = await matchRepository.getMatchPost(matchId)
-        return [matchId, match.title || match.movieTitle] as const
+        const { matchPost } = await matchRepository.getMatchPost(matchId)
+        return [matchId, matchPost?.title || matchPost?.movieTitle] as const
       } catch (error) {
         console.warn(`Match title fetch skipped (${matchId}):`, error)
         return [matchId, ''] as const
