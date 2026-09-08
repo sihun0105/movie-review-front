@@ -22,12 +22,18 @@ interface MatchViewerViewProps {
 
 function ApplicationStatusBadge({ status }: { status: string }) {
   const map = {
-    pending: { label: '신청 대기 중', className: 'border-border text-muted-foreground' },
+    pending: {
+      label: '신청 대기 중',
+      className: 'border-border text-muted-foreground',
+    },
     accepted: {
       label: '신청 승인됨',
       className: 'border-[#6fc96f] text-[#6fc96f]',
     },
-    rejected: { label: '신청 거절됨', className: 'border-primary text-primary' },
+    rejected: {
+      label: '신청 거절됨',
+      className: 'border-primary text-primary',
+    },
   } as const
   const cfg = map[status as keyof typeof map]
   if (!cfg) return null
@@ -46,14 +52,14 @@ const MatchViewerView = ({ matchPost, onApply }: MatchViewerViewProps) => {
   const { status } = useSession()
   const [showApplyDialog, setShowApplyDialog] = useState(false)
   const handledApplyIntentRef = useRef(false)
-  const { application: myApplication, isLoading: isMyApplicationLoading } = useMyApplication(
-    status === 'authenticated' ? matchPost.id : '',
-  )
+  const { application: myApplication, isLoading: isMyApplicationLoading } =
+    useMyApplication(status === 'authenticated' ? matchPost.id : '')
   const handleApplySubmit = async (message: string) => {
     await onApply(message)
     setShowApplyDialog(false)
   }
   const handleApplyClick = () => {
+    if (status === 'loading') return
     if (status === 'unauthenticated') {
       router.push(
         `/login?callbackUrl=${encodeURIComponent(`/match/${matchPost.id}?intent=apply`)}`,
@@ -115,7 +121,11 @@ const MatchViewerView = ({ matchPost, onApply }: MatchViewerViewProps) => {
       <section className="mx-4 mt-4 rounded-lg border border-border bg-card p-3.5 shadow-sm">
         <div className="flex gap-3">
           <div className="w-[72px] flex-shrink-0">
-            <Poster title={matchPost.movieTitle} palette={palette} rounded="md" />
+            <Poster
+              title={matchPost.movieTitle}
+              palette={palette}
+              rounded="md"
+            />
           </div>
           <div className="min-w-0 flex-1">
             <div className="text-[12px] font-medium text-muted-foreground">

@@ -17,13 +17,14 @@ const fetcher = async (url: string) => {
   return await response.json()
 }
 
-export const useMatchPost = (matchId: string) => {
+export const useMatchPost = (matchId: string, initialMatch?: MatchPost) => {
   const { data, error, isLoading, mutate } = useSWR<{ matchPost: MatchPost }>(
     matchId ? AppClientApiEndpoint.getMatchPost(matchId) : null,
     fetcher,
     {
       refreshInterval: 0, // 상세 페이지는 자동 새로고침 안함
       revalidateOnFocus: false,
+      fallbackData: initialMatch ? { matchPost: initialMatch } : undefined,
     },
   )
 

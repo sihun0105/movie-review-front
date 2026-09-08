@@ -7,6 +7,7 @@ import { MatchPostRepository } from '@/modules/match/match-post-repository'
 import { getMatchScheduleStatus } from '@/lib/utils'
 import { Metadata } from 'next'
 import { FunctionComponent } from 'react'
+import { RecentArticles } from './components/recent-articles'
 
 export const dynamic = 'force-dynamic'
 
@@ -49,7 +50,8 @@ export async function generateMetadata(): Promise<Metadata> {
   return {
     title: '볼래 | 같이 볼 사람을 찾는 영화 매칭',
     description,
-    keywords: '볼래, bollae, 영화 매칭, 같이 볼래, 영화 추천, 최신 영화, 인기 영화, 영화 순위, 영화 평점, 영화 리뷰, 볼만한 영화',
+    keywords:
+      '볼래, bollae, 영화 매칭, 같이 볼래, 영화 추천, 최신 영화, 인기 영화, 영화 순위, 영화 평점, 영화 리뷰, 볼만한 영화',
     openGraph: { title: '볼래 | 같이 볼 사람을 찾는 영화 매칭', description },
   }
 }
@@ -69,7 +71,10 @@ const getKstTodayLabel = () => {
 }
 
 const Page: FunctionComponent = async () => {
-  const [data, liveCount] = await Promise.all([getMovieList(), getMatchLiveCount()])
+  const [data, liveCount] = await Promise.all([
+    getMovieList(),
+    getMatchLiveCount(),
+  ])
   const todayLabel = getKstTodayLabel()
 
   if (!data || data.length === 0) {
@@ -81,11 +86,18 @@ const Page: FunctionComponent = async () => {
 
   return (
     <main className="pb-5">
-      <MatchHeroBanner todayLabel={todayLabel} liveCount={liveCount || undefined} />
+      <MatchHeroBanner
+        todayLabel={todayLabel}
+        liveCount={liveCount || undefined}
+      />
 
       <div className="flex items-center gap-2 px-4 pb-3 pt-5">
-        <h2 className="text-[16px] font-semibold text-foreground">박스오피스</h2>
-        <span className="font-mono text-[10px] text-muted-foreground">TOP 10</span>
+        <h2 className="text-[16px] font-semibold text-foreground">
+          박스오피스
+        </h2>
+        <span className="font-mono text-[10px] text-muted-foreground">
+          TOP 10
+        </span>
       </div>
 
       <div className="grid gap-3 px-4 lg:grid-cols-2">
@@ -97,6 +109,7 @@ const Page: FunctionComponent = async () => {
       <div className="mt-4">
         <GoogleAd />
       </div>
+      <RecentArticles />
     </main>
   )
 }

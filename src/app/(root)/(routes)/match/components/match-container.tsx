@@ -6,6 +6,7 @@ import { useRouter, useSearchParams } from 'next/navigation'
 import { useToast } from '@/hooks/use-toast'
 import { useMatchPosts } from '../hooks'
 import type { MatchPostFilter } from '../hooks'
+import type { MatchPostResponse } from '@/lib/type'
 import { MatchHeaderSection } from '../sections/match-header-section'
 import { MatchListSection } from '../sections/match-list-section'
 import {
@@ -17,9 +18,13 @@ import {
 
 interface MatchContainerProps {
   movieTitle?: string
+  initialData?: MatchPostResponse
 }
 
-export const MatchContainer = ({ movieTitle }: MatchContainerProps) => {
+export const MatchContainer = ({
+  movieTitle,
+  initialData,
+}: MatchContainerProps) => {
   const { data: session, status } = useSession()
   const userId = session?.user?.id ? Number(session.user.id) : null
   const router = useRouter()
@@ -36,7 +41,12 @@ export const MatchContainer = ({ movieTitle }: MatchContainerProps) => {
     hasMore,
     loadMore,
     isLoading: isLoadingPosts,
-  } = useMatchPosts(10, { movieTitle, filter, userno: userId }, page)
+  } = useMatchPosts(
+    10,
+    { movieTitle, filter, userno: userId },
+    page,
+    initialData,
+  )
   // 매치 신청 함수
   const handleApplyToMatch = async (matchId: string, message: string) => {
     try {
@@ -58,16 +68,9 @@ export const MatchContainer = ({ movieTitle }: MatchContainerProps) => {
     }
   }
 
-  if (status === 'loading') {
-    return (
-      <div className="py-8 text-center">
-        <p>로딩 중...</p>
-      </div>
-    )
-  }
-
   // 매치 신청
   const handleApply = (matchId: string) => {
+    if (status === 'loading') return
     if (status === 'unauthenticated') {
       router.push(
         `/login?callbackUrl=${encodeURIComponent(`/match/${matchId}?intent=apply`)}`,
@@ -117,7 +120,7 @@ export const MatchContainer = ({ movieTitle }: MatchContainerProps) => {
       <MatchListSection
         movieTitle={movieTitle}
         matchPosts={matchPosts}
-        isLoading={isLoadingPosts}
+        isLoading={isLoadingPosts && !initialData && matchPosts.length === 0}
         hasMore={hasMore}
         loadMore={handleLoadMore}
         filter={filter}

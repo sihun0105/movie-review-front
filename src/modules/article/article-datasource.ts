@@ -1,6 +1,7 @@
 import { AppBackEndApiEndpoint } from '@/config/app-backend-api-endpoint'
 import { ArticleCommentApiEndpoint } from '@/config/article-comment-api-endpoint'
 import { Article, LikeState } from '@/lib/type'
+import { HttpResponseError } from '@/lib/http-response-error'
 
 export class ArticleDatasource {
   private token?: string
@@ -35,7 +36,8 @@ export class ArticleDatasource {
       headers: this.getAuthHeaders(),
       cache: 'no-cache',
     })
-    if (!res.ok) throw new Error('게시글을 가져올 수 없습니다.')
+    if (!res.ok)
+      throw new HttpResponseError(res.status, '게시글을 가져올 수 없습니다.')
     return res.json()
   }
 

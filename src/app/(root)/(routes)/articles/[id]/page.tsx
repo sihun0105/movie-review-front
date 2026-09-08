@@ -1,4 +1,5 @@
 import { Article } from '@/lib/type'
+import { HttpResponseError } from '@/lib/http-response-error'
 import { ArticleRepository } from '@/modules/article/article-repository'
 import { Metadata } from 'next'
 import { notFound } from 'next/navigation'
@@ -21,25 +22,22 @@ interface PageProps {
 
 const getArticleData = cache(async (id: string): Promise<Article> => {
   const repo = new ArticleRepository()
-  return repo.getArticle(id)
+  try {
+    return await repo.getArticle(id)
+  } catch (error) {
+    if (error instanceof HttpResponseError && error.status === 404) notFound()
+    throw error
+  }
 })
 
 export async function generateMetadata({
   params: { id },
 }: PageProps): Promise<Metadata> {
-  try {
-    return buildArticleMetadata(await getArticleData(id))
-  } catch {
-    return {
-      title: '영화 이야기 | 볼래',
-      description: '볼래 영화 커뮤니티의 영화 이야기입니다.',
-      robots: { index: false, follow: false },
-    }
-  }
+  return buildArticleMetadata(await getArticleData(id))
 }
 
 const Page: FunctionComponent<PageProps> = async ({ params: { id } }) => {
-  const data = await getArticleData(id).catch(() => notFound())
+  const data = await getArticleData(id)
   const jsonLd = buildArticleJsonLd(data)
 
   return (

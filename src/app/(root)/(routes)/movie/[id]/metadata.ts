@@ -1,5 +1,6 @@
 import { Metadata } from 'next'
 import { getMovieDetail, getReviews, getScore, hasValidScore } from './data'
+import { sitemapModifiedDate } from '@/lib/seo/public-discovery'
 
 const SITE_URL = 'https://bollae.kr'
 
@@ -10,8 +11,9 @@ const FALLBACK: Metadata = {
 }
 
 function genreList(genre: unknown): string[] {
-  return (Array.isArray(genre) ? genre : [genre])
-    .filter((g): g is string => Boolean(g))
+  return (Array.isArray(genre) ? genre : [genre]).filter((g): g is string =>
+    Boolean(g),
+  )
 }
 
 export async function generateMovieMetadata(id: string): Promise<Metadata> {
@@ -42,7 +44,12 @@ export async function generateMovieMetadata(id: string): Promise<Metadata> {
     const reviews = await getReviews(id)
     const validReviewCount = reviews.filter(
       (r) =>
-        r && r.content && r.content.trim() && r.nickname && r.nickname.trim(),
+        r &&
+        !r.isDeleted &&
+        r.content &&
+        r.content.trim() &&
+        r.nickname &&
+        r.nickname.trim(),
     ).length
 
     if (validScore) {
@@ -64,7 +71,7 @@ export async function generateMovieMetadata(id: string): Promise<Metadata> {
     }
 
     const title = `${movie.title} - 볼래`
-    const currentDate = new Date().toISOString().slice(0, 10)
+    const modifiedTime = sitemapModifiedDate(String(movie.updatedAt))
 
     return {
       title,
@@ -122,10 +129,7 @@ export async function generateMovieMetadata(id: string): Promise<Metadata> {
         'movie:rating': validScore ? score.averageScore.toString() : '',
         'movie:rating_count': validScore ? score.scoreCount.toString() : '',
         'movie:review_count': validReviewCount.toString(),
-        'article:published_time': movie.openedAt
-          ? new Date(movie.openedAt).toISOString().slice(0, 10)
-          : currentDate,
-        'article:modified_time': currentDate,
+        ...(modifiedTime ? { 'article:modified_time': modifiedTime } : {}),
         'article:section': 'Movies',
         'article:tag': genreText || '',
         ...(validScore && {

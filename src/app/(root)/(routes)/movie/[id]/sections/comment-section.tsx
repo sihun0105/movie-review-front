@@ -18,9 +18,13 @@ import { useModifyCommentModalContext } from '../hooks/use-modify-comment-contex
 
 interface CommentSectionProps {
   id: string
+  initialData?: import('@/lib/type').RepliesResponse
 }
 
-const CommentSection: FunctionComponent<CommentSectionProps> = ({ id }) => {
+const CommentSection: FunctionComponent<CommentSectionProps> = ({
+  id,
+  initialData,
+}) => {
   const {
     data,
     next,
@@ -30,7 +34,7 @@ const CommentSection: FunctionComponent<CommentSectionProps> = ({ id }) => {
     deleteComment,
     isDeletingComment,
     refresh,
-  } = useComments()
+  } = useComments(initialData)
   const session = useSession()
   const userId = session.data?.user?.id
   const { reactComment } = useCommentReaction(() => refresh())
@@ -73,7 +77,7 @@ const CommentSection: FunctionComponent<CommentSectionProps> = ({ id }) => {
         </CommentFormProvider>
       </div>
 
-      {isLoading ? (
+      {isLoading && !data ? (
         <div className="flex h-[20vh] items-center justify-center font-mono text-[12px] text-muted-foreground">
           loading...
         </div>

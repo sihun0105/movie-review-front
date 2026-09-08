@@ -1,27 +1,33 @@
 'use client'
 
 import { DmMovieDetail } from '@/components/dm'
-import { FunctionComponent } from 'react'
+import React, { FunctionComponent } from 'react'
 import MovieVodModal from '../components/movie-vod-modal'
 import { useGetMovieDetail } from '../hooks/use-get-movie-detail'
 import { useVodModalContext } from '../hooks/use-vod-modal-context'
 import { DirectorFilmographySection } from './director-filmography-section'
 import { MovieCastSection } from './movie-cast-section'
+import type { Movie } from '@/modules/movie/movie.entity'
 
 interface DescriptionSectionProps {
   id: string
+  initialMovie?: Movie
 }
 
 const DescriptionSection: FunctionComponent<DescriptionSectionProps> = ({
   id,
+  initialMovie,
 }) => {
-  const { data, isLoading, error, mutate: refreshMovie } =
-    useGetMovieDetail(id)
+  const {
+    data,
+    isLoading,
+    mutate: refreshMovie,
+  } = useGetMovieDetail(id, initialMovie)
   const { setOpen, setSrc, setTitle } = useVodModalContext()
 
-  if (isLoading)
+  if (isLoading && !data)
     return <p className="text-center text-muted-foreground">로딩 중...</p>
-  if (error || !data)
+  if (!data)
     return (
       <p className="text-center text-primary">데이터를 불러오지 못했습니다.</p>
     )

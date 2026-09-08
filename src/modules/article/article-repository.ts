@@ -1,5 +1,6 @@
 import { Article, LikeState, Reply } from '@/lib/type'
 import { ArticleDatasource } from './article-datasource'
+import { HttpResponseError } from '../../lib/http-response-error'
 import { assertArticle, assertArticleComment } from './article.entity'
 
 export class ArticleRepository {
@@ -32,7 +33,7 @@ export class ArticleRepository {
   async getArticle(id: string): Promise<Article> {
     const data = await this.datasource.getArticle(id)
     if (!data || !data.article) {
-      throw new Error('존재하지 않는 게시글입니다.')
+      throw new HttpResponseError(404, '존재하지 않는 게시글입니다.')
     }
     return this.convertUnknownToArticle(data.article)
   }

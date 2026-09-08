@@ -1,30 +1,38 @@
-import { Reply } from '@/lib/type'
+import { RepliesResponse } from '@/lib/type'
+import { cache } from 'react'
 import { CommentRepository } from '@/modules/comment/comment-repository'
 import { AverageMovieScore, Movie } from '@/modules/movie/movie.entity'
 import { MovieRepository } from '@/modules/movie/movie-repository'
 
-export const getMovieDetail = async (id: string): Promise<Movie> => {
+export const getMovieDetail = cache(async (id: string): Promise<Movie> => {
   const repo = new MovieRepository()
   return repo.getMovieDetail(id)
-}
+})
 
-export const getReviews = async (id: string): Promise<Reply[]> => {
-  const repo = new CommentRepository()
-  const result = await repo.getCommentList(id, 1)
-  return result.comments
-}
+export const getCommentPage = cache(
+  async (id: string): Promise<RepliesResponse | undefined> => {
+    try {
+      return await new CommentRepository().getCommentList(id, 0)
+    } catch {
+      return undefined
+    }
+  },
+)
 
-export const getScore = async (
-  id: string,
-): Promise<AverageMovieScore | null> => {
-  try {
-    const repo = new MovieRepository()
-    return repo.getAverageScore(id)
-  } catch (error) {
-    console.error('Failed to get average score:', error)
-    return null
-  }
-}
+export const getReviews = async (id: string) =>
+  (await getCommentPage(id))?.comments ?? []
+
+export const getScore = cache(
+  async (id: string): Promise<AverageMovieScore | null> => {
+    try {
+      const repo = new MovieRepository()
+      return await repo.getAverageScore(id)
+    } catch (error) {
+      console.error('Failed to get average score:', error)
+      return null
+    }
+  },
+)
 
 export function hasValidScore(
   score: AverageMovieScore | null,

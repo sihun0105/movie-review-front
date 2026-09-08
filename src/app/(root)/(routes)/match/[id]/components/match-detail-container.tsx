@@ -1,7 +1,7 @@
 'use client'
 
 import { useAppToast } from '@/hooks/use-app-toast'
-import { CreateMatchPostRequest } from '@/lib/type'
+import { CreateMatchPostRequest, MatchPost } from '@/lib/type'
 import { useSession } from 'next-auth/react'
 import { useParams, useRouter } from 'next/navigation'
 import {
@@ -14,7 +14,11 @@ import {
 import { MatchAuthorView } from './match-author-view'
 import { MatchViewerView } from './match-viewer-view'
 
-const MatchDetailContainer = () => {
+const MatchDetailContainer = ({
+  initialMatch,
+}: {
+  initialMatch?: MatchPost
+}) => {
   const params = useParams()
   const router = useRouter()
   const { data: session, status } = useSession()
@@ -24,9 +28,8 @@ const MatchDetailContainer = () => {
   const {
     matchPost,
     isLoading: isMatchLoading,
-    error: matchError,
     mutate: mutateMatch,
-  } = useMatchPost(matchId)
+  } = useMatchPost(matchId, initialMatch)
   const { applyToMatch } = useApplyMatch(matchId)
   const { deleteMatch, isDeleting } = useDeleteMatch(matchId)
   const { updateMatch, isUpdating } = useUpdateMatch(matchId)
@@ -58,13 +61,20 @@ const MatchDetailContainer = () => {
     appStatus: 'accepted' | 'rejected',
   ) => {
     try {
-      const res = await fetch(`/api/match/${matchId}/applications/${applicationId}`, {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ status: appStatus }),
-      })
+      const res = await fetch(
+        `/api/match/${matchId}/applications/${applicationId}`,
+        {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ status: appStatus }),
+        },
+      )
       if (!res.ok) throw new Error()
-      showToast(appStatus === 'accepted' ? '신청을 승인했습니다.' : '신청을 거절했습니다.')
+      showToast(
+        appStatus === 'accepted'
+          ? '신청을 승인했습니다.'
+          : '신청을 거절했습니다.',
+      )
       mutateApplications()
     } catch {
       showToast('신청 상태 변경에 실패했습니다.')
@@ -92,18 +102,22 @@ const MatchDetailContainer = () => {
     }
   }
 
-  if (status === 'loading' || isMatchLoading)
+  if (isMatchLoading && !matchPost)
     return (
       <div className="flex min-h-page items-center justify-center bg-background font-mono text-[12px] text-muted-foreground">
         loading...
       </div>
     )
 
-  if (matchError || !matchPost)
+  if (!matchPost)
     return (
       <div className="flex min-h-page flex-col items-center justify-center gap-4 bg-background text-foreground">
-        <div className="font-mono text-[11px] uppercase tracking-[1px] text-primary">Error</div>
-        <div className="text-[14px] text-muted-foreground">매치 정보를 불러올 수 없습니다.</div>
+        <div className="font-mono text-[11px] uppercase tracking-[1px] text-primary">
+          Error
+        </div>
+        <div className="text-[14px] text-muted-foreground">
+          매치 정보를 불러올 수 없습니다.
+        </div>
         <button
           onClick={() => router.push('/match')}
           className="border border-border px-4 py-2 font-mono text-[12px] text-muted-foreground hover:border-primary hover:text-primary"

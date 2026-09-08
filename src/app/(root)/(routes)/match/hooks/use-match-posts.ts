@@ -34,7 +34,8 @@ const getKey =
     const url = AppClientApiEndpoint.getMatchPosts(pageIndex + 1, pageSize)
     const params = new URLSearchParams()
     if (query.movieTitle) params.set('movieTitle', query.movieTitle)
-    if (query.filter && query.filter !== 'all') params.set('filter', query.filter)
+    if (query.filter && query.filter !== 'all')
+      params.set('filter', query.filter)
     if (query.filter === 'mine' && query.userno) {
       params.set('userno', String(query.userno))
     }
@@ -46,19 +47,22 @@ export const useMatchPosts = (
   pageSize: number = 10,
   query: MatchPostQuery = {},
   initialPage: number = 1,
+  initialData?: MatchPostResponse,
 ) => {
   const { data, setSize, mutate, error, isLoading, isValidating } =
     useSWRInfinite<MatchPostResponse>(getKey(pageSize, query), fetcher, {
       initialSize: initialPage,
+      fallbackData:
+        query.filter !== 'mine' && initialData ? [initialData] : undefined,
       refreshInterval: 30000, // 30초마다 새로고침
       revalidateOnFocus: true,
     })
 
   // 모든 페이지의 matchPosts를 평면화 (null/undefined 방어)
   const matchPosts = data
-    ? data.flatMap((page) => page?.matchPosts ?? []).filter(
-        (m): m is NonNullable<typeof m> => m != null,
-      )
+    ? data
+        .flatMap((page) => page?.matchPosts ?? [])
+        .filter((m): m is NonNullable<typeof m> => m != null)
     : []
 
   // 다음 페이지가 있는지 확인

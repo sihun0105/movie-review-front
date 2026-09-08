@@ -2,7 +2,8 @@
 
 import { MatchPost } from '@/lib/type'
 import { cn, getMatchScheduleStatus } from '@/lib/utils'
-import { useRouter } from 'next/navigation'
+import Link from 'next/link'
+import { formatMatchDateTime } from '@/lib/utils/match-schedule'
 import { Poster } from './poster'
 import { paletteForMovie } from './poster-palette'
 
@@ -10,30 +11,17 @@ interface DmMatchTicketProps {
   match: MatchPost
 }
 
-const DOW = ['일', '월', '화', '수', '목', '금', '토']
-
 export function DmMatchTicket({ match }: DmMatchTicketProps) {
-  const router = useRouter()
-  const showTime = new Date(match.showTime)
-  const month = String(showTime.getMonth() + 1).padStart(2, '0')
-  const day = String(showTime.getDate()).padStart(2, '0')
-  const dow = DOW[showTime.getDay()]
-  const time = showTime.toLocaleTimeString('ko-KR', {
-    hour: '2-digit',
-    minute: '2-digit',
-    hour12: false,
-  })
   const schedule = getMatchScheduleStatus(match.showTime)
   const initial = match.author?.trim().charAt(0).toUpperCase() ?? '?'
   const isFull = match.currentParticipants >= match.maxParticipants
   const palette = paletteForMovie(match.id, match.movieTitle)
 
   return (
-    <button
-      type="button"
-      onClick={() => router.push(`/match/${match.id}`)}
+    <Link
+      href={`/match/${match.id}`}
       className={cn(
-        'w-full cursor-pointer rounded-lg border border-border bg-card p-3 text-left transition-colors hover:bg-accent',
+        'block w-full cursor-pointer rounded-lg border border-border bg-card p-3 text-left transition-colors hover:bg-accent',
         schedule.isPast && 'opacity-70',
       )}
     >
@@ -53,7 +41,7 @@ export function DmMatchTicket({ match }: DmMatchTicketProps) {
           {/* date + time + schedule status */}
           <div className="flex items-center gap-1.5">
             <span className="font-mono text-[11px] text-muted-foreground">
-              {month}.{day}({dow}) {time}
+              {formatMatchDateTime(match.showTime)}
             </span>
             <span
               className={cn(
@@ -100,6 +88,6 @@ export function DmMatchTicket({ match }: DmMatchTicketProps) {
           </div>
         </div>
       </div>
-    </button>
+    </Link>
   )
 }
