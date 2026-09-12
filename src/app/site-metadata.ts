@@ -57,9 +57,6 @@ export const siteMetadata: Metadata = {
     initialScale: 1,
     maximumScale: 1,
   },
-  alternates: {
-    canonical: SITE_URL,
-  },
 }
 
 export const siteJsonLd = {

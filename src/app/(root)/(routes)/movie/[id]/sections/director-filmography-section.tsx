@@ -1,5 +1,6 @@
 'use client'
 
+import React from 'react'
 import { Movie } from '@/modules/movie/movie.entity'
 import Link from 'next/link'
 import { Poster } from '@/components/dm/poster'
@@ -9,6 +10,7 @@ import { useDirectorFilmography } from '../hooks/use-director-filmography'
 
 interface DirectorFilmographySectionProps {
   movie: Movie
+  initialData?: Movie[]
 }
 
 function FilmographyCard({ movie }: { movie: Movie }) {
@@ -51,15 +53,19 @@ function FilmographyCard({ movie }: { movie: Movie }) {
 
 export function DirectorFilmographySection({
   movie,
+  initialData,
 }: DirectorFilmographySectionProps) {
-  const { director, movies, isLoading, error } = useDirectorFilmography(movie)
+  const { director, movies, isLoading, error } = useDirectorFilmography(
+    movie,
+    initialData,
+  )
 
-  if (!director || error || (!isLoading && movies.length === 0)) return null
+  if (!director || (movies.length === 0 && (error || !isLoading))) return null
 
   return (
     <section className="px-4 pb-5">
       <SectionHead>{director} 감독 필모그래피</SectionHead>
-      {isLoading ? (
+      {isLoading && movies.length === 0 ? (
         <div className="flex gap-3 overflow-hidden">
           {Array.from({ length: 3 }).map((_, index) => (
             <div

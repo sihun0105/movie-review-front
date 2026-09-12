@@ -6,6 +6,24 @@ import {
 } from './lib/article-viewer-cookie'
 
 export function middleware(req: NextRequest) {
+  const path = req.nextUrl.pathname
+  const protectedRoute =
+    path === '/account' ||
+    path.startsWith('/account/') ||
+    path === '/analytics' ||
+    path === '/match/new'
+  const functionalRoute =
+    /^\/(login|register|forgot-password|reset-password|setup-nickname|settings|notifications|profile|account|analytics)(\/|$)/.test(
+      path,
+    ) ||
+    /^\/articles\/new(\/|$)/.test(path) ||
+    /^\/match\/(new|my-matches)(\/|$)/.test(path) ||
+    /^\/match\/[^/]+\/chat(\/|$)/.test(path) ||
+    ((path === '/chat' || path.startsWith('/chat/')) && path !== '/chat/public')
+  const finalize = (response: NextResponse) => {
+    if (functionalRoute) response.headers.set('X-Robots-Tag', 'noindex')
+    return response
+  }
   if (req.nextUrl.pathname.startsWith('/articles')) {
     const response = NextResponse.next()
     const isArticleDetail = /^\/articles\/\d+$/.test(req.nextUrl.pathname)
@@ -22,8 +40,10 @@ export function middleware(req: NextRequest) {
         },
       )
     }
-    return response
+    return finalize(response)
   }
+
+  if (!protectedRoute) return finalize(NextResponse.next())
 
   // NextAuth 세션 쿠키 존재만 확인 (JWT 검증은 API 레벨에서 이미 수행됨)
   // HTTP/HTTPS 양쪽 쿠키 이름 모두 체크
@@ -39,11 +59,27 @@ export function middleware(req: NextRequest) {
     const url = req.nextUrl.clone()
     url.pathname = '/login'
     url.search = `?callbackUrl=${encodeURIComponent(callbackPath)}`
-    return NextResponse.redirect(url)
+    return finalize(NextResponse.redirect(url))
   }
-  return NextResponse.next()
+  return finalize(NextResponse.next())
 }
 
 export const config = {
-  matcher: ['/account/:path*', '/analytics', '/match/new', '/articles/:path*'],
+  matcher: [
+    '/account/:path*',
+    '/analytics',
+    '/match/new',
+    '/articles/:path*',
+    '/login/:path*',
+    '/register/:path*',
+    '/forgot-password/:path*',
+    '/reset-password/:path*',
+    '/setup-nickname/:path*',
+    '/settings/:path*',
+    '/notifications/:path*',
+    '/profile/:path*',
+    '/match/my-matches/:path*',
+    '/chat/:path*',
+    '/match/:id/chat/:path*',
+  ],
 }

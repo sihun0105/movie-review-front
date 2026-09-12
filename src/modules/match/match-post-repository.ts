@@ -31,7 +31,16 @@ export class MatchPostRepository {
       throw new Error('페이지 크기는 1-100 사이여야 합니다.')
     }
 
-    return await this.dataSource.getMatchPosts(page, pageSize, query)
+    const data = await this.dataSource.getMatchPosts(page, pageSize, query)
+    if (
+      !data ||
+      typeof data.hasNext !== 'boolean' ||
+      (data.matchPosts !== undefined && !Array.isArray(data.matchPosts))
+    ) {
+      throw new Error('Invalid match posts response')
+    }
+    // gRPC may omit an empty repeated field from the JSON response.
+    return { ...data, matchPosts: data.matchPosts ?? [] }
   }
 
   async getMatchPost(
