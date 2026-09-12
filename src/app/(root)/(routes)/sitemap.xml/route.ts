@@ -1,9 +1,6 @@
 import { ArticleRepository } from '@/modules/article/article-repository'
 import { MatchPostRepository } from '@/modules/match/match-post-repository'
-import {
-  buildIndexUrls,
-  discoverSitemapPages,
-} from '@/lib/sitemap/sitemap'
+import { buildIndexUrls, discoverSitemapPages } from '@/lib/sitemap/sitemap'
 import { getServerSideSitemapIndex } from 'next-sitemap'
 
 export const dynamic = 'force-dynamic'
@@ -16,19 +13,26 @@ export async function GET() {
   const articleRepository = new ArticleRepository()
   const matchRepository = new MatchPostRepository()
 
-  const [articlePages, matchPages] = await Promise.all([
-    discoverSitemapPages(async (page, pageSize) => {
-      const result = await articleRepository.listArticles(page, pageSize)
-      return { itemCount: result.articles.length, hasNext: result.hasNext }
-    }).catch(() => []),
-    discoverSitemapPages(async (page, pageSize) => {
-      const result = await matchRepository.getMatchPosts(page, pageSize)
-      return { itemCount: result.matchPosts.length, hasNext: result.hasNext }
-    }).catch(() => []),
-  ])
+  try {
+    const [articlePages, matchPages] = await Promise.all([
+      discoverSitemapPages(async (page, pageSize) => {
+        const result = await articleRepository.listArticles(page, pageSize)
+        return { itemCount: result.articles.length, hasNext: result.hasNext }
+      }),
+      discoverSitemapPages(async (page, pageSize) => {
+        const result = await matchRepository.getMatchPosts(page, pageSize)
+        return { itemCount: result.matchPosts.length, hasNext: result.hasNext }
+      }),
+    ])
 
-  return getServerSideSitemapIndex(
-    buildIndexUrls(articlePages, matchPages),
-    cacheHeaders,
-  )
+    return getServerSideSitemapIndex(
+      buildIndexUrls(articlePages, matchPages),
+      cacheHeaders,
+    )
+  } catch {
+    return new Response('Sitemap temporarily unavailable', {
+      status: 503,
+      headers: { 'Cache-Control': 'no-store' },
+    })
+  }
 }

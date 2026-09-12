@@ -22,14 +22,19 @@ const pickFirstDirector = (director?: string) => {
   )
 }
 
-export const useDirectorFilmography = (movie?: Movie) => {
+export const useDirectorFilmography = (
+  movie?: Movie,
+  initialData?: Movie[],
+) => {
   const director = pickFirstDirector(movie?.director)
   const key =
     movie && director
       ? MovieClientApiEndpoint.getMoviesByDirector(director, movie.id, 12)
       : null
 
-  const { data, ...state } = useSWR<Movie[]>(key, fetcher)
+  const { data, ...state } = useSWR<Movie[]>(key, fetcher, {
+    fallbackData: initialData,
+  })
 
   return {
     director,

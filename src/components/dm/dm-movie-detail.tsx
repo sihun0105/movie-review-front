@@ -52,6 +52,8 @@ export function DmMovieDetail({
                 title={movie.title}
                 palette={palette}
                 imageUrl={movie.poster}
+                sizes="106px"
+                priority
               />
             </PosterPreviewDialog>
           </div>

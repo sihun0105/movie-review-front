@@ -1,4 +1,5 @@
 import { MovieBackEndApiEndpoint } from '@/config/movie-api-endpoint'
+import { HttpResponseError } from '../../lib/http-response-error'
 
 export class MovieDatasource {
   private token?: string
@@ -30,7 +31,10 @@ export class MovieDatasource {
       cache: 'no-cache',
     })
     if (res.status !== 200) {
-      throw new Error('Movie를 받아 올 수 없습니다.')
+      throw new HttpResponseError(
+        res.status,
+        '영화 정보를 받아 올 수 없습니다.',
+      )
     }
     return res.json()
   }

@@ -1,5 +1,6 @@
 import { MovieRepository } from '@/modules/movie/movie-repository'
 import { NextRequest } from 'next/server'
+import { HttpResponseError } from '@/lib/http-response-error'
 
 export const GET = async (req: NextRequest) => {
   const searchParams = req.nextUrl.searchParams
@@ -27,11 +28,20 @@ export const GET = async (req: NextRequest) => {
       },
     )
   } catch (error) {
-    return new Response(JSON.stringify({ message: 'An error occurred' }), {
-      status: 500,
-      headers: {
-        'Content-Type': 'application/json',
+    const status = error instanceof HttpResponseError ? error.status : 500
+    return new Response(
+      JSON.stringify({
+        message:
+          status === 404
+            ? '영화를 찾을 수 없습니다.'
+            : '영화 정보를 불러오지 못했습니다.',
+      }),
+      {
+        status,
+        headers: {
+          'Content-Type': 'application/json',
+        },
       },
-    })
+    )
   }
 }

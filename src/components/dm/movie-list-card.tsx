@@ -5,9 +5,10 @@ import { paletteForMovie } from './poster-palette'
 
 interface MovieListCardProps {
   movie: Movie
+  priority?: boolean
 }
 
-export function MovieListCard({ movie }: MovieListCardProps) {
+export function MovieListCard({ movie, priority = false }: MovieListCardProps) {
   const palette = paletteForMovie(movie.id, movie.title)
   const rating = movie.averageScore ?? 0
   const hasRating = rating > 0
@@ -38,6 +39,8 @@ export function MovieListCard({ movie }: MovieListCardProps) {
             title={movie.title}
             palette={palette}
             imageUrl={movie.poster}
+            sizes="(max-width: 639px) 104px, 124px"
+            priority={priority}
             className="shadow-[0_12px_32px_rgba(0,0,0,0.28)]"
             rounded="md"
           />
