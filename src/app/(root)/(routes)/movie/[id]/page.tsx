@@ -1,6 +1,11 @@
 import { Metadata } from 'next'
 import { FunctionComponent } from 'react'
-import { getMovieDetail, getCommentPage, getScore } from './data'
+import {
+  getMovieDetail,
+  getCommentPage,
+  getScore,
+  getFilmography,
+} from './data'
 import { ModifyCommentModalContextProvider } from './hooks/use-modify-comment-context'
 import { VodModalContextProvider } from './hooks/use-vod-modal-context'
 import { buildBreadcrumbJsonLd, buildMovieJsonLd } from './json-ld'
@@ -25,6 +30,7 @@ const Page: FunctionComponent<PageProps> = async ({ params: { id } }) => {
     getScore(id),
   ])
   const reviews = commentPage?.comments ?? []
+  const filmography = await getFilmography(movie)
 
   const movieJsonLd = buildMovieJsonLd(id, movie, reviews, score)
   const breadcrumbJsonLd = buildBreadcrumbJsonLd(id, movie.title)
@@ -49,7 +55,12 @@ const Page: FunctionComponent<PageProps> = async ({ params: { id } }) => {
       >
         <ModifyCommentModalContextProvider>
           <VodModalContextProvider>
-            <DescriptionSection id={id} initialMovie={movie} />
+            <DescriptionSection
+              key={id}
+              id={id}
+              initialMovie={movie}
+              initialFilmography={filmography}
+            />
             <CommentSection id={id} initialData={commentPage} />
           </VodModalContextProvider>
         </ModifyCommentModalContextProvider>

@@ -12,11 +12,13 @@ import type { Movie } from '@/modules/movie/movie.entity'
 interface DescriptionSectionProps {
   id: string
   initialMovie?: Movie
+  initialFilmography?: Movie[]
 }
 
 const DescriptionSection: FunctionComponent<DescriptionSectionProps> = ({
   id,
   initialMovie,
+  initialFilmography,
 }) => {
   const {
     data,
@@ -50,7 +52,10 @@ const DescriptionSection: FunctionComponent<DescriptionSectionProps> = ({
         onScoreSaved={refreshMovie}
       />
       <MovieCastSection actors={data.actors} />
-      <DirectorFilmographySection movie={data} />
+      <DirectorFilmographySection
+        movie={data}
+        initialData={initialFilmography}
+      />
     </>
   )
 }

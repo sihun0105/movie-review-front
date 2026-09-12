@@ -3,16 +3,24 @@ import { cache } from 'react'
 import { CommentRepository } from '@/modules/comment/comment-repository'
 import { AverageMovieScore, Movie } from '@/modules/movie/movie.entity'
 import { MovieRepository } from '@/modules/movie/movie-repository'
+import { HttpResponseError } from '@/lib/http-response-error'
+import { notFound } from 'next/navigation'
 
 export const getMovieDetail = cache(async (id: string): Promise<Movie> => {
   const repo = new MovieRepository()
-  return repo.getMovieDetail(id)
+  if (!/^\d{8}$/.test(id)) notFound()
+  try {
+    return await repo.getMovieDetail(id)
+  } catch (error) {
+    if (error instanceof HttpResponseError && error.status === 404) notFound()
+    throw error
+  }
 })
 
 export const getCommentPage = cache(
   async (id: string): Promise<RepliesResponse | undefined> => {
     try {
-      return await new CommentRepository().getCommentList(id, 0)
+      return await new CommentRepository().getCommentList(id, 1)
     } catch {
       return undefined
     }
@@ -21,6 +29,25 @@ export const getCommentPage = cache(
 
 export const getReviews = async (id: string) =>
   (await getCommentPage(id))?.comments ?? []
+
+export async function getFilmography(
+  movie: Movie,
+): Promise<Movie[] | undefined> {
+  const director = movie.director
+    ?.split(/[,/·]/)
+    .map((name) => name.trim())
+    .find(Boolean)
+  if (!director) return []
+  try {
+    return await new MovieRepository().getMoviesByDirector(
+      director,
+      movie.id,
+      12,
+    )
+  } catch {
+    return undefined
+  }
+}
 
 export const getScore = cache(
   async (id: string): Promise<AverageMovieScore | null> => {

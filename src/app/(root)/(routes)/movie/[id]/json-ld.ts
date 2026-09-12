@@ -14,6 +14,9 @@ export function buildMovieJsonLd(
     (r) =>
       r &&
       !r.isDeleted &&
+      typeof r.rating === 'number' &&
+      r.rating >= 1 &&
+      r.rating <= 5 &&
       r.content &&
       r.content.trim() &&
       r.nickname &&
@@ -27,15 +30,19 @@ export function buildMovieJsonLd(
     '@id': `${BASE}/movie/${id}`,
     name: movie.title,
     description: movie.plot,
-    image: [
-      {
-        '@type': 'ImageObject',
-        url: movie.poster,
-        caption: `${movie.title} 포스터`,
-        width: 400,
-        height: 600,
-      },
-    ],
+    ...(movie.poster?.trim()
+      ? {
+          image: [
+            {
+              '@type': 'ImageObject',
+              url: movie.poster,
+              caption: `${movie.title} 포스터`,
+              width: 400,
+              height: 600,
+            },
+          ],
+        }
+      : {}),
     url: `${BASE}/movie/${id}`,
     sameAs: `${BASE}/movie/${id}`,
     mainEntityOfPage: {
@@ -70,10 +77,16 @@ export function buildMovieJsonLd(
   if (movie.ratting?.trim()) jsonLd.contentRating = movie.ratting.trim()
 
   if (validReviews.length > 0) {
-    jsonLd.review = validReviews.slice(0, 10).map((r, index) => {
+    jsonLd.review = validReviews.slice(0, 10).map((r) => {
       const review: Record<string, unknown> = {
         '@type': 'Review',
-        '@id': `${BASE}/movie/${id}#review${index + 1}`,
+        '@id': `${BASE}/movie/${id}#comment-${r.id}`,
+        reviewRating: {
+          '@type': 'Rating',
+          ratingValue: r.rating,
+          bestRating: 5,
+          worstRating: 1,
+        },
         author: { '@type': 'Person', name: r.nickname.trim() },
         reviewBody: r.content.trim(),
         inLanguage: 'ko',
@@ -99,7 +112,6 @@ export function buildMovieJsonLd(
       '@id': `${BASE}/movie/${id}#aggregateRating`,
       ratingValue: Number(score.averageScore.toFixed(1)),
       ratingCount: score.scoreCount,
-      reviewCount: validReviews.length,
       bestRating: 5,
       worstRating: 1,
       itemReviewed: {
@@ -108,19 +120,6 @@ export function buildMovieJsonLd(
         name: movie.title,
       },
     }
-  }
-
-  jsonLd.potentialAction = {
-    '@type': 'WatchAction',
-    target: {
-      '@type': 'EntryPoint',
-      urlTemplate: `${BASE}/movie/${id}`,
-      actionPlatform: [
-        'https://schema.org/DesktopWebPlatform',
-        'https://schema.org/IOSPlatform',
-        'https://schema.org/AndroidPlatform',
-      ],
-    },
   }
 
   return jsonLd
@@ -132,10 +131,9 @@ export function buildBreadcrumbJsonLd(id: string, title: string) {
     '@type': 'BreadcrumbList',
     itemListElement: [
       { '@type': 'ListItem', position: 1, name: '홈', item: BASE },
-      { '@type': 'ListItem', position: 2, name: '영화', item: BASE },
       {
         '@type': 'ListItem',
-        position: 3,
+        position: 2,
         name: title,
         item: `${BASE}/movie/${id}`,
       },

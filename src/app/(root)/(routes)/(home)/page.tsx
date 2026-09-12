@@ -8,6 +8,7 @@ import { getMatchScheduleStatus } from '@/lib/utils'
 import { Metadata } from 'next'
 import { FunctionComponent } from 'react'
 import { RecentArticles } from './components/recent-articles'
+import { siteMetadata } from '@/app/site-metadata'
 
 export const dynamic = 'force-dynamic'
 
@@ -52,7 +53,12 @@ export async function generateMetadata(): Promise<Metadata> {
     description,
     keywords:
       '볼래, bollae, 영화 매칭, 같이 볼래, 영화 추천, 최신 영화, 인기 영화, 영화 순위, 영화 평점, 영화 리뷰, 볼만한 영화',
-    openGraph: { title: '볼래 | 같이 볼 사람을 찾는 영화 매칭', description },
+    alternates: { canonical: 'https://bollae.kr/' },
+    openGraph: {
+      ...siteMetadata.openGraph,
+      title: '볼래 | 같이 볼 사람을 찾는 영화 매칭',
+      description,
+    },
   }
 }
 
@@ -77,10 +83,6 @@ const Page: FunctionComponent = async () => {
   ])
   const todayLabel = getKstTodayLabel()
 
-  if (!data || data.length === 0) {
-    return <AppSkeleton className="container min-h-[364px] p-6" />
-  }
-
   const sorted = [...data].sort((a, b) => (a.rank ?? 999) - (b.rank ?? 999))
   const top10 = sorted.slice(0, 10)
 
@@ -101,6 +103,7 @@ const Page: FunctionComponent = async () => {
       </div>
 
       <div className="grid gap-3 px-4 lg:grid-cols-2">
+        {top10.length === 0 && <AppSkeleton className="min-h-[364px] p-6" />}
         {top10.map((movie) => (
           <MovieListCard key={movie.id} movie={movie} />
         ))}
