@@ -15,6 +15,7 @@ declare module 'next-auth' {
     user: UserEntity
   }
   interface User {
+    backendToken?: string
     phone: string
     nickname: string
     image: string
@@ -23,6 +24,7 @@ declare module 'next-auth' {
 
 declare module 'next-auth/jwt' {
   interface JWT {
+    backendToken?: string
     provider?: string
     userId?: string
     image?: string

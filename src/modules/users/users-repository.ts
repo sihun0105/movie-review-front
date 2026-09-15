@@ -29,8 +29,8 @@ export class UsersRepository {
     return await this.datasource.signUp({ userId, password, nickname, gender })
   }
 
-  async signInWithProvider(params: { providerId: string }) {
-    const result = await this.datasource.signInWithProvider({ providerId: params.providerId })
+  async signInWithProvider(params: { idToken: string }) {
+    const result = await this.datasource.signInWithProvider(params)
     return this.convertToUserEntity(result)
   }
 
@@ -51,6 +51,7 @@ export class UsersRepository {
       name: arg.name ?? '',
       email: arg.email ?? '',
       image: arg.image ?? '',
+      backendToken: arg.token,
     }
     assertUserEntity(result)
     return result

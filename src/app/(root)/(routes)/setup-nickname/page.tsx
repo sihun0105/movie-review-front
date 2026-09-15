@@ -2,7 +2,8 @@
 
 import { Button } from '@/components/ui/button'
 import { X } from 'lucide-react'
-import { signOut, useSession } from 'next-auth/react'
+import { useSession } from 'next-auth/react'
+import { revokeAndSignOut } from '@/lib/revoke-and-sign-out'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 
@@ -14,7 +15,7 @@ export default function SetupNicknamePage() {
   const [isLoading, setIsLoading] = useState(false)
 
   const handleSignOut = () => {
-    signOut({ callbackUrl: '/login' })
+    revokeAndSignOut('/login').catch(() => setError('로그아웃에 실패했습니다.'))
   }
 
   const handleSubmit = async (e: React.FormEvent) => {

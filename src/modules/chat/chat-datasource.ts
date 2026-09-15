@@ -1,5 +1,4 @@
 import { AppBackEndApiEndpoint } from '@/config/app-backend-api-endpoint'
-import { getTokenFromCookie } from '@/lib/utils/getToken'
 import type {
   ChatRoomEntity,
   ChatRoomsResponseEntity,
@@ -19,7 +18,7 @@ export class ChatDatasource {
   }
 
   private getAuthHeaders(): HeadersInit {
-    const authToken = this.token || getTokenFromCookie()
+    const authToken = this.token
     return {
       'Content-Type': 'application/json',
       Authorization: `Bearer ${authToken}`,

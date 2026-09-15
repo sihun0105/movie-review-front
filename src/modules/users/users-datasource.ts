@@ -58,7 +58,7 @@ export class UsersDatasource {
     return res.json()
   }
 
-  async signInWithProvider(params: { providerId: string }) {
+  async signInWithProvider(params: { idToken: string }) {
     const res = await fetch(AppBackEndApiEndpoint.oAuth(), {
       method: 'POST',
       headers: {
@@ -66,7 +66,7 @@ export class UsersDatasource {
       },
       body: JSON.stringify({
         provider: 'google',
-        accessToken: params.providerId,
+        accessToken: params.idToken,
       }),
       cache: 'no-cache',
     })

@@ -2,10 +2,10 @@ import { UsersRepository } from '@/modules/users/users-repository'
 import { AuthOptions } from 'next-auth'
 import CredentialsProvider from 'next-auth/providers/credentials'
 import { AppPath } from '@/config/app-path'
-import * as jose from 'jose'
 import { AppEnv } from '@/config/app-env'
 import GoogleProvider from 'next-auth/providers/google'
 import { syncSessionUser } from '@/lib/utils/session-user'
+import { decodeSession, encodeSession, revokeSession } from '@/lib/backend-auth-session'
 
 export const authOptions: AuthOptions = {
   providers: [
@@ -43,32 +43,8 @@ export const authOptions: AuthOptions = {
     signIn: AppPath.login(),
   },
   jwt: {
-    encode: async ({ secret, token, maxAge }) => {
-      if (!token) {
-        throw new Error('error encoding token')
-      }
-      const jwtSecret = new TextEncoder().encode(secret as string)
-      const exp = Math.floor(Date.now() / 1000) + (maxAge || 0)
-      const alg = 'HS256'
-      const jwt = await new jose.SignJWT({
-        ...token,
-        userid: token.userId,
-        username: token.email,
-      })
-        .setProtectedHeader({ alg })
-        .setIssuedAt()
-        .setExpirationTime(exp)
-        .sign(jwtSecret)
-      return jwt
-    },
-    decode: async ({ secret, token }) => {
-      if (!secret) {
-        throw new Error('Secret not provided')
-      }
-      const jwtSecret = new TextEncoder().encode(secret as string)
-      const decoded = await jose.jwtVerify(token as string, jwtSecret)
-      return decoded.payload
-    },
+    encode: encodeSession,
+    decode: decodeSession,
     secret: AppEnv.nextAuthSecret,
   },
   callbacks: {
@@ -76,15 +52,16 @@ export const authOptions: AuthOptions = {
       const repo = new UsersRepository()
       try {
         if (account && account?.provider !== 'credentials') {
-          if (!user.email) {
+          if (!account.id_token) {
             return false
           }
 
-          const result = await repo.signInWithProvider({ providerId: user.email })
+          const result = await repo.signInWithProvider({ idToken: account.id_token })
           user.id = result.id
           user.email = result.email ?? user.email
           user.nickname = result.nickname ?? user.nickname
           user.image = result.image || user.image
+          user.backendToken = result.backendToken
           return true
         }
       } catch (error) {
@@ -106,6 +83,8 @@ export const authOptions: AuthOptions = {
       }
 
       if (account) {
+        if (!user.backendToken) throw new Error('Backend session token is required')
+        token.backendToken = user.backendToken
         token.provider = account.provider
         token.userId = user.id
         token.nickname = user.nickname
@@ -118,6 +97,11 @@ export const authOptions: AuthOptions = {
       if (!token) return session
       const repo = new UsersRepository()
       return syncSessionUser(session, token, (id) => repo.getUser(id))
+    },
+  },
+  events: {
+    async signOut({ token }) {
+      if (token?.backendToken) await revokeSession(token.backendToken)
     },
   },
 }
