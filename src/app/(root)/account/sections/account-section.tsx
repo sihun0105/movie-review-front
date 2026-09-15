@@ -11,7 +11,7 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from '@/components/ui/alert-dialog'
-import { signOut } from 'next-auth/react'
+import { revokeAndSignOut } from '@/lib/revoke-and-sign-out'
 import Link from 'next/link'
 import { FunctionComponent, useState } from 'react'
 import { ChevronRight, Clapperboard, LogOut } from 'lucide-react'
@@ -57,7 +57,7 @@ const AccountSection: FunctionComponent = () => {
     { label: '내 매칭', href: '/match/my-matches', icon: Clapperboard },
     {
       label: '로그아웃',
-      onClick: () => signOut({ callbackUrl: '/' }),
+      onClick: () => revokeAndSignOut('/').catch(() => window.alert('로그아웃에 실패했습니다.')),
       destructive: true,
       icon: LogOut,
     },
@@ -73,7 +73,7 @@ const AccountSection: FunctionComponent = () => {
       if (!res.ok) {
         throw new Error('Failed to delete account')
       }
-      await signOut({ callbackUrl: '/' })
+      await revokeAndSignOut('/')
     } catch (error) {
       console.error('Delete account error:', error)
       setIsDeleting(false)
