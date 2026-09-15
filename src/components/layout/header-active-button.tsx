@@ -9,7 +9,8 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 import { Button } from '../ui/button'
-import { SessionContext, signOut } from 'next-auth/react'
+import { SessionContext } from 'next-auth/react'
+import { revokeAndSignOut } from '@/lib/revoke-and-sign-out'
 import Link from 'next/link'
 interface HeaderActiveButtonProps {}
 
@@ -31,7 +32,7 @@ const HeaderActiveButton: FunctionComponent<HeaderActiveButtonProps> = ({}) => {
         </DropdownMenuItem>
         <DropdownMenuItem
           onClick={() => {
-            signOut()
+            revokeAndSignOut().catch(() => window.alert('로그아웃에 실패했습니다.'))
           }}
         >
           Log out
