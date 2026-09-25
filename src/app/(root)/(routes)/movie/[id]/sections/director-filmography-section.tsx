@@ -7,6 +7,7 @@ import { Poster } from '@/components/dm/poster'
 import { paletteForMovie } from '@/components/dm/poster-palette'
 import { SectionHead } from '@/components/dm/section-head'
 import { useDirectorFilmography } from '../hooks/use-director-filmography'
+import { SwipeClickGuard } from './swipe-click-guard'
 
 interface DirectorFilmographySectionProps {
   movie: Movie
@@ -14,6 +15,7 @@ interface DirectorFilmographySectionProps {
 }
 
 function FilmographyCard({ movie }: { movie: Movie }) {
+  const clickGuard = React.useRef(new SwipeClickGuard()).current
   const palette = paletteForMovie(movie.id, movie.title)
   const releaseYear = movie.openedAt
     ? new Date(movie.openedAt).getFullYear()
@@ -29,6 +31,16 @@ function FilmographyCard({ movie }: { movie: Movie }) {
     <Link
       href={`/movie/${movie.id}`}
       className="block w-[132px] shrink-0 rounded-lg border border-border bg-card p-2 transition-colors hover:bg-accent"
+      onPointerDown={(event) =>
+        clickGuard.start(event.clientX, event.clientY)
+      }
+      onPointerMove={(event) => clickGuard.move(event.clientX, event.clientY)}
+      onPointerCancel={() => clickGuard.cancel()}
+      onClick={(event) => {
+        if (!clickGuard.shouldCancelClick()) return
+        event.preventDefault()
+        event.stopPropagation()
+      }}
     >
       <Poster
         title={movie.title}
