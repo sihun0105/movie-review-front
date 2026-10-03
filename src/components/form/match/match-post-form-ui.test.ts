@@ -37,6 +37,11 @@ describe('match post form UI contract', () => {
     )
   })
 
+  it('단계 전환 직후 같은 클릭으로 폼이 제출되지 않는다', () => {
+    expect(formSource).not.toContain('type="submit"')
+    expect(formSource).toContain('onClick={() => void submit()}')
+  })
+
   it('인원은 2명부터 선택하고 성별 조건은 명시적으로 고르게 한다', () => {
     expect(source).toContain('[2, 3, 4, 5, 6]')
     expect(source).toContain("form.watch('genderCondition')")
