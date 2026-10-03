@@ -23,11 +23,16 @@ const formSchema = z.object({
   }),
   maxParticipants: z
     .number()
-    .min(1, {
-      message: '최소 1명 이상이어야 합니다.',
+    .min(2, {
+      message: '호스트를 포함해 최소 2명 이상이어야 합니다.',
     })
     .max(10, {
       message: '최대 10명까지 가능합니다.',
+    }),
+  genderCondition: z
+    .union([z.enum(['any', 'male', 'female']), z.literal('')])
+    .refine((value) => value !== '', {
+      message: '참여 성별을 선택해주세요.',
     }),
   location: z.string().min(1, {
     message: '위치를 입력해주세요.',

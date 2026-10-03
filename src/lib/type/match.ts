@@ -5,12 +5,15 @@ export enum Gender {
   FEMALE = 'female',
 }
 
+export type MatchGenderCondition = 'any' | 'male' | 'female'
+
 export interface MatchPost {
   id: string
   title: string
   userno: number
   author: string
-  gender: Gender
+  authorGender: Gender | ''
+  genderCondition: MatchGenderCondition
   content: string
   movieTitle: string
   moviePoster?: string
@@ -47,6 +50,7 @@ export interface CreateMatchPostRequest {
   theaterName: string
   showTime: string
   maxParticipants: number
+  genderCondition: MatchGenderCondition | ''
   location: string
 }
 
