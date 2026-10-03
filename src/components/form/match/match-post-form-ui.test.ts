@@ -32,5 +32,17 @@ describe('match post form UI contract', () => {
     expect(formSource).toContain('if (!isLast)')
     expect(formSource).toContain('event.preventDefault()')
     expect(formSource).toContain("label: '설명'")
+    expect(formSource).toContain(
+      "form.trigger(['maxParticipants', 'genderCondition'])",
+    )
+  })
+
+  it('인원은 2명부터 선택하고 성별 조건은 명시적으로 고르게 한다', () => {
+    expect(source).toContain('[2, 3, 4, 5, 6]')
+    expect(source).toContain("form.watch('genderCondition')")
+    expect(source).toMatch(/form\.setValue\(\s*'genderCondition'/)
+    expect(source).toContain('성별 무관')
+    expect(source).toContain('남성만')
+    expect(source).toContain('여성만')
   })
 })

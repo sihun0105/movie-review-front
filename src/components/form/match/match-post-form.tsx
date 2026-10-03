@@ -40,13 +40,26 @@ const MatchPostForm: FunctionComponent<MatchPostFormProps> = ({
       ['일정', values.showTime ? formatMatchDateTime(values.showTime) : '미정'],
       ['장소', values.location || '미정'],
       ['인원', `${values.maxParticipants || 1}명`],
+      [
+        '참여 성별',
+        values.genderCondition === 'male'
+          ? '남성만'
+          : values.genderCondition === 'female'
+            ? '여성만'
+            : values.genderCondition === 'any'
+              ? '성별 무관'
+              : '미정',
+      ],
     ],
     [values],
   )
 
   const goNext = async () => {
     if (current.field === 'confirm') return
-    const ok = await form.trigger(current.field)
+    const ok =
+      current.field === 'maxParticipants'
+        ? await form.trigger(['maxParticipants', 'genderCondition'])
+        : await form.trigger(current.field)
     if (ok) setStep((prev) => Math.min(prev + 1, steps.length - 1))
   }
 
@@ -60,12 +73,12 @@ const MatchPostForm: FunctionComponent<MatchPostFormProps> = ({
   })
 
   const handleFormSubmit = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault()
     if (!isLast) {
-      event.preventDefault()
       void goNext()
       return
     }
-    void submit(event)
+    void submit()
   }
 
   return (

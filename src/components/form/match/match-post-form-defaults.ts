@@ -6,7 +6,8 @@ const baseDefaults: CreateMatchPostRequest = {
   movieTitle: '',
   theaterName: '상영관 미정',
   showTime: '',
-  maxParticipants: 1,
+  maxParticipants: 2,
+  genderCondition: '',
   location: '',
 }
 
