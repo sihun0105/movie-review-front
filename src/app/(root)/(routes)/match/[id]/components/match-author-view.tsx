@@ -50,6 +50,7 @@ const MatchAuthorView: FunctionComponent<MatchAuthorViewProps> = ({
     theaterName: matchPost.theaterName,
     showTime: toDatetimeLocalValue(matchPost.showTime),
     maxParticipants: matchPost.maxParticipants,
+    genderCondition: matchPost.genderCondition,
     location: matchPost.location,
   }
 

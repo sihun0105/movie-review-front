@@ -38,9 +38,9 @@ export function DmMatchDetailCard({ match }: DmMatchDetailCardProps) {
   const cap = match.maxParticipants
   const isFull = joined >= cap
   const genderLabel =
-    match.gender === 'male'
+    match.genderCondition === 'male'
       ? '남성만'
-      : match.gender === 'female'
+      : match.genderCondition === 'female'
         ? '여성만'
         : '성별 무관'
 

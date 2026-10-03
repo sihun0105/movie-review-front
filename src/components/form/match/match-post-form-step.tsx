@@ -62,28 +62,66 @@ export function MatchPostFormStep({
 
   if (field === 'maxParticipants') {
     return (
-      <div className="grid grid-cols-2 gap-3">
-        {[1, 2, 3, 4, 5, 6].map((count) => {
-          const selected = form.watch('maxParticipants') === count
-          return (
-            <button
-              key={count}
-              type="button"
-              onClick={() =>
-                form.setValue('maxParticipants', count, {
-                  shouldValidate: true,
-                })
-              }
-              className={`rounded-xl border px-4 py-5 text-[18px] font-bold ${
-                selected
-                  ? 'border-primary bg-primary text-white'
-                  : 'border-border bg-secondary text-foreground'
-              }`}
-            >
-              {count}명
-            </button>
-          )
-        })}
+      <div className="space-y-7">
+        <div>
+          <p className="mb-3 text-[13px] font-semibold text-foreground">
+            호스트 포함 전체 인원
+          </p>
+          <div className="grid grid-cols-5 gap-2">
+            {[2, 3, 4, 5, 6].map((count) => {
+              const selected = form.watch('maxParticipants') === count
+              return (
+                <button
+                  key={count}
+                  type="button"
+                  onClick={() =>
+                    form.setValue('maxParticipants', count, {
+                      shouldValidate: true,
+                    })
+                  }
+                  className={`rounded-xl border py-4 text-[16px] font-bold ${selected ? 'border-primary bg-primary text-white' : 'border-border bg-secondary text-foreground'}`}
+                >
+                  {count}명
+                </button>
+              )
+            })}
+          </div>
+        </div>
+        <div>
+          <p className="mb-3 text-[13px] font-semibold text-foreground">
+            참여 성별
+          </p>
+          <div className="grid grid-cols-3 gap-2">
+            {[
+              ['any', '성별 무관'],
+              ['male', '남성만'],
+              ['female', '여성만'],
+            ].map(([value, label]) => {
+              const selected = form.watch('genderCondition') === value
+              return (
+                <button
+                  key={value}
+                  type="button"
+                  onClick={() =>
+                    form.setValue(
+                      'genderCondition',
+                      value as 'any' | 'male' | 'female',
+                      {
+                        shouldValidate: true,
+                      },
+                    )
+                  }
+                  className={`rounded-xl border px-2 py-4 text-[14px] font-bold ${selected ? 'border-primary bg-primary text-white' : 'border-border bg-secondary text-foreground'}`}
+                >
+                  {label}
+                </button>
+              )
+            })}
+          </div>
+          <p className="mt-3 text-[13px] text-destructive">
+            {form.formState.errors.genderCondition?.message}
+          </p>
+        </div>
       </div>
     )
   }
