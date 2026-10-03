@@ -6,6 +6,7 @@ import { useRouter } from 'next/navigation'
 import { FunctionComponent, useState } from 'react'
 import { MatchFormSection } from '../../sections/match-form-section'
 import { MatchApplicationRow } from './match-application-row'
+import { MatchDescriptionSection } from './match-description-section'
 
 interface MatchAuthorViewProps {
   matchPost: MatchPost
@@ -91,7 +92,12 @@ const MatchAuthorView: FunctionComponent<MatchAuthorViewProps> = ({
           />
         </div>
       ) : (
-        <DmMatchDetailCard match={matchPost} />
+        <>
+          <DmMatchDetailCard match={matchPost} />
+          <div className="px-4">
+            <MatchDescriptionSection content={matchPost.content} />
+          </div>
+        </>
       )}
 
       <div className="mt-4 border-t border-border">
