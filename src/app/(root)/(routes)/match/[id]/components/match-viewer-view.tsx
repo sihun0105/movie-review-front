@@ -1,12 +1,7 @@
 'use client'
 
 import { MatchApplyDialog } from '@/components/app/match-apply-dialog'
-import {
-  DmMatchDetailCard,
-  Poster,
-  paletteForMovie,
-  SectionHead,
-} from '@/components/dm'
+import { DmMatchDetailCard, Poster, paletteForMovie } from '@/components/dm'
 import { MatchPost } from '@/lib/type'
 import { getMatchScheduleStatus } from '@/lib/utils'
 import { useSession } from 'next-auth/react'
@@ -14,6 +9,7 @@ import Link from 'next/link'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { useEffect, useRef, useState } from 'react'
 import { useMyApplication } from '../../hooks/use-my-application'
+import { MatchDescriptionSection } from './match-description-section'
 
 interface MatchViewerViewProps {
   matchPost: MatchPost
@@ -144,14 +140,7 @@ const MatchViewerView = ({ matchPost, onApply }: MatchViewerViewProps) => {
       <div className="px-4 pb-6 pt-3">
         <DmMatchDetailCard match={matchPost} />
 
-        {matchPost.content && (
-          <div className="mt-4">
-            <SectionHead className="mt-0">호스트의 인사</SectionHead>
-            <div className="break-keep rounded-lg border border-border bg-card p-4 text-[14px] leading-[1.7] text-foreground">
-              {matchPost.content}
-            </div>
-          </div>
-        )}
+        <MatchDescriptionSection content={matchPost.content} />
       </div>
 
       {(myApplication || canApply) && (
