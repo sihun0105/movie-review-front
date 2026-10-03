@@ -120,7 +120,8 @@ const MatchPostForm: FunctionComponent<MatchPostFormProps> = ({
           </button>
           {isLast ? (
             <button
-              type="submit"
+              type="button"
+              onClick={() => void submit()}
               disabled={isLoading}
               className="flex h-12 flex-1 items-center justify-center gap-2 rounded-xl bg-primary text-[15px] font-bold text-white disabled:bg-secondary disabled:text-muted-foreground"
             >
