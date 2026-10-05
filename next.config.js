@@ -18,6 +18,16 @@ const nextConfig = {
     ],
     formats: ['image/avif', 'image/webp'],
   },
+  async redirects() {
+    return [
+      {
+        source: '/:path*',
+        has: [{ type: 'host', value: 'www.bollae.kr' }],
+        destination: 'https://bollae.kr/:path*',
+        permanent: true,
+      },
+    ]
+  },
 }
 
 module.exports = nextConfig
