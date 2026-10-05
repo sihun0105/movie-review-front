@@ -40,4 +40,20 @@ describe('movie catalog mapping', () => {
     expect(result.movies[0]).toMatchObject({ id: 20256308, title: '인턴' })
     expect(result).toMatchObject({ total: 1, hasNext: false })
   })
+
+  it('treats an omitted protobuf movie list as empty', async () => {
+    const datasource = {
+      getMovieCatalog: vi.fn().mockResolvedValue({
+        page: 999999,
+        pageSize: 24,
+        total: 1,
+        hasNext: false,
+      }),
+    }
+    const repository = new MovieRepository(undefined, datasource as any)
+
+    const result = await repository.getMovieCatalog('', '', 999999, 24)
+
+    expect(result.movies).toEqual([])
+  })
 })
