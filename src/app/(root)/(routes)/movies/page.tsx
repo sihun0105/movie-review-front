@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import { Metadata } from 'next'
+import { notFound } from 'next/navigation'
 import { Search } from 'lucide-react'
 import { MovieRepository } from '@/modules/movie/movie-repository'
 import {
@@ -23,12 +24,27 @@ export function generateMetadata({ searchParams }: PageProps): Metadata {
   const genre = clean(searchParams?.genre)
   const page = movieCatalogPageNumber(searchParams?.page)
   const canonical = `https://bollae.kr${movieCatalogHref({ page, query, genre })}`
+  const title = query ? `${query} 영화 검색 | 볼래` : '영화 둘러보기 | 볼래'
+  const description =
+    '최신 영화와 장르별 작품을 둘러보고 평점, 리뷰, 감독 정보를 확인하세요.'
   return {
-    title: query ? `${query} 영화 검색 | 볼래` : '영화 둘러보기 | 볼래',
-    description:
-      '최신 영화와 장르별 작품을 둘러보고 평점, 리뷰, 감독 정보를 확인하세요.',
+    title,
+    description,
     alternates: { canonical },
     robots: query || genre ? { index: false, follow: true } : undefined,
+    openGraph: {
+      type: 'website',
+      title,
+      description,
+      url: canonical,
+      images: ['/images/og-image.png'],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title,
+      description,
+      images: ['/images/og-image.png'],
+    },
   }
 }
 
@@ -36,9 +52,8 @@ export default async function MoviesPage({ searchParams }: PageProps) {
   const query = clean(searchParams?.query)
   const genre = clean(searchParams?.genre)
   const page = movieCatalogPageNumber(searchParams?.page)
-  const data = await new MovieRepository()
-    .getMovieCatalog(query, genre, page)
-    .catch(() => null)
+  const data = await new MovieRepository().getMovieCatalog(query, genre, page)
+  if (page > 1 && data.movies.length === 0) notFound()
 
   return (
     <main className="min-h-page px-4 pb-8 pt-5">
@@ -51,6 +66,7 @@ export default async function MoviesPage({ searchParams }: PageProps) {
       </header>
 
       <form className="mt-5 flex gap-2" action="/movies">
+        {genre && <input type="hidden" name="genre" value={genre} />}
         <label className="flex h-11 min-w-0 flex-1 items-center gap-2 border-b border-foreground px-1">
           <Search className="h-4 w-4 shrink-0" aria-hidden="true" />
           <input
@@ -85,11 +101,11 @@ export default async function MoviesPage({ searchParams }: PageProps) {
           {query ? `'${query}' 검색 결과` : genre || '전체 영화'}
         </h2>
         <span className="font-mono text-[11px] text-muted-foreground">
-          {data ? `${data.total}편` : '불러오기 실패'}
+          {data.total}편
         </span>
       </div>
 
-      {data?.movies.length ? (
+      {data.movies.length ? (
         <div className="mt-4 grid grid-cols-2 gap-x-3 gap-y-6 sm:grid-cols-3">
           {data.movies.map((movie) => (
             <MovieCatalogCard key={movie.id} movie={movie} />
@@ -97,13 +113,11 @@ export default async function MoviesPage({ searchParams }: PageProps) {
         </div>
       ) : (
         <p className="py-16 text-center text-[13px] text-muted-foreground">
-          {data
-            ? '조건에 맞는 영화가 없습니다.'
-            : '영화 목록을 불러오지 못했습니다.'}
+          조건에 맞는 영화가 없습니다.
         </p>
       )}
 
-      {data && (page > 1 || data.hasNext) && (
+      {(page > 1 || data.hasNext) && (
         <nav
           aria-label="영화 목록 페이지"
           className="mt-8 flex justify-between border-t border-border pt-4 text-[13px]"
