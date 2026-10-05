@@ -21,8 +21,8 @@ vi.mock('@/lib/seo/public-discovery', () => ({
   movieCatalogPageNumber: (value?: string) => Number(value) || 1,
 }))
 vi.mock('next/navigation', () => ({
-  notFound: () => {
-    throw new Error('NEXT_NOT_FOUND')
+  redirect: (href: string) => {
+    throw new Error(`NEXT_REDIRECT:${href}`)
   },
 }))
 vi.mock('next/link', () => ({
@@ -44,7 +44,7 @@ describe('MoviesPage', () => {
     await expect(MoviesPage({ searchParams: {} })).rejects.toThrow('offline')
   })
 
-  it('returns not found for a page beyond the catalog range', async () => {
+  it('redirects a page beyond the catalog range to the first page', async () => {
     mocks.getMovieCatalog.mockResolvedValueOnce({
       movies: [],
       page: 99,
@@ -54,7 +54,7 @@ describe('MoviesPage', () => {
     })
     await expect(
       MoviesPage({ searchParams: { page: '99' } }),
-    ).rejects.toThrow('NEXT_NOT_FOUND')
+    ).rejects.toThrow('NEXT_REDIRECT:/movies')
   })
 
   it('preserves the selected genre when submitting a title search', async () => {
@@ -82,5 +82,10 @@ describe('MoviesPage', () => {
     expect(metadata.twitter).toMatchObject({
       title: '영화 둘러보기 | 볼래',
     })
+  })
+
+  it('keeps paginated catalog URLs out of the search index', () => {
+    const metadata = generateMetadata({ searchParams: { page: '2' } })
+    expect(metadata.robots).toMatchObject({ index: false, follow: true })
   })
 })
