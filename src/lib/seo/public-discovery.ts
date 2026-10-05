@@ -8,6 +8,27 @@ export function articlePageHref(page: number): string {
   return page === 1 ? '/articles' : `/articles?page=${page}`
 }
 
+export function movieCatalogPageNumber(value?: string): number {
+  return articlePageNumber(value)
+}
+
+export function movieCatalogHref({
+  page,
+  query,
+  genre,
+}: {
+  page: number
+  query?: string
+  genre?: string
+}): string {
+  const params = new URLSearchParams()
+  if (query) params.set('query', query)
+  if (genre) params.set('genre', genre)
+  if (page > 1) params.set('page', String(page))
+  const suffix = params.toString()
+  return suffix ? `/movies?${suffix}` : '/movies'
+}
+
 // Imported legacy records use this sentinel rather than a real modification date.
 export function sitemapModifiedDate(value?: string): string | undefined {
   if (!value) return undefined

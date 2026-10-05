@@ -20,6 +20,23 @@ export class MovieDatasource {
     return res.json()
   }
 
+  async getMovieCatalog(
+    query: string,
+    genre: string,
+    page: number,
+    pageSize: number,
+  ) {
+    const res = await fetch(
+      MovieBackEndApiEndpoint.getMovieCatalog(query, genre, page, pageSize),
+      {
+        headers: { 'Content-Type': 'application/json' },
+        next: { revalidate: 300 },
+      },
+    )
+    if (!res.ok) throw new Error('영화 목록을 받아 올 수 없습니다.')
+    return res.json()
+  }
+
   async getMovieDetail(movieCd: string) {
     const res = await fetch(MovieBackEndApiEndpoint.getMovieDetail(movieCd), {
       method: 'GET',

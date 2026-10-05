@@ -20,6 +20,13 @@ export interface Movie {
   averageScore?: number
   actors: MovieActor[]
 }
+export interface MovieCatalogPage {
+  movies: Movie[]
+  page: number
+  pageSize: number
+  total: number
+  hasNext: boolean
+}
 export type MovieActor = {
   id: number
   name: string

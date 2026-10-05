@@ -22,6 +22,13 @@ describe('public UX hardening', () => {
     expect(source).toContain('공개 채팅 참여')
   })
 
+  it('links users and crawlers to the complete movie catalog', () => {
+    const home = read('./(home)/page.tsx')
+    const nav = read('../../../components/dm/dm-desktop-left-nav.tsx')
+    expect(home).toContain('href="/movies"')
+    expect(nav).toContain("href: '/movies'")
+  })
+
   it('gives comment and public chat fields an accessible name', () => {
     const comment = read('./articles/[id]/components/comment-input-field.tsx')
     const chat = read('./chat/public/components/public-chat-room.tsx')
