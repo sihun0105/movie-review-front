@@ -40,7 +40,9 @@ export class MovieRepository {
     )
     return {
       ...data,
-      movies: data.movies.map((item: any) => this.convertUnkownToMovie(item)),
+      movies: (data.movies ?? []).map((item: any) =>
+        this.convertUnkownToMovie(item),
+      ),
     }
   }
   async getMovieDetail(movieCd: string): Promise<Movie> {
