@@ -22,8 +22,8 @@ export class ArticleDatasource {
       AppBackEndApiEndpoint.listArticles(page, pageSize),
       {
         method: 'GET',
-        headers: this.getAuthHeaders(),
-        cache: 'no-cache',
+        headers: { 'Content-Type': 'application/json' },
+        next: { revalidate: 60 },
       },
     )
     if (!res.ok) throw new Error('게시글 목록을 가져올 수 없습니다.')

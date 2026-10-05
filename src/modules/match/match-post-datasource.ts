@@ -43,7 +43,9 @@ export class MatchPostDataSource {
         {
           method: 'GET',
           headers: this.getAuthHeaders(),
-          cache: 'no-cache',
+          ...(this.token
+            ? { cache: 'no-store' as const }
+            : { next: { revalidate: 60 } }),
         },
       )
 

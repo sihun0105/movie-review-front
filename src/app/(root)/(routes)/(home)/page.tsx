@@ -6,25 +6,24 @@ import { MovieRepository } from '@/modules/movie/movie-repository'
 import { MatchPostRepository } from '@/modules/match/match-post-repository'
 import { getMatchScheduleStatus } from '@/lib/utils'
 import { Metadata } from 'next'
-import { FunctionComponent } from 'react'
+import { FunctionComponent, cache } from 'react'
 import { RecentArticles } from './components/recent-articles'
 import { siteMetadata } from '@/app/site-metadata'
 
 export const dynamic = 'force-dynamic'
+export const fetchCache = 'default-cache'
 
-const getMovieList = async (): Promise<Movie[]> => {
+const getMovieList = cache(async (): Promise<Movie[]> => {
   try {
-    const repo = new MovieRepository()
-    return await repo.getMovie()
+    return await new MovieRepository().getMovie()
   } catch {
     return []
   }
-}
+})
 
-const getMatchLiveCount = async (): Promise<number> => {
+const getMatchLiveCount = cache(async (): Promise<number> => {
   try {
-    const repo = new MatchPostRepository()
-    const data = await repo.getMatchPosts(1, 100)
+    const data = await new MatchPostRepository().getMatchPosts(1, 100)
     return data.matchPosts.filter(
       (m) =>
         m.currentParticipants < m.maxParticipants &&
@@ -33,7 +32,7 @@ const getMatchLiveCount = async (): Promise<number> => {
   } catch {
     return 0
   }
-}
+})
 
 export async function generateMetadata(): Promise<Metadata> {
   const data = await getMovieList()
