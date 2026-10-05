@@ -13,6 +13,7 @@ const CommentInputField: FunctionComponent = () => {
           <FormControl>
             <textarea
               {...field}
+              aria-label="댓글 입력"
               rows={1}
               placeholder="댓글을 입력해주세요."
               className="w-full resize-none border border-border bg-background px-3 py-2 text-[13px] text-foreground placeholder:text-muted-foreground focus:border-primary focus:outline-none"

@@ -172,6 +172,7 @@ export function PublicChatRoom() {
       >
         <input
           value={input}
+          aria-label="공개 채팅 메시지 입력"
           onChange={(event) => setInput(event.target.value)}
           onFocus={() => setTimeout(scrollToBottom, 80)}
           placeholder="메시지 입력"
