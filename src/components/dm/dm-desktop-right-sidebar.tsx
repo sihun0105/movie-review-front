@@ -3,6 +3,7 @@
 import { MatchPost } from '@/lib/type'
 import { getMatchScheduleStatus } from '@/lib/utils'
 import Link from 'next/link'
+import { MessageCircle, Plus } from 'lucide-react'
 import useSWR from 'swr'
 
 const fetcher = (url: string) => fetch(url).then((r) => r.json())
@@ -71,8 +72,25 @@ export function DmDesktopRightSidebar() {
           </div>
         )}
         {!isLoading && posts.length === 0 && (
-          <div className="px-4 py-6 font-mono text-[11px] text-muted-foreground">
-            모집 중인 매칭이 없습니다.
+          <div className="space-y-3 px-4 py-6">
+            <p className="text-[12px] leading-5 text-muted-foreground">
+              아직 모집 중인 약속이 없어요. 먼저 영화 약속을 만들거나 공개
+              채팅에서 이야기를 시작해보세요.
+            </p>
+            <Link
+              href="/match/new"
+              className="flex h-9 items-center justify-center gap-2 rounded-md bg-primary px-3 text-[12px] font-semibold text-primary-foreground hover:bg-primary/90"
+            >
+              <Plus className="h-4 w-4" aria-hidden="true" />
+              새 매칭 만들기
+            </Link>
+            <Link
+              href="/chat/public"
+              className="flex h-9 items-center justify-center gap-2 rounded-md border border-border px-3 text-[12px] font-semibold text-foreground hover:bg-accent"
+            >
+              <MessageCircle className="h-4 w-4" aria-hidden="true" />
+              공개 채팅 참여
+            </Link>
           </div>
         )}
         {posts.map((m) => (

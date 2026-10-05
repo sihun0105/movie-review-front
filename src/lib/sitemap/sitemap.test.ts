@@ -93,6 +93,7 @@ describe('sitemap helpers', () => {
   it('includes only public static routes and validates page parameters', () => {
     expect(buildStaticFields().map((field) => field.loc)).toEqual([
       'https://bollae.kr/',
+      'https://bollae.kr/movies',
       'https://bollae.kr/articles',
       'https://bollae.kr/match',
       'https://bollae.kr/chat/public',

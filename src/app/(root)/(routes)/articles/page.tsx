@@ -7,6 +7,7 @@ import { articlePageHref, articlePageNumber } from '@/lib/seo/public-discovery'
 import { notFound } from 'next/navigation'
 
 export const dynamic = 'force-dynamic'
+export const fetchCache = 'default-cache'
 
 interface PageProps {
   searchParams?: { page?: string }
