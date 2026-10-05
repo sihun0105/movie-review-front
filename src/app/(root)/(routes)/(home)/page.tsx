@@ -9,6 +9,7 @@ import { Metadata } from 'next'
 import { FunctionComponent, cache } from 'react'
 import { RecentArticles } from './components/recent-articles'
 import { siteMetadata } from '@/app/site-metadata'
+import Link from 'next/link'
 
 export const dynamic = 'force-dynamic'
 export const fetchCache = 'default-cache'
@@ -99,6 +100,12 @@ const Page: FunctionComponent = async () => {
         <span className="font-mono text-[10px] text-muted-foreground">
           TOP 10
         </span>
+        <Link
+          href="/movies"
+          className="ml-auto text-[12px] font-medium text-muted-foreground hover:text-foreground"
+        >
+          전체 영화
+        </Link>
       </div>
 
       <div className="grid gap-3 px-4 lg:grid-cols-2">

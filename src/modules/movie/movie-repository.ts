@@ -4,6 +4,7 @@ import {
   CGVTheaterDetail,
   CGVTheaterList,
   Movie,
+  MovieCatalogPage,
   Score,
   assertAverageMovieScore,
   assertMovie,
@@ -24,6 +25,23 @@ export class MovieRepository {
     return data.MovieData?.map((item: any) => {
       return this.convertUnkownToMovie(item)
     })
+  }
+  async getMovieCatalog(
+    query: string,
+    genre: string,
+    page: number,
+    pageSize = 24,
+  ): Promise<MovieCatalogPage> {
+    const data = await this.datasource.getMovieCatalog(
+      query,
+      genre,
+      page,
+      pageSize,
+    )
+    return {
+      ...data,
+      movies: data.movies.map((item: any) => this.convertUnkownToMovie(item)),
+    }
   }
   async getMovieDetail(movieCd: string): Promise<Movie> {
     const data = await this.datasource.getMovieDetail(movieCd)

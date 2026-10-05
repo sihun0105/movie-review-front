@@ -81,6 +81,11 @@ export function buildStaticFields(): ISitemapField[] {
       priority: 1,
     },
     {
+      loc: `${SITE_URL}/movies`,
+      changefreq: 'daily',
+      priority: 0.9,
+    },
+    {
       loc: `${SITE_URL}/articles`,
       changefreq: 'daily',
       priority: 0.9,

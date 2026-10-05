@@ -16,6 +16,16 @@ const NAV = [
     ),
   },
   {
+    href: '/movies',
+    label: '영화',
+    icon: (
+      <>
+        <rect x="3" y="5" width="18" height="14" rx="2" />
+        <path d="M7 5V3M12 5V3M17 5V3M7 21v-2M12 21v-2M17 21v-2" />
+      </>
+    ),
+  },
+  {
     href: '/match',
     label: '매칭',
     icon: <path d="M4 7h16M4 12h10M4 17h7" />,
