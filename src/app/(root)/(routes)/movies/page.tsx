@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import { Metadata } from 'next'
-import { notFound } from 'next/navigation'
+import { redirect } from 'next/navigation'
 import { Search } from 'lucide-react'
 import { MovieRepository } from '@/modules/movie/movie-repository'
 import {
@@ -31,7 +31,7 @@ export function generateMetadata({ searchParams }: PageProps): Metadata {
     title,
     description,
     alternates: { canonical },
-    robots: query || genre ? { index: false, follow: true } : undefined,
+    robots: query || genre || page > 1 ? { index: false, follow: true } : undefined,
     openGraph: {
       type: 'website',
       title,
@@ -53,7 +53,9 @@ export default async function MoviesPage({ searchParams }: PageProps) {
   const genre = clean(searchParams?.genre)
   const page = movieCatalogPageNumber(searchParams?.page)
   const data = await new MovieRepository().getMovieCatalog(query, genre, page)
-  if (page > 1 && data.movies.length === 0) notFound()
+  if (page > 1 && data.movies.length === 0) {
+    redirect(movieCatalogHref({ page: 1, query, genre }))
+  }
 
   return (
     <main className="min-h-page px-4 pb-8 pt-5">
