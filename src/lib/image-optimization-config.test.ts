@@ -7,6 +7,9 @@ describe('production image optimization', () => {
     const verifier = readFileSync('scripts/verify.mjs', 'utf8')
 
     expect(packageJson).toContain('node scripts/package-sharp-runtime.mjs')
+    expect(JSON.parse(packageJson).pnpm.onlyBuiltDependencies).toContain(
+      'sharp',
+    )
     expect(verifier).toContain('package-sharp-runtime.mjs')
   })
 })
