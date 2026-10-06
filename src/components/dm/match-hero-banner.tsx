@@ -3,10 +3,9 @@ import Link from 'next/link'
 interface MatchHeroBannerProps {
   todayLabel: string
   liveCount?: number
-  nearbyCount?: number
 }
 
-export function MatchHeroBanner({ todayLabel, liveCount, nearbyCount }: MatchHeroBannerProps) {
+export function MatchHeroBanner({ todayLabel, liveCount }: MatchHeroBannerProps) {
   return (
     <div className="px-4 pt-5 pb-2">
       <div className="font-mono text-[11px] text-muted-foreground">{todayLabel}</div>
@@ -22,7 +21,7 @@ export function MatchHeroBanner({ todayLabel, liveCount, nearbyCount }: MatchHer
       <div className="mt-4 flex gap-2">
         <Link
           href="/match/new"
-          className="flex h-9 flex-1 items-center justify-center rounded-md bg-primary text-[13px] font-medium text-primary-foreground"
+          className="flex h-9 flex-1 items-center justify-center rounded-md bg-blue-600 text-[13px] font-medium text-white hover:bg-blue-700"
         >
           ＋ 매칭 만들기
         </Link>

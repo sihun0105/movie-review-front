@@ -12,6 +12,6 @@
 
   /* fonts */
   --dm-font-display: 'Inter', -apple-system, system-ui, sans-serif;
-  --dm-font-mono: 'Geist Mono', monospace;
+  --dm-font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
   --dm-font-rank: 'Inter', sans-serif;
 }

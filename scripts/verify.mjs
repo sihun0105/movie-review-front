@@ -37,10 +37,13 @@ const steps = buildOnly ? [] : [
   ['lint', 'next/dist/bin/next', ['lint']],
   ['tests', 'vitest/vitest.mjs', ['run', '--threads', 'false', ...tests]],
 ]
-if (build || buildOnly) steps.push(['build', 'next/dist/bin/next', ['build']])
+if (build || buildOnly) {
+  steps.push(['build', 'next/dist/bin/next', ['build']])
+  steps.push(['standalone image', 'scripts/package-sharp-runtime.mjs', []])
+}
 
 for (const [label, binary, options] of steps) {
-  const path = `node_modules/${binary}`
+  const path = binary.startsWith('scripts/') ? binary : `node_modules/${binary}`
   if (!existsSync(path)) throw new Error('Dependencies missing. Run corepack pnpm install --frozen-lockfile.')
   const start = Date.now()
   console.log(`\n[verify] ${label}`)

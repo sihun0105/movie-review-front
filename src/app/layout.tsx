@@ -24,11 +24,6 @@ const inter = Inter({
   variable: '--font-inter',
 })
 
-// dm 폰트는 runtime <link> 로 로드한다.
-// next/font/google 는 빌드 타임에 fonts.gstatic.com 으로 fetch 하는데, Docker
-// 빌드 환경의 네트워크 제약으로 실패한 이력이 있어 (PR #213·#215) 안정성을
-// 위해 클라이언트 사이드 로드로 전환. 폰트 family 는 dm/tokens.css 에 정의.
-
 export default function RootLayout({
   children,
 }: {
@@ -37,17 +32,6 @@ export default function RootLayout({
   return (
     <html lang="ko">
       <head>
-        {/* Geist Mono — runtime fetch (build network 우회) */}
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link
-          rel="preconnect"
-          href="https://fonts.gstatic.com"
-          crossOrigin="anonymous"
-        />
-        <link
-          href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400;500&display=swap"
-          rel="stylesheet"
-        />
         {/* Google Tag Manager */}
         <Script
           id="google-tag-manager"
