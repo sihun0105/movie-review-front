@@ -29,6 +29,28 @@ describe('public UX hardening', () => {
     expect(nav).toContain("href: '/movies'")
   })
 
+  it('prioritizes the first box-office poster and names community navigation', () => {
+    const home = read('./(home)/page.tsx')
+    const articles = read('./(home)/components/recent-articles.tsx')
+
+    expect(home).toContain('priority={index === 0}')
+    expect(articles).toContain('커뮤니티 전체 보기')
+  })
+
+  it('uses a contrast-safe primary action on the matching hero', () => {
+    const source = read('../../../components/dm/match-hero-banner.tsx')
+    expect(source).toContain('bg-blue-600')
+    expect(source).toContain('text-white')
+  })
+
+  it('avoids a render-blocking third-party font stylesheet', () => {
+    const layout = read('../../layout.tsx')
+    const tokens = read('../../../styles/dm/tokens.css')
+
+    expect(layout).not.toContain('fonts.googleapis.com')
+    expect(tokens).toContain('ui-monospace')
+  })
+
   it('gives comment and public chat fields an accessible name', () => {
     const comment = read('./articles/[id]/components/comment-input-field.tsx')
     const chat = read('./chat/public/components/public-chat-room.tsx')

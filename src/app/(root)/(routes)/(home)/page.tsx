@@ -110,8 +110,12 @@ const Page: FunctionComponent = async () => {
 
       <div className="grid gap-3 px-4 lg:grid-cols-2">
         {top10.length === 0 && <AppSkeleton className="min-h-[364px] p-6" />}
-        {top10.map((movie) => (
-          <MovieListCard key={movie.id} movie={movie} />
+        {top10.map((movie, index) => (
+          <MovieListCard
+            key={movie.id}
+            movie={movie}
+            priority={index === 0}
+          />
         ))}
       </div>
 
