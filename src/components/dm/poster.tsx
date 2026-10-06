@@ -67,6 +67,7 @@ export function Poster({
           alt={`${title} 포스터`}
           fill
           sizes={sizes}
+          quality={65}
           priority={priority}
           loading={priority ? undefined : 'lazy'}
           className="object-cover object-center"

@@ -39,6 +39,7 @@ describe('Poster image', () => {
     expect(html).toContain('<img')
     expect(html).toContain('alt="Movie title 포스터"')
     expect(html).toContain('/_next/image?')
+    expect(html).toContain('q=65')
     expect(html).toContain('loading="lazy"')
     expect(html).toContain('aspect-[2/3]')
     expect(html).toContain('object-cover')
