@@ -16,7 +16,7 @@ vi.mock('./poster-palette', () => ({
 import { MovieListCard } from './movie-list-card'
 
 describe('MovieListCard accessibility', () => {
-  it('names the movie detail link with its title', () => {
+  it('uses the visible card content as the movie detail link name', () => {
     const html = renderToStaticMarkup(
       <MovieListCard
         movie={
@@ -30,6 +30,8 @@ describe('MovieListCard accessibility', () => {
       />,
     )
 
-    expect(html).toContain('aria-label="오디세이 영화 상세 보기"')
+    expect(html).toContain('href="/movie/20250654"')
+    expect(html).toContain('오디세이')
+    expect(html).not.toContain('aria-label=')
   })
 })
