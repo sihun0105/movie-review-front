@@ -32,11 +32,7 @@ export function MovieListCard({ movie, priority = false }: MovieListCardProps) {
     rankInten > 0 ? `▲${rankInten}` : rankInten < 0 ? `▼${-rankInten}` : '—'
 
   return (
-    <Link
-      href={`/movie/${movie.id}`}
-      aria-label={`${movie.title} 영화 상세 보기`}
-      className="block"
-    >
+    <Link href={`/movie/${movie.id}`} className="block">
       <article className="group grid grid-cols-[104px_minmax(0,1fr)] gap-3 rounded-lg border border-border bg-card p-3 transition-colors hover:bg-accent sm:grid-cols-[124px_minmax(0,1fr)]">
         <div className="relative">
           <Poster
