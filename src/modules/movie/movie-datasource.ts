@@ -19,7 +19,14 @@ export class MovieDatasource {
     }
     return res.json()
   }
-
+  async getTopRatedMovies(limit = 12) {
+    const res = await fetch(MovieBackEndApiEndpoint.getTopRatedMovies(limit), {
+      headers: { 'Content-Type': 'application/json' },
+      next: { revalidate: 300 },
+    })
+    if (!res.ok) throw new Error('고평점 영화를 받아 올 수 없습니다.')
+    return res.json()
+  }
   async getMovieCatalog(
     query: string,
     genre: string,
@@ -36,7 +43,6 @@ export class MovieDatasource {
     if (!res.ok) throw new Error('영화 목록을 받아 올 수 없습니다.')
     return res.json()
   }
-
   async getMovieDetail(movieCd: string) {
     const res = await fetch(MovieBackEndApiEndpoint.getMovieDetail(movieCd), {
       method: 'GET',
@@ -54,7 +60,6 @@ export class MovieDatasource {
     }
     return res.json()
   }
-
   async getMoviesByDirector(
     name: string,
     excludeMovieCd: number,
@@ -93,7 +98,6 @@ export class MovieDatasource {
     }
     return res.json()
   }
-
   async getScore(id: string) {
     const res = await fetch(MovieBackEndApiEndpoint.getScore(id), {
       method: 'GET',
@@ -122,7 +126,6 @@ export class MovieDatasource {
     }
     return res.json()
   }
-
   async getMovieTheaterList() {
     const res = await fetch(MovieBackEndApiEndpoint.getMovieTheaterList(), {
       method: 'GET',
@@ -137,7 +140,6 @@ export class MovieDatasource {
     }
     return res.json()
   }
-
   async getMovieTheaterDetail(id: number) {
     const res = await fetch(MovieBackEndApiEndpoint.getMovieTheaterDetail(id), {
       method: 'GET',
@@ -152,7 +154,6 @@ export class MovieDatasource {
     }
     return res.json()
   }
-
   async getMoviesByTheaterId(theaterId: number) {
     const res = await fetch(
       MovieBackEndApiEndpoint.getMoviesByTheaterId(theaterId),
@@ -170,7 +171,6 @@ export class MovieDatasource {
     }
     return res.json()
   }
-
   async getMovieDetailByTheater(movieCd: string) {
     const res = await fetch(
       MovieBackEndApiEndpoint.getMovieDetailByTheater(movieCd),

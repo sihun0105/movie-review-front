@@ -9,6 +9,7 @@ import { Metadata } from 'next'
 import { FunctionComponent, cache } from 'react'
 import { RecentArticles } from './components/recent-articles'
 import { UpcomingMatches } from './components/upcoming-matches'
+import { TopRatedMovies } from './components/top-rated-movies'
 import { siteMetadata } from '@/app/site-metadata'
 import Link from 'next/link'
 
@@ -119,6 +120,7 @@ const Page: FunctionComponent = async () => {
       <div className="mt-4">
         <GoogleAd />
       </div>
+      <TopRatedMovies excludeMovieIds={top10.map((movie) => movie.id)} />
       <UpcomingMatches />
       <RecentArticles />
     </main>
