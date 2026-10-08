@@ -6,15 +6,15 @@ const read = (relativePath: string) =>
   readFileSync(fileURLToPath(new URL(relativePath, import.meta.url)), 'utf8')
 
 describe('public UX hardening', () => {
-  it('revalidates public pages without forcing every request to render', () => {
+  it('revalidates the cache-safe home and keeps paginated articles dynamic', () => {
     const home = read('./(home)/page.tsx')
     const articles = read('./articles/page.tsx')
 
     expect(home).not.toContain("dynamic = 'force-dynamic'")
     expect(home).toContain('revalidate = 60')
     expect(home).toContain("fetchCache = 'default-cache'")
-    expect(articles).not.toContain("dynamic = 'force-dynamic'")
-    expect(articles).toContain('revalidate = 60')
+    expect(articles).toContain("dynamic = 'force-dynamic'")
+    expect(articles).not.toContain('revalidate = 60')
     expect(articles).toContain("fetchCache = 'default-cache'")
   })
 
