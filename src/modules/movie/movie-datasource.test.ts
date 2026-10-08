@@ -9,6 +9,8 @@ vi.mock('@/config/movie-api-endpoint', () => ({
       pageSize: number,
     ) =>
       `https://backend/movie/catalog?query=${query}&genre=${genre}&page=${page}&pageSize=${pageSize}`,
+    getTopRatedMovies: (limit: number) =>
+      `https://backend/movie/top-rated?limit=${limit}`,
   },
 }))
 import { MovieDatasource } from './movie-datasource'
@@ -37,6 +39,18 @@ describe('movie HTTP error contract', () => {
 
     expect(fetch).toHaveBeenCalledWith(
       'https://backend/movie/catalog?query=&genre=&page=1&pageSize=24',
+      expect.objectContaining({ next: { revalidate: 300 } }),
+    )
+  })
+
+  it('caches top-rated movies briefly', async () => {
+    const fetch = vi.fn(async () => new Response('{"MovieData":[]}'))
+    vi.stubGlobal('fetch', fetch)
+
+    await new MovieDatasource().getTopRatedMovies(12)
+
+    expect(fetch).toHaveBeenCalledWith(
+      'https://backend/movie/top-rated?limit=12',
       expect.objectContaining({ next: { revalidate: 300 } }),
     )
   })

@@ -20,6 +20,11 @@ export const MovieBackEndApiEndpoint = {
       },
       { skipEmptyString: true, skipNull: true },
     ),
+  getTopRatedMovies: (limit: number) =>
+    queryString.stringifyUrl({
+      url: `${serverBase}/movie/top-rated`,
+      query: { limit },
+    }),
   getMovieSitemapEntries: () => `${serverBase}/movie/sitemap`,
   getMovieDetail: (movieCd: string) => `${serverBase}/movie/${movieCd}`,
   getMoviesByDirector: (name: string, excludeMovieCd: number, limit: number) =>
@@ -42,6 +47,11 @@ export const MovieBackEndApiEndpoint = {
 }
 
 export const MovieClientApiEndpoint = {
+  getTopRatedMovies: (limit: number) =>
+    queryString.stringifyUrl({
+      url: '/api/movie/top-rated',
+      query: { limit },
+    }),
   getMovieDetail: (movieCd: string) =>
     queryString.stringifyUrl(
       {

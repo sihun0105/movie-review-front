@@ -56,4 +56,11 @@ describe('movie catalog mapping', () => {
 
     expect(result.movies).toEqual([])
   })
+
+  it('treats an omitted top-rated protobuf list as empty', async () => {
+    const datasource = { getTopRatedMovies: vi.fn().mockResolvedValue({}) }
+    const repository = new MovieRepository(undefined, datasource as any)
+
+    await expect(repository.getTopRatedMovies()).resolves.toEqual([])
+  })
 })
