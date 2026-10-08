@@ -8,6 +8,7 @@ import { getMatchScheduleStatus } from '@/lib/utils'
 import { Metadata } from 'next'
 import { FunctionComponent, cache } from 'react'
 import { RecentArticles } from './components/recent-articles'
+import { UpcomingMatches } from './components/upcoming-matches'
 import { siteMetadata } from '@/app/site-metadata'
 import Link from 'next/link'
 
@@ -111,17 +112,14 @@ const Page: FunctionComponent = async () => {
       <div className="grid gap-3 px-4 lg:grid-cols-2">
         {top10.length === 0 && <AppSkeleton className="min-h-[364px] p-6" />}
         {top10.map((movie, index) => (
-          <MovieListCard
-            key={movie.id}
-            movie={movie}
-            priority={index === 0}
-          />
+          <MovieListCard key={movie.id} movie={movie} priority={index === 0} />
         ))}
       </div>
 
       <div className="mt-4">
         <GoogleAd />
       </div>
+      <UpcomingMatches />
       <RecentArticles />
     </main>
   )

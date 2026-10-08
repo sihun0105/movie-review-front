@@ -48,6 +48,15 @@ describe('public UX hardening', () => {
     expect(articles).toContain('커뮤니티 전체 보기')
   })
 
+  it('shows upcoming matching opportunities on the home page', () => {
+    const home = read('./(home)/page.tsx')
+
+    expect(home).toContain(
+      "import { UpcomingMatches } from './components/upcoming-matches'",
+    )
+    expect(home).toContain('<UpcomingMatches />')
+  })
+
   it('uses a contrast-safe primary action on the matching hero', () => {
     const source = read('../../../components/dm/match-hero-banner.tsx')
     expect(source).toContain('bg-blue-600')
