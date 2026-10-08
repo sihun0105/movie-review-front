@@ -26,6 +26,11 @@ export class MovieRepository {
       return this.convertUnkownToMovie(item)
     })
   }
+  async getTopRatedMovies(limit = 12): Promise<Movie[]> {
+    const data = await this.datasource.getTopRatedMovies(limit)
+    const movies = Array.isArray(data.MovieData) ? data.MovieData : []
+    return movies.map((item: any) => this.convertUnkownToMovie(item))
+  }
   async getMovieCatalog(
     query: string,
     genre: string,
@@ -125,7 +130,6 @@ export class MovieRepository {
     const data = await this.datasource.getAverageScore(id)
     return this.convertToAverageMovieScoreEntity(data)
   }
-  // 영화관 목록 호출
   async getMovieTheaterList(): Promise<CGVTheaterList> {
     const data = await this.datasource.getMovieTheaterList()
     return {
@@ -147,7 +151,6 @@ export class MovieRepository {
     }
   }
 
-  // 영화관 상세 정보 호출
   async getMovieTheaterDetail(id: number): Promise<CGVTheaterDetail> {
     const data = await this.datasource.getMovieTheaterDetail(id)
     return {
@@ -165,7 +168,6 @@ export class MovieRepository {
     }
   }
 
-  // 영화관에서 상영 중인 영화 목록 호출
   async getMoviesByTheaterId(theaterId: number): Promise<Movie[]> {
     const data = await this.datasource.getMoviesByTheaterId(theaterId)
     return (
@@ -175,7 +177,6 @@ export class MovieRepository {
     )
   }
 
-  // 영화관에서 상영 중인 영화 상세 정보 호출
   async getMovieDetailByTheater(movieCd: string): Promise<Movie> {
     const data = await this.datasource.getMovieDetailByTheater(movieCd)
     return this.convertUnkownToMovie(data)
