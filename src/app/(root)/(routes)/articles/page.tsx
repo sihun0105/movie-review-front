@@ -6,7 +6,7 @@ import { ArticleRepository } from '@/modules/article/article-repository'
 import { articlePageHref, articlePageNumber } from '@/lib/seo/public-discovery'
 import { notFound } from 'next/navigation'
 
-export const dynamic = 'force-dynamic'
+export const revalidate = 60
 export const fetchCache = 'default-cache'
 
 interface PageProps {
