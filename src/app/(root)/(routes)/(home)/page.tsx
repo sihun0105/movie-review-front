@@ -11,7 +11,7 @@ import { RecentArticles } from './components/recent-articles'
 import { siteMetadata } from '@/app/site-metadata'
 import Link from 'next/link'
 
-export const dynamic = 'force-dynamic'
+export const revalidate = 60
 export const fetchCache = 'default-cache'
 
 const getMovieList = cache(async (): Promise<Movie[]> => {

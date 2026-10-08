@@ -6,14 +6,25 @@ const read = (relativePath: string) =>
   readFileSync(fileURLToPath(new URL(relativePath, import.meta.url)), 'utf8')
 
 describe('public UX hardening', () => {
-  it('keeps public pages runtime-rendered while caching their data', () => {
+  it('revalidates public pages without forcing every request to render', () => {
     const home = read('./(home)/page.tsx')
     const articles = read('./articles/page.tsx')
 
-    expect(home).toContain("dynamic = 'force-dynamic'")
+    expect(home).not.toContain("dynamic = 'force-dynamic'")
+    expect(home).toContain('revalidate = 60')
     expect(home).toContain("fetchCache = 'default-cache'")
-    expect(articles).toContain("dynamic = 'force-dynamic'")
+    expect(articles).not.toContain("dynamic = 'force-dynamic'")
+    expect(articles).toContain('revalidate = 60')
     expect(articles).toContain("fetchCache = 'default-cache'")
+  })
+
+  it('uses Node 24 compatible actions for production deployment', () => {
+    const workflow = read('../../../../.github/workflows/deploy.yml')
+
+    expect(workflow).toContain('actions/checkout@v7')
+    expect(workflow).toContain('docker/setup-buildx-action@v4')
+    expect(workflow).toContain('docker/login-action@v4')
+    expect(workflow).toContain('docker/build-push-action@v7')
   })
 
   it('offers useful actions when the desktop matching rail is empty', () => {
