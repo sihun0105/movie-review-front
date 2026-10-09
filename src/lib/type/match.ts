@@ -38,6 +38,12 @@ export interface MatchApplication {
   createdAt: string
 }
 
+export interface MatchParticipant {
+  nickname: string
+  image: string
+  role: 'host' | 'participant'
+}
+
 export interface MatchPostResponse {
   matchPosts: MatchPost[]
   hasNext: boolean

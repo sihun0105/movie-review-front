@@ -3,6 +3,7 @@ export { useMatchPosts } from './use-match-posts'
 export type { MatchPostFilter } from './use-match-posts'
 export { useMatchPost } from './use-match-post'
 export { useMatchApplications } from './use-match-applications'
+export { useMatchParticipants } from './use-match-participants'
 export {
   useCreateMatch,
   useUpdateMatch,
