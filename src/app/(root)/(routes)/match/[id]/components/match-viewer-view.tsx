@@ -2,7 +2,7 @@
 
 import { MatchApplyDialog } from '@/components/app/match-apply-dialog'
 import { DmMatchDetailCard, Poster, paletteForMovie } from '@/components/dm'
-import { MatchPost } from '@/lib/type'
+import { MatchParticipant, MatchPost } from '@/lib/type'
 import { getMatchScheduleStatus } from '@/lib/utils'
 import { useSession } from 'next-auth/react'
 import Link from 'next/link'
@@ -10,9 +10,12 @@ import { useRouter, useSearchParams } from 'next/navigation'
 import { useEffect, useRef, useState } from 'react'
 import { useMyApplication } from '../../hooks/use-my-application'
 import { MatchDescriptionSection } from './match-description-section'
+import { MatchParticipantsSection } from './match-participants-section'
 
 interface MatchViewerViewProps {
   matchPost: MatchPost
+  participants: MatchParticipant[]
+  isParticipantsLoading: boolean
   onApply: (_message: string) => Promise<void>
 }
 
@@ -42,7 +45,12 @@ function ApplicationStatusBadge({ status }: { status: string }) {
   )
 }
 
-const MatchViewerView = ({ matchPost, onApply }: MatchViewerViewProps) => {
+const MatchViewerView = ({
+  matchPost,
+  participants,
+  isParticipantsLoading,
+  onApply,
+}: MatchViewerViewProps) => {
   const router = useRouter()
   const searchParams = useSearchParams()
   const { status } = useSession()
@@ -142,6 +150,11 @@ const MatchViewerView = ({ matchPost, onApply }: MatchViewerViewProps) => {
 
         <MatchDescriptionSection content={matchPost.content} />
       </div>
+
+      <MatchParticipantsSection
+        participants={participants}
+        isLoading={isParticipantsLoading}
+      />
 
       {(myApplication || canApply) && (
         <div className="sticky bottom-0 z-40 mt-4 border-t border-border bg-background/95 px-4 pb-4 pt-3 backdrop-blur-md">

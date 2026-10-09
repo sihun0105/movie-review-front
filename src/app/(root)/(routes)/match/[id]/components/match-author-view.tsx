@@ -1,16 +1,24 @@
 'use client'
 
 import { DmMatchDetailCard } from '@/components/dm'
-import { CreateMatchPostRequest, MatchApplication, MatchPost } from '@/lib/type'
+import {
+  CreateMatchPostRequest,
+  MatchApplication,
+  MatchParticipant,
+  MatchPost,
+} from '@/lib/type'
 import { useRouter } from 'next/navigation'
 import { FunctionComponent, useState } from 'react'
 import { MatchFormSection } from '../../sections/match-form-section'
 import { MatchApplicationRow } from './match-application-row'
 import { MatchDescriptionSection } from './match-description-section'
+import { MatchParticipantsSection } from './match-participants-section'
 
 interface MatchAuthorViewProps {
   matchPost: MatchPost
   applications: MatchApplication[]
+  participants: MatchParticipant[]
+  isParticipantsLoading: boolean
   isDeleting: boolean
   isUpdating: boolean
   onUpdate: (_data: CreateMatchPostRequest) => Promise<void>
@@ -25,6 +33,8 @@ interface MatchAuthorViewProps {
 const MatchAuthorView: FunctionComponent<MatchAuthorViewProps> = ({
   matchPost,
   applications,
+  participants,
+  isParticipantsLoading,
   isDeleting,
   isUpdating,
   onUpdate,
@@ -99,6 +109,11 @@ const MatchAuthorView: FunctionComponent<MatchAuthorViewProps> = ({
           </div>
         </>
       )}
+
+      <MatchParticipantsSection
+        participants={participants}
+        isLoading={isParticipantsLoading}
+      />
 
       <div className="mt-4 border-t border-border">
         <div className="flex items-center justify-between px-5 py-3.5">

@@ -8,6 +8,7 @@ import {
   useApplyMatch,
   useDeleteMatch,
   useMatchApplications,
+  useMatchParticipants,
   useMatchPost,
   useUpdateMatch,
 } from '../../hooks'
@@ -31,6 +32,8 @@ const MatchDetailContainer = ({
     mutate: mutateMatch,
   } = useMatchPost(matchId, initialMatch)
   const { applyToMatch } = useApplyMatch(matchId)
+  const { participants, isLoading: isParticipantsLoading } =
+    useMatchParticipants(matchId)
   const { deleteMatch, isDeleting } = useDeleteMatch(matchId)
   const { updateMatch, isUpdating } = useUpdateMatch(matchId)
   const sessionUserId = session?.user?.id ? Number(session.user.id) : null
@@ -132,6 +135,8 @@ const MatchDetailContainer = ({
       <MatchAuthorView
         matchPost={matchPost}
         applications={applications}
+        participants={participants}
+        isParticipantsLoading={isParticipantsLoading}
         isDeleting={isDeleting}
         isUpdating={isUpdating}
         onUpdate={handleUpdate}
@@ -141,7 +146,14 @@ const MatchDetailContainer = ({
       />
     )
 
-  return <MatchViewerView matchPost={matchPost} onApply={handleApplySubmit} />
+  return (
+    <MatchViewerView
+      matchPost={matchPost}
+      participants={participants}
+      isParticipantsLoading={isParticipantsLoading}
+      onApply={handleApplySubmit}
+    />
+  )
 }
 
 export { MatchDetailContainer }
